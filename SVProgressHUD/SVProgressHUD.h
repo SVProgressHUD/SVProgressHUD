@@ -1,9 +1,8 @@
 //
-//  FCOverlayView.h
-//  Shows
+//  SVProgressHUD.h
 //
-//  Created by Sam Vermette on 01.11.10.
-//  Copyright 2010 Sam Vermette. All rights reserved.
+//  Created by Sam Vermette on 27.03.11.
+//  Copyright 2011 Sam Vermette. All rights reserved.
 //
 
 @interface SVProgressHUD : UIView {
@@ -16,8 +15,8 @@
 + (void)show;
 + (void)showInView:(UIView*)view;
 + (void)showInView:(UIView*)view status:(NSString*)string;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)b;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)b posY:(CGFloat)posY;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
 
 + (void)setStatus:(NSString*)string;
 

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ActivePerspectiveName</key>
-	<string>Project</string>
+	<string>Debug</string>
 	<key>AllowedModules</key>
 	<array>
 		<dict>
@@ -270,6 +270,7 @@
 								<string>222A67D7133FDB5B00DAE48C</string>
 								<string>222A67DA133FDB5B00DAE48C</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
+								<string>22EBCD17134128130074B281</string>
 								<string>29B97323FDCFA39411CA2CEA</string>
 								<string>19C28FACFE9D520D11CA2CBB</string>
 								<string>1C37FBAC04509CD000000102</string>
@@ -299,8 +300,6 @@
 							<string>MainColumn</string>
 							<real>263</real>
 						</array>
-						<key>RubberWindowFrame</key>
-						<string>842 305 1710 1035 0 0 2560 1418 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -311,8 +310,6 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -330,17 +327,20 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>22EBCCC5134116910074B281</string>
+										<string>22EBCD6513412C020074B281</string>
 										<key>history</key>
 										<array>
-											<string>222A6807133FE01A00DAE48C</string>
-											<string>222A683E133FE5BD00DAE48C</string>
 											<string>222A68CF133FEBBE00DAE48C</string>
-											<string>222A68D0133FEBBE00DAE48C</string>
 											<string>22EBCCC1134116910074B281</string>
-											<string>22EBCCC2134116910074B281</string>
-											<string>22EBCCC3134116910074B281</string>
-											<string>22EBCCC4134116910074B281</string>
+											<string>22EBCCFB13411BDF0074B281</string>
+											<string>22EBCD1013411C430074B281</string>
+											<string>22EBCD1C134128200074B281</string>
+											<string>22EBCD25134129490074B281</string>
+											<string>22EBCD3F134129FF0074B281</string>
+											<string>22EBCD4413412A350074B281</string>
+											<string>22EBCD4513412A350074B281</string>
+											<string>22EBCD4E13412B970074B281</string>
+											<string>22EBCD4F13412B970074B281</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -355,8 +355,6 @@
 							<dict>
 								<key>Frame</key>
 								<string>{{0, 0}, {1425, 766}}</string>
-								<key>RubberWindowFrame</key>
-								<string>842 305 1710 1035 0 0 2560 1418 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -395,7 +393,7 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {842, 183}}</string>
+										<string>{{10, 27}, {1425, 196}}</string>
 									</dict>
 									<key>Module</key>
 									<string>PBXProjectFindModule</string>
@@ -434,8 +432,6 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {1425, 196}}</string>
-										<key>RubberWindowFrame</key>
-										<string>842 305 1710 1035 0 0 2560 1418 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -507,6 +503,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
@@ -518,6 +516,8 @@
 					<dict>
 						<key>Frame</key>
 						<string>{{0, 0}, {1710, 186}}</string>
+						<key>RubberWindowFrame</key>
+						<string>842 305 1710 1035 0 0 2560 1418 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugCLIModule</string>
@@ -592,7 +592,11 @@
 							</array>
 							<key>Frame</key>
 							<string>{{821, 0}, {889, 276}}</string>
+							<key>RubberWindowFrame</key>
+							<string>842 305 1710 1035 0 0 2560 1418 </string>
 						</dict>
+						<key>RubberWindowFrame</key>
+						<string>842 305 1710 1035 0 0 2560 1418 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugSessionModule</string>
@@ -654,7 +658,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>22EBCCA8134110A30074B281</string>
+		<string>22EBCD6613412C020074B281</string>
 		<string>22EBCBFF1341021E0074B281</string>
 		<string>22EBCBF8134101EC0074B281</string>
 		<string>/Users/sam/Documents/iOS/SVProgressHUD/Sample/SVProgressHUD.xcodeproj</string>

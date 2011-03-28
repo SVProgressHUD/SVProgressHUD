@@ -3,7 +3,7 @@
 //  SVProgressHUD
 //
 //  Created by Sam Vermette on 27.03.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Sam Vermette. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -19,7 +19,7 @@
 }
 
 - (void)showWithStatus {
-	[SVProgressHUD showInView:self.view status:@"Loading"];
+	[SVProgressHUD showInView:self.view status:@"Doing Stuff"];
 }
 
 #pragma mark -
@@ -34,7 +34,7 @@
 }
 
 - (void)dismissError {
-	[SVProgressHUD dismissWithError:@"Failed with error"];
+	[SVProgressHUD dismissWithError:@"Failed with Error"];
 }
 
 #pragma mark -

@@ -1,9 +1,8 @@
 //
-//  FCOverlayView.m
-//  Shows
+//  SVProgressHUD.m
 //
-//  Created by Sam Vermette on 01.11.10.
-//  Copyright 2010 Sam Vermette. All rights reserved.
+//  Created by Sam Vermette on 27.03.11.
+//  Copyright 2011 Sam Vermette. All rights reserved.
 //
 
 #import "SVProgressHUD.h"
@@ -12,7 +11,7 @@
 
 @interface SVProgressHUD (private)
 
-- (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)b posY:(CGFloat)posY;
+- (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
 - (void)setStatus:(NSString *)string;
 - (void)dismiss;
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error;
@@ -51,17 +50,17 @@ static SVProgressHUD *sharedView = nil;
 
 
 + (void)showInView:(UIView*)view status:(NSString*)string {
-	[SVProgressHUD showInView:view status:string networkIndicator:YES posY:floor(0.5*view.bounds.size.height/2)];
+	[SVProgressHUD showInView:view status:string networkIndicator:YES];
 }
 
 
-+ (void)showInView:(UIView*)view status:(NSString*)string posY:(CGFloat)posY {
-	[SVProgressHUD showInView:view status:string networkIndicator:YES posY:posY];
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show {
+	[SVProgressHUD showInView:view status:string networkIndicator:show posY:floor(CGRectGetHeight(view.bounds)/2)-100];
 }
 
 
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)b posY:(CGFloat)posY {
-	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:b posY:posY];
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
+	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY];
 }
 
 
@@ -127,12 +126,12 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)setStatus:(NSString *)string {
 	
-	CGFloat stringWidth = [string sizeWithFont:stringLabel.font].width;
+	CGFloat stringWidth = [string sizeWithFont:stringLabel.font].width+28;
 	
 	if(stringWidth < 100)
-		stringWidth = 72;
+		stringWidth = 100;
 	
-	self.bounds = CGRectMake(0, 0, ceil(stringWidth/2)*2+28, 100);
+	self.bounds = CGRectMake(0, 0, ceil(stringWidth/2)*2, 100);
 	
 	imageView.center = CGPointMake(CGRectGetWidth(self.bounds)/2, 36);
 	
@@ -147,9 +146,9 @@ static SVProgressHUD *sharedView = nil;
 }
 
 
-- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)showNetworkIndicator posY:(CGFloat)posY {
+- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
 	
-	if(showNetworkIndicator)
+	if(show)
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	else
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
