@@ -1,6 +1,6 @@
 h1. SVProgressHUD
 
-SVProgressHUD is a clean, lightweight and unobstruptive progress HUD for iOS. It's a simplified and prettyfied alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS.
+SVProgressHUD is a clean, lightweight and unobstruptive progress HUD for iOS. It's a simplified and prettyfied alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
 
 
 !http://samvermette.com/files/svprogresshud3.png!
@@ -14,7 +14,7 @@ SVProgressHUD features:
 
 h2. Installation
 
-Easiest way to install is to drag the @SVProgressHUD/SVProgressHUD@ folder to your project. That will add both the SVProgressHUD class and the image ressources (from "Glyphish":http://glyphish.com/) to your project. SVProgressHUD requires the *QuartzCore* framework, so make sure you add that as well. If you plan on using SVProgressHUD in a lot of places inside your app, I recommend importing it directly inside your prefix file.
+Easiest way to install is to drag the @SVProgressHUD/SVProgressHUD@ folder to your project. That will add both the SVProgressHUD class and the image ressources to your project. SVProgressHUD requires the *QuartzCore* framework, so make sure you add that as well. If you plan on using SVProgressHUD in a lot of places inside your app, I recommend importing it directly inside your prefix file.
 
 h2. Usage
 
