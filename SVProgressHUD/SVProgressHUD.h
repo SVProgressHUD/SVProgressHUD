@@ -12,7 +12,7 @@
 	NSTimer *fadeOutTimer;
 }
 
-+ (void)show;
++ (void)show; // HUD gets added to UIApplication's keyWindow, which doesn't reflect the current device orientation
 + (void)showInView:(UIView*)view;
 + (void)showInView:(UIView*)view status:(NSString*)string;
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show;

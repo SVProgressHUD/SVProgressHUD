@@ -278,7 +278,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>9</integer>
+									<integer>8</integer>
 									<integer>7</integer>
 									<integer>0</integer>
 								</array>
@@ -315,7 +315,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>22AE75A00F0B11FB00AA1219</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>SVProgressHUD.m</string>
+								<string>SVProgressHUD.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -323,11 +323,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>22AE75A10F0B11FB00AA1219</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>SVProgressHUD.m</string>
+										<string>SVProgressHUD.h</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>22EBCD6513412C020074B281</string>
+										<string>22EBCD7013413C730074B281</string>
 										<key>history</key>
 										<array>
 											<string>222A68CF133FEBBE00DAE48C</string>
@@ -336,11 +336,11 @@
 											<string>22EBCD1013411C430074B281</string>
 											<string>22EBCD1C134128200074B281</string>
 											<string>22EBCD25134129490074B281</string>
-											<string>22EBCD3F134129FF0074B281</string>
 											<string>22EBCD4413412A350074B281</string>
 											<string>22EBCD4513412A350074B281</string>
 											<string>22EBCD4E13412B970074B281</string>
-											<string>22EBCD4F13412B970074B281</string>
+											<string>22EBCD6D13413C730074B281</string>
+											<string>22EBCD6E13413C730074B281</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -658,7 +658,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>22EBCD6613412C020074B281</string>
+		<string>22EBCD7113413C730074B281</string>
 		<string>22EBCBFF1341021E0074B281</string>
 		<string>22EBCBF8134101EC0074B281</string>
 		<string>/Users/sam/Documents/iOS/SVProgressHUD/Sample/SVProgressHUD.xcodeproj</string>

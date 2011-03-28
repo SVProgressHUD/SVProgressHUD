@@ -68,16 +68,16 @@
 	};
 	222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1364, 711}}";
-			sepNavSelRange = "{20, 0}";
-			sepNavVisRange = "{0, 739}";
+			sepNavIntBoundsRect = "{{0, 0}, {1364, 663}}";
+			sepNavSelRange = "{714, 0}";
+			sepNavVisRange = "{0, 840}";
 		};
 	};
 	222A67D9133FDB5B00DAE48C /* SVProgressHUD.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1364, 3570}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1649, 3555}}";
 			sepNavSelRange = "{1337, 0}";
-			sepNavVisRange = "{808, 1140}";
+			sepNavVisRange = "{910, 867}";
 		};
 	};
 	222A6807133FE01A00DAE48C /* PBXTextBookmark */ = {
@@ -633,7 +633,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 21";
 		rLen = 0;
-		rLoc = 470;
+		rLoc = 571;
 		rType = 0;
 		vrLen = 967;
 		vrLoc = 0;
@@ -643,7 +643,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 25";
 		rLen = 0;
-		rLoc = 685;
+		rLoc = 786;
 		rType = 0;
 		vrLen = 645;
 		vrLoc = 0;
@@ -653,7 +653,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 25";
 		rLen = 0;
-		rLoc = 685;
+		rLoc = 786;
 		rType = 0;
 		vrLen = 645;
 		vrLoc = 0;
@@ -865,7 +865,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 25";
 		rLen = 0;
-		rLoc = 717;
+		rLoc = 818;
 		rType = 0;
 		vrLen = 645;
 		vrLoc = 0;
@@ -895,7 +895,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 25";
 		rLen = 0;
-		rLoc = 717;
+		rLoc = 818;
 		rType = 0;
 		vrLen = 645;
 		vrLoc = 0;
@@ -975,7 +975,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 23";
 		rLen = 0;
-		rLoc = 613;
+		rLoc = 714;
 		rType = 0;
 		vrLen = 673;
 		vrLoc = 0;
@@ -985,7 +985,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 24";
 		rLen = 0;
-		rLoc = 630;
+		rLoc = 731;
 		rType = 0;
 		vrLen = 673;
 		vrLoc = 0;
@@ -1005,7 +1005,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 22";
 		rLen = 0;
-		rLoc = 613;
+		rLoc = 714;
 		rType = 0;
 		vrLen = 634;
 		vrLoc = 0;
@@ -1034,7 +1034,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 22";
 		rLen = 0;
-		rLoc = 613;
+		rLoc = 714;
 		rType = 0;
 		vrLen = 634;
 		vrLoc = 0;
@@ -1094,7 +1094,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 22";
 		rLen = 0;
-		rLoc = 613;
+		rLoc = 714;
 		rType = 0;
 		vrLen = 634;
 		vrLoc = 0;
@@ -1104,7 +1104,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 22";
 		rLen = 0;
-		rLoc = 613;
+		rLoc = 714;
 		rType = 0;
 		vrLen = 634;
 		vrLoc = 0;
@@ -1114,7 +1114,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 23";
 		rLen = 0;
-		rLoc = 613;
+		rLoc = 714;
 		rType = 0;
 		vrLen = 743;
 		vrLoc = 0;
@@ -1124,7 +1124,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 19";
 		rLen = 16;
-		rLoc = 440;
+		rLoc = 541;
 		rType = 0;
 		vrLen = 743;
 		vrLoc = 0;
@@ -1221,7 +1221,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 29";
 		rLen = 0;
-		rLoc = 739;
+		rLoc = 840;
 		rType = 0;
 		vrLen = 743;
 		vrLoc = 0;
@@ -1281,7 +1281,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 22";
 		rLen = 36;
-		rLoc = 576;
+		rLoc = 677;
 		rType = 0;
 		vrLen = 743;
 		vrLoc = 0;
@@ -1501,7 +1501,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 27";
 		rLen = 0;
-		rLoc = 733;
+		rLoc = 834;
 		rType = 0;
 		vrLen = 743;
 		vrLoc = 0;
@@ -1553,7 +1553,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 27";
 		rLen = 0;
-		rLoc = 733;
+		rLoc = 834;
 		rType = 0;
 		vrLen = 743;
 		vrLoc = 0;
@@ -1815,7 +1815,7 @@
 		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
 		name = "SVProgressHUD.h: 20";
 		rLen = 0;
-		rLoc = 554;
+		rLoc = 655;
 		rType = 0;
 		vrLen = 749;
 		vrLoc = 0;
@@ -2049,6 +2049,46 @@
 		rType = 0;
 		vrLen = 867;
 		vrLoc = 910;
+	};
+	22EBCD6D13413C730074B281 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 222A67D9133FDB5B00DAE48C /* SVProgressHUD.m */;
+		name = "SVProgressHUD.m: 61";
+		rLen = 0;
+		rLoc = 1337;
+		rType = 0;
+		vrLen = 1140;
+		vrLoc = 808;
+	};
+	22EBCD6E13413C730074B281 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
+		name = "SVProgressHUD.h: 2";
+		rLen = 0;
+		rLoc = 20;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	22EBCD6F13413C730074B281 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
+		name = "SVProgressHUD.h: 22";
+		rLen = 0;
+		rLoc = 714;
+		rType = 0;
+		vrLen = 840;
+		vrLoc = 0;
+	};
+	22EBCD7013413C730074B281 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */;
+		name = "SVProgressHUD.h: 22";
+		rLen = 0;
+		rLoc = 714;
+		rType = 0;
+		vrLen = 840;
+		vrLoc = 0;
 	};
 	28D7ACF60DDB3853001CB0EB /* ViewController.h */ = {
 		uiCtxt = {
@@ -2349,6 +2389,10 @@
 			22EBCD6513412C020074B281 /* PBXTextBookmark */ = 22EBCD6513412C020074B281 /* PBXTextBookmark */;
 			22EBCD69134136710074B281 /* PBXTextBookmark */ = 22EBCD69134136710074B281 /* PBXTextBookmark */;
 			22EBCD6A134136710074B281 /* PBXTextBookmark */ = 22EBCD6A134136710074B281 /* PBXTextBookmark */;
+			22EBCD6D13413C730074B281 /* PBXTextBookmark */ = 22EBCD6D13413C730074B281 /* PBXTextBookmark */;
+			22EBCD6E13413C730074B281 /* PBXTextBookmark */ = 22EBCD6E13413C730074B281 /* PBXTextBookmark */;
+			22EBCD6F13413C730074B281 /* PBXTextBookmark */ = 22EBCD6F13413C730074B281 /* PBXTextBookmark */;
+			22EBCD7013413C730074B281 /* PBXTextBookmark */ = 22EBCD7013413C730074B281 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 222A67C1133FDAE200DAE48C /* Source Control */;
 		userBuildSettings = {
