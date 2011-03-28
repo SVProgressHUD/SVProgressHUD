@@ -3,7 +3,7 @@ h1. SVProgressHUD
 SVProgressHUD is a clean, lightweight and unobstruptive progress HUD for iOS. It's a simplified and prettyfied alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS.
 
 
-!http://samvermette.com/files/svprogresshud2.png!
+!http://samvermette.com/files/svprogresshud3.png!
 
 SVProgressHUD features:
 
