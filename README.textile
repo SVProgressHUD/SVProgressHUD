@@ -1,0 +1,39 @@
+h1. SVProgressHUD
+
+SVProgressHUD is a clean, lightweight and unobstruptive progress HUD for iOS. It's a simplified and prettyfied alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS.
+
+SVProgressHUD features:
+
+* optional loading, success and error status messages
+* automatic centering based on its superview bounds (posY can be explicitely set)
+* talks with @setNetworkActivityIndicatorVisible@ (can be disabled)
+
+h2. Installation
+
+Easiest way to install is to drag the SVProgressHUD/SVProgressHUD folder to your project. That will add both the SVProgressHUD class and the image ressources (both from "Glyphish":http://glyphish.com/) to your project. SVProgressHUD requires the *QuartzCore* framework, so make sure you add that to your project as well. If you plan on using SVProgressHUD all accross your app, I recommend importing it directly in your prefix file.
+
+h2. Usage:
+
+SVProgressHUD is created as a singleton and can be called with a single command from anywhere using one of these methods, depending on the customization level you need to achieve:
+
+<pre>
++ (void)show;
++ (void)showInView:(UIView*)view;
++ (void)showInView:(UIView*)view status:(NSString*)string;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)b;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)b posY:(CGFloat)posY;
+</pre>
+
+You dismiss it using one of these:
+
+<pre>
++ (void)dismiss;
++ (void)dismissWithSuccess:(NSString*)successString;
++ (void)dismissWithError:(NSString*)errorString;
+</pre>
+
+If you're using SVProgressHUD to show the status of many-steps operation, you can also change the HUD status __while__ it's showing using:
+
+<pre>
++ (void)setStatus:(NSString*)string;
+</pre>
