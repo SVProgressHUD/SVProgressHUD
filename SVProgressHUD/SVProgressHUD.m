@@ -20,6 +20,8 @@
 - (void)dismiss;
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error;
 
+- (void)memoryWarning:(NSNotification*) notification;
+
 @end
 
 
@@ -90,6 +92,12 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark -
 #pragma mark Instance Methods
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super dealloc];
+}
+
 - (id)initWithFrame:(CGRect)frame {
 	
     if ((self = [super initWithFrame:frame])) {
@@ -97,6 +105,11 @@ static SVProgressHUD *sharedView = nil;
 		self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
 		self.userInteractionEnabled = NO;
 		self.alpha = 0;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(memoryWarning:) 
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification
+                                                   object:nil];
     }
 	
     return self;
@@ -232,6 +245,16 @@ static SVProgressHUD *sharedView = nil;
     }
     
     return spinnerView;
+}
+
+#pragma mark -
+#pragma mark MemoryWarning
+
+- (void)memoryWarning:(NSNotification *)notification {
+    if (sharedView.superview == nil) {
+        [sharedView release];
+        sharedView = nil;
+    }
 }
 
 @end
