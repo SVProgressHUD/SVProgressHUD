@@ -12,11 +12,11 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		222A67DD133FDB5B00DAE48C /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 222A67D9133FDB5B00DAE48C /* SVProgressHUD.m */; };
-		222A67DE133FDB5B00DAE48C /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = 222A67DB133FDB5B00DAE48C /* success.png */; };
-		222A67DF133FDB5B00DAE48C /* error.png in Resources */ = {isa = PBXBuildFile; fileRef = 222A67DC133FDB5B00DAE48C /* error.png */; };
+		222A67DE133FDB5B00DAE48C /* svhud-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 222A67DB133FDB5B00DAE48C /* svhud-success.png */; };
+		222A67DF133FDB5B00DAE48C /* svhud-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 222A67DC133FDB5B00DAE48C /* svhud-error.png */; };
 		222A6821133FE36400DAE48C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 222A6820133FE36400DAE48C /* QuartzCore.framework */; };
-		22EBCCF313411B940074B281 /* error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCCF213411B940074B281 /* error@2x.png */; };
-		22EBCCF513411B9F0074B281 /* success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCCF413411B9F0074B281 /* success@2x.png */; };
+		22EBCCF313411B940074B281 /* svhud-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCCF213411B940074B281 /* svhud-error@2x.png */; };
+		22EBCCF513411B9F0074B281 /* svhud-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCCF413411B9F0074B281 /* svhud-success@2x.png */; };
 		22EBCD19134128130074B281 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCD18134128130074B281 /* MainWindow-iPad.xib */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		2899E5220DE3E06400AC0155 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* ViewController.xib */; };
@@ -32,11 +32,11 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		222A67D9133FDB5B00DAE48C /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
-		222A67DB133FDB5B00DAE48C /* success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = success.png; sourceTree = "<group>"; };
-		222A67DC133FDB5B00DAE48C /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = error.png; sourceTree = "<group>"; };
+		222A67DB133FDB5B00DAE48C /* svhud-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svhud-success.png"; sourceTree = "<group>"; };
+		222A67DC133FDB5B00DAE48C /* svhud-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svhud-error.png"; sourceTree = "<group>"; };
 		222A6820133FE36400DAE48C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		22EBCCF213411B940074B281 /* error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "error@2x.png"; sourceTree = "<group>"; };
-		22EBCCF413411B9F0074B281 /* success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "success@2x.png"; sourceTree = "<group>"; };
+		22EBCCF213411B940074B281 /* svhud-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svhud-error@2x.png"; sourceTree = "<group>"; };
+		22EBCCF413411B9F0074B281 /* svhud-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svhud-success@2x.png"; sourceTree = "<group>"; };
 		22EBCD18134128130074B281 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2899E5210DE3E06400AC0155 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ViewController.xib; path = ../ViewController.xib; sourceTree = "<group>"; };
@@ -97,10 +97,10 @@
 		222A67DA133FDB5B00DAE48C /* Ressources */ = {
 			isa = PBXGroup;
 			children = (
-				222A67DB133FDB5B00DAE48C /* success.png */,
-				22EBCCF413411B9F0074B281 /* success@2x.png */,
-				222A67DC133FDB5B00DAE48C /* error.png */,
-				22EBCCF213411B940074B281 /* error@2x.png */,
+				222A67DB133FDB5B00DAE48C /* svhud-success.png */,
+				22EBCCF413411B9F0074B281 /* svhud-success@2x.png */,
+				222A67DC133FDB5B00DAE48C /* svhud-error.png */,
+				22EBCCF213411B940074B281 /* svhud-error@2x.png */,
 			);
 			path = Ressources;
 			sourceTree = "<group>";
@@ -207,10 +207,10 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* ViewController.xib in Resources */,
-				222A67DE133FDB5B00DAE48C /* success.png in Resources */,
-				222A67DF133FDB5B00DAE48C /* error.png in Resources */,
-				22EBCCF313411B940074B281 /* error@2x.png in Resources */,
-				22EBCCF513411B9F0074B281 /* success@2x.png in Resources */,
+				222A67DE133FDB5B00DAE48C /* svhud-success.png in Resources */,
+				222A67DF133FDB5B00DAE48C /* svhud-error.png in Resources */,
+				22EBCCF313411B940074B281 /* svhud-error@2x.png in Resources */,
+				22EBCCF513411B9F0074B281 /* svhud-success@2x.png in Resources */,
 				22EBCD19134128130074B281 /* MainWindow-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
