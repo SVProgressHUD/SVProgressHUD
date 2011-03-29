@@ -172,9 +172,11 @@ static SVProgressHUD *sharedView = nil;
 		self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
 		self.layer.opacity = 0.3;
 		
+		__block SVProgressHUD *blockSelf = self;
+		
 		[UIView animateWithDuration:0.15 animations:^{
-			self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
-			self.layer.opacity = 1;
+			blockSelf.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
+			blockSelf.layer.opacity = 1;
 		}];
 	}
 }
@@ -187,14 +189,16 @@ static SVProgressHUD *sharedView = nil;
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
+	__block SVProgressHUD *blockSelf = self;
+	
 	[UIView animateWithDuration:0.15
 						  delay:0
 						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
 					 animations:^{	
-						 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
-						 self.layer.opacity = 0;
+						 blockSelf.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
+						 blockSelf.layer.opacity = 0;
 					 }
-					 completion:^(BOOL finished){ [sharedView removeFromSuperview]; }];
+					 completion:^(BOOL finished){ [blockSelf removeFromSuperview]; }];
 }
 
 
