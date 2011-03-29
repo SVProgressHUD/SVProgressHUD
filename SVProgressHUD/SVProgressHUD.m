@@ -9,7 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-@interface SVProgressHUD (private)
+@interface SVProgressHUD ()
 
 - (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
 - (void)setStatus:(NSString *)string;
