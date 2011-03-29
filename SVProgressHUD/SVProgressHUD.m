@@ -97,29 +97,6 @@ static SVProgressHUD *sharedView = nil;
 		self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
 		self.userInteractionEnabled = NO;
 		self.alpha = 0;
-
-		stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-		stringLabel.textColor = [UIColor whiteColor];
-		stringLabel.backgroundColor = [UIColor clearColor];
-		stringLabel.adjustsFontSizeToFitWidth = YES;
-		stringLabel.textAlignment = UITextAlignmentCenter;
-		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-		stringLabel.font = [UIFont boldSystemFontOfSize:16];
-		stringLabel.shadowColor = [UIColor blackColor];
-		stringLabel.shadowOffset = CGSizeMake(0, -1);
-		[self addSubview:stringLabel];
-		[stringLabel release];
-		
-		imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-		[self addSubview:imageView];
-		[imageView release];
-		
-		spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-		spinnerView.contentMode = UIViewContentModeTopLeft;
-		spinnerView.hidesWhenStopped = YES;
-		spinnerView.bounds = CGRectMake(0, 0, 36, 36);
-		[self addSubview:spinnerView];
-		[spinnerView release];
     }
 	
     return self;
@@ -134,16 +111,16 @@ static SVProgressHUD *sharedView = nil;
 	
 	self.bounds = CGRectMake(0, 0, ceil(stringWidth/2)*2, 100);
 	
-	imageView.center = CGPointMake(CGRectGetWidth(self.bounds)/2, 36);
+	self.imageView.center = CGPointMake(CGRectGetWidth(self.bounds)/2, 36);
 	
-	stringLabel.hidden = NO;
-	stringLabel.text = string;
-	stringLabel.frame = CGRectMake(0, 66, CGRectGetWidth(self.bounds), 20);
+	self.stringLabel.hidden = NO;
+	self.stringLabel.text = string;
+	self.stringLabel.frame = CGRectMake(0, 66, CGRectGetWidth(self.bounds), 20);
 	
 	if(string)
-		spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2), 40);
+		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2), 40);
 	else
-		spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2), ceil(self.bounds.size.height/2));
+		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2), ceil(self.bounds.size.height/2));
 }
 
 
@@ -154,7 +131,7 @@ static SVProgressHUD *sharedView = nil;
 	else
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	imageView.hidden = YES;
+	self.imageView.hidden = YES;
 	
 	[self setStatus:string];
 	
@@ -197,19 +174,64 @@ static SVProgressHUD *sharedView = nil;
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	if(error)
-		imageView.image = [UIImage imageNamed:@"svhud-error.png"];
+		self.imageView.image = [UIImage imageNamed:@"svhud-error.png"];
 	else
-		imageView.image = [UIImage imageNamed:@"svhud-success.png"];
+		self.imageView.image = [UIImage imageNamed:@"svhud-success.png"];
 	
-	imageView.hidden = NO;
+	self.imageView.hidden = NO;
 	
 	[self setStatus:string];
 	
-	[spinnerView stopAnimating];
+	[self.spinnerView stopAnimating];
     
     [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.9];
 }
 
+#pragma mark -
+#pragma mark Getters
 
+- (UILabel *)stringLabel {
+    
+    if (stringLabel == nil) {
+        stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+		stringLabel.textColor = [UIColor whiteColor];
+		stringLabel.backgroundColor = [UIColor clearColor];
+		stringLabel.adjustsFontSizeToFitWidth = YES;
+		stringLabel.textAlignment = UITextAlignmentCenter;
+		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+		stringLabel.font = [UIFont boldSystemFontOfSize:16];
+		stringLabel.shadowColor = [UIColor blackColor];
+		stringLabel.shadowOffset = CGSizeMake(0, -1);
+		[self addSubview:stringLabel];
+		[stringLabel release];
+    }
+    
+    return stringLabel;
+}
+
+- (UIImageView *)imageView {
+    
+    if (imageView == nil) {
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+		[self addSubview:imageView];
+		[imageView release];
+    }
+    
+    return imageView;
+}
+
+- (UIActivityIndicatorView *)spinnerView {
+    
+    if (spinnerView == nil) {
+        spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+		spinnerView.contentMode = UIViewContentModeTopLeft;
+		spinnerView.hidesWhenStopped = YES;
+		spinnerView.bounds = CGRectMake(0, 0, 36, 36);
+		[self addSubview:spinnerView];
+		[spinnerView release];
+    }
+    
+    return spinnerView;
+}
 
 @end
