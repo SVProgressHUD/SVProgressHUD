@@ -5,11 +5,7 @@
 //  Copyright 2011 Sam Vermette. All rights reserved.
 //
 
-@interface SVProgressHUD : UIView {
-	UILabel *stringLabel;
-	UIImageView *imageView;
-	UIActivityIndicatorView *spinnerView;
-}
+@interface SVProgressHUD : UIView 
 
 /* 
 showInView:(UIView*)	-> the view you're adding the HUD to. By default, it's added to UIApplication's keyWindow, which doesn't reflect the current device orientation.

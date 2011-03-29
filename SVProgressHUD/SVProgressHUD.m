@@ -11,6 +11,10 @@
 
 @interface SVProgressHUD ()
 
+@property (nonatomic, retain) UILabel *stringLabel;
+@property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
+
 - (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
 - (void)setStatus:(NSString *)string;
 - (void)dismiss;
@@ -20,6 +24,8 @@
 
 
 @implementation SVProgressHUD
+
+@synthesize stringLabel, imageView, spinnerView;
 
 static SVProgressHUD *sharedView = nil;
 
