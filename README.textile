@@ -7,7 +7,7 @@ SVProgressHUD is a clean, lightweight and unobstruptive progress HUD for iOS. It
 
 SVProgressHUD features:
 
-* one-line showing and dismissal
+* very simple singleton convenience methods
 * optional loading, success and error status messages
 * automatic centering based on its superview bounds (posY can be explicitely set)
 * talks with @setNetworkActivityIndicatorVisible@ (can be disabled)
@@ -38,7 +38,7 @@ You dismiss it using one of these:
 + (void)dismissWithError:(NSString*)errorString;
 </pre>
 
-If you're using SVProgressHUD to show the status of a many-steps operation, you can also change the HUD status __while__ it's showing using:
+If you're using SVProgressHUD to show the status of a many-steps operation, you can also change the HUD status __while__ it's showing with:
 
 <pre>
 + (void)setStatus:(NSString*)string;
