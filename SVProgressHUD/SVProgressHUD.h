@@ -9,7 +9,6 @@
 	UILabel *stringLabel;
 	UIImageView *imageView;
 	UIActivityIndicatorView *spinnerView;
-	NSTimer *fadeOutTimer;
 }
 
 /* 

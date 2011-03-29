@@ -84,15 +84,6 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)dealloc {
-	
-	if(fadeOutTimer != nil)
-		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
-	
-    [super dealloc];
-}
-
-
 - (id)initWithFrame:(CGRect)frame {
 	
     if ((self = [super initWithFrame:frame])) {
@@ -184,9 +175,6 @@ static SVProgressHUD *sharedView = nil;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	if(fadeOutTimer != nil)
-		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
-	
 	[UIView animateWithDuration:0.15
 						  delay:0
 						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
@@ -212,11 +200,8 @@ static SVProgressHUD *sharedView = nil;
 	[self setStatus:string];
 	
 	[spinnerView stopAnimating];
-	
-	if(fadeOutTimer != nil)
-		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
-	
-	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:0.9 target:self selector:@selector(dismiss) userInfo:nil repeats:NO] retain];
+    
+    [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.9];
 }
 
 
