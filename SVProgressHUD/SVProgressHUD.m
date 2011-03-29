@@ -203,9 +203,9 @@ static SVProgressHUD *sharedView = nil;
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	if(error)
-		imageView.image = [UIImage imageNamed:@"sv-error.png"];
+		imageView.image = [UIImage imageNamed:@"svhud-error.png"];
 	else
-		imageView.image = [UIImage imageNamed:@"sv-success.png"];
+		imageView.image = [UIImage imageNamed:@"svhud-success.png"];
 	
 	imageView.hidden = NO;
 	
