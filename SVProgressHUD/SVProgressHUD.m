@@ -85,6 +85,10 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark Instance Methods
 
 - (void)dealloc {
+	
+	if(fadeOutTimer != nil)
+		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
+	
     [super dealloc];
 }
 
