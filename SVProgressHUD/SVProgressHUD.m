@@ -11,6 +11,7 @@
 
 @interface SVProgressHUD ()
 
+@property (nonatomic, retain) NSTimer *fadeOutTimer;
 @property (nonatomic, retain) UILabel *stringLabel;
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
@@ -27,7 +28,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize stringLabel, imageView, spinnerView;
+@synthesize fadeOutTimer, stringLabel, imageView, spinnerView;
 
 static SVProgressHUD *sharedView = nil;
 
@@ -93,6 +94,10 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark Instance Methods
 
 - (void)dealloc {
+	
+	if(fadeOutTimer != nil)
+		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
+	
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super dealloc];
@@ -138,6 +143,9 @@ static SVProgressHUD *sharedView = nil;
 
 
 - (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
+	
+	if(fadeOutTimer != nil)
+		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
 	if(show)
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -197,7 +205,10 @@ static SVProgressHUD *sharedView = nil;
 	
 	[self.spinnerView stopAnimating];
     
-    [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.9];
+	if(fadeOutTimer != nil)
+		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
+	
+	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:0.9 target:self selector:@selector(dismiss) userInfo:nil repeats:NO] retain];
 }
 
 #pragma mark -
@@ -251,6 +262,7 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark MemoryWarning
 
 - (void)memoryWarning:(NSNotification *)notification {
+	
     if (sharedView.superview == nil) {
         [sharedView release];
         sharedView = nil;
