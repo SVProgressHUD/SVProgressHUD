@@ -155,14 +155,13 @@ static SVProgressHUD *sharedView = nil;
 	self.imageView.hidden = YES;
 	
 	[self setStatus:string];
+	[spinnerView startAnimating];
 	
 	if(![sharedView isDescendantOfView:view]) {
 		[view addSubview:sharedView];
 	
 		posY+=(CGRectGetHeight(self.bounds)/2);
 		self.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
-		
-		[spinnerView startAnimating];
 		
 		self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
 		self.layer.opacity = 0.3;
