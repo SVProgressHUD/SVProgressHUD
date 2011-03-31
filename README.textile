@@ -14,7 +14,10 @@ SVProgressHUD features:
 
 h2. Installation
 
-Easiest way to install is to drag the @SVProgressHUD/SVProgressHUD@ folder to your project. That will add both the SVProgressHUD class and the image ressources to your project. SVProgressHUD requires the *QuartzCore* framework, so make sure you add that as well. If you plan on using SVProgressHUD in a lot of places inside your app, I recommend importing it directly inside your prefix file.
+* Drag the @SVProgressHUD/SVProgressHUD@ folder into your project. 
+* Add the *QuartzCore* framework to your project. 
+
+__If you plan on using SVProgressHUD in a lot of places inside your app, I recommend importing it directly inside your prefix file.__
 
 h2. Usage
 
