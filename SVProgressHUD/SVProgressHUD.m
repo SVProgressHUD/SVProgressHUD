@@ -166,10 +166,14 @@ static SVProgressHUD *sharedView = nil;
 		self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
 		self.layer.opacity = 0.3;
 		
-		[UIView animateWithDuration:0.15 animations:^{
-			self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
-			self.layer.opacity = 1;
-		}];
+		[UIView animateWithDuration:0.15
+							  delay:0
+							options:UIViewAnimationOptionAllowUserInteraction
+						 animations:^{	
+							 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
+							 self.layer.opacity = 1;
+						 }
+						 completion:NULL];
 	}
 }
 
