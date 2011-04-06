@@ -16,15 +16,15 @@
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
 
-- (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
+- (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated;
 - (void)setStatus:(NSString *)string;
 - (void)dismiss;
+- (void)dismissAnimated:(BOOL) animated;
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error;
 
 - (void)memoryWarning:(NSNotification*) notification;
 
 @end
-
 
 @implementation SVProgressHUD
 
@@ -69,17 +69,23 @@ static SVProgressHUD *sharedView = nil;
 
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
-	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY];
+	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY animated:YES];
 }
 
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated{
+	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY animated:animated];
+}
 
 #pragma mark -
 #pragma mark Dismiss Methods
 
 + (void)dismiss {
-	[[SVProgressHUD sharedView] dismiss];
+	[[SVProgressHUD sharedView] dismissAnimated:YES];
 }
 
++ (void)dismissAnimated:(BOOL)animated{
+    [[SVProgressHUD sharedView] dismissAnimated:animated];
+}
 
 + (void)dismissWithSuccess:(NSString*)successString {
 	[[SVProgressHUD sharedView] dismissWithStatus:successString error:NO];
@@ -142,7 +148,7 @@ static SVProgressHUD *sharedView = nil;
 }
 
 
-- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
+- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL)animated {
 	
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
@@ -164,33 +170,41 @@ static SVProgressHUD *sharedView = nil;
 		posY+=(CGRectGetHeight(self.bounds)/2);
 		self.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
 		
-		self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
-		self.layer.opacity = 0.3;
-		
-		[UIView animateWithDuration:0.15
-							  delay:0
-							options:UIViewAnimationOptionAllowUserInteraction
-						 animations:^{	
-							 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
-							 self.layer.opacity = 1;
-						 }
-						 completion:NULL];
+        if (animated) {
+            self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
+            self.layer.opacity = 0.3;
+            
+            [UIView animateWithDuration:0.15
+                                  delay:0
+                                options:UIViewAnimationOptionAllowUserInteraction
+                             animations:^{	
+                                 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
+                                 self.layer.opacity = 1;
+                             }
+                             completion:nil];  
+        }
 	}
 }
 
-
 - (void)dismiss {
+    [self dismissAnimated:YES];
+}
+
+- (void)dismissAnimated:(BOOL)animated {
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	[UIView animateWithDuration:0.15
-						  delay:0
-						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
-					 animations:^{	
-						 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
-						 self.layer.opacity = 0;
-					 }
-					 completion:^(BOOL finished){ [self removeFromSuperview]; }];
+    
+	if (animated) {
+        [UIView animateWithDuration:0.15
+                              delay:0
+                            options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
+                         animations:^{	
+                             self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
+                             self.layer.opacity = 0;
+                         }
+                         completion:^(BOOL finished){ [self removeFromSuperview]; }];
+    }
+    else [self removeFromSuperview];
 }
 
 

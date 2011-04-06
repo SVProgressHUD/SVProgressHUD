@@ -19,10 +19,12 @@ posY:(CGFloat)			-> the vertical position of the HUD (default is (viewHeight/2)-
 + (void)showInView:(UIView*)view status:(NSString*)string;
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show;
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated; 
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 
 + (void)dismiss; // simply dismiss the HUD with a fade+scale out animation
++ (void)dismissAnimated:(BOOL) animated;
 + (void)dismissWithSuccess:(NSString*)successString; // also displays the success icon image
 + (void)dismissWithError:(NSString*)errorString; // also displays the error icon image
 
