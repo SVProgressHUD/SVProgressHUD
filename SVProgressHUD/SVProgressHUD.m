@@ -49,7 +49,7 @@ static SVProgressHUD *sharedView = nil;
 
 
 + (void)show {
-	[SVProgressHUD showInView:[UIApplication sharedApplication].keyWindow status:nil];
+	[SVProgressHUD showInView:nil status:nil];
 }
 
 
@@ -64,11 +64,18 @@ static SVProgressHUD *sharedView = nil;
 
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show {
-	[SVProgressHUD showInView:view status:string networkIndicator:show posY:floor(CGRectGetHeight(view.bounds)/2)-100];
+	[SVProgressHUD showInView:view status:string networkIndicator:show posY:-1];
 }
 
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
+	
+	if(!view)
+		view = [UIApplication sharedApplication].keyWindow;
+	
+	if(posY == -1)
+		posY = floor(CGRectGetHeight(view.bounds)/2)-100;
+
 	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY];
 }
 
@@ -109,7 +116,7 @@ static SVProgressHUD *sharedView = nil;
 		self.layer.cornerRadius = 10;
 		self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
 		self.userInteractionEnabled = NO;
-		self.alpha = 0;
+		self.layer.opacity = 0;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(memoryWarning:) 
