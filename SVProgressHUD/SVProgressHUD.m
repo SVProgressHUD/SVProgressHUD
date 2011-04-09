@@ -135,7 +135,7 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)setStatus:(NSString *)string {
 	
-	CGFloat stringWidth = [string sizeWithFont:stringLabel.font].width+28;
+	CGFloat stringWidth = [string sizeWithFont:self.stringLabel.font].width+28;
 	
 	if(stringWidth < 100)
 		stringWidth = 100;
