@@ -11,6 +11,7 @@ SVProgressHUD features:
 * optional loading, success and error status messages
 * automatic centering based on its superview bounds (posY can be explicitely set)
 * talks with @setNetworkActivityIndicatorVisible@ (can be disabled)
+* blocks user interaction when shown (optional)
 
 h2. Installation
 
@@ -29,14 +30,16 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explictely a
 + (void)show;
 + (void)showInView:(UIView*)view;
 + (void)showInView:(UIView*)view status:(NSString*)string;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)b;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)b posY:(CGFloat)posY;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated; 
 </pre>
 
 You dismiss it using one of these:
 
 <pre>
 + (void)dismiss;
++ (void)dismissAnimated:(BOOL) animated;
 + (void)dismissWithSuccess:(NSString*)successString;
 + (void)dismissWithError:(NSString*)errorString;
 </pre>
@@ -45,4 +48,10 @@ If you're using SVProgressHUD to show the status of a many-steps operation, you 
 
 <pre>
 + (void)setStatus:(NSString*)string;
+</pre>
+
+You can also block user interaction by changing the @modal@ tag
+
+<pre>
++ (void)setModal:(BOOL) modal;
 </pre>

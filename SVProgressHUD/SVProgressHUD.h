@@ -12,6 +12,7 @@ showInView:(UIView*)	-> the view you're adding the HUD to. By default, it's adde
 status:(NSString*)		-> a loading status for the HUD (different from the success and error messages)
 networkIndicator:(BOOL)	-> whether or not the HUD also triggers the UIApplication's network activity indicator (default is YES)
 posY:(CGFloat)			-> the vertical position of the HUD (default is (viewHeight/2)-50)
+animated    -> animated by default, you can disable animation with that flag
 */
  
 + (void)show;
