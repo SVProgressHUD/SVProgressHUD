@@ -22,6 +22,7 @@ posY:(CGFloat)			-> the vertical position of the HUD (default is (viewHeight/2)-
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated; 
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
++ (void)setModal:(BOOL) modal; //If modal is YES, SVProgressHUD will block user interation when the HUD is shown
 
 + (void)dismiss; // simply dismiss the HUD with a fade+scale out animation
 + (void)dismissAnimated:(BOOL) animated;

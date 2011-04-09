@@ -8,6 +8,7 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
+const NSInteger SVProgressHUDModalViewTag = 101;
 
 @interface SVProgressHUD ()
 
@@ -15,6 +16,7 @@
 @property (nonatomic, retain) UILabel *stringLabel;
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
+@property (nonatomic, getter = isModal) BOOL modal;
 
 - (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated;
 - (void)setStatus:(NSString *)string;
@@ -28,7 +30,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize fadeOutTimer, stringLabel, imageView, spinnerView;
+@synthesize fadeOutTimer, stringLabel, imageView, spinnerView, modal;
 
 static SVProgressHUD *sharedView = nil;
 
@@ -83,6 +85,10 @@ static SVProgressHUD *sharedView = nil;
 	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY animated:animated];
 }
 
++ (void)setModal:(BOOL)modal {
+    [SVProgressHUD sharedView].modal = modal;
+}
+
 #pragma mark -
 #pragma mark Dismiss Methods
 
@@ -123,6 +129,7 @@ static SVProgressHUD *sharedView = nil;
 		self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
 		self.userInteractionEnabled = NO;
 		self.layer.opacity = 0;
+        self.modal = NO;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(memoryWarning:) 
@@ -171,6 +178,16 @@ static SVProgressHUD *sharedView = nil;
 	[spinnerView startAnimating];
 	
 	if(![sharedView isDescendantOfView:view]) {
+        
+        if (self.modal) {
+            UIView* modalView = [[UIView alloc] initWithFrame:view.bounds];
+            modalView.tag = SVProgressHUDModalViewTag;
+            modalView.backgroundColor = [UIColor clearColor];
+            modalView.userInteractionEnabled = YES;
+            modalView.opaque = NO;
+            [[UIApplication sharedApplication].keyWindow addSubview:modalView];
+            [modalView release];
+        }
 		
 		[view addSubview:sharedView];
 	
@@ -201,6 +218,10 @@ static SVProgressHUD *sharedView = nil;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
+    if (self.modal) {
+        [[[UIApplication sharedApplication].keyWindow viewWithTag:SVProgressHUDModalViewTag] removeFromSuperview];  
+    }
+    
 	if (animated) {
         [UIView animateWithDuration:0.15
                               delay:0
@@ -209,7 +230,7 @@ static SVProgressHUD *sharedView = nil;
                              self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
                              self.layer.opacity = 0;
                          }
-                         completion:^(BOOL finished){ [self removeFromSuperview]; }];
+                         completion:^(BOOL finished){[self removeFromSuperview];}];
     }
     else [self removeFromSuperview];
 }
