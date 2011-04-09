@@ -67,12 +67,12 @@ static SVProgressHUD *sharedView = nil;
 
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show {
-	[SVProgressHUD showInView:view status:string networkIndicator:show posY:-1];
+	[SVProgressHUD showInView:view status:string networkIndicator:show posY:SVProgressHUDYPositionAutomatic];
 }
 
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
-	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY animated:YES];
+	[SVProgressHUD  showInView:view status:string networkIndicator:show posY:posY animated:YES];
 }
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated{
