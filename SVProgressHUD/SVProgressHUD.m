@@ -71,17 +71,16 @@ static SVProgressHUD *sharedView = nil;
 
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
-	
-	if(!view)
-		view = [UIApplication sharedApplication].keyWindow;
-	
-	if(posY == -1)
-		posY = floor(CGRectGetHeight(view.bounds)/2)-100;
-
 	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY animated:YES];
 }
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated{
+    if(!view)
+		view = [UIApplication sharedApplication].keyWindow;
+	
+	if(posY == -1)
+		posY = floor(CGRectGetHeight(view.bounds)/2)-100;
+    
 	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY animated:animated];
 }
 
