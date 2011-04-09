@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 const NSInteger SVProgressHUDModalViewTag = 101;
+const CGFloat SVProgressHUDYPositionAutomatic = -1;
 
 @interface SVProgressHUD ()
 
@@ -78,7 +79,7 @@ static SVProgressHUD *sharedView = nil;
     if(!view)
 		view = [UIApplication sharedApplication].keyWindow;
 	
-	if(posY == -1)
+	if(posY == SVProgressHUDYPositionAutomatic)
 		posY = floor(CGRectGetHeight(view.bounds)/2)-100;
     
 	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY animated:animated];

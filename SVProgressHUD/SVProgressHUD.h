@@ -5,6 +5,8 @@
 //  Copyright 2011 Sam Vermette. All rights reserved.
 //
 
+extern const CGFloat SVProgressHUDYPositionAutomatic;
+
 @interface SVProgressHUD : UIView 
 
 /* 
