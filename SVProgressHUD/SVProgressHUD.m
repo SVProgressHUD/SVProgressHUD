@@ -27,6 +27,8 @@ const CGFloat SVProgressHUDYPositionAutomatic = -1;
 
 - (void)memoryWarning:(NSNotification*) notification;
 
+- (void)hideAnimationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context;
+
 @end
 
 @implementation SVProgressHUD
@@ -175,7 +177,7 @@ static SVProgressHUD *sharedView = nil;
 	self.imageView.hidden = YES;
 	
 	[self setStatus:string];
-	[spinnerView startAnimating];
+	[self.spinnerView startAnimating];
 	
 	if(![sharedView isDescendantOfView:view]) {
         
@@ -198,14 +200,13 @@ static SVProgressHUD *sharedView = nil;
             self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
             self.layer.opacity = 0.3;
             
-            [UIView animateWithDuration:0.15
-                                  delay:0
-                                options:UIViewAnimationOptionAllowUserInteraction
-                             animations:^{	
-                                 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
-                                 self.layer.opacity = 1;
-                             }
-                             completion:nil];  
+            [UIView beginAnimations:@"ShowAnimation" context:nil];
+            [UIView setAnimationDuration:0.15];            
+            
+            self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
+            self.layer.opacity = 1;
+            
+            [UIView commitAnimations];
         }
 	}
 }
@@ -223,14 +224,16 @@ static SVProgressHUD *sharedView = nil;
     }
     
 	if (animated) {
-        [UIView animateWithDuration:0.15
-                              delay:0
-                            options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
-                         animations:^{	
-                             self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
-                             self.layer.opacity = 0;
-                         }
-                         completion:^(BOOL finished){[self removeFromSuperview];}];
+        [UIView beginAnimations:@"HideAnimation" context:nil];
+        [UIView setAnimationDuration:0.15];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(hideAnimationDidStop:finished:context:)];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        
+        self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
+        self.layer.opacity = 0;
+        
+        [UIView commitAnimations];
     }
     else [self removeFromSuperview];
 }
@@ -313,6 +316,13 @@ static SVProgressHUD *sharedView = nil;
         [sharedView release];
         sharedView = nil;
     }
+}
+
+#pragma mark -
+#pragma mark Callbacks
+
+- (void)hideAnimationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context {
+    [self removeFromSuperview];
 }
 
 @end
