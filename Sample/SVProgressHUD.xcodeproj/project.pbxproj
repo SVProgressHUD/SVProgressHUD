@@ -11,17 +11,14 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		222A67DD133FDB5B00DAE48C /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 222A67D9133FDB5B00DAE48C /* SVProgressHUD.m */; };
-		222A67DE133FDB5B00DAE48C /* svhud-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 222A67DB133FDB5B00DAE48C /* svhud-success.png */; };
-		222A67DF133FDB5B00DAE48C /* svhud-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 222A67DC133FDB5B00DAE48C /* svhud-error.png */; };
 		222A6821133FE36400DAE48C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 222A6820133FE36400DAE48C /* QuartzCore.framework */; };
-		22EBCCF313411B940074B281 /* svhud-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCCF213411B940074B281 /* svhud-error@2x.png */; };
-		22EBCCF513411B9F0074B281 /* svhud-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCCF413411B9F0074B281 /* svhud-success@2x.png */; };
+		22D13AB71365FEAC0025FCC9 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22D13AB61365FEAC0025FCC9 /* SVProgressHUD.bundle */; };
 		22EBCD19134128130074B281 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCD18134128130074B281 /* MainWindow-iPad.xib */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		2899E5220DE3E06400AC0155 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* ViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* ViewController.m */; };
+		63ADC4BC1364C1360060E45B /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 63ADC4BA1364C1360060E45B /* SVProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,13 +27,8 @@
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* SVProgressHUD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVProgressHUD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
-		222A67D9133FDB5B00DAE48C /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
-		222A67DB133FDB5B00DAE48C /* svhud-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svhud-success.png"; sourceTree = "<group>"; };
-		222A67DC133FDB5B00DAE48C /* svhud-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svhud-error.png"; sourceTree = "<group>"; };
 		222A6820133FE36400DAE48C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		22EBCCF213411B940074B281 /* svhud-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svhud-error@2x.png"; sourceTree = "<group>"; };
-		22EBCCF413411B9F0074B281 /* svhud-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svhud-success@2x.png"; sourceTree = "<group>"; };
+		22D13AB61365FEAC0025FCC9 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		22EBCD18134128130074B281 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2899E5210DE3E06400AC0155 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ViewController.xib; path = ../ViewController.xib; sourceTree = "<group>"; };
@@ -45,6 +37,8 @@
 		28D7ACF70DDB3853001CB0EB /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* SVProgressHUD_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD_Prefix.pch; sourceTree = "<group>"; };
+		63ADC4B91364C1360060E45B /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		63ADC4BA1364C1360060E45B /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* SVProgressHUD-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SVProgressHUD-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,6 +65,7 @@
 				2899E5210DE3E06400AC0155 /* ViewController.xib */,
 				1D3623240D0F684500981E51 /* AppDelegate.h */,
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
+				63ADC4B81364C1360060E45B /* SVProgressHUD */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -81,28 +76,6 @@
 				1D6058910D05DD3D006BFB54 /* SVProgressHUD.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		222A67D7133FDB5B00DAE48C /* SVProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				222A67D8133FDB5B00DAE48C /* SVProgressHUD.h */,
-				222A67D9133FDB5B00DAE48C /* SVProgressHUD.m */,
-				222A67DA133FDB5B00DAE48C /* Ressources */,
-			);
-			name = SVProgressHUD;
-			path = ../SVProgressHUD;
-			sourceTree = SOURCE_ROOT;
-		};
-		222A67DA133FDB5B00DAE48C /* Ressources */ = {
-			isa = PBXGroup;
-			children = (
-				222A67DB133FDB5B00DAE48C /* svhud-success.png */,
-				22EBCCF413411B9F0074B281 /* svhud-success@2x.png */,
-				222A67DC133FDB5B00DAE48C /* svhud-error.png */,
-				22EBCCF213411B940074B281 /* svhud-error@2x.png */,
-			);
-			path = Ressources;
 			sourceTree = "<group>";
 		};
 		22EBCD17134128130074B281 /* Resources-iPad */ = {
@@ -117,7 +90,6 @@
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
-				222A67D7133FDB5B00DAE48C /* SVProgressHUD */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				22EBCD17134128130074B281 /* Resources-iPad */,
@@ -154,6 +126,17 @@
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		63ADC4B81364C1360060E45B /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				63ADC4B91364C1360060E45B /* SVProgressHUD.h */,
+				63ADC4BA1364C1360060E45B /* SVProgressHUD.m */,
+				22D13AB61365FEAC0025FCC9 /* SVProgressHUD.bundle */,
+			);
+			name = SVProgressHUD;
+			path = ../../SVProgressHUD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,11 +190,8 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* ViewController.xib in Resources */,
-				222A67DE133FDB5B00DAE48C /* svhud-success.png in Resources */,
-				222A67DF133FDB5B00DAE48C /* svhud-error.png in Resources */,
-				22EBCCF313411B940074B281 /* svhud-error@2x.png in Resources */,
-				22EBCCF513411B9F0074B281 /* svhud-success@2x.png in Resources */,
 				22EBCD19134128130074B281 /* MainWindow-iPad.xib in Resources */,
+				22D13AB71365FEAC0025FCC9 /* SVProgressHUD.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,7 +205,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* ViewController.m in Sources */,
-				222A67DD133FDB5B00DAE48C /* SVProgressHUD.m in Sources */,
+				63ADC4BC1364C1360060E45B /* SVProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -208,6 +208,7 @@ static SVProgressHUD *sharedView = nil;
             self.layer.opacity = 0.3;
             
             [UIView beginAnimations:@"ShowAnimation" context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             [UIView setAnimationDuration:0.15];            
             
             self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
@@ -251,9 +252,9 @@ static SVProgressHUD *sharedView = nil;
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	if(error)
-		self.imageView.image = [UIImage imageNamed:@"svhud-error.png"];
+		self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
 	else
-		self.imageView.image = [UIImage imageNamed:@"svhud-success.png"];
+		self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
 	
 	self.imageView.hidden = NO;
 	
