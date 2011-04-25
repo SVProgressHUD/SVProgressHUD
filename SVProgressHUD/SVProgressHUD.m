@@ -176,7 +176,7 @@ static SVProgressHUD *sharedView = nil;
 		
 		[UIView animateWithDuration:0.15
 							  delay:0
-							options:UIViewAnimationOptionAllowUserInteraction
+							options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut
 						 animations:^{	
 							 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
 							 self.layer.opacity = 1;
