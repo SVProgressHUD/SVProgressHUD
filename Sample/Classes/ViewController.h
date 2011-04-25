@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController {
+@interface ViewController : UIViewController 
 
-}
+@property (nonatomic, retain) IBOutlet UISwitch *modalSwitch;
 
 - (IBAction)show;
 - (IBAction)showWithStatus;
@@ -18,6 +18,8 @@
 - (IBAction)dismiss;
 - (IBAction)dismissSuccess;
 - (IBAction)dismissError;
+
+- (IBAction)modalChanged:(UISwitch*)sender;
 
 @end
 

@@ -11,15 +11,19 @@
 
 @implementation ViewController
 
+@synthesize modalSwitch;
+
 #pragma mark -
 #pragma mark Show Methods Sample
 
 - (void)show {
 	[SVProgressHUD showInView:self.view];
+    if (modalSwitch.on) [self performSelector:@selector(dismiss) withObject:nil afterDelay:5.0];
 }
 
 - (void)showWithStatus {
 	[SVProgressHUD showInView:self.view status:@"Doing Stuff"];
+    if (modalSwitch.on) [self performSelector:@selector(dismiss) withObject:nil afterDelay:5.0];
 }
 
 #pragma mark -
@@ -37,23 +41,16 @@
 	[SVProgressHUD dismissWithError:@"Failed with Error"];
 }
 
-#pragma mark -
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
+- (IBAction)modalChanged:(UISwitch*)sender {
+    [SVProgressHUD setModal:sender.on];
 }
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
 
 - (void)dealloc {
+    [modalSwitch release];
     [super dealloc];
 }
-
+- (void)viewDidUnload {
+    [self setModalSwitch:nil];
+    [super viewDidUnload];
+}
 @end

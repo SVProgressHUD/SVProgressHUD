@@ -8,6 +8,8 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
+const NSInteger SVProgressHUDModalViewTag = 101;
+const CGFloat SVProgressHUDYPositionAutomatic = -1;
 
 @interface SVProgressHUD ()
 
@@ -15,20 +17,23 @@
 @property (nonatomic, retain) UILabel *stringLabel;
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
+@property (nonatomic, getter = isModal) BOOL modal;
 
-- (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
+- (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated;
 - (void)setStatus:(NSString *)string;
 - (void)dismiss;
+- (void)dismissAnimated:(BOOL) animated;
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error;
 
 - (void)memoryWarning:(NSNotification*) notification;
 
-@end
+- (void)hideAnimationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context;
 
+@end
 
 @implementation SVProgressHUD
 
-@synthesize fadeOutTimer, stringLabel, imageView, spinnerView;
+@synthesize fadeOutTimer, stringLabel, imageView, spinnerView, modal;
 
 static SVProgressHUD *sharedView = nil;
 
@@ -64,29 +69,45 @@ static SVProgressHUD *sharedView = nil;
 
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show {
-	[SVProgressHUD showInView:view status:string networkIndicator:show posY:-1];
+	[SVProgressHUD showInView:view status:string networkIndicator:show posY:SVProgressHUDYPositionAutomatic];
 }
 
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
-	
-	if(!view)
-		view = [UIApplication sharedApplication].keyWindow;
-	
-	if(posY == -1)
-		posY = floor(CGRectGetHeight(view.bounds)/2)-100;
-
-	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY];
+	[SVProgressHUD  showInView:view status:string networkIndicator:show posY:posY animated:YES];
 }
 
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL) animated{
+    if(!view) {
+        UIWindow* keyWindow = [UIApplication sharedApplication].keyWindow;
+        if ([keyWindow respondsToSelector:@selector(rootViewController)]) {
+            //Use the rootViewController to reflect the device orientation
+            view = keyWindow.rootViewController.view;
+        }
+        
+        if (view == nil) view = keyWindow;
+    }
+	
+	if(posY == SVProgressHUDYPositionAutomatic)
+		posY = floor(CGRectGetHeight(view.bounds)/2)-100;
+    
+	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY animated:animated];
+}
+
++ (void)setModal:(BOOL)modal {
+    [SVProgressHUD sharedView].modal = modal;
+}
 
 #pragma mark -
 #pragma mark Dismiss Methods
 
 + (void)dismiss {
-	[[SVProgressHUD sharedView] dismiss];
+	[[SVProgressHUD sharedView] dismissAnimated:YES];
 }
 
++ (void)dismissAnimated:(BOOL)animated{
+    [[SVProgressHUD sharedView] dismissAnimated:animated];
+}
 
 + (void)dismissWithSuccess:(NSString*)successString {
 	[[SVProgressHUD sharedView] dismissWithStatus:successString error:NO];
@@ -116,7 +137,8 @@ static SVProgressHUD *sharedView = nil;
 		self.layer.cornerRadius = 10;
 		self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
 		self.userInteractionEnabled = NO;
-		self.layer.opacity = 0;
+		self.layer.opacity = 1;
+        self.modal = NO;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(memoryWarning:) 
@@ -129,7 +151,7 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)setStatus:(NSString *)string {
 	
-	CGFloat stringWidth = [string sizeWithFont:stringLabel.font].width+28;
+	CGFloat stringWidth = [string sizeWithFont:self.stringLabel.font].width+28;
 	
 	if(stringWidth < 100)
 		stringWidth = 100;
@@ -149,7 +171,7 @@ static SVProgressHUD *sharedView = nil;
 }
 
 
-- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
+- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY animated:(BOOL)animated {
 	
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
@@ -162,42 +184,66 @@ static SVProgressHUD *sharedView = nil;
 	self.imageView.hidden = YES;
 	
 	[self setStatus:string];
-	[spinnerView startAnimating];
+	[self.spinnerView startAnimating];
 	
 	if(![sharedView isDescendantOfView:view]) {
+        
+        if (self.modal) {
+            UIView* modalView = [[UIView alloc] initWithFrame:view.bounds];
+            modalView.tag = SVProgressHUDModalViewTag;
+            modalView.backgroundColor = [UIColor clearColor];
+            modalView.userInteractionEnabled = YES;
+            modalView.opaque = NO;
+            [[UIApplication sharedApplication].keyWindow addSubview:modalView];
+            [modalView release];
+        }
 		
 		[view addSubview:sharedView];
 	
 		posY+=(CGRectGetHeight(self.bounds)/2);
 		self.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
 		
-		self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
-		self.layer.opacity = 0.3;
-		
-		[UIView animateWithDuration:0.15
-							  delay:0
-							options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut
-						 animations:^{	
-							 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
-							 self.layer.opacity = 1;
-						 }
-						 completion:NULL];
+        if (animated) {
+            self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
+            self.layer.opacity = 0.3;
+            
+            [UIView beginAnimations:@"ShowAnimation" context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView setAnimationDuration:0.15];            
+            
+            self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
+            self.layer.opacity = 1;
+            
+            [UIView commitAnimations];
+        }
 	}
 }
 
-
 - (void)dismiss {
+    [self dismissAnimated:YES];
+}
+
+- (void)dismissAnimated:(BOOL)animated {
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	[UIView animateWithDuration:0.15
-						  delay:0
-						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
-					 animations:^{	
-						 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
-						 self.layer.opacity = 0;
-					 }
-					 completion:^(BOOL finished){ [self removeFromSuperview]; }];
+    
+    if (self.modal) {
+        [[[UIApplication sharedApplication].keyWindow viewWithTag:SVProgressHUDModalViewTag] removeFromSuperview];  
+    }
+    
+	if (animated) {
+        [UIView beginAnimations:@"HideAnimation" context:nil];
+        [UIView setAnimationDuration:0.15];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(hideAnimationDidStop:finished:context:)];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        
+        self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
+        self.layer.opacity = 0;
+        
+        [UIView commitAnimations];
+    }
+    else [self removeFromSuperview];
 }
 
 
@@ -278,6 +324,13 @@ static SVProgressHUD *sharedView = nil;
         [sharedView release];
         sharedView = nil;
     }
+}
+
+#pragma mark -
+#pragma mark Callbacks
+
+- (void)hideAnimationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context {
+    [self removeFromSuperview];
 }
 
 @end
