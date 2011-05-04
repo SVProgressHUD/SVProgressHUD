@@ -198,8 +198,12 @@ static SVProgressHUD *sharedView = nil;
             [modalView release];
         }
 		
+		sharedView.layer.opacity = 0;
 		[view addSubview:sharedView];
+	}
 	
+	if(sharedView.layer.opacity != 1) {
+		
 		posY+=(CGRectGetHeight(self.bounds)/2);
 		self.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
 		
@@ -243,7 +247,7 @@ static SVProgressHUD *sharedView = nil;
         
         [UIView commitAnimations];
     }
-    else [self removeFromSuperview];
+    else if(self.layer.opacity == 0) [self removeFromSuperview];
 }
 
 
@@ -330,7 +334,7 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark Callbacks
 
 - (void)hideAnimationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context {
-    [self removeFromSuperview];
+     if(self.layer.opacity == 0) [self removeFromSuperview];
 }
 
 @end
