@@ -165,9 +165,12 @@ static SVProgressHUD *sharedView = nil;
 	[spinnerView startAnimating];
 	
 	if(![sharedView isDescendantOfView:view]) {
-		
+		sharedView.layer.opacity = 0;
 		[view addSubview:sharedView];
+	}
 	
+	if(sharedView.layer.opacity != 1) {
+		
 		posY+=(CGRectGetHeight(self.bounds)/2);
 		self.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
 		
@@ -197,7 +200,7 @@ static SVProgressHUD *sharedView = nil;
 						 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
 						 self.layer.opacity = 0;
 					 }
-					 completion:^(BOOL finished){ [self removeFromSuperview]; }];
+					 completion:^(BOOL finished){ if(self.layer.opacity == 0) [self removeFromSuperview]; }];
 }
 
 
