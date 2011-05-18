@@ -17,11 +17,13 @@
 #pragma mark Show Methods Sample
 
 - (void)show {
+    [SVProgressHUD setModal:self.modalSwitch.on];
 	[SVProgressHUD showInView:self.view];
     if (modalSwitch.on) [self performSelector:@selector(dismiss) withObject:nil afterDelay:5.0];
 }
 
 - (void)showWithStatus {
+    [SVProgressHUD setModal:self.modalSwitch.on];
 	[SVProgressHUD showInView:self.view status:@"Doing Stuff"];
     if (modalSwitch.on) [self performSelector:@selector(dismiss) withObject:nil afterDelay:5.0];
 }
@@ -39,10 +41,6 @@
 
 - (void)dismissError {
 	[SVProgressHUD dismissWithError:@"Failed with Error"];
-}
-
-- (IBAction)modalChanged:(UISwitch*)sender {
-    [SVProgressHUD setModal:sender.on];
 }
 
 - (void)dealloc {

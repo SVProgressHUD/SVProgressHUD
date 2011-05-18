@@ -19,7 +19,5 @@
 - (IBAction)dismissSuccess;
 - (IBAction)dismissError;
 
-- (IBAction)modalChanged:(UISwitch*)sender;
-
 @end
 
