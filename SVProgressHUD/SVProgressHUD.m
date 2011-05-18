@@ -8,7 +8,6 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
-const NSInteger SVProgressHUDModalViewTag = 101;
 const CGFloat SVProgressHUDYPositionAutomatic = -1;
 
 @interface SVProgressHUD ()
@@ -186,15 +185,7 @@ static SVProgressHUD *sharedView = nil;
 	
 	if(![sharedView isDescendantOfView:view]) {
         
-        if (self.modal) {
-            UIView* modalView = [[UIView alloc] initWithFrame:view.bounds];
-            modalView.tag = SVProgressHUDModalViewTag;
-            modalView.backgroundColor = [UIColor clearColor];
-            modalView.userInteractionEnabled = YES;
-            modalView.opaque = NO;
-            [[UIApplication sharedApplication].keyWindow addSubview:modalView];
-            [modalView release];
-        }
+        if (self.modal) view.window.userInteractionEnabled = NO;
 		
 		sharedView.layer.opacity = 0;
 		[view addSubview:sharedView];
@@ -228,9 +219,7 @@ static SVProgressHUD *sharedView = nil;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    if (self.modal) {
-        [[[UIApplication sharedApplication].keyWindow viewWithTag:SVProgressHUDModalViewTag] removeFromSuperview];  
-    }
+    if (self.modal) self.window.userInteractionEnabled = YES;
     
 	if (animated) {
         [UIView animateWithDuration:0.15
