@@ -49,7 +49,7 @@ static SVProgressHUD *sharedView = nil;
 
 #pragma mark -
 #pragma mark Show Methods
-
+ 
 
 + (void)show {
 	[SVProgressHUD showInView:nil status:nil];
@@ -245,6 +245,8 @@ static SVProgressHUD *sharedView = nil;
                          }];
     }
     else if(self.layer.opacity == 0) [self removeFromSuperview];
+    
+    self.modal = NO;
 }
 
 
