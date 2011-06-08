@@ -143,9 +143,9 @@ static SVProgressHUD *sharedView = nil;
 	self.stringLabel.frame = CGRectMake(0, 66, CGRectGetWidth(self.bounds), 20);
 	
 	if(string)
-		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2), 40);
+		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2)+0.5, 40.5);
 	else
-		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2), ceil(self.bounds.size.height/2));
+		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2)+0.5, ceil(self.bounds.size.height/2)+0.5);
 }
 
 
@@ -262,9 +262,8 @@ static SVProgressHUD *sharedView = nil;
     
     if (spinnerView == nil) {
         spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-		spinnerView.contentMode = UIViewContentModeTopLeft;
 		spinnerView.hidesWhenStopped = YES;
-		spinnerView.bounds = CGRectMake(0, 0, 36, 36);
+		spinnerView.bounds = CGRectMake(0, 0, 37, 37);
 		[self addSubview:spinnerView];
 		[spinnerView release];
     }
