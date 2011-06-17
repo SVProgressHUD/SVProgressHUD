@@ -11,6 +11,10 @@
 
 @implementation ViewController
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
 #pragma mark -
 #pragma mark Show Methods Sample
 
