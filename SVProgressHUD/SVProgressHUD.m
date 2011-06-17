@@ -8,7 +8,6 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
-
 @interface SVProgressHUD ()
 
 @property (nonatomic, retain) NSTimer *fadeOutTimer;
@@ -129,12 +128,14 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)setStatus:(NSString *)string {
 	
+    CGFloat hudWidth = 100;
+    
 	CGFloat stringWidth = [string sizeWithFont:self.stringLabel.font].width+28;
 	
-	if(stringWidth < 100)
-		stringWidth = 100;
+	if(stringWidth > hudWidth)
+		hudWidth = ceil(stringWidth/2)*2;
 	
-	self.bounds = CGRectMake(0, 0, ceil(stringWidth/2)*2, 100);
+	self.bounds = CGRectMake(0, 0, hudWidth, 100);
 	
 	self.imageView.center = CGPointMake(CGRectGetWidth(self.bounds)/2, 36);
 	
