@@ -9,7 +9,7 @@ SVProgressHUD features:
 
 * very simple singleton convenience methods
 * optional loading, success and error status messages
-* automatic centering based on its superview bounds (posY can be explicitely set)
+* automatic centering based on device type, orientation, and optional @posY@ parameter
 * talks with @setNetworkActivityIndicatorVisible@ (can be disabled)
 
 h2. Installation
