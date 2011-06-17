@@ -69,8 +69,16 @@ static SVProgressHUD *sharedView = nil;
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
 	
-	if(!view)
-		view = [UIApplication sharedApplication].keyWindow;
+    if(!view) {
+        UIWindow* keyWindow = [UIApplication sharedApplication].keyWindow;
+        
+        if ([keyWindow respondsToSelector:@selector(rootViewController)]) {
+            //Use the rootViewController to reflect the device orientation
+            view = keyWindow.rootViewController.view;
+        }
+        
+        if (view == nil) view = keyWindow;
+    }
 	
 	if(posY == -1)
 		posY = floor(CGRectGetHeight(view.bounds)/2)-100;
