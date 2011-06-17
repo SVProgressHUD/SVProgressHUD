@@ -124,6 +124,8 @@ static SVProgressHUD *sharedView = nil;
 		self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
 		self.userInteractionEnabled = NO;
 		self.layer.opacity = 0;
+        self.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
+                                 UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(memoryWarning:) 
