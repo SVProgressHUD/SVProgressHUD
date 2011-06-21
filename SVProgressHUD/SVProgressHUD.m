@@ -20,6 +20,7 @@
 - (void)setStatus:(NSString *)string;
 - (void)dismiss;
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error;
+- (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(float)seconds;
 
 - (void)memoryWarning:(NSNotification*) notification;
 
@@ -92,9 +93,16 @@ static SVProgressHUD *sharedView = nil;
 	[[SVProgressHUD sharedView] dismissWithStatus:successString error:NO];
 }
 
++ (void)dismissWithSuccess:(NSString *)successString afterDelay:(float)seconds {
+    [[SVProgressHUD sharedView] dismissWithStatus:successString error:NO afterDelay:seconds];
+}
 
 + (void)dismissWithError:(NSString*)errorString {
 	[[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES];
+}
+
++ (void)dismissWithError:(NSString *)errorString afterDelay:(float)seconds {
+    [[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES afterDelay:seconds];
 }
 
 #pragma mark -
@@ -205,8 +213,12 @@ static SVProgressHUD *sharedView = nil;
 
 
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error {
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[self dismissWithStatus:string error:error afterDelay:0.9];
+}
+
+
+- (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(float)seconds {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	if(error)
 		self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
@@ -222,7 +234,7 @@ static SVProgressHUD *sharedView = nil;
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
-	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:0.9 target:self selector:@selector(dismiss) userInfo:nil repeats:NO] retain];
+	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO] retain];
 }
 
 #pragma mark -
