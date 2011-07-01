@@ -15,7 +15,7 @@
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
 
-- (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
+- (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
 - (void)setStatus:(NSString *)string;
 - (void)dismiss;
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error;
@@ -66,8 +66,12 @@ static SVProgressHUD *sharedView = nil;
 	[SVProgressHUD showInView:view status:string networkIndicator:show posY:-1];
 }
 
-
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
+    [SVProgressHUD showInView:view status:string networkIndicator:show posY:-1 maskType:SVProgressHUDMaskTypeNone];
+}
+
+
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType {
 	
     if(!view) {
         UIWindow* keyWindow = [UIApplication sharedApplication].keyWindow;
@@ -83,7 +87,7 @@ static SVProgressHUD *sharedView = nil;
 	if(posY == -1)
 		posY = floor(CGRectGetHeight(view.bounds)/2);
 
-	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY];
+	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY maskType:maskType];
 }
 
 
@@ -160,7 +164,7 @@ static SVProgressHUD *sharedView = nil;
 }
 
 
-- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
+- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType {
 	
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
@@ -175,6 +179,14 @@ static SVProgressHUD *sharedView = nil;
 	[self setStatus:string];
 	[spinnerView startAnimating];
 	
+    if (!_maskView && maskType != SVProgressHUDMaskTypeNone) {
+        _maskView = [[UIView alloc] initWithFrame:view.bounds];
+        _maskView.backgroundColor = [UIColor clearColor];
+        _maskView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [view addSubview:_maskView];
+        [_maskView release];
+    }
+    
 	if(![sharedView isDescendantOfView:view]) {
 		sharedView.layer.opacity = 0;
 		[view addSubview:sharedView];
@@ -193,6 +205,11 @@ static SVProgressHUD *sharedView = nil;
 						 animations:^{	
 							 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
 							 self.layer.opacity = 1;
+                             
+                             if (_maskView && maskType == SVProgressHUDMaskTypeBlack) {
+                                 _maskView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+                             }
+                             
 						 }
 						 completion:NULL];
 	}
@@ -209,8 +226,17 @@ static SVProgressHUD *sharedView = nil;
 					 animations:^{	
 						 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
 						 self.layer.opacity = 0;
+                         if (_maskView) {
+                             _maskView.backgroundColor = [UIColor clearColor];
+                         }
 					 }
-					 completion:^(BOOL finished){ if(self.layer.opacity == 0) [self removeFromSuperview]; }];
+					 completion:^(BOOL finished){ 
+                         if(self.layer.opacity == 0) {
+                             [_maskView removeFromSuperview];
+                             _maskView = nil;
+                             [self removeFromSuperview]; 
+                         }
+                     }];
 }
 
 
