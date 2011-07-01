@@ -81,7 +81,7 @@ static SVProgressHUD *sharedView = nil;
     }
 	
 	if(posY == -1)
-		posY = floor(CGRectGetHeight(view.bounds)/2)-100;
+		posY = floor(CGRectGetHeight(view.bounds)/2);
 
 	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY];
 }
@@ -182,7 +182,6 @@ static SVProgressHUD *sharedView = nil;
 	
 	if(sharedView.layer.opacity != 1) {
 		
-		posY+=(CGRectGetHeight(self.bounds)/2);
 		self.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
 		
 		self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
