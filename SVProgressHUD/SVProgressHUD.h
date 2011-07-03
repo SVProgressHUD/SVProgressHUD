@@ -34,6 +34,8 @@ posY:(CGFloat)			-> the vertical position of the HUD (default is (viewHeight/2)-
 
 + (void)dismiss; // simply dismiss the HUD with a fade+scale out animation
 + (void)dismissWithSuccess:(NSString*)successString; // also displays the success icon image
++ (void)dismissWithSuccess:(NSString*)successString afterDelay:(float)seconds;
 + (void)dismissWithError:(NSString*)errorString; // also displays the error icon image
++ (void)dismissWithError:(NSString *)errorString afterDelay:(float)seconds;
 
 @end
