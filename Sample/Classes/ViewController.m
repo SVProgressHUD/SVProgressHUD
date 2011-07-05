@@ -11,6 +11,8 @@
 
 @implementation ViewController
 
+@synthesize segmentedControl;
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return YES;
 }
@@ -19,11 +21,35 @@
 #pragma mark Show Methods Sample
 
 - (void)show {
-	[SVProgressHUD showInView:self.view];
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 1:
+            [SVProgressHUD showInView:self.view status:nil networkIndicator:NO posY:-1 maskType:SVProgressHUDMaskTypeClear];
+            [SVProgressHUD performSelector:@selector(dismiss) withObject:nil afterDelay:2];
+            break;
+        case 2:
+            [SVProgressHUD showInView:self.view status:nil networkIndicator:NO posY:-1 maskType:SVProgressHUDMaskTypeBlack];
+            [SVProgressHUD performSelector:@selector(dismiss) withObject:nil afterDelay:2];
+            break;
+        default:
+            [SVProgressHUD showInView:self.view];
+            break;
+    }
 }
 
 - (void)showWithStatus {
-	[SVProgressHUD showInView:self.view status:@"Doing Stuff"];
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 1:
+            [SVProgressHUD showInView:self.view status:@"Doing Stuff" networkIndicator:NO posY:-1 maskType:SVProgressHUDMaskTypeClear];
+            [SVProgressHUD performSelector:@selector(dismiss) withObject:nil afterDelay:2];
+            break;
+        case 2:
+            [SVProgressHUD showInView:self.view status:@"Doing Stuff" networkIndicator:NO posY:-1 maskType:SVProgressHUDMaskTypeBlack];
+            [SVProgressHUD performSelector:@selector(dismiss) withObject:nil afterDelay:2];
+            break;
+        default:
+            [SVProgressHUD showInView:self.view status:@"Doing Stuff"];;
+            break;
+    }
 }
 
 #pragma mark -
