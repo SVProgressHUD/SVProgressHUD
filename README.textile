@@ -22,7 +22,7 @@ __If you plan on using SVProgressHUD in a lot of places inside your app, I recom
 
 h2. Usage
 
-(see sample Xcode project in @/Sample@)
+(see sample Xcode project in @/Demo@)
 
 SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated) and can be shown with the following class methods, depending on the customization level you need to achieve:
 
@@ -33,7 +33,6 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show;
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
-
 </pre>
 
 You dismiss it using one of these:
