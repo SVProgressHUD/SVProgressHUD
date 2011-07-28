@@ -1,6 +1,6 @@
 h1. SVProgressHUD
 
-SVProgressHUD is a clean, lightweight and unobstruptive progress HUD for iOS. It's a simplified and prettyfied alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
+SVProgressHUD is a clean, lightweight and unobtrusive progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
 
 
 !http://samvermette.com/files/svprogresshud3.png!
@@ -9,8 +9,9 @@ SVProgressHUD features:
 
 * very simple singleton convenience methods
 * optional loading, success and error status messages
-* automatic centering based on device type, orientation, and optional @posY@ parameter
+* automatic positioning based on device type, orientation, and optional @posY@ parameter
 * talks with @setNetworkActivityIndicatorVisible@ (can be disabled)
+* optionally disable user interactions while the HUD is showing with the @maskType@ parameter
 
 h2. Installation
 
@@ -23,14 +24,16 @@ h2. Usage
 
 (see sample Xcode project in @/Sample@)
 
-SVProgressHUD is created as a singleton (i.e. it doesn't need to be explictely allocated and instantiated) and can be shown with the following class methods, depending on the customization level you need to achieve:
+SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated) and can be shown with the following class methods, depending on the customization level you need to achieve:
 
 <pre>
 + (void)show;
 + (void)showInView:(UIView*)view;
 + (void)showInView:(UIView*)view status:(NSString*)string;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)b;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)b posY:(CGFloat)posY;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
+
 </pre>
 
 You dismiss it using one of these:
@@ -38,7 +41,9 @@ You dismiss it using one of these:
 <pre>
 + (void)dismiss;
 + (void)dismissWithSuccess:(NSString*)successString;
++ (void)dismissWithSuccess:(NSString*)successString afterDelay:(NSTimeInterval)seconds;
 + (void)dismissWithError:(NSString*)errorString;
++ (void)dismissWithError:(NSString*)errorString afterDelay:(NSTimeInterval)seconds;
 </pre>
 
 If you're using SVProgressHUD to show the status of a many-steps operation, you can also change the HUD status __while__ it's showing with:
@@ -46,3 +51,7 @@ If you're using SVProgressHUD to show the status of a many-steps operation, you 
 <pre>
 + (void)setStatus:(NSString*)string;
 </pre>
+
+h2. Credits
+
+SVProgressHUD is brought to you by "Sam Vermette":http://samvermette.com ("@samvermette":http://twitter.com/samvermette) and "contributors to the project":https://github.com/samvermette/SVProgressHUD/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues"https://github.com/samvermette/SVProgressHUD/issues/new. If you're using SVProgressHUD in your project, proper attribution would be nice.
