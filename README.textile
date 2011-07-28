@@ -54,4 +54,4 @@ If you're using SVProgressHUD to show the status of a many-steps operation, you 
 
 h2. Credits
 
-SVProgressHUD is brought to you by "Sam Vermette":http://samvermette.com ("@samvermette":http://twitter.com/samvermette) and "contributors to the project":https://github.com/samvermette/SVProgressHUD/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues"https://github.com/samvermette/SVProgressHUD/issues/new. If you're using SVProgressHUD in your project, proper attribution would be nice.
+SVProgressHUD is brought to you by "Sam Vermette":http://samvermette.com ("@samvermette":http://twitter.com/samvermette) and "contributors to the project":https://github.com/samvermette/SVProgressHUD/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues":https://github.com/samvermette/SVProgressHUD/issues/new. If you're using SVProgressHUD in your project, proper attribution would be nice.
