@@ -10,8 +10,6 @@
 
 @interface ViewController : UIViewController
 
-@property (nonatomic, retain) IBOutlet UISegmentedControl* segmentedControl;
-
 - (IBAction)show;
 - (IBAction)showWithStatus;
 

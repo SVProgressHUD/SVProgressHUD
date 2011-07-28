@@ -15,13 +15,14 @@
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
 
-- (void)showInView:(UIView *)view status:(NSString *)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
-- (void)setStatus:(NSString *)string;
-- (void)dismiss;
-- (void)dismissWithStatus:(NSString *)string error:(BOOL)error;
-- (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(float)seconds;
+- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
+- (void)setStatus:(NSString*)string;
 
-- (void)memoryWarning:(NSNotification*) notification;
+- (void)dismiss;
+- (void)dismissWithStatus:(NSString*)string error:(BOOL)error;
+- (void)dismissWithStatus:(NSString*)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds;
+
+- (void)memoryWarning:(NSNotification*)notification;
 
 @end
 
@@ -44,9 +45,8 @@ static SVProgressHUD *sharedView = nil;
 	[[SVProgressHUD sharedView] setStatus:string];
 }
 
-#pragma mark -
-#pragma mark Show Methods
 
+#pragma mark - Show Methods
 
 + (void)show {
 	[SVProgressHUD showInView:nil status:nil];
@@ -85,26 +85,26 @@ static SVProgressHUD *sharedView = nil;
         if (view == nil) view = keyWindow;
     }
 	
-	if(posY == -1)
+	if(posY == -1) {
 		posY = floor(CGRectGetHeight(view.bounds)/2);
+        posY -= floor(view.bounds.size.height/8); // move slightly towards the top
+    }
 
 	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY maskType:maskType];
 }
 
 
-#pragma mark -
-#pragma mark Dismiss Methods
+#pragma mark - Dismiss Methods
 
 + (void)dismiss {
 	[[SVProgressHUD sharedView] dismiss];
 }
 
-
 + (void)dismissWithSuccess:(NSString*)successString {
 	[[SVProgressHUD sharedView] dismissWithStatus:successString error:NO];
 }
 
-+ (void)dismissWithSuccess:(NSString *)successString afterDelay:(float)seconds {
++ (void)dismissWithSuccess:(NSString *)successString afterDelay:(NSTimeInterval)seconds {
     [[SVProgressHUD sharedView] dismissWithStatus:successString error:NO afterDelay:seconds];
 }
 
@@ -112,12 +112,12 @@ static SVProgressHUD *sharedView = nil;
 	[[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES];
 }
 
-+ (void)dismissWithError:(NSString *)errorString afterDelay:(float)seconds {
++ (void)dismissWithError:(NSString *)errorString afterDelay:(NSTimeInterval)seconds {
     [[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES afterDelay:seconds];
 }
 
-#pragma mark -
-#pragma mark Instance Methods
+
+#pragma mark - Instance Methods
 
 - (void)dealloc {
 	
@@ -253,7 +253,7 @@ static SVProgressHUD *sharedView = nil;
 }
 
 
-- (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(float)seconds {
+- (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	if(error)
@@ -273,8 +273,7 @@ static SVProgressHUD *sharedView = nil;
 	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO] retain];
 }
 
-#pragma mark -
-#pragma mark Getters
+#pragma mark - Getters
 
 - (UILabel *)stringLabel {
     
@@ -319,8 +318,7 @@ static SVProgressHUD *sharedView = nil;
     return spinnerView;
 }
 
-#pragma mark -
-#pragma mark MemoryWarning
+#pragma mark - MemoryWarning
 
 - (void)memoryWarning:(NSNotification *)notification {
 	
