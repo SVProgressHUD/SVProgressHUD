@@ -74,8 +74,11 @@ static SVProgressHUD *sharedView = nil;
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType {
 	
+    BOOL addingToWindow;
+    
     if(!view) {
         UIWindow* keyWindow = [UIApplication sharedApplication].keyWindow;
+        addingToWindow = YES;
         
         if ([keyWindow respondsToSelector:@selector(rootViewController)]) {
             //Use the rootViewController to reflect the device orientation
@@ -87,7 +90,9 @@ static SVProgressHUD *sharedView = nil;
 	
 	if(posY == -1) {
 		posY = floor(CGRectGetHeight(view.bounds)/2);
-        posY -= floor(view.bounds.size.height/8); // move slightly towards the top
+        
+        if(addingToWindow)
+            posY -= floor(CGRectGetHeight(view.bounds)/18); // move slightly towards the top
     }
 
 	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY maskType:maskType];
