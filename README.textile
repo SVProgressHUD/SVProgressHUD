@@ -51,6 +51,19 @@ If you're using SVProgressHUD to show the status of a many-steps operation, you 
 + (void)setStatus:(NSString*)string;
 </pre>
 
+h3. SVProgressHUDMaskType
+
+You can optionally disable user interactions and dim the background UI using the @maskType@ property:
+
+<pre>
+enum {
+    SVProgressHUDMaskTypeNone = 1, // allow user interactions, don't dim background UI (default)
+    SVProgressHUDMaskTypeClear, // disable user interactions, don't dim background UI
+    SVProgressHUDMaskTypeBlack, // disable user interactions, dim background UI with 50% translucent black
+    SVProgressHUDMaskTypeGradient // disable user interactions, dim background UI with translucent radial gradient (a-la-alertView)
+};
+</pre>
+
 h2. Credits
 
-SVProgressHUD is brought to you by "Sam Vermette":http://samvermette.com ("@samvermette":http://twitter.com/samvermette) and "contributors to the project":https://github.com/samvermette/SVProgressHUD/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues":https://github.com/samvermette/SVProgressHUD/issues/new. If you're using SVProgressHUD in your project, proper attribution would be nice.
+SVProgressHUD is brought to you by "Sam Vermette":http://samvermette.com ("@samvermette":http://twitter.com/samvermette) and "contributors to the project":https://github.com/samvermette/SVProgressHUD/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues":https://github.com/samvermette/SVProgressHUD/issues/new. If you're using SVProgressHUD in your project, attribution would be nice.

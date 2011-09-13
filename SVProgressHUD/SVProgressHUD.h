@@ -5,14 +5,17 @@
 //  Copyright 2011 Sam Vermette. All rights reserved.
 //
 
-typedef enum {
-    SVProgressHUDMaskTypeNone, // allow user interactions while HUD is displayed
+enum {
+    SVProgressHUDMaskTypeNone = 1, // allow user interactions while HUD is displayed
     SVProgressHUDMaskTypeClear, // don't allow
-    SVProgressHUDMaskTypeBlack // don't allow and dim the UI in the back of the HUD
-} SVProgressHUDMaskType;
+    SVProgressHUDMaskTypeBlack, // don't allow and dim the UI in the back of the HUD
+    SVProgressHUDMaskTypeGradient // don't allow and dim the UI with a a-la-alert-view bg gradient
+};
+
+typedef NSUInteger SVProgressHUDMaskType;
 
 @interface SVProgressHUD : UIView {
-    UIView *_maskView;
+    UIView *_hudView;
 }
 
 /* 

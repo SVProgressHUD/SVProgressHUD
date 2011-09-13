@@ -19,9 +19,6 @@
 #pragma mark -
 #pragma mark Show Methods Sample
 
-#pragma mark -
-#pragma mark Show Methods Sample
-
 - (void)show {
 	[SVProgressHUD showInView:self.view];
 }
