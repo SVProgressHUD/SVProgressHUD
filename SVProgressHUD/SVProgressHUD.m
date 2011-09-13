@@ -10,12 +10,13 @@
 
 @interface SVProgressHUD ()
 
+@property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
 @property (nonatomic, retain) NSTimer *fadeOutTimer;
 @property (nonatomic, retain) UILabel *stringLabel;
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
 
-- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
+- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType;
 - (void)setStatus:(NSString*)string;
 
 - (void)dismiss;
@@ -29,7 +30,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize fadeOutTimer, stringLabel, imageView, spinnerView;
+@synthesize maskType, fadeOutTimer, stringLabel, imageView, spinnerView;
 
 static SVProgressHUD *sharedView = nil;
 
@@ -72,7 +73,7 @@ static SVProgressHUD *sharedView = nil;
 }
 
 
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType {
++ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType {
 	
     BOOL addingToWindow;
     
@@ -95,7 +96,7 @@ static SVProgressHUD *sharedView = nil;
             posY -= floor(CGRectGetHeight(view.bounds)/18); // move slightly towards the top
     }
 
-	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY maskType:maskType];
+	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY maskType:hudMaskType];
 }
 
 
@@ -137,20 +138,60 @@ static SVProgressHUD *sharedView = nil;
 - (id)initWithFrame:(CGRect)frame {
 	
     if ((self = [super initWithFrame:frame])) {
-		self.layer.cornerRadius = 10;
-		self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+    
 		self.userInteractionEnabled = NO;
-		self.layer.opacity = 0;
-        self.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
-                                 UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
+        self.backgroundColor = [UIColor clearColor];
+		self.alpha = 0;
+        
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(memoryWarning:) 
                                                      name:UIApplicationDidReceiveMemoryWarningNotification
                                                    object:nil];
+        
+        _hudView = [[UIView alloc] initWithFrame:CGRectZero];
+        _hudView.layer.cornerRadius = 10;
+		_hudView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+        _hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
+                                 UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
+        
+        [self addSubview:_hudView];
+        [_hudView release];
     }
 	
     return self;
+}
+
+- (void)drawRect:(CGRect)rect {
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    switch (self.maskType) {
+            
+        case SVProgressHUDMaskTypeBlack: {
+            [[UIColor colorWithWhite:0 alpha:0.5] set];
+            CGContextFillRect(context, self.bounds);
+            break;
+        }
+            
+        case SVProgressHUDMaskTypeGradient: {
+
+            size_t locationsCount = 2;
+            CGFloat locations[2] = {0.0f, 1.0f};
+            CGFloat colors[8] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.75f}; 
+            CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+            CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
+            CGColorSpaceRelease(colorSpace);
+            
+            CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+            float radius = MIN(self.bounds.size.width , self.bounds.size.height) ;
+            CGContextDrawRadialGradient (context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
+            CGGradientRelease(gradient);
+            
+            break;
+        }
+    }
 }
 
 - (void)setStatus:(NSString *)string {
@@ -162,22 +203,22 @@ static SVProgressHUD *sharedView = nil;
 	if(stringWidth > hudWidth)
 		hudWidth = ceil(stringWidth/2)*2;
 	
-	self.bounds = CGRectMake(0, 0, hudWidth, 100);
+	_hudView.bounds = CGRectMake(0, 0, hudWidth, 100);
 	
-	self.imageView.center = CGPointMake(CGRectGetWidth(self.bounds)/2, 36);
+	self.imageView.center = CGPointMake(CGRectGetWidth(_hudView.bounds)/2, 36);
 	
 	self.stringLabel.hidden = NO;
 	self.stringLabel.text = string;
-	self.stringLabel.frame = CGRectMake(0, 66, CGRectGetWidth(self.bounds), 20);
+	self.stringLabel.frame = CGRectMake(0, 66, CGRectGetWidth(_hudView.bounds), 20);
 	
 	if(string)
-		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2)+0.5, 40.5);
+		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(_hudView.bounds)/2)+0.5, 40.5);
 	else
-		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.bounds)/2)+0.5, ceil(self.bounds.size.height/2)+0.5);
+		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(_hudView.bounds)/2)+0.5, ceil(_hudView.bounds.size.height/2)+0.5);
 }
 
 
-- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType {
+- (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType {
 	
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
@@ -188,41 +229,34 @@ static SVProgressHUD *sharedView = nil;
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	self.imageView.hidden = YES;
+    self.maskType = hudMaskType;
 	
 	[self setStatus:string];
 	[spinnerView startAnimating];
-	
-    if (!_maskView && maskType != SVProgressHUDMaskTypeNone) {
-        _maskView = [[UIView alloc] initWithFrame:view.bounds];
-        _maskView.backgroundColor = [UIColor clearColor];
-        _maskView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [view addSubview:_maskView];
-        [_maskView release];
-    }
     
+    if(self.maskType != SVProgressHUDMaskTypeNone)
+        self.userInteractionEnabled = YES;
+    else
+        self.userInteractionEnabled = NO;
+
 	if(![sharedView isDescendantOfView:view]) {
-		sharedView.layer.opacity = 0;
+		self.alpha = 0;
 		[view addSubview:sharedView];
 	}
 	
 	if(sharedView.layer.opacity != 1) {
 		
-		self.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
+        self.frame = [UIApplication sharedApplication].keyWindow.frame;
+		_hudView.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
 		
-		self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
-		self.layer.opacity = 0.3;
+		_hudView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
 		
 		[UIView animateWithDuration:0.15
 							  delay:0
 							options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut
 						 animations:^{	
-							 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
-							 self.layer.opacity = 1;
-                             
-                             if (_maskView && maskType == SVProgressHUDMaskTypeBlack) {
-                                 _maskView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-                             }
-                             
+							 _hudView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
+                             self.alpha = 1;
 						 }
 						 completion:NULL];
 	}
@@ -237,16 +271,11 @@ static SVProgressHUD *sharedView = nil;
 						  delay:0
 						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
 					 animations:^{	
-						 self.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
-						 self.layer.opacity = 0;
-                         if (_maskView) {
-                             _maskView.backgroundColor = [UIColor clearColor];
-                         }
+						 _hudView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
+						 self.alpha = 0;
 					 }
 					 completion:^(BOOL finished){ 
-                         if(self.layer.opacity == 0) {
-                             [_maskView removeFromSuperview];
-                             _maskView = nil;
+                         if(self.alpha == 0) {
                              [self removeFromSuperview]; 
                          }
                      }];
@@ -292,7 +321,7 @@ static SVProgressHUD *sharedView = nil;
 		stringLabel.font = [UIFont boldSystemFontOfSize:16];
 		stringLabel.shadowColor = [UIColor blackColor];
 		stringLabel.shadowOffset = CGSizeMake(0, -1);
-		[self addSubview:stringLabel];
+		[_hudView addSubview:stringLabel];
 		[stringLabel release];
     }
     
@@ -303,7 +332,7 @@ static SVProgressHUD *sharedView = nil;
     
     if (imageView == nil) {
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-		[self addSubview:imageView];
+		[_hudView addSubview:imageView];
 		[imageView release];
     }
     
@@ -316,7 +345,7 @@ static SVProgressHUD *sharedView = nil;
         spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		spinnerView.hidesWhenStopped = YES;
 		spinnerView.bounds = CGRectMake(0, 0, 37, 37);
-		[self addSubview:spinnerView];
+		[_hudView addSubview:spinnerView];
 		[spinnerView release];
     }
     
