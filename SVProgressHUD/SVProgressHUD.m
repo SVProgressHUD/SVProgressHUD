@@ -260,6 +260,8 @@ static SVProgressHUD *sharedView = nil;
 						 }
 						 completion:NULL];
 	}
+    
+    [self setNeedsDisplay];
 }
 
 
