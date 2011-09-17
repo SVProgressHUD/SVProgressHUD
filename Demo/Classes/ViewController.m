@@ -27,6 +27,11 @@
 	[SVProgressHUD showInView:self.view status:@"Doing Stuff"];
 }
 
+- (IBAction)showWithStatusLongMessage:(id)sender 
+{
+    [SVProgressHUD showInView:self.view status:@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at lorem non elit imperdiet ultricies eget eget augue."];
+}
+
 
 #pragma mark -
 #pragma mark Dismiss Methods Sample
