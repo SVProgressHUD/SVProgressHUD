@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">11A511</string>
+		<string key="IBDocument.SystemVersion">11B26</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
 		<string key="IBDocument.AppKitVersion">1138</string>
 		<string key="IBDocument.HIToolboxVersion">566.00</string>
@@ -45,10 +45,10 @@
 					<object class="IBUIButton" id="820611637">
 						<reference key="NSNextResponder" ref="126585098"/>
 						<int key="NSvFlags">301</int>
-						<string key="NSFrame">{{30, 141}, {260, 44}}</string>
+						<string key="NSFrame">{{30, 87}, {260, 44}}</string>
 						<reference key="NSSuperview" ref="126585098"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="670046422"/>
+						<reference key="NSNextKeyView" ref="270488689"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -76,7 +76,7 @@
 					<object class="IBUIButton" id="341658994">
 						<reference key="NSNextResponder" ref="126585098"/>
 						<int key="NSvFlags">301</int>
-						<string key="NSFrame">{{30, 77}, {260, 44}}</string>
+						<string key="NSFrame">{{30, 26}, {260, 44}}</string>
 						<reference key="NSSuperview" ref="126585098"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="820611637"/>
@@ -156,11 +156,32 @@
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="934167192"/>
 					</object>
+					<object class="IBUIButton" id="270488689">
+						<reference key="NSNextResponder" ref="126585098"/>
+						<int key="NSvFlags">301</int>
+						<string key="NSFrame">{{10, 153}, {301, 44}}</string>
+						<reference key="NSSuperview" ref="126585098"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="670046422"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIFont" ref="122504481"/>
+						<int key="IBUIButtonType">1</int>
+						<string key="IBUINormalTitle">showInView:status: (long message)</string>
+						<reference key="IBUIHighlightedTitleColor" ref="524652865"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="934167192"/>
+					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
+				<reference key="NSNextKeyView" ref="341658994"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MC45AA</bytes>
@@ -224,6 +245,15 @@
 					</object>
 					<int key="connectionID">20</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">showWithStatusLongMessage:</string>
+						<reference key="source" ref="270488689"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">29</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -250,11 +280,12 @@
 						<reference key="object" ref="126585098"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="341658994"/>
-							<reference ref="820611637"/>
 							<reference ref="670046422"/>
 							<reference ref="111285255"/>
 							<reference ref="643745546"/>
+							<reference ref="341658994"/>
+							<reference ref="820611637"/>
+							<reference ref="270488689"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -283,6 +314,11 @@
 						<reference key="object" ref="643745546"/>
 						<reference key="parent" ref="126585098"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">27</int>
+						<reference key="object" ref="270488689"/>
+						<reference key="parent" ref="126585098"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -297,6 +333,7 @@
 					<string>13.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
 					<string>15.IBPluginDependency</string>
+					<string>27.IBPluginDependency</string>
 					<string>8.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
 				</object>
@@ -305,6 +342,7 @@
 					<string>ViewController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -326,7 +364,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">26</int>
+			<int key="maxID">29</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -343,9 +381,11 @@
 							<string>dismissSuccess</string>
 							<string>show</string>
 							<string>showWithStatus</string>
+							<string>showWithStatusLongMessage:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -362,6 +402,7 @@
 							<string>dismissSuccess</string>
 							<string>show</string>
 							<string>showWithStatus</string>
+							<string>showWithStatusLongMessage:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -383,6 +424,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">showWithStatus</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">showWithStatusLongMessage:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>

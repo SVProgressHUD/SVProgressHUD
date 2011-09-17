@@ -15,6 +15,7 @@
 @property (nonatomic, retain) UILabel *stringLabel;
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
+@property (assign) CGFloat maxHudWidth;
 
 - (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType;
 - (void)setStatus:(NSString*)string;
@@ -30,15 +31,17 @@
 
 @implementation SVProgressHUD
 
-@synthesize maskType, fadeOutTimer, stringLabel, imageView, spinnerView;
+@synthesize maskType, fadeOutTimer, stringLabel, imageView, spinnerView,maxHudWidth;
 
 static SVProgressHUD *sharedView = nil;
 
 + (SVProgressHUD*)sharedView {
 	
 	if(sharedView == nil)
+    {
 		sharedView = [[SVProgressHUD alloc] initWithFrame:CGRectZero];
-	
+        sharedView.maxHudWidth = 300;
+    }
 	return sharedView;
 }
 
@@ -194,27 +197,40 @@ static SVProgressHUD *sharedView = nil;
     }
 }
 
-- (void)setStatus:(NSString *)string {
-	
+- (void)setStatus:(NSString *)string 
+{	
+    //default value for the width as a minium
     CGFloat hudWidth = 100;
+    //default height to include the spinner and graphics
+    CGFloat hudHeight = 73;
     
-	CGFloat stringWidth = [string sizeWithFont:self.stringLabel.font].width+28;
+    //first lets work out the size of the label 
+    CGSize labelSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(self.maxHudWidth, 9999)];
+    
+    //now given our minium value for status we can set our width with padding correctly
+	hudWidth = MAX(hudWidth,labelSize.width+28);
 	
-	if(stringWidth > hudWidth)
-		hudWidth = ceil(stringWidth/2)*2;
-	
-	_hudView.bounds = CGRectMake(0, 0, hudWidth, 100);
-	
+    //now given our default height add on the size of the label
+    hudHeight += labelSize.height;
+    
+    //set our view accordingly
+	_hudView.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
 	self.imageView.center = CGPointMake(CGRectGetWidth(_hudView.bounds)/2, 36);
 	
+    //update our label and set its size to our precomupted size
 	self.stringLabel.hidden = NO;
 	self.stringLabel.text = string;
-	self.stringLabel.frame = CGRectMake(0, 66, CGRectGetWidth(_hudView.bounds), 20);
+    //inset the label slightly from the edge of the view for presentation purposes
+	self.stringLabel.frame = CGRectMake(8, 66, CGRectGetWidth(_hudView.bounds)-16, labelSize.height);
 	
 	if(string)
+    {
 		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(_hudView.bounds)/2)+0.5, 40.5);
+    }
 	else
+    {
 		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(_hudView.bounds)/2)+0.5, ceil(_hudView.bounds.size.height/2)+0.5);
+    }
 }
 
 
@@ -316,6 +332,7 @@ static SVProgressHUD *sharedView = nil;
     if (stringLabel == nil) {
         stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		stringLabel.textColor = [UIColor whiteColor];
+        stringLabel.numberOfLines = 0;
 		stringLabel.backgroundColor = [UIColor clearColor];
 		stringLabel.adjustsFontSizeToFitWidth = YES;
 		stringLabel.textAlignment = UITextAlignmentCenter;

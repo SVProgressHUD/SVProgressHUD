@@ -12,6 +12,7 @@
 
 - (IBAction)show;
 - (IBAction)showWithStatus;
+- (IBAction)showWithStatusLongMessage:(id)sender;
 
 - (IBAction)dismiss;
 - (IBAction)dismissSuccess;
