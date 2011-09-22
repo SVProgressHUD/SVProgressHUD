@@ -243,12 +243,12 @@ static SVProgressHUD *sharedView = nil;
 		self.alpha = 0;
 		[view addSubview:sharedView];
 	}
+    
+    self.frame = [UIApplication sharedApplication].keyWindow.frame;
 	
 	if(sharedView.layer.opacity != 1) {
 		
-        self.frame = [UIApplication sharedApplication].keyWindow.frame;
-		_hudView.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
-		
+        _hudView.center = CGPointMake(CGRectGetWidth(self.superview.bounds)/2, posY);
 		_hudView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
 		
 		[UIView animateWithDuration:0.15
