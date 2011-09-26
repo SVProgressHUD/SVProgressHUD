@@ -35,6 +35,14 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
 </pre>
 
+Additional @show@ convenience methods were recently added:
+
+<pre>
++ (void)showWithStatus:(NSString*)status;
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
+</pre>
+
 You dismiss it using one of these:
 
 <pre>
