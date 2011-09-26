@@ -10,7 +10,7 @@ SVProgressHUD features:
 * very simple singleton convenience methods
 * optional loading, success and error status messages
 * automatic positioning based on device type, orientation, and optional @posY@ parameter
-* talks with @setNetworkActivityIndicatorVisible@ (can be disabled)
+* talks with @setNetworkActivityIndicatorVisible@ (default can be changed via @SVProgressHUDShowNetworkIndicator@ constant)
 * optionally disable user interactions while the HUD is showing with the @maskType@ parameter
 
 h2. Installation
@@ -71,6 +71,10 @@ enum {
     SVProgressHUDMaskTypeGradient // disable user interactions, dim background UI with translucent radial gradient (a-la-alertView)
 };
 </pre>
+
+h3. Network activity indicator
+
+By default, showing SVProgressHUD will also show the network activity indicator (this makes sense for apps that make a lot of network operations). You can change this behavior by setting the @SVProgressHUDShowNetworkIndicator@ constant to @0@ in @SVProgressHUD.h@.
 
 h2. Credits
 
