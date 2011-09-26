@@ -33,6 +33,11 @@ maskType:(SVProgressHUDMaskType)    -> set whether to allow user interactions wh
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
 
+// more show convenience methods
++ (void)showWithStatus:(NSString*)status;
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
+
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 
 + (void)dismiss; // simply dismiss the HUD with a fade+scale out animation
