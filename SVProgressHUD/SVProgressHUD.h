@@ -7,7 +7,7 @@
 //  https://github.com/samvermette/SVProgressHUD
 //
 
-#define SVProgressHUDShowNetworkIndicator 0
+#define SVProgressHUDShowNetworkIndicator 1
 
 enum {
     SVProgressHUDMaskTypeNone = 1, // allow user interactions while HUD is displayed
