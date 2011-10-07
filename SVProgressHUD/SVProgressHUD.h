@@ -39,8 +39,13 @@ maskType:(SVProgressHUDMaskType)    -> set whether to allow user interactions wh
 
 // more show convenience methods
 + (void)showWithStatus:(NSString*)status;
++ (void)showWithStatus:(NSString*)status networkIndicator:(BOOL)show;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show;
+
++ (void)showSuccessWithStatus:(NSString*)string;
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 

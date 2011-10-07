@@ -83,6 +83,24 @@ static SVProgressHUD *sharedView = nil;
     [SVProgressHUD showInView:nil status:status networkIndicator:SVProgressHUDShowNetworkIndicator posY:-1 maskType:maskType];
 }
 
++ (void)showWithStatus:(NSString *)status networkIndicator:(BOOL)show {
+    [SVProgressHUD showInView:nil status:status networkIndicator:show];
+}
+
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show {
+    [SVProgressHUD showInView:nil status:nil networkIndicator:show posY:-1 maskType:maskType];
+}
+
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show {
+    [SVProgressHUD showInView:nil status:status networkIndicator:show posY:-1 maskType:maskType];
+}
+
++ (void)showSuccessWithStatus:(NSString *)string {
+    [SVProgressHUD show];
+    [SVProgressHUD dismissWithSuccess:string afterDelay:1];
+}
+
+
 #pragma mark - All convenience Show methods get forwarded to this one
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType {
