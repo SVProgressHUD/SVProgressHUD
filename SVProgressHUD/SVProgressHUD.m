@@ -255,6 +255,7 @@ static SVProgressHUD *sharedView = nil;
         NSArray *keyWindows = [UIApplication sharedApplication].windows;
         UIWindow *keyWindow = [keyWindows lastObject];
         //NSLog(@"keyWindow = %@", keyWindows);
+        addingToWindow = YES;
         
         if([keyWindow respondsToSelector:@selector(rootViewController)]) {
             //Use the rootViewController to reflect the device orientation
@@ -263,13 +264,24 @@ static SVProgressHUD *sharedView = nil;
         
         if(view == nil) {
             view = keyWindow;
-            addingToWindow = YES;
         }
     }
 	
 	if(posY == -1) { // if position is not specified
-        CGFloat activeHeight = CGRectGetHeight(view.bounds)-self.visibleKeyboardHeight;
+        CGFloat activeHeight = CGRectGetHeight(view.bounds);
         posY = floor(activeHeight/2);
+        
+        if(addingToWindow) {
+            
+            activeHeight -= self.visibleKeyboardHeight;
+            
+            if(self.visibleKeyboardHeight == 0)
+                activeHeight -= [UIApplication sharedApplication].statusBarFrame.size.height;
+            else
+                activeHeight += [UIApplication sharedApplication].statusBarFrame.size.height;
+            
+            posY = floor(activeHeight/2);
+        }
     }
     
 	if(fadeOutTimer != nil)
