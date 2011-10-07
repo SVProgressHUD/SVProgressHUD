@@ -20,11 +20,11 @@
 #pragma mark Show Methods Sample
 
 - (void)show {
-	[SVProgressHUD showInView:self.view];
+	[SVProgressHUD show];
 }
 
 - (void)showWithStatus {
-	[SVProgressHUD showInView:self.view status:@"Doing Stuff"];
+	[SVProgressHUD showWithStatus:@"Doing Stuff"];
 }
 
 
