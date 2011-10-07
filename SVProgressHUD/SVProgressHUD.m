@@ -323,6 +323,10 @@ static SVProgressHUD *sharedView = nil;
 
 
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds {
+    
+    if(self.alpha != 1)
+        return;
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	if(error)
