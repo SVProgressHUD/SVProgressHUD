@@ -9,7 +9,7 @@ SVProgressHUD features:
 
 * very simple singleton convenience methods
 * optional loading, success and error status messages
-* automatic positioning based on device type, orientation, and optional @posY@ parameter
+* automatic positioning based on device type, orientation, keyboard visibility and optional @posY@ parameter
 * talks with @setNetworkActivityIndicatorVisible@ (default can be changed via @SVProgressHUDShowNetworkIndicator@ constant)
 * optionally disable user interactions while the HUD is showing with the @maskType@ parameter
 
@@ -24,23 +24,26 @@ h2. Usage
 
 (see sample Xcode project in @/Demo@)
 
-SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated) and can be shown with the following class methods, depending on the customization level you need to achieve:
+SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call @[SVProgressHUD method]@) and can be shown using one of the following convenience/class methods:
 
 <pre>
 + (void)show;
++ (void)showWithStatus:(NSString*)status;
++ (void)showWithStatus:(NSString*)status networkIndicator:(BOOL)show;
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show;
+</pre>
+
+If you need to add the HUD to a particular view, use one of the following:
+
+<pre>
 + (void)showInView:(UIView*)view;
 + (void)showInView:(UIView*)view status:(NSString*)string;
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show;
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
-</pre>
-
-Additional @show@ convenience methods were recently added:
-
-<pre>
-+ (void)showWithStatus:(NSString*)status;
-+ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
-+ (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 </pre>
 
 You dismiss it using one of these:
@@ -57,6 +60,12 @@ If you're using SVProgressHUD to show the status of a many-steps operation, you 
 
 <pre>
 + (void)setStatus:(NSString*)string;
+</pre>
+
+Additionally, you can use SVProgressHUD to display a simple confirmation/success HUD using:
+
+<pre>
++ (void)showSuccessWithStatus:(NSString*)string;
 </pre>
 
 h3. SVProgressHUDMaskType
@@ -78,4 +87,4 @@ By default, showing SVProgressHUD will also show the network activity indicator 
 
 h2. Credits
 
-SVProgressHUD is brought to you by "Sam Vermette":http://samvermette.com ("@samvermette":http://twitter.com/samvermette) and "contributors to the project":https://github.com/samvermette/SVProgressHUD/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues":https://github.com/samvermette/SVProgressHUD/issues/new. If you're using SVProgressHUD in your project, attribution would be nice.
+SVProgressHUD is brought to you by "Sam Vermette":http://samvermette.com and "contributors to the project":https://github.com/samvermette/SVProgressHUD/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues":https://github.com/samvermette/SVProgressHUD/issues/new. If you're using SVProgressHUD in your project, attribution would be nice.
