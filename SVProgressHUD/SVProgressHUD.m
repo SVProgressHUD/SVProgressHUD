@@ -104,30 +104,7 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark - All convenience Show methods get forwarded to this one
 
 + (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType {
-	
-    BOOL addingToWindow = NO;
-    
-    if(!view) {
-        UIWindow* keyWindow = [UIApplication sharedApplication].keyWindow;
-        addingToWindow = YES;
-        
-        if ([keyWindow respondsToSelector:@selector(rootViewController)]) {
-            //Use the rootViewController to reflect the device orientation
-            view = keyWindow.rootViewController.view;
-        }
-        
-        if(view == nil) 
-            view = keyWindow;
-    }
-	
-	if(posY == -1) {
-		posY = floor(CGRectGetHeight(view.bounds)/2);
-        
-        if(addingToWindow)
-            posY -= floor(CGRectGetHeight(view.bounds)/18); // move slightly towards the top
-    }
-
-	[[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY maskType:hudMaskType];
+    [[SVProgressHUD sharedView] showInView:view status:string networkIndicator:show posY:posY maskType:hudMaskType];
 }
 
 
@@ -253,6 +230,29 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType {
 	
+    BOOL addingToWindow = NO;
+    
+    if(!view) {
+        NSArray *keyWindows = [UIApplication sharedApplication].windows;
+        UIWindow *keyWindow = [keyWindows lastObject];
+        //NSLog(@"keyWindow = %@", keyWindows);
+        
+        if([keyWindow respondsToSelector:@selector(rootViewController)]) {
+            //Use the rootViewController to reflect the device orientation
+            view = keyWindow.rootViewController.view;
+        }
+        
+        if(view == nil) {
+            view = keyWindow;
+            addingToWindow = YES;
+        }
+    }
+	
+	if(posY == -1) { // if position is not specified
+        CGFloat activeHeight = CGRectGetHeight(view.bounds);
+        posY = floor(activeHeight/2);
+    }
+    
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
