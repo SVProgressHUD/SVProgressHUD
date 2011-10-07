@@ -17,6 +17,7 @@
 @property (nonatomic, retain) UILabel *stringLabel;
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIActivityIndicatorView *spinnerView;
+@property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
 - (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType;
 - (void)setStatus:(NSString*)string;
@@ -32,7 +33,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize maskType, fadeOutTimer, stringLabel, imageView, spinnerView;
+@synthesize maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
 
 static SVProgressHUD *sharedView = nil;
 
@@ -249,7 +250,7 @@ static SVProgressHUD *sharedView = nil;
     }
 	
 	if(posY == -1) { // if position is not specified
-        CGFloat activeHeight = CGRectGetHeight(view.bounds);
+        CGFloat activeHeight = CGRectGetHeight(view.bounds)-self.visibleKeyboardHeight;
         posY = floor(activeHeight/2);
     }
     
@@ -389,6 +390,37 @@ static SVProgressHUD *sharedView = nil;
     }
     
     return spinnerView;
+}
+
+- (CGFloat)visibleKeyboardHeight {
+    // Locate non-UIWindow.
+    UIWindow *keyboardWindow = nil;
+    for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
+        if (![[testWindow class] isEqual:[UIWindow class]]) {
+            keyboardWindow = testWindow;
+            break;
+        }
+    }
+    
+    // Locate UIKeyboard.  
+    UIView *foundKeyboard = nil;
+    for (UIView *possibleKeyboard in [keyboardWindow subviews]) {
+        
+        // iOS 4 sticks the UIKeyboard inside a UIPeripheralHostView.
+        if ([[possibleKeyboard description] hasPrefix:@"<UIPeripheralHostView"]) {
+            possibleKeyboard = [[possibleKeyboard subviews] objectAtIndex:0];
+        }                                                                                
+        
+        if ([[possibleKeyboard description] hasPrefix:@"<UIKeyboard"]) {
+            foundKeyboard = possibleKeyboard;
+            break;
+        }
+    }
+    
+    if(foundKeyboard)
+        return foundKeyboard.bounds.size.height;
+    
+    return 0;
 }
 
 #pragma mark - MemoryWarning
