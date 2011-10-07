@@ -167,6 +167,24 @@ static SVProgressHUD *sharedView = nil;
         
         [self addSubview:_hudView];
         [_hudView release];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillHideNotification object:nil queue:nil usingBlock:^(NSNotification *notification) {
+            NSDictionary* keyboardInfo = [notification userInfo];
+            CGRect keyboardFrame = [[keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+            double animationDuration = [[keyboardInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+            [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+                _hudView.frame = CGRectOffset(_hudView.frame, 0, floor(keyboardFrame.size.height/2));
+            } completion:NULL];
+        }];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillShowNotification object:nil queue:nil usingBlock:^(NSNotification *notification) {
+            NSDictionary* keyboardInfo = [notification userInfo];
+            CGRect keyboardFrame = [[keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+            double animationDuration = [[keyboardInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+            [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+                _hudView.frame = CGRectOffset(_hudView.frame, 0, 0-floor(keyboardFrame.size.height/2));
+            } completion:NULL];
+        }];
     }
 	
     return self;
@@ -425,6 +443,7 @@ static SVProgressHUD *sharedView = nil;
 - (void)memoryWarning:(NSNotification *)notification {
 	
     if (sharedView.superview == nil) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
         [sharedView release];
         sharedView = nil;
     }
