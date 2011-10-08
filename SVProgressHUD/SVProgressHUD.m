@@ -251,37 +251,31 @@ static SVProgressHUD *sharedView = nil;
 	
     BOOL addingToWindow = NO;
     
-    if(!view) {
+    if(!view) { // if view isn't specified
         NSArray *keyWindows = [UIApplication sharedApplication].windows;
         UIWindow *keyWindow = [keyWindows lastObject];
-        //NSLog(@"keyWindow = %@", keyWindows);
         addingToWindow = YES;
         
-        if([keyWindow respondsToSelector:@selector(rootViewController)]) {
-            //Use the rootViewController to reflect the device orientation
+        if([keyWindow respondsToSelector:@selector(rootViewController)])
             view = keyWindow.rootViewController.view;
-        }
         
-        if(view == nil) {
+        if(view == nil)
             view = keyWindow;
-        }
     }
 	
-	if(posY == -1) { // if position is not specified
+	if(posY == -1) { // if position isn't specified
         CGFloat activeHeight = CGRectGetHeight(view.bounds);
-        posY = floor(activeHeight/2);
         
         if(addingToWindow) {
             
+            if(self.visibleKeyboardHeight > 0)
+                activeHeight += [UIApplication sharedApplication].statusBarFrame.size.height*2;
+            
             activeHeight -= self.visibleKeyboardHeight;
-            
-            if(self.visibleKeyboardHeight == 0)
-                activeHeight -= [UIApplication sharedApplication].statusBarFrame.size.height;
-            else
-                activeHeight += [UIApplication sharedApplication].statusBarFrame.size.height;
-            
-            posY = floor(activeHeight/2);
+            activeHeight -= view.frame.origin.y;
         }
+        
+        posY = floor(activeHeight*0.45);
     }
     
 	if(fadeOutTimer != nil)
@@ -326,25 +320,6 @@ static SVProgressHUD *sharedView = nil;
 }
 
 
-- (void)dismiss {
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	[UIView animateWithDuration:0.15
-						  delay:0
-						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
-					 animations:^{	
-						 _hudView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
-						 self.alpha = 0;
-					 }
-					 completion:^(BOOL finished){ 
-                         if(self.alpha == 0) {
-                             [self removeFromSuperview]; 
-                         }
-                     }];
-}
-
-
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error {
 	[self dismissWithStatus:string error:error afterDelay:0.9];
 }
@@ -372,6 +347,24 @@ static SVProgressHUD *sharedView = nil;
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
 	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO] retain];
+}
+
+- (void)dismiss {
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	[UIView animateWithDuration:0.15
+						  delay:0
+						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
+					 animations:^{	
+						 _hudView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 0.8, 0.8, 1.0);
+						 self.alpha = 0;
+					 }
+					 completion:^(BOOL finished){ 
+                         if(self.alpha == 0) {
+                             [self removeFromSuperview]; 
+                         }
+                     }];
 }
 
 #pragma mark - Getters
