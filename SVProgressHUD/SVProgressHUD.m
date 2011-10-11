@@ -281,7 +281,7 @@ static SVProgressHUD *sharedView = nil;
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = show;
 	
 	self.imageView.hidden = YES;
     self.maskType = hudMaskType;
