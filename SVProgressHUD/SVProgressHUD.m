@@ -224,21 +224,36 @@ static SVProgressHUD *sharedView = nil;
 - (void)setStatus:(NSString *)string {
 	
     CGFloat hudWidth = 100;
+    CGFloat hudHeight = 100;
     CGFloat stringWidth = 0;
+    CGFloat stringHeight = 0;
+    CGRect labelRect = CGRectZero;
     
-    if(string)
-        stringWidth = [string sizeWithFont:self.stringLabel.font].width+28;
+    if(string) {
+        CGSize stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
+        stringWidth = stringSize.width;
+        stringHeight = stringSize.height;
+        hudHeight = 80+stringHeight;
 	
-	if(stringWidth > hudWidth)
-		hudWidth = ceil(stringWidth/2)*2;
+        if(stringWidth > hudWidth)
+            hudWidth = ceil(stringWidth/2)*2;
+
+        if(hudHeight > 100) {
+            labelRect = CGRectMake(12, 66, hudWidth, stringHeight);
+            hudWidth+=24;
+        } else {
+            hudWidth+=24;  
+            labelRect = CGRectMake(0, 66, hudWidth, stringHeight);   
+        }
+    }
 	
-	_hudView.bounds = CGRectMake(0, 0, hudWidth, 100);
+	_hudView.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
 	
 	self.imageView.center = CGPointMake(CGRectGetWidth(_hudView.bounds)/2, 36);
 	
 	self.stringLabel.hidden = NO;
 	self.stringLabel.text = string;
-	self.stringLabel.frame = CGRectMake(0, 66, CGRectGetWidth(_hudView.bounds), 20);
+	self.stringLabel.frame = labelRect;
 	
 	if(string)
 		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(_hudView.bounds)/2)+0.5, 40.5);
@@ -381,6 +396,7 @@ static SVProgressHUD *sharedView = nil;
 		stringLabel.font = [UIFont boldSystemFontOfSize:16];
 		stringLabel.shadowColor = [UIColor blackColor];
 		stringLabel.shadowOffset = CGSizeMake(0, -1);
+        stringLabel.numberOfLines = 0;
 		[_hudView addSubview:stringLabel];
 		[stringLabel release];
     }
