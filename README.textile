@@ -85,6 +85,11 @@ h3. Network activity indicator
 
 By default, showing SVProgressHUD will also show the network activity indicator (this makes sense for apps that make a lot of network operations). You can change this behavior by setting the @SVProgressHUDShowNetworkIndicator@ constant to @0@ in @SVProgressHUD.h@.
 
+
+h2. Automatic Referencing counting (ARC) support
+
+SVProgressHUD doesn't support ARC. You can disable ARC on a per-file basis by adding the `-fno-objc-arc` compiler flag for those files (see "this StackOverflow thread":http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project for reference). Anyone who loves ARC enough to add it to SVProgressHUD is welcome to open a pull request and I'll be happy to create a new ARC branch.
+
 h2. Credits
 
 SVProgressHUD is brought to you by "Sam Vermette":http://samvermette.com and "contributors to the project":https://github.com/samvermette/SVProgressHUD/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues":https://github.com/samvermette/SVProgressHUD/issues/new. If you're using SVProgressHUD in your project, attribution would be nice.
