@@ -6,7 +6,7 @@
 //
 //  https://github.com/samvermette/SVProgressHUD
 //
-// Adapted for ARC support by Pablo Roca on 20.10.11
+//  (Adapted for ARC support by Pablo Roca on 20.10.11)
 //
 
 #import "SVProgressHUD.h"
