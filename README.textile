@@ -88,7 +88,7 @@ By default, showing SVProgressHUD will also show the network activity indicator 
 
 h2. Automatic Referencing counting (ARC) support
 
-SVProgressHUD doesn't support ARC. You can disable ARC on a per-file basis by adding the @-fno-objc-arc@ compiler flag for those files (see "this StackOverflow thread":http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project for reference). Anyone who loves ARC enough to add it to SVProgressHUD is welcome to open a pull request and I'll be happy to create a new ARC branch.
+SVProgressHUD has an "ARC branch":https://github.com/samvermette/SVProgressHUD/tree/master-arc thanks to "bryanveloso":https://github.com/bryanveloso. If you'd like to use the non-arc version in your ARC project, you can disable ARC on a per-file basis by adding the @-fno-objc-arc@ compiler flag for those files (see "this StackOverflow thread":http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project for reference).
 
 h2. Credits
 
