@@ -1,4 +1,4 @@
-h1. SVProgressHUD
+h1. SVProgressHUD (with ARC support)
 
 SVProgressHUD is a clean, lightweight and unobtrusive progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
 
@@ -88,7 +88,7 @@ By default, showing SVProgressHUD will also show the network activity indicator 
 
 h2. Automatic Referencing counting (ARC) support
 
-SVProgressHUD doesn't support ARC. You can disable ARC on a per-file basis by adding the @-fno-objc-arc@ compiler flag for those files (see "this StackOverflow thread":http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project for reference). Anyone who loves ARC enough to add it to SVProgressHUD is welcome to open a pull request and I'll be happy to create a new ARC branch.
+This is the ARC version of SVProgressHUD, made by "bryanveloso":https://github.com/bryanveloso. Head over to the "non-ARC branch":https://github.com/samvermette/SVProgressHUD if you haven't made the move to ARC yet.
 
 h2. Credits
 
