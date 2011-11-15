@@ -16,7 +16,6 @@ SVProgressHUD features:
 h2. Installation
 
 * Drag the @SVProgressHUD/SVProgressHUD@ folder into your project. 
-* Add the *QuartzCore* framework to your project. 
 
 __If you plan on using SVProgressHUD in a lot of places inside your app, I recommend importing it directly inside your prefix file.__
 
@@ -36,15 +35,7 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show;
 </pre>
 
-If you need to add the HUD to a particular view, use one of the following:
-
-<pre>
-+ (void)showInView:(UIView*)view;
-+ (void)showInView:(UIView*)view status:(NSString*)string;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType;
-</pre>
+__The previous @showInView:@ methods are deprecated. Using them with this version of SVProgressHUD will ignore the @view@ and @posY@ parameters, which are now automatically determined by the class.__
 
 You dismiss it using one of these:
 
