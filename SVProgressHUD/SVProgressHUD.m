@@ -22,9 +22,9 @@
 - (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType;
 - (void)setStatus:(NSString*)string;
 
-- (void)dismiss;
+- (void)dismissAndHideNetworkIndicator:(BOOL)hideNetworkIndicator;
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error;
-- (void)dismissWithStatus:(NSString*)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds;
+- (void)dismissWithStatus:(NSString*)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds hideNetworkIndicator:(BOOL)forceHide;
 
 - (void)memoryWarning:(NSNotification*)notification;
 
@@ -112,7 +112,11 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark - Dismiss Methods
 
 + (void)dismiss {
-	[[SVProgressHUD sharedView] dismiss];
+	[[SVProgressHUD sharedView] dismissAndHideNetworkIndicator:YES];
+}
+
++ (void)dismissAndHideNetworkIndicator:(BOOL)forceHide {
+	[[SVProgressHUD sharedView] dismissAndHideNetworkIndicator:forceHide];
 }
 
 + (void)dismissWithSuccess:(NSString*)successString {
@@ -120,15 +124,23 @@ static SVProgressHUD *sharedView = nil;
 }
 
 + (void)dismissWithSuccess:(NSString *)successString afterDelay:(NSTimeInterval)seconds {
-    [[SVProgressHUD sharedView] dismissWithStatus:successString error:NO afterDelay:seconds];
+    [[SVProgressHUD sharedView] dismissWithStatus:successString error:NO afterDelay:seconds hideNetworkIndicator:YES];
+}
+
++ (void)dismissWithSuccess:(NSString *)successString afterDelay:(NSTimeInterval)seconds hideNetworkIndicator:(BOOL)forceHide {
+    [[SVProgressHUD sharedView] dismissWithStatus:successString error:NO afterDelay:seconds hideNetworkIndicator:forceHide];
 }
 
 + (void)dismissWithError:(NSString*)errorString {
 	[[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES];
 }
 
-+ (void)dismissWithError:(NSString *)errorString afterDelay:(NSTimeInterval)seconds {
-    [[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES afterDelay:seconds];
++ (void)dismissWithError:(NSString*)errorString afterDelay:(NSTimeInterval)seconds {
+	[[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES afterDelay:seconds hideNetworkIndicator:YES];
+}
+
++ (void)dismissWithError:(NSString *)errorString afterDelay:(NSTimeInterval)seconds hideNetworkIndicator:(BOOL)forceHide {
+    [[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES afterDelay:seconds hideNetworkIndicator:forceHide];
 }
 
 
@@ -305,7 +317,8 @@ static SVProgressHUD *sharedView = nil;
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = show;
+    if (show)
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	self.imageView.hidden = YES;
     self.maskType = hudMaskType;
@@ -345,16 +358,17 @@ static SVProgressHUD *sharedView = nil;
 
 
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error {
-	[self dismissWithStatus:string error:error afterDelay:0.9];
+	[self dismissWithStatus:string error:error afterDelay:0.9 hideNetworkIndicator:YES];
 }
 
 
-- (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds {
+- (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds hideNetworkIndicator:(BOOL)forceHide {
     
     if(self.alpha != 1)
         return;
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    if (forceHide)
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	if(error)
 		self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
@@ -373,9 +387,10 @@ static SVProgressHUD *sharedView = nil;
 	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO] retain];
 }
 
-- (void)dismiss {
+- (void)dismissAndHideNetworkIndicator:(BOOL)forceHide {
 	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    if (forceHide)
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	[UIView animateWithDuration:0.15
 						  delay:0
