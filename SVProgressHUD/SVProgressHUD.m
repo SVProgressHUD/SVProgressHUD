@@ -13,6 +13,7 @@
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
+@property (nonatomic, readwrite) BOOL showNetworkIndicator;
 @property (nonatomic, retain) NSTimer *fadeOutTimer;
 @property (nonatomic, readonly) UIView *hudView;
 @property (nonatomic, readonly) UILabel *stringLabel;
@@ -37,7 +38,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, previousKeyWindow, visibleKeyboardHeight;
+@synthesize hudView, maskType, showNetworkIndicator, fadeOutTimer, stringLabel, imageView, spinnerView, previousKeyWindow, visibleKeyboardHeight;
 
 static SVProgressHUD *sharedView = nil;
 
@@ -256,7 +257,10 @@ static SVProgressHUD *sharedView = nil;
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = show;
+    self.showNetworkIndicator = show;
+    
+    if(self.showNetworkIndicator)
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	self.imageView.hidden = YES;
     self.maskType = hudMaskType;
@@ -381,7 +385,8 @@ static SVProgressHUD *sharedView = nil;
     if(self.alpha != 1)
         return;
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    if(self.showNetworkIndicator)
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	if(error)
 		self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
@@ -402,7 +407,9 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)dismiss {
 	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    if(self.showNetworkIndicator)
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
     __block SVProgressHUD *bSelf = sharedView;
 	
 	[UIView animateWithDuration:0.15
