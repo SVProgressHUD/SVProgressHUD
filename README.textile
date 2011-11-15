@@ -1,15 +1,15 @@
 h1. SVProgressHUD
 
-SVProgressHUD is a clean, lightweight and unobtrusive progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
+SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
 
 
 !http://samvermette.com/files/svprogresshud3.png!
 
 SVProgressHUD features:
 
-* very simple singleton convenience methods
+* very simple singleton convenience methods (@[SVProgressHUD show]@, @[SVProgressHUD dismiss]@, etc.)
 * optional loading, success and error status messages
-* automatic positioning based on device type, orientation, keyboard visibility and optional @posY@ parameter
+* automatic positioning based on device type, orientation and keyboard visibility
 * talks with @setNetworkActivityIndicatorVisible@ (default can be changed via @SVProgressHUDShowNetworkIndicator@ constant)
 * optionally disable user interactions while the HUD is showing with the @maskType@ parameter
 
