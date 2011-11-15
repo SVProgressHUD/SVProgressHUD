@@ -268,7 +268,16 @@ static SVProgressHUD *sharedView = nil;
     
     if(!view) { // if view isn't specified
         NSArray *keyWindows = [UIApplication sharedApplication].windows;
-        UIWindow *keyWindow = [keyWindows lastObject];
+       __block UIWindow *keyWindow;
+        
+        [keyWindows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            UIWindow *window = (UIWindow*)obj;
+            if(window.windowLevel == UIWindowLevelNormal) {
+                keyWindow = window;
+                *stop = YES;
+            }
+        }];
+        
         addingToWindow = YES;
         
         if([keyWindow respondsToSelector:@selector(rootViewController)])
