@@ -22,7 +22,7 @@
 - (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType;
 - (void)setStatus:(NSString*)string;
 
-- (void)dismissAndHideNetworkIndicator:(BOOL)hideNetworkIndicator;
+- (void)dismissAndHideNetworkIndicator:(BOOL)forceHide;
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error;
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds hideNetworkIndicator:(BOOL)forceHide;
 
