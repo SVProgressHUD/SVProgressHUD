@@ -22,6 +22,7 @@
 - (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType;
 - (void)setStatus:(NSString*)string;
 
+- (void)fadeOutTimerFire:(NSTimer *)timer;
 - (void)dismissAndHideNetworkIndicator:(BOOL)forceHide;
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error;
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds hideNetworkIndicator:(BOOL)forceHide;
@@ -384,7 +385,13 @@ static SVProgressHUD *sharedView = nil;
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
-	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO] retain];
+	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(fadeOutTimerFire:) userInfo:[NSNumber numberWithBool:forceHide] repeats:NO] retain];
+}
+
+- (void)fadeOutTimerFire:(NSTimer *)timer
+{
+    BOOL shouldHideNetworkIndicator = [[timer userInfo] boolValue];
+    [self dismissAndHideNetworkIndicator:shouldHideNetworkIndicator];
 }
 
 - (void)dismissAndHideNetworkIndicator:(BOOL)forceHide {
