@@ -25,7 +25,8 @@
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show;
 - (void)setStatus:(NSString*)string;
 - (void)registerNotifications;
-- (void)positionHUD;
+- (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
+- (void)positionHUD:(NSNotification*)notification;
 
 - (void)dismiss;
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error;
@@ -278,7 +279,7 @@ static SVProgressHUD *sharedView = nil;
         [self makeKeyAndVisible];
     }
     
-    [self positionHUD];
+    [self positionHUD:nil];
     
 	if(self.alpha != 1) {
         [self registerNotifications];
@@ -300,7 +301,7 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)registerNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(positionHUD) 
+                                             selector:@selector(positionHUD:) 
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification 
                                                object:nil];  
     
@@ -310,68 +311,93 @@ static SVProgressHUD *sharedView = nil;
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(positionWithKeyboardNotification:) 
+                                             selector:@selector(positionHUD:) 
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(positionWithKeyboardNotification:) 
+                                             selector:@selector(positionHUD:) 
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
 }
 
-- (void)positionHUD {
+
+- (void)positionHUD:(NSNotification*)notification {
+    
+    CGFloat keyboardHeight;
+    double animationDuration;
+    
+    if(notification) {
+        NSDictionary* keyboardInfo = [notification userInfo];
+        CGRect keyboardFrame = [[keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+        animationDuration = [[keyboardInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        
+        if(notification.name == UIKeyboardWillShowNotification)
+            keyboardHeight = keyboardFrame.size.height;
+        else
+            keyboardHeight = 0;
+    } else {
+        keyboardHeight = self.visibleKeyboardHeight;
+    }
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
     CGRect orientationFrame = [UIScreen mainScreen].bounds;
+    
     if(UIInterfaceOrientationIsLandscape(orientation)) {
         float temp = orientationFrame.size.width;
         orientationFrame.size.width = orientationFrame.size.height;
         orientationFrame.size.height = temp;
     }
     
-    CGFloat posX = orientationFrame.size.width/2;
-    
     CGFloat activeHeight = orientationFrame.size.height;
     
-    if(self.visibleKeyboardHeight > 0)
+    if(keyboardHeight > 0)
         activeHeight += [UIApplication sharedApplication].statusBarFrame.size.height*2;
     
-    activeHeight -= self.visibleKeyboardHeight;
+    activeHeight -= keyboardHeight;
     CGFloat posY = floor(activeHeight*0.45);
+    CGFloat posX = orientationFrame.size.width/2;
+    
+    CGPoint newCenter;
+    CGFloat rotateAngle;
     
     switch (orientation) { 
         case UIInterfaceOrientationPortraitUpsideDown:
-            self.hudView.transform = CGAffineTransformMakeRotation(M_PI); 
-            self.hudView.center = CGPointMake(posX, orientationFrame.size.height-posY);
+            rotateAngle = M_PI; 
+            newCenter = CGPointMake(posX, orientationFrame.size.height-posY);
             break;
         case UIInterfaceOrientationLandscapeLeft:
-            self.hudView.transform = CGAffineTransformMakeRotation(- M_PI / 2.0f);
-            self.hudView.center = CGPointMake(posY, posX);
+            rotateAngle = -M_PI/2.0f;
+            newCenter = CGPointMake(posY, posX);
             break;
         case UIInterfaceOrientationLandscapeRight:
-            self.hudView.transform = CGAffineTransformMakeRotation(M_PI / 2.0f);
-            self.hudView.center = CGPointMake(orientationFrame.size.height-posY, posX);
+            rotateAngle = M_PI/2.0f;
+            newCenter = CGPointMake(orientationFrame.size.height-posY, posX);
             break;
         default: // as UIInterfaceOrientationPortrait
-            self.hudView.transform = CGAffineTransformMakeRotation(0.0);
-            self.hudView.center = CGPointMake(posX, posY);
+            rotateAngle = 0.0;
+            newCenter = CGPointMake(posX, posY);
             break;
     } 
+    
+    if(notification) {
+        [UIView animateWithDuration:animationDuration 
+                              delay:0 
+                            options:UIViewAnimationOptionAllowUserInteraction 
+                         animations:^{
+                             [self moveToPoint:newCenter rotateAngle:rotateAngle];
+                         } completion:NULL];
+    } 
+    
+    else {
+        [self moveToPoint:newCenter rotateAngle:rotateAngle];
+    }
+    
 }
 
-- (void)positionWithKeyboardNotification:(NSNotification*)notification {
-    NSDictionary* keyboardInfo = [notification userInfo];
-    CGRect keyboardFrame = [[keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    double animationDuration = [[keyboardInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
-    [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
-        if(notification.name == UIKeyboardWillHideNotification)
-            self.hudView.frame = CGRectOffset(self.hudView.frame, 0, floor(keyboardFrame.size.height/2));
-        else
-            self.hudView.frame = CGRectOffset(self.hudView.frame, 0, 0-floor(keyboardFrame.size.height/2));
-    } completion:NULL];
+- (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle {
+    self.hudView.transform = CGAffineTransformMakeRotation(angle); 
+    self.hudView.center = newCenter;
 }
 
 
@@ -516,7 +542,7 @@ static SVProgressHUD *sharedView = nil;
     
     [autoreleasePool release];
         
-    if(foundKeyboard)
+    if(foundKeyboard && foundKeyboard.bounds.size.height > 100)
         return foundKeyboard.bounds.size.height;
     
     return 0;
