@@ -275,7 +275,15 @@ static SVProgressHUD *sharedView = nil;
         self.userInteractionEnabled = NO;
     
     if(![self isKeyWindow]) {
-        self.previousKeyWindow = [UIApplication sharedApplication].keyWindow;
+        
+        [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            UIWindow *window = (UIWindow*)obj;
+            if(window.windowLevel == UIWindowLevelNormal) {
+                self.previousKeyWindow = window;
+                *stop = YES;
+            }
+        }];
+         
         [self makeKeyAndVisible];
     }
     
@@ -448,6 +456,9 @@ static SVProgressHUD *sharedView = nil;
                              [[NSNotificationCenter defaultCenter] removeObserver:sharedView];
                              [sharedView.previousKeyWindow makeKeyWindow];
                              [sharedView release], sharedView = nil;
+                             
+                             // uncomment to make sure UIWindow is gone from app.windows
+                             //NSLog(@"%@", [UIApplication sharedApplication].windows);
                          }
                      }];
 }
