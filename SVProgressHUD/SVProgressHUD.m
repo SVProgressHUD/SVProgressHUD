@@ -435,22 +435,19 @@ static SVProgressHUD *sharedView = nil;
 	
     if(self.showNetworkIndicator)
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
-    __block SVProgressHUD *bSelf = sharedView;
-	
+
 	[UIView animateWithDuration:0.15
 						  delay:0
 						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
 					 animations:^{	
-						 bSelf.hudView.transform = CGAffineTransformScale(bSelf.hudView.transform, 0.8, 0.8);
-						 bSelf.alpha = 0;
+						 sharedView.hudView.transform = CGAffineTransformScale(sharedView.hudView.transform, 0.8, 0.8);
+						 sharedView.alpha = 0;
 					 }
 					 completion:^(BOOL finished){ 
-                         if(bSelf.alpha == 0) {
-                             [[NSNotificationCenter defaultCenter] removeObserver:bSelf];
-                             [bSelf.previousKeyWindow makeKeyWindow];
-                             [bSelf release], bSelf = nil;
-                             sharedView = nil;
+                         if(sharedView.alpha == 0) {
+                             [[NSNotificationCenter defaultCenter] removeObserver:sharedView];
+                             [sharedView.previousKeyWindow makeKeyWindow];
+                             [sharedView release], sharedView = nil;
                          }
                      }];
 }
