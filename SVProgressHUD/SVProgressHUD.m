@@ -525,12 +525,12 @@ static SVProgressHUD *sharedView = nil;
     
     UIWindow *keyboardWindow = nil;
     for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
-        if (![[testWindow class] isEqual:[UIWindow class]]) {
+        if(![[testWindow class] isEqual:[UIWindow class]] && ![[testWindow class] isEqual:[SVProgressHUD class]]) {
             keyboardWindow = testWindow;
             break;
         }
     }
-    
+
     // Locate UIKeyboard.  
     UIView *foundKeyboard = nil;
     for (UIView *possibleKeyboard in [keyboardWindow subviews]) {
