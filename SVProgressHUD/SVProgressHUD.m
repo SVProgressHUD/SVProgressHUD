@@ -50,7 +50,6 @@ static SVProgressHUD *sharedView = nil;
 	
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [sharedView release];
     [hudView release];
     [stringLabel release];
     [imageView release];
