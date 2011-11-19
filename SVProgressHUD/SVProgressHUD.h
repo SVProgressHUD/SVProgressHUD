@@ -10,7 +10,8 @@
 #import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
 
-#define SVProgressHUDShowNetworkIndicator 1
+// To disable SVProgressHUD's control of the network activity indicator by default,
+// add -DSVPROGRESSHUD_DISABLE_NETWORK_INDICATOR to CFLAGS in build settings.
 
 enum {
     SVProgressHUDMaskTypeNone = 1, // allow user interactions while HUD is displayed

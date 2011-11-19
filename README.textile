@@ -3,7 +3,7 @@ h1. SVProgressHUD
 SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
 
 
-!http://samvermette.com/files/svprogresshud3.png!
+!http://f.cl.ly/items/231Y2A0t0t1J0B0r3N0p/svprogresshud3.png!
 
 SVProgressHUD features:
 
@@ -75,7 +75,7 @@ enum {
 
 h3. Network activity indicator
 
-By default, showing SVProgressHUD will also show the network activity indicator (this makes sense for apps that make a lot of network operations). You can change this behavior by setting the @SVProgressHUDShowNetworkIndicator@ constant to @0@ in @SVProgressHUD.h@.
+By default, showing SVProgressHUD also activates the network activity indicator (this makes sense for apps that make a lot of network operations). If you'd like SVProgressHUD to not show the network indicator by default, you can add @-DSVPROGRESSHUD_DISABLE_NETWORK_INDICATOR@ to your project's CFLAGS (in build settings). You can also set this on a per-call basis, using the show methods that boast a @networkIndicator@ parameter.
 
 
 h2. Automatic Referencing counting (ARC) support
