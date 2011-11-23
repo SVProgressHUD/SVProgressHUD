@@ -78,9 +78,9 @@ h3. Network activity indicator
 By default, showing SVProgressHUD also activates the network activity indicator (this makes sense for apps that make a lot of network operations). If you'd like SVProgressHUD to not show the network indicator by default, you can add @-DSVPROGRESSHUD_DISABLE_NETWORK_INDICATOR@ to your project's CFLAGS (in build settings). You can also set this on a per-call basis, using the show methods that boast a @networkIndicator@ parameter.
 
 
-h2. Automatic Referencing counting (ARC) support
+h2. Automatic Reference Counting (ARC) support
 
-SVProgressHUD has an "ARC branch":https://github.com/samvermette/SVProgressHUD/tree/master-arc thanks to "bryanveloso":https://github.com/bryanveloso. If you'd like to use the non-arc version in your ARC project, you can disable ARC on a per-file basis by adding the @-fno-objc-arc@ compiler flag for those files (see "this StackOverflow thread":http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project for reference).
+Maintaining an official ARC branch has proven to be too much work, often leading to confusion since the ARC branch is always a few commits behind. If you'd like to use SVProgressHUD in your ARC-enabled project, you'll have to "add the @-fno-objc-arc@ compiler flag":http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project to all of SVProgressHUD's files.
 
 h2. Credits
 
