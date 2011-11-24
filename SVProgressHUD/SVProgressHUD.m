@@ -329,7 +329,17 @@ static SVProgressHUD *sharedView = nil;
     
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(positionHUD:) 
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(positionHUD:) 
                                                  name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(positionHUD:) 
+                                                 name:UIKeyboardDidShowNotification
                                                object:nil];
 }
 
