@@ -16,6 +16,13 @@
 #define SVProgressHUDShowNetworkIndicator 1
 #endif
 
+/*
+ * When greater than 0 a show will be delayed for that
+ * amount of time befiore the SVProgressHUD becomes
+ * visible.
+ */
+#define SVPROGRESSHUD_SHOW_DELAY_MSECS 100
+
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
@@ -27,6 +34,7 @@
 @property (nonatomic, readonly) UIActivityIndicatorView *spinnerView;
 @property (nonatomic, assign) UIWindow *previousKeyWindow;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
+@property (nonatomic, assign) BOOL hudWaitingForShow;
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show;
 - (void)setStatus:(NSString*)string;
@@ -43,7 +51,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize hudView, maskType, showNetworkIndicator, fadeOutTimer, stringLabel, imageView, spinnerView, previousKeyWindow, visibleKeyboardHeight;
+@synthesize hudView, maskType, showNetworkIndicator, fadeOutTimer, stringLabel, imageView, spinnerView, previousKeyWindow, visibleKeyboardHeight, hudWaitingForShow;
 
 static SVProgressHUD *sharedView = nil;
 
@@ -242,8 +250,7 @@ static SVProgressHUD *sharedView = nil;
 		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.hudView.bounds)/2)+0.5, ceil(self.hudView.bounds.size.height/2)+0.5);
 }
 
-
-- (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
+- (void)actualShowWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
     
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
@@ -296,6 +303,25 @@ static SVProgressHUD *sharedView = nil;
     [self setNeedsDisplay];
 }
 
+- (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show 
+{
+  if(SVPROGRESSHUD_SHOW_DELAY_MSECS <= 0) {
+    [self actualShowWithStatus:string maskType:hudMaskType networkIndicator:show];
+    return;
+  }
+
+  self.hudWaitingForShow = YES;
+  double nanosecs = SVPROGRESSHUD_SHOW_DELAY_MSECS * 1.0e6;
+
+  dispatch_after( dispatch_time(DISPATCH_TIME_NOW, nanosecs),
+    dispatch_get_main_queue(), ^{
+      if(!self.hudWaitingForShow) return; /* i.e. was dismissed in the meantime */ 
+
+      self.hudWaitingForShow = NO;
+      [self actualShowWithStatus:string maskType:hudMaskType networkIndicator:show];
+    }
+  );
+}
 
 - (void)registerNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -410,7 +436,11 @@ static SVProgressHUD *sharedView = nil;
 
 
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds {
-    
+    if(self.hudWaitingForShow) {
+        self.hudWaitingForShow = NO;
+        return;
+    };
+
     if(self.alpha != 1)
         return;
     
@@ -435,7 +465,13 @@ static SVProgressHUD *sharedView = nil;
 }
 
 - (void)dismiss {
-	
+    if(self.hudWaitingForShow) {
+        self.hudWaitingForShow = NO;
+        return;
+    };
+  
+    self.hudWaitingForShow = YES;
+  
     if(self.showNetworkIndicator)
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
