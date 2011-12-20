@@ -330,32 +330,41 @@ static SVProgressHUD *sharedView = nil;
     CGFloat keyboardHeight;
     double animationDuration;
     
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
     if(notification) {
         NSDictionary* keyboardInfo = [notification userInfo];
         CGRect keyboardFrame = [[keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
         animationDuration = [[keyboardInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         
-        if(notification.name == UIKeyboardWillShowNotification)
-            keyboardHeight = keyboardFrame.size.height;
-        else
+        if(notification.name == UIKeyboardWillShowNotification || notification.name == UIKeyboardDidShowNotification) {
+            if(UIInterfaceOrientationIsPortrait(orientation))
+                keyboardHeight = keyboardFrame.size.height;
+            else
+                keyboardHeight = keyboardFrame.size.width;
+        } else
             keyboardHeight = 0;
     } else {
         keyboardHeight = self.visibleKeyboardHeight;
     }
     
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGRect orientationFrame = [UIScreen mainScreen].bounds;
+    CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
     
     if(UIInterfaceOrientationIsLandscape(orientation)) {
         float temp = orientationFrame.size.width;
         orientationFrame.size.width = orientationFrame.size.height;
         orientationFrame.size.height = temp;
+        
+        temp = statusBarFrame.size.width;
+        statusBarFrame.size.width = statusBarFrame.size.height;
+        statusBarFrame.size.height = temp;
     }
     
     CGFloat activeHeight = orientationFrame.size.height;
     
     if(keyboardHeight > 0)
-        activeHeight += [UIApplication sharedApplication].statusBarFrame.size.height*2;
+        activeHeight += statusBarFrame.size.height*2;
     
     activeHeight -= keyboardHeight;
     CGFloat posY = floor(activeHeight*0.45);
