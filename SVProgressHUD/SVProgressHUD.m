@@ -248,6 +248,11 @@ static SVProgressHUD *sharedView = nil;
 	if(fadeOutTimer != nil)
 		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
 	
+    if(show)
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    else if(!show && self.showNetworkIndicator)
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
     self.showNetworkIndicator = show;
     
     if(self.showNetworkIndicator)
