@@ -471,7 +471,6 @@ static SVProgressHUD *sharedView = nil;
         overlayWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         overlayWindow.backgroundColor = [UIColor clearColor];
         overlayWindow.userInteractionEnabled = NO;
-        overlayWindow.windowLevel = UIWindowLevelAlert;
     }
     return overlayWindow;
 }
