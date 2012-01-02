@@ -530,7 +530,7 @@ static SVProgressHUD *sharedView = nil;
     
     UIWindow *keyboardWindow = nil;
     for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
-        if(![[testWindow class] isEqual:[UIWindow class]] && ![[testWindow class] isEqual:[SVProgressHUD class]]) {
+        if(![[testWindow class] isEqual:[UIWindow class]]) {
             keyboardWindow = testWindow;
             break;
         }
