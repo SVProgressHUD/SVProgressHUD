@@ -22,7 +22,7 @@ enum {
 
 typedef NSUInteger SVProgressHUDMaskType;
 
-@interface SVProgressHUD : UIWindow
+@interface SVProgressHUD : UIView
 
 + (void)show;
 + (void)showWithStatus:(NSString*)status;
