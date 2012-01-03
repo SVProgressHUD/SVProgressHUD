@@ -454,7 +454,7 @@ static SVProgressHUD *sharedView = nil;
 					 completion:^(BOOL finished){ 
                          if(sharedView.alpha == 0) {
                              [[NSNotificationCenter defaultCenter] removeObserver:sharedView];
-                             [self.overlayWindow release];
+                             [overlayWindow release], overlayWindow = nil;
                              [sharedView release], sharedView = nil;
                              
                              // uncomment to make sure UIWindow is gone from app.windows
