@@ -457,6 +457,8 @@ static SVProgressHUD *sharedView = nil;
                              [overlayWindow release], overlayWindow = nil;
                              [sharedView release], sharedView = nil;
                              
+                             [[UIApplication sharedApplication].windows.lastObject makeKeyAndVisible];
+                             
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
                          }
