@@ -51,9 +51,7 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)dealloc {
 	
-	if(fadeOutTimer != nil)
-		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
-	
+	self.fadeOutTimer = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [hudView release];
@@ -245,11 +243,19 @@ static SVProgressHUD *sharedView = nil;
 		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.hudView.bounds)/2)+0.5, ceil(self.hudView.bounds.size.height/2)+0.5);
 }
 
+- (void)setFadeOutTimer:(NSTimer *)newTimer {
+    
+    if(fadeOutTimer)
+        [fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
+    
+    if(newTimer)
+        fadeOutTimer = [newTimer retain];
+}
+
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
     
-	if(fadeOutTimer != nil)
-		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
+	self.fadeOutTimer = nil;
 	
     if(show)
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -433,10 +439,7 @@ static SVProgressHUD *sharedView = nil;
 	
 	[self.spinnerView stopAnimating];
     
-	if(fadeOutTimer != nil)
-		[fadeOutTimer invalidate], [fadeOutTimer release], fadeOutTimer = nil;
-	
-	fadeOutTimer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO] retain];
+	self.fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
 }
 
 - (void)dismiss {
