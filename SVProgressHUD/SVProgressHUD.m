@@ -390,10 +390,11 @@ static SVProgressHUD *sharedView = nil;
 	[self setStatus:string];
 	[self.spinnerView startAnimating];
     
-    if(self.maskType != SVProgressHUDMaskTypeNone)
-        self.userInteractionEnabled = YES;
-    else
-        self.userInteractionEnabled = NO;
+    if(self.maskType != SVProgressHUDMaskTypeNone) {
+        self.overlayWindow.userInteractionEnabled = YES;
+    } else {
+        self.overlayWindow.userInteractionEnabled = NO;
+    }
     
     [self.overlayWindow makeKeyAndVisible];
     [self positionHUD:nil];
