@@ -372,9 +372,6 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
     
-    NSLog(@"%@", [UIApplication sharedApplication].windows);
-    NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
-    
 	self.fadeOutTimer = nil;
 	
     if(show)
@@ -474,8 +471,8 @@ static SVProgressHUD *sharedView = nil;
                              }];
 
                              // uncomment to make sure UIWindow is gone from app.windows
-                             NSLog(@"%@", [UIApplication sharedApplication].windows);
-                             NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
+                             //NSLog(@"%@", [UIApplication sharedApplication].windows);
+                             //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
                          }
                      }];
 }
