@@ -372,6 +372,9 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
     
+    NSLog(@"%@", [UIApplication sharedApplication].windows);
+    NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
+    
 	self.fadeOutTimer = nil;
 	
     if(show)
@@ -461,10 +464,17 @@ static SVProgressHUD *sharedView = nil;
                              [overlayWindow release], overlayWindow = nil;
                              [sharedView release], sharedView = nil;
                              
-                             [[UIApplication sharedApplication].windows.lastObject makeKeyAndVisible];
-                             
+                             // find the frontmost window that is an actual UIWindow and make it keyVisible
+                             [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id window, NSUInteger idx, BOOL *stop) {
+                                 if([window isMemberOfClass:[UIWindow class]]) {
+                                     [window makeKeyAndVisible];
+                                     *stop = YES;
+                                 }
+                             }];
+
                              // uncomment to make sure UIWindow is gone from app.windows
-                             //NSLog(@"%@", [UIApplication sharedApplication].windows);
+                             NSLog(@"%@", [UIApplication sharedApplication].windows);
+                             NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
                          }
                      }];
 }
