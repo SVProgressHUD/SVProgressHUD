@@ -465,7 +465,7 @@ static SVProgressHUD *sharedView = nil;
                              // find the frontmost window that is an actual UIWindow and make it keyVisible
                              [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id window, NSUInteger idx, BOOL *stop) {
                                  if([window isMemberOfClass:[UIWindow class]]) {
-                                     [window makeKeyAndVisible];
+                                     [window makeKeyWindow];
                                      *stop = YES;
                                  }
                              }];
