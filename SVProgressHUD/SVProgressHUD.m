@@ -425,8 +425,10 @@ static SVProgressHUD *sharedView = nil;
     if(self.alpha != 1)
         return;
     
-    if(self.showNetworkIndicator)
+    if(self.showNetworkIndicator) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        self.showNetworkIndicator = NO;
+    }
 	
 	if(error)
 		self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
@@ -444,8 +446,10 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)dismiss {
 	
-    if(self.showNetworkIndicator)
+    if(self.showNetworkIndicator) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        self.showNetworkIndicator = NO;
+    }
 
 	[UIView animateWithDuration:0.15
 						  delay:0
