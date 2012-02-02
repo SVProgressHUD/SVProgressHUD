@@ -112,28 +112,6 @@ static SVProgressHUD *sharedView = nil;
 }
 
 
-#pragma mark - Deprecated show methods
-
-+ (void)showInView:(UIView*)view {
-    [SVProgressHUD showWithStatus:nil maskType:SVProgressHUDMaskTypeNone networkIndicator:SVProgressHUDShowNetworkIndicator];
-}
-
-+ (void)showInView:(UIView*)view status:(NSString*)string {
-    [SVProgressHUD showWithStatus:string maskType:SVProgressHUDMaskTypeNone networkIndicator:SVProgressHUDShowNetworkIndicator];
-}
-
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show {
-    [SVProgressHUD showWithStatus:string maskType:SVProgressHUDMaskTypeNone networkIndicator:show];
-}
-
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY {
-    [SVProgressHUD showWithStatus:string maskType:SVProgressHUDMaskTypeNone networkIndicator:show];
-}
-
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)hudMaskType {
-    [SVProgressHUD showWithStatus:string maskType:hudMaskType networkIndicator:show];    
-}
-
 #pragma mark - Dismiss Methods
 
 + (void)dismiss {

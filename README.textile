@@ -36,8 +36,6 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show;
 </pre>
 
-__The previous @showInView:@ methods are deprecated. Using them with this version of SVProgressHUD will ignore the @view@ and @posY@ parameters, which are now automatically determined by the class.__
-
 You dismiss it using one of these:
 
 <pre>

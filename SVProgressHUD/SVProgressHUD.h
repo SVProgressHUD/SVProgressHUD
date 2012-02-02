@@ -41,11 +41,4 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)dismissWithError:(NSString*)errorString; // also displays the error icon image
 + (void)dismissWithError:(NSString*)errorString afterDelay:(NSTimeInterval)seconds;
 
-// deprecated Show methods: view and posY params will be ignored
-+ (void)showInView:(UIView*)view DEPRECATED_ATTRIBUTE;
-+ (void)showInView:(UIView*)view status:(NSString*)string DEPRECATED_ATTRIBUTE;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show DEPRECATED_ATTRIBUTE;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY DEPRECATED_ATTRIBUTE;
-+ (void)showInView:(UIView*)view status:(NSString*)string networkIndicator:(BOOL)show posY:(CGFloat)posY maskType:(SVProgressHUDMaskType)maskType DEPRECATED_ATTRIBUTE;
-
 @end
