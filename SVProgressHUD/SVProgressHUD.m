@@ -465,15 +465,11 @@ static SVProgressHUD *sharedView = nil;
                              [sharedView release], sharedView = nil;
                              
                              // find the frontmost window that is an actual UIWindow and make it keyVisible
-                             [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id window, NSUInteger idx, BOOL *stop) {
-                                 
-                                 if([window isKindOfClass:[UIWindow class]]) {
-                                     if(((UIWindow*)window).windowLevel == UIWindowLevelNormal) {
+                             [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
+                                 if([window isKindOfClass:[UIWindow class]] && window.windowLevel == UIWindowLevelNormal) {
                                          [window makeKeyWindow];
                                          *stop = YES;
-                                     }
                                  }
-                                 
                              }];
 
                              // uncomment to make sure UIWindow is gone from app.windows
