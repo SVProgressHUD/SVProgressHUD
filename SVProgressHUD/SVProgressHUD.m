@@ -209,7 +209,10 @@ static SVProgressHUD *sharedView = nil;
 	
 	self.hudView.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
 	
-	self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36);
+    if(string)
+        self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36);
+	else
+       	self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2);
 	
 	self.stringLabel.hidden = NO;
 	self.stringLabel.text = string;
