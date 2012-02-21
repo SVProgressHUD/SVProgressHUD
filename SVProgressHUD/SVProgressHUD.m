@@ -72,6 +72,11 @@ static SVProgressHUD *sharedView = nil;
 }
 
 
++ (void)setFont:(UIFont*)font {
+    [SVProgressHUD sharedView].stringLabel.font = font;
+}
+
+
 + (void)setStatus:(NSString *)string {
 	[[SVProgressHUD sharedView] setStatus:string];
 }

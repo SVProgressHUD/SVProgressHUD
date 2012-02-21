@@ -24,6 +24,8 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 @interface SVProgressHUD : UIView
 
++ (void)setFont:(UIFont*)font;
+
 + (void)show;
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status networkIndicator:(BOOL)show;
