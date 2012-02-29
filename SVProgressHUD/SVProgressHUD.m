@@ -48,6 +48,7 @@
 @synthesize overlayWindow, hudView, maskType, showNetworkIndicator, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
 
 static SVProgressHUD *sharedView = nil;
+static UIFont *stringLabelFont = nil;
 
 - (void)dealloc {
 	
@@ -69,6 +70,14 @@ static SVProgressHUD *sharedView = nil;
 		sharedView = [[SVProgressHUD alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
 	return sharedView;
+}
+
+
++ (void)setFont:(UIFont*)font {
+    [stringLabelFont autorelease];
+    stringLabelFont = [font retain];
+    
+    [SVProgressHUD sharedView].stringLabel.font = stringLabelFont;
 }
 
 
@@ -513,7 +522,7 @@ static SVProgressHUD *sharedView = nil;
 		stringLabel.adjustsFontSizeToFitWidth = YES;
 		stringLabel.textAlignment = UITextAlignmentCenter;
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-		stringLabel.font = [UIFont boldSystemFontOfSize:16];
+		stringLabel.font = stringLabelFont ? stringLabelFont : [UIFont boldSystemFontOfSize:16];
 		stringLabel.shadowColor = [UIColor blackColor];
 		stringLabel.shadowOffset = CGSizeMake(0, -1);
         stringLabel.numberOfLines = 0;
