@@ -41,4 +41,6 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)dismissWithError:(NSString*)errorString; // also displays the error icon image
 + (void)dismissWithError:(NSString*)errorString afterDelay:(NSTimeInterval)seconds;
 
++ (BOOL)isVisible;
+
 @end

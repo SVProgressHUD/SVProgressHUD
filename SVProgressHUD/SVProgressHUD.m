@@ -457,6 +457,13 @@ static SVProgressHUD *sharedView = nil;
                      }];
 }
 
+#pragma mark - Utilities
+
++ (BOOL)isVisible {
+    return (sharedView.alpha == 1);
+}
+
+
 #pragma mark - Getters
 
 - (UIWindow *)overlayWindow {
