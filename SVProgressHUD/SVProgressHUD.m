@@ -107,19 +107,19 @@ static SVProgressHUD *sharedView = nil;
 }
 
 + (void)showSuccessWithStatus:(NSString *)string {
-    [SVProgressHUD showSuccessWithStatus:string withDuration:1];
+    [SVProgressHUD showSuccessWithStatus:string duration:1];
 }
 
-+ (void)showSuccessWithStatus:(NSString *)string withDuration:(NSTimeInterval)duration {
++ (void)showSuccessWithStatus:(NSString *)string duration:(NSTimeInterval)duration {
     [SVProgressHUD show];
     [SVProgressHUD dismissWithSuccess:string afterDelay:duration];
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
-    [SVProgressHUD showErrorWithStatus:string withDuration:1];
+    [SVProgressHUD showErrorWithStatus:string duration:1];
 }
 
-+ (void)showErrorWithStatus:(NSString *)string withDuration:(NSTimeInterval)duration {
++ (void)showErrorWithStatus:(NSString *)string duration:(NSTimeInterval)duration {
     [SVProgressHUD show];
     [SVProgressHUD dismissWithError:string afterDelay:duration];
 }
