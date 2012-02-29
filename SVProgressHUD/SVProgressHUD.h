@@ -33,6 +33,10 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show;
 
 + (void)showSuccessWithStatus:(NSString*)string;
++ (void)showSuccessWithStatus:(NSString *)string withDuration:(NSTimeInterval)duration;
++ (void)showErrorWithStatus:(NSString *)string;
++ (void)showErrorWithStatus:(NSString *)string withDuration:(NSTimeInterval)duration;
+
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 
 + (void)dismiss; // simply dismiss the HUD with a fade+scale out animation

@@ -107,8 +107,21 @@ static SVProgressHUD *sharedView = nil;
 }
 
 + (void)showSuccessWithStatus:(NSString *)string {
+    [SVProgressHUD showSuccessWithStatus:string withDuration:1];
+}
+
++ (void)showSuccessWithStatus:(NSString *)string withDuration:(NSTimeInterval)duration {
     [SVProgressHUD show];
-    [SVProgressHUD dismissWithSuccess:string afterDelay:1];
+    [SVProgressHUD dismissWithSuccess:string afterDelay:duration];
+}
+
++ (void)showErrorWithStatus:(NSString *)string {
+    [SVProgressHUD showErrorWithStatus:string withDuration:1];
+}
+
++ (void)showErrorWithStatus:(NSString *)string withDuration:(NSTimeInterval)duration {
+    [SVProgressHUD show];
+    [SVProgressHUD dismissWithError:string afterDelay:duration];
 }
 
 
