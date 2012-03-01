@@ -1,3 +1,5 @@
+__29/02 IMPORTANT CHANGE: SVProgressHUD no longer interacts with iOS's status bar network activity indicator. Dedicated methods have been deprecated and you will need to show/hide the activity indicator yourself (ideally from a controller or the "class that makes the network requests":https://github.com/samvermette/SVHTTPRequest).__
+
 h1. SVProgressHUD
 
 SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
@@ -10,7 +12,6 @@ SVProgressHUD features:
 * very simple singleton convenience methods (@[SVProgressHUD show]@, @[SVProgressHUD dismiss]@, etc.)
 * optional loading, success and error status messages
 * automatic positioning based on device type, orientation and keyboard visibility
-* talks with @setNetworkActivityIndicatorVisible@ (default can be changed via @SVProgressHUDShowNetworkIndicator@ constant)
 * optionally disable user interactions while the HUD is showing with the @maskType@ parameter
 
 h2. Installation
@@ -29,11 +30,8 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 <pre>
 + (void)show;
 + (void)showWithStatus:(NSString*)status;
-+ (void)showWithStatus:(NSString*)status networkIndicator:(BOOL)show;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
-+ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
-+ (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show;
 </pre>
 
 You dismiss it using one of these:
@@ -70,11 +68,6 @@ enum {
     SVProgressHUDMaskTypeGradient // disable user interactions, dim background UI with translucent radial gradient (a-la-alertView)
 };
 </pre>
-
-h3. Network activity indicator
-
-By default, showing SVProgressHUD also activates the network activity indicator (this makes sense for apps that make a lot of network operations). If you'd like SVProgressHUD to not show the network indicator by default, you can add @-DSVPROGRESSHUD_DISABLE_NETWORK_INDICATOR@ to your project's CFLAGS (in build settings). You can also set this on a per-call basis, using the show methods that boast a @networkIndicator@ parameter.
-
 
 h2. Automatic Reference Counting (ARC) support
 

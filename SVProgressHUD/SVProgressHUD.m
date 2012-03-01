@@ -10,12 +10,6 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
-#ifdef SVPROGRESSHUD_DISABLE_NETWORK_INDICATOR
-#define SVProgressHUDShowNetworkIndicator 0
-#else
-#define SVProgressHUDShowNetworkIndicator 1
-#endif
-
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
@@ -79,27 +73,27 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark - Show Methods
 
 + (void)show {
-	[SVProgressHUD showWithStatus:nil networkIndicator:SVProgressHUDShowNetworkIndicator];
+    [[SVProgressHUD sharedView] showWithStatus:nil maskType:SVProgressHUDMaskTypeNone networkIndicator:NO];
 }
 
 + (void)showWithStatus:(NSString *)status {
-    [SVProgressHUD showWithStatus:status networkIndicator:SVProgressHUDShowNetworkIndicator];
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:SVProgressHUDMaskTypeNone networkIndicator:NO];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
-    [SVProgressHUD showWithStatus:nil maskType:maskType networkIndicator:SVProgressHUDShowNetworkIndicator];
+    [[SVProgressHUD sharedView] showWithStatus:nil maskType:maskType networkIndicator:NO];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    [SVProgressHUD showWithStatus:status maskType:maskType networkIndicator:SVProgressHUDShowNetworkIndicator];
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:NO];
 }
 
 + (void)showWithStatus:(NSString *)status networkIndicator:(BOOL)show {
-    [SVProgressHUD showWithStatus:status maskType:SVProgressHUDMaskTypeNone networkIndicator:show];
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:SVProgressHUDMaskTypeNone networkIndicator:show];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show {
-    [SVProgressHUD showWithStatus:nil maskType:maskType networkIndicator:show];
+    [[SVProgressHUD sharedView] showWithStatus:nil maskType:maskType networkIndicator:show];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show {
