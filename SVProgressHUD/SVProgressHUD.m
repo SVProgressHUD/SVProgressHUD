@@ -355,50 +355,51 @@
 #pragma mark - Master show/dismiss methods
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
-    
-    if(!self.superview)
-        [self.overlayWindow addSubview:self];
-    
-	self.fadeOutTimer = nil;
-	
-    if(self.showNetworkIndicator)
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
-    self.showNetworkIndicator = show;
-    
-    if(self.showNetworkIndicator)
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(!self.superview)
+            [self.overlayWindow addSubview:self];
+        
+        self.fadeOutTimer = nil;
+        
+        if(self.showNetworkIndicator)
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        self.showNetworkIndicator = show;
+        
+        if(self.showNetworkIndicator)
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	self.imageView.hidden = YES;
-    self.maskType = hudMaskType;
-	
-	[self setStatus:string];
-	[self.spinnerView startAnimating];
-    
-    if(self.maskType != SVProgressHUDMaskTypeNone) {
-        self.overlayWindow.userInteractionEnabled = YES;
-    } else {
-        self.overlayWindow.userInteractionEnabled = NO;
-    }
-    
-    [self.overlayWindow makeKeyAndVisible];
-    [self positionHUD:nil];
-    
-	if(self.alpha != 1) {
-        [self registerNotifications];
-		self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-		
-		[UIView animateWithDuration:0.15
-							  delay:0
-							options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
-						 animations:^{	
-							 self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
-                             self.alpha = 1;
-						 }
-						 completion:NULL];
-	}
-    
-    [self setNeedsDisplay];
+        self.imageView.hidden = YES;
+        self.maskType = hudMaskType;
+        
+        [self setStatus:string];
+        [self.spinnerView startAnimating];
+        
+        if(self.maskType != SVProgressHUDMaskTypeNone) {
+            self.overlayWindow.userInteractionEnabled = YES;
+        } else {
+            self.overlayWindow.userInteractionEnabled = NO;
+        }
+        
+        [self.overlayWindow makeKeyAndVisible];
+        [self positionHUD:nil];
+        
+        if(self.alpha != 1) {
+            [self registerNotifications];
+            self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
+            
+            [UIView animateWithDuration:0.15
+                                  delay:0
+                                options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
+                             animations:^{	
+                                 self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
+                                 self.alpha = 1;
+                             }
+                             completion:NULL];
+        }
+        
+        [self setNeedsDisplay];
+    });
 }
 
 
@@ -408,62 +409,63 @@
 
 
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds {
-    
-    if(self.alpha != 1)
-        return;
-    
-    if(self.showNetworkIndicator) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        self.showNetworkIndicator = NO;
-    }
-	
-	if(error)
-		self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
-	else
-		self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
-	
-	self.imageView.hidden = NO;
-	
-	[self setStatus:string];
-	
-	[self.spinnerView stopAnimating];
-    
-	self.fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(self.alpha != 1)
+            return;
+        
+        if(self.showNetworkIndicator) {
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            self.showNetworkIndicator = NO;
+        }
+        
+        if(error)
+            self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
+        else
+            self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
+        
+        self.imageView.hidden = NO;
+        [self setStatus:string];
+        [self.spinnerView stopAnimating];
+        
+        self.fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+    });
 }
 
 - (void)dismiss {
-	
-    if(self.showNetworkIndicator) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        self.showNetworkIndicator = NO;
-    }
-
-	[UIView animateWithDuration:0.15
-						  delay:0
-						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
-					 animations:^{	
-						 self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
-						 self.alpha = 0;
-					 }
-					 completion:^(BOOL finished){ 
-                         if(self.alpha == 0) {
-                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3/0.8, 1.3/0.8);
-                             [[NSNotificationCenter defaultCenter] removeObserver:self];
-                             [overlayWindow release], overlayWindow = nil;
-                             
-                             // find the frontmost window that is an actual UIWindow and make it keyVisible
-                             [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
-                                 if([window isKindOfClass:[UIWindow class]] && window.windowLevel == UIWindowLevelNormal) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if(self.showNetworkIndicator) {
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            self.showNetworkIndicator = NO;
+        }
+        
+        [UIView animateWithDuration:0.15
+                              delay:0
+                            options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
+                         animations:^{	
+                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
+                             self.alpha = 0;
+                         }
+                         completion:^(BOOL finished){ 
+                             if(self.alpha == 0) {
+                                 self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3/0.8, 1.3/0.8);
+                                 [[NSNotificationCenter defaultCenter] removeObserver:self];
+                                 [overlayWindow release], overlayWindow = nil;
+                                 
+                                 // find the frontmost window that is an actual UIWindow and make it keyVisible
+                                 [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
+                                     if([window isKindOfClass:[UIWindow class]] && window.windowLevel == UIWindowLevelNormal) {
                                          [window makeKeyWindow];
                                          *stop = YES;
-                                 }
-                             }];
-
-                             // uncomment to make sure UIWindow is gone from app.windows
-                             //NSLog(@"%@", [UIApplication sharedApplication].windows);
-                             //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
-                         }
-                     }];
+                                     }
+                                 }];
+                                 
+                                 // uncomment to make sure UIWindow is gone from app.windows
+                                 //NSLog(@"%@", [UIApplication sharedApplication].windows);
+                                 //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
+                             }
+                         }];
+    });
 }
 
 #pragma mark - Utilities
