@@ -13,7 +13,6 @@
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
-@property (nonatomic, readwrite) BOOL showNetworkIndicator;
 @property (nonatomic) NSTimer *fadeOutTimer;
 
 @property (nonatomic, readonly) UIWindow *overlayWindow;
@@ -39,7 +38,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize overlayWindow, hudView, maskType, showNetworkIndicator, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
+@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
 
 - (void)dealloc {
 	self.fadeOutTimer = nil;
@@ -75,18 +74,6 @@
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
     [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:NO];
-}
-
-+ (void)showWithStatus:(NSString *)status networkIndicator:(BOOL)show {
-    [[SVProgressHUD sharedView] showWithStatus:status maskType:SVProgressHUDMaskTypeNone networkIndicator:show];
-}
-
-+ (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show {
-    [[SVProgressHUD sharedView] showWithStatus:nil maskType:maskType networkIndicator:show];
-}
-
-+ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show {
-    [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:show];
 }
 
 + (void)showSuccessWithStatus:(NSString *)string {
@@ -352,15 +339,6 @@
             [self.overlayWindow addSubview:self];
         
         self.fadeOutTimer = nil;
-        
-        if(self.showNetworkIndicator)
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        self.showNetworkIndicator = show;
-        
-        if(self.showNetworkIndicator)
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
         self.imageView.hidden = YES;
         self.maskType = hudMaskType;
         
@@ -405,11 +383,6 @@
         if(self.alpha != 1)
             return;
         
-        if(self.showNetworkIndicator) {
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            self.showNetworkIndicator = NO;
-        }
-        
         if(error)
             self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
         else
@@ -425,12 +398,7 @@
 
 - (void)dismiss {
     dispatch_async(dispatch_get_main_queue(), ^{
-        
-        if(self.showNetworkIndicator) {
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            self.showNetworkIndicator = NO;
-        }
-        
+
         [UIView animateWithDuration:0.15
                               delay:0
                             options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction

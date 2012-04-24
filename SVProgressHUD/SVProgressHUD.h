@@ -41,9 +41,4 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 + (BOOL)isVisible;
 
-// deprecated methods; it shouldn't be the HUD's responsability to show/hide the network activity indicator
-+ (void)showWithStatus:(NSString*)status networkIndicator:(BOOL)show DEPRECATED_ATTRIBUTE;
-+ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show DEPRECATED_ATTRIBUTE; 
-+ (void)showWithMaskType:(SVProgressHUDMaskType)maskType networkIndicator:(BOOL)show DEPRECATED_ATTRIBUTE;
-
 @end
