@@ -1,6 +1,4 @@
-__29/02 IMPORTANT CHANGE: SVProgressHUD no longer interacts with iOS's status bar network activity indicator. Dedicated methods have been deprecated and you will need to show/hide the activity indicator yourself (ideally from a controller or the "class that makes the network requests":https://github.com/samvermette/SVHTTPRequest).__
-
-h1. SVProgressHUD
+__Note: SVProgressHUD now uses Automatic Reference Counting (ARC). Find the last MRC commit on the "last-mrc":https://github.com/samvermette/SVProgressHUD/tree/last-mrc branch.__
 
 SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
 
@@ -68,10 +66,6 @@ enum {
     SVProgressHUDMaskTypeGradient // disable user interactions, dim background UI with translucent radial gradient (a-la-alertView)
 };
 </pre>
-
-h2. Automatic Reference Counting (ARC) support
-
-Maintaining an official ARC branch has proven to be too much work, often leading to confusion since the ARC branch is always a few commits behind. If you'd like to use SVProgressHUD in your ARC-enabled project, you'll have to "add the @-fno-objc-arc@ compiler flag":http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project to all of SVProgressHUD's files.
 
 h2. Credits
 
