@@ -41,8 +41,6 @@
 
 @synthesize overlayWindow, hudView, maskType, showNetworkIndicator, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
 
-static SVProgressHUD *sharedView = nil;
-
 - (void)dealloc {
 	
 	self.fadeOutTimer = nil;
@@ -58,11 +56,10 @@ static SVProgressHUD *sharedView = nil;
 
 
 + (SVProgressHUD*)sharedView {
-	
-	if(sharedView == nil)
-		sharedView = [[SVProgressHUD alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
-	return sharedView;
+    static dispatch_once_t once;
+    static SVProgressHUD *sharedView;
+    dispatch_once(&once, ^ { sharedView = [[SVProgressHUD alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+    return sharedView;
 }
 
 
@@ -147,7 +144,6 @@ static SVProgressHUD *sharedView = nil;
 - (id)initWithFrame:(CGRect)frame {
 	
     if ((self = [super initWithFrame:frame])) {
-        [self.overlayWindow addSubview:self];
 		self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0;
@@ -360,6 +356,9 @@ static SVProgressHUD *sharedView = nil;
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
     
+    if(!self.superview)
+        [self.overlayWindow addSubview:self];
+    
 	self.fadeOutTimer = nil;
 	
     if(self.showNetworkIndicator)
@@ -443,14 +442,14 @@ static SVProgressHUD *sharedView = nil;
 						  delay:0
 						options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
 					 animations:^{	
-						 sharedView.hudView.transform = CGAffineTransformScale(sharedView.hudView.transform, 0.8, 0.8);
-						 sharedView.alpha = 0;
+						 self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
+						 self.alpha = 0;
 					 }
 					 completion:^(BOOL finished){ 
-                         if(sharedView.alpha == 0) {
-                             [[NSNotificationCenter defaultCenter] removeObserver:sharedView];
+                         if(self.alpha == 0) {
+                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3/0.8, 1.3/0.8);
+                             [[NSNotificationCenter defaultCenter] removeObserver:self];
                              [overlayWindow release], overlayWindow = nil;
-                             [sharedView release], sharedView = nil;
                              
                              // find the frontmost window that is an actual UIWindow and make it keyVisible
                              [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
@@ -470,7 +469,7 @@ static SVProgressHUD *sharedView = nil;
 #pragma mark - Utilities
 
 + (BOOL)isVisible {
-    return (sharedView.alpha == 1);
+    return ([SVProgressHUD sharedView].alpha == 1);
 }
 
 
