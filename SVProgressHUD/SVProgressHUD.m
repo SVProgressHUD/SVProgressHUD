@@ -448,9 +448,10 @@
                          }
                          completion:^(BOOL finished){ 
                              if(self.alpha == 0) {
-                                 self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3/0.8, 1.3/0.8);
                                  [[NSNotificationCenter defaultCenter] removeObserver:self];
                                  [overlayWindow release], overlayWindow = nil;
+                                 [hudView removeFromSuperview];
+                                 [hudView release], hudView = nil;
                                  
                                  // find the frontmost window that is an actual UIWindow and make it keyVisible
                                  [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
@@ -512,16 +513,21 @@
 		stringLabel.shadowColor = [UIColor blackColor];
 		stringLabel.shadowOffset = CGSizeMake(0, -1);
         stringLabel.numberOfLines = 0;
-		[self.hudView addSubview:stringLabel];
     }
+    
+    if(!stringLabel.superview)
+        [self.hudView addSubview:stringLabel];
+    
     return stringLabel;
 }
 
 - (UIImageView *)imageView {
-    if (imageView == nil) {
+    if (imageView == nil)
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-		[self.hudView addSubview:imageView];
-    }
+    
+    if(!imageView.superview)
+        [self.hudView addSubview:imageView];
+    
     return imageView;
 }
 
@@ -530,8 +536,11 @@
         spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		spinnerView.hidesWhenStopped = YES;
 		spinnerView.bounds = CGRectMake(0, 0, 37, 37);
-		[self.hudView addSubview:spinnerView];
     }
+    
+    if(!spinnerView.superview)
+        [self.hudView addSubview:spinnerView];
+    
     return spinnerView;
 }
 
