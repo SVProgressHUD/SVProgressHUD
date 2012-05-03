@@ -32,6 +32,7 @@
 - (void)dismiss;
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error;
 - (void)dismissWithStatus:(NSString*)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds;
+- (void)dismissWithStatus:(NSString*)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds image:(UIImage*)image;
 
 @end
 
@@ -94,6 +95,14 @@
     [SVProgressHUD dismissWithError:string afterDelay:duration];
 }
 
++ (void)showWithStatus:(NSString *)status image:(UIImage *)image {
+    [SVProgressHUD showWithStatus:status image:image duration:1];
+}
+
++ (void)showWithStatus:(NSString *)status image:(UIImage *)image duration:(NSTimeInterval)duration {
+    [SVProgressHUD show];
+    [[SVProgressHUD sharedView] dismissWithStatus:status error:NO afterDelay:duration image:image];
+}
 
 #pragma mark - Dismiss Methods
 
@@ -379,14 +388,23 @@
 
 
 - (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds {
+    [self dismissWithStatus:string error:error afterDelay:seconds image:nil];
+}
+
+
+- (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds image:(UIImage *)image {
     dispatch_async(dispatch_get_main_queue(), ^{
         if(self.alpha != 1)
             return;
         
-        if(error)
-            self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
-        else
-            self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
+        if (!image) {
+            if(error)
+                self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
+            else
+                self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
+        } else {
+            self.imageView.image = image;
+        }
         
         self.imageView.hidden = NO;
         [self setStatus:string];
