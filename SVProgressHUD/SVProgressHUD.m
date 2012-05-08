@@ -143,6 +143,12 @@
             CGContextFillRect(context, self.bounds);
             break;
         }
+
+        case SVProgressHUDMaskTypeClear: {
+            [[UIColor clearColor] set];
+            CGContextFillRect(context, self.bounds);
+            break;
+        }
             
         case SVProgressHUDMaskTypeGradient: {
             
