@@ -13,13 +13,13 @@
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
-@property (nonatomic) NSTimer *fadeOutTimer;
+@property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
 
-@property (nonatomic, readonly) UIWindow *overlayWindow;
-@property (nonatomic, readonly) UIView *hudView;
-@property (nonatomic, readonly) UILabel *stringLabel;
-@property (nonatomic, readonly) UIImageView *imageView;
-@property (nonatomic, readonly) UIActivityIndicatorView *spinnerView;
+@property (nonatomic, strong, readonly) UIWindow *overlayWindow;
+@property (nonatomic, strong, readonly) UIView *hudView;
+@property (nonatomic, strong, readonly) UILabel *stringLabel;
+@property (nonatomic, strong, readonly) UIImageView *imageView;
+@property (nonatomic, strong, readonly) UIActivityIndicatorView *spinnerView;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
