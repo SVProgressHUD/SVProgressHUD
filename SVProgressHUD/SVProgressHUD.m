@@ -409,15 +409,20 @@
                          completion:^(BOOL finished){ 
                              if(self.alpha == 0) {
                                  [[NSNotificationCenter defaultCenter] removeObserver:self];
-                                 [hudView removeFromSuperview], hudView = nil;
-                                 overlayWindow = nil;
+                                 [hudView removeFromSuperview];
+                                 [hudView release], hudView = nil;
                                  
-                                 // find the frontmost window that is an actual UIWindow and make it keyVisible
-                                 [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
-                                     if([window isKindOfClass:[UIWindow class]] && window.windowLevel == UIWindowLevelNormal) {
-                                         [window makeKeyWindow];
-                                         *stop = YES;
-                                     }
+                                 // Make sure to remove the overlay window from the list of windows
+                                 // before trying to find the key window in that same list
+                                 NSMutableArray *windows = [[NSMutableArray alloc] initWithArray:[UIApplication sharedApplication].windows];
+                                 [windows removeObject:overlayWindow];
+                                 [overlayWindow release], overlayWindow = nil;
+                                 
+                                 [windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
+                                   if([window isKindOfClass:[UIWindow class]] && window.windowLevel == UIWindowLevelNormal) {
+                                     [window makeKeyWindow];
+                                     *stop = YES;
+                                   }
                                  }];
                                  
                                  // uncomment to make sure UIWindow is gone from app.windows
