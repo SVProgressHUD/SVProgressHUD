@@ -420,7 +420,7 @@
                                  
                                  [windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
                                    if([window isKindOfClass:[UIWindow class]] && window.windowLevel == UIWindowLevelNormal) {
-                                     [window makeKeyWindow];
+                                     [window makeKeyAndVisible];
                                      *stop = YES;
                                    }
                                  }];
