@@ -364,6 +364,11 @@
 #pragma mark - Touch handlers
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	// if there is a mask, block propagation of all events
+	if (self.maskType != SVProgressHUDMaskTypeNone) {
+		return YES;
+	}
+	
 	if (CGRectContainsPoint(self.hudView.frame, point)) {
 		return YES;
 	}
@@ -401,13 +406,6 @@
         
         [self setStatus:string];
         [self.spinnerView startAnimating];
-        
-		if (1) {
-//        if(self.maskType != SVProgressHUDMaskTypeNone) {
-            self.overlayWindow.userInteractionEnabled = YES;
-        } else {
-            self.overlayWindow.userInteractionEnabled = NO;
-        }
         
         [self.overlayWindow makeKeyAndVisible];
         [self positionHUD:nil];
@@ -505,7 +503,7 @@
         overlayWindow = [[SVProgressHUDWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
         overlayWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         overlayWindow.backgroundColor = [UIColor clearColor];
-        overlayWindow.userInteractionEnabled = NO;
+        overlayWindow.userInteractionEnabled = YES;
     }
     return overlayWindow;
 }
