@@ -10,12 +10,31 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface SVProgressHUDWindow : UIWindow
+
+@end
+
+@implementation SVProgressHUDWindow
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	SVProgressHUD *hud = (SVProgressHUD *)[self.subviews objectAtIndex:0];
+	if (hud) {
+		return [hud pointInside:point withEvent:event];
+	}
+	
+	return [super pointInside:point withEvent:event];
+}
+
+@end
+
+
+
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
 @property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
 
-@property (nonatomic, strong, readonly) UIWindow *overlayWindow;
+@property (nonatomic, strong, readonly) SVProgressHUDWindow *overlayWindow;
 @property (nonatomic, strong, readonly) UIView *hudView;
 @property (nonatomic, strong, readonly) UILabel *stringLabel;
 @property (nonatomic, strong, readonly) UIImageView *imageView;
@@ -344,6 +363,14 @@
 
 #pragma mark - Touch handlers
 
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	if (CGRectContainsPoint(self.hudView.frame, point)) {
+		return YES;
+	}
+	
+	return NO;
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 }
 
@@ -375,7 +402,8 @@
         [self setStatus:string];
         [self.spinnerView startAnimating];
         
-        if(self.maskType != SVProgressHUDMaskTypeNone) {
+		if (1) {
+//        if(self.maskType != SVProgressHUDMaskTypeNone) {
             self.overlayWindow.userInteractionEnabled = YES;
         } else {
             self.overlayWindow.userInteractionEnabled = NO;
@@ -474,7 +502,7 @@
 
 - (UIWindow *)overlayWindow {
     if(!overlayWindow) {
-        overlayWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        overlayWindow = [[SVProgressHUDWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
         overlayWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         overlayWindow.backgroundColor = [UIColor clearColor];
         overlayWindow.userInteractionEnabled = NO;
