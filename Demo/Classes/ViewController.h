@@ -17,5 +17,7 @@
 - (IBAction)dismissSuccess;
 - (IBAction)dismissError;
 
+- (IBAction)hideOnTouchChanged:(id)sender;
+
 @end
 
