@@ -23,6 +23,8 @@
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
+@property (nonatomic, assign) BOOL hideOnTouch;
+
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show;
 - (void)setStatus:(NSString*)string;
 - (void)registerNotifications;
@@ -38,7 +40,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
+@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight, hideOnTouch;
 
 - (void)dealloc {
 	self.fadeOutTimer = nil;
@@ -56,6 +58,14 @@
 
 + (void)setStatus:(NSString *)string {
 	[[SVProgressHUD sharedView] setStatus:string];
+}
+
++ (void)setHideOnTouch:(BOOL)hideOnTouch {
+	[SVProgressHUD sharedView].hideOnTouch = hideOnTouch;
+}
+
++ (BOOL)hideOnTouch {
+	return [SVProgressHUD sharedView].hideOnTouch;
 }
 
 #pragma mark - Show Methods
@@ -127,6 +137,7 @@
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		hideOnTouch = YES;
     }
 	
     return self;
@@ -340,9 +351,11 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	// hide the HUD when any touch has ended
-	self.fadeOutTimer = nil;
-	[self dismiss];
+	if (self.hideOnTouch) {
+		// hide the HUD when any touch has ended
+		self.fadeOutTimer = nil;
+		[self dismiss];
+	}
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {

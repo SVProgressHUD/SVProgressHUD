@@ -41,4 +41,7 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 + (BOOL)isVisible;
 
++ (void)setHideOnTouch:(BOOL)hideOnTouch; // set whether to hide the HUD on any touch. default: YES
++ (BOOL)hideOnTouch; // get the current value
+
 @end
