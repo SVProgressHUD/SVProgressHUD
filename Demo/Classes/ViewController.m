@@ -43,4 +43,15 @@
 	[SVProgressHUD dismissWithError:@"Failed with Error"];
 }
 
+
+#pragma mark -
+#pragma mark Hide On Touch Method Sample
+
+- (IBAction)hideOnTouchChanged:(id)sender {
+	UISwitch *hideOnTouchSwitch = (UISwitch *)sender;
+	if (hideOnTouchSwitch) {
+		[SVProgressHUD setHideOnTouch:hideOnTouchSwitch.on];
+	}
+}
+
 @end

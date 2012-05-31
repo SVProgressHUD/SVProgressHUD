@@ -10,18 +10,39 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface SVProgressHUDWindow : UIWindow
+
+@end
+
+@implementation SVProgressHUDWindow
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	SVProgressHUD *hud = (SVProgressHUD *)[self.subviews objectAtIndex:0];
+	if (hud) {
+		return [hud pointInside:point withEvent:event];
+	}
+	
+	return [super pointInside:point withEvent:event];
+}
+
+@end
+
+
+
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
 @property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
 
-@property (nonatomic, strong, readonly) UIWindow *overlayWindow;
+@property (nonatomic, strong, readonly) SVProgressHUDWindow *overlayWindow;
 @property (nonatomic, strong, readonly) UIView *hudView;
 @property (nonatomic, strong, readonly) UILabel *stringLabel;
 @property (nonatomic, strong, readonly) UIImageView *imageView;
 @property (nonatomic, strong, readonly) UIActivityIndicatorView *spinnerView;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
+
+@property (nonatomic, assign) BOOL hideOnTouch;
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show;
 - (void)setStatus:(NSString*)string;
@@ -38,7 +59,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
+@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight, hideOnTouch;
 
 - (void)dealloc {
 	self.fadeOutTimer = nil;
@@ -56,6 +77,14 @@
 
 + (void)setStatus:(NSString *)string {
 	[[SVProgressHUD sharedView] setStatus:string];
+}
+
++ (void)setHideOnTouch:(BOOL)hideOnTouch {
+	[SVProgressHUD sharedView].hideOnTouch = hideOnTouch;
+}
+
++ (BOOL)hideOnTouch {
+	return [SVProgressHUD sharedView].hideOnTouch;
 }
 
 #pragma mark - Show Methods
@@ -123,10 +152,11 @@
 - (id)initWithFrame:(CGRect)frame {
 	
     if ((self = [super initWithFrame:frame])) {
-		self.userInteractionEnabled = NO;
+		self.userInteractionEnabled = YES;
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		hideOnTouch = YES;
     }
 	
     return self;
@@ -331,6 +361,38 @@
     self.hudView.center = newCenter;
 }
 
+#pragma mark - Touch handlers
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	// if there is a mask, block propagation of all events
+	if (self.maskType != SVProgressHUDMaskTypeNone) {
+		return YES;
+	}
+	
+	if (CGRectContainsPoint(self.hudView.frame, point)) {
+		return YES;
+	}
+	
+	return NO;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+	if (self.hideOnTouch) {
+		// hide the HUD when any touch has ended
+		self.fadeOutTimer = nil;
+		[self dismiss];
+	}
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+}
+
 #pragma mark - Master show/dismiss methods
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
@@ -344,12 +406,6 @@
         
         [self setStatus:string];
         [self.spinnerView startAnimating];
-        
-        if(self.maskType != SVProgressHUDMaskTypeNone) {
-            self.overlayWindow.userInteractionEnabled = YES;
-        } else {
-            self.overlayWindow.userInteractionEnabled = NO;
-        }
         
         [self.overlayWindow makeKeyAndVisible];
         [self positionHUD:nil];
@@ -444,10 +500,10 @@
 
 - (UIWindow *)overlayWindow {
     if(!overlayWindow) {
-        overlayWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        overlayWindow = [[SVProgressHUDWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
         overlayWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         overlayWindow.backgroundColor = [UIColor clearColor];
-        overlayWindow.userInteractionEnabled = NO;
+        overlayWindow.userInteractionEnabled = YES;
     }
     return overlayWindow;
 }
