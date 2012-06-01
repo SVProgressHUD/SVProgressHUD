@@ -1,4 +1,4 @@
-__Note: SVProgressHUD now uses Automatic Reference Counting (ARC). Find the last MRC commit on the "last-mrc":https://github.com/samvermette/SVProgressHUD/tree/last-mrc branch.__
+__*Important note if your project doesn't use ARC*: you must add the @-fobjc-arc@ compiler flag to @SVProgressHUD.m@ in Target Settings > Build Phases > Compile Sources.__
 
 SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
 
