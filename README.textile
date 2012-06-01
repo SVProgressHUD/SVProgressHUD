@@ -19,6 +19,8 @@ h2. Installation
 
 __If you plan on using SVProgressHUD in a lot of places inside your app, I recommend importing it directly inside your prefix file.__
 
+*NB! If you're using SVProgressHUD in a non-ARC project, don't forget to add "-fobjc-arc" compiler flag to SVProgressHUD.m file in the target's settings.* Otherwise, the app may crash on the second HUD appearing.
+
 h2. Usage
 
 (see sample Xcode project in @/Demo@)
