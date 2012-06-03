@@ -351,7 +351,7 @@
             self.overlayWindow.userInteractionEnabled = NO;
         }
         
-        [self.overlayWindow makeKeyAndVisible];
+        [self.overlayWindow setHidden:NO];
         [self positionHUD:nil];
         
         if(self.alpha != 1) {
@@ -411,19 +411,9 @@
                                  [[NSNotificationCenter defaultCenter] removeObserver:self];
                                  [hudView removeFromSuperview];
                                  hudView = nil;
-                                 
-                                 // Make sure to remove the overlay window from the list of windows
-                                 // before trying to find the key window in that same list
-                                 NSMutableArray *windows = [[NSMutableArray alloc] initWithArray:[UIApplication sharedApplication].windows];
-                                 [windows removeObject:overlayWindow];
+
+                                 [overlayWindow removeFromSuperview];
                                  overlayWindow = nil;
-                                 
-                                 [windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
-                                   if([window isKindOfClass:[UIWindow class]] && window.windowLevel == UIWindowLevelNormal) {
-                                     [window makeKeyAndVisible];
-                                     *stop = YES;
-                                   }
-                                 }];
                                  
                                  // uncomment to make sure UIWindow is gone from app.windows
                                  //NSLog(@"%@", [UIApplication sharedApplication].windows);
