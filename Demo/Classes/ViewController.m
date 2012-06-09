@@ -36,11 +36,11 @@
 }
 
 - (void)dismissSuccess {
-	[SVProgressHUD dismissWithSuccess:@"Great Success!"];
+	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
 }
 
 - (void)dismissError {
-	[SVProgressHUD dismissWithError:@"Failed with Error"];
+	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
 }
 
 @end

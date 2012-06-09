@@ -1,6 +1,6 @@
 __*Important note if your project doesn't use ARC*: you must add the @-fobjc-arc@ compiler flag to @SVProgressHUD.m@ in Target Settings > Build Phases > Compile Sources.__
 
-SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. Its fade in/out animations are highly inspired on Lauren Britcher's HUD in Tweetie for iOS. The success and error icons are from "Glyphish":http://glyphish.com/.
+SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. The success and error icons are from "Glyphish":http://glyphish.com/.
 
 
 !http://f.cl.ly/items/231Y2A0t0t1J0B0r3N0p/svprogresshud3.png!
@@ -8,9 +8,9 @@ SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It'
 SVProgressHUD features:
 
 * very simple singleton convenience methods (@[SVProgressHUD show]@, @[SVProgressHUD dismiss]@, etc.)
-* optional loading, success and error status messages
+* display of status strings and/or images to quickly communicate the state of the ongoing task
 * automatic positioning based on device type, orientation and keyboard visibility
-* optionally disable user interactions while the HUD is showing with the @maskType@ parameter
+* optionally disable user interactions for ongoing tasks using a @maskType@ parameter
 
 h2. Installation
 
@@ -27,36 +27,28 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 
 <pre>
 + (void)show;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
-+ (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 </pre>
 
-You dismiss it using one of these:
+It can be dismissed using:
 
 <pre>
 + (void)dismiss;
-+ (void)dismissWithSuccess:(NSString*)successString;
-+ (void)dismissWithSuccess:(NSString*)successString afterDelay:(NSTimeInterval)seconds;
-+ (void)dismissWithError:(NSString*)errorString;
-+ (void)dismissWithError:(NSString*)errorString afterDelay:(NSTimeInterval)seconds;
 </pre>
 
-If you're using SVProgressHUD to show the status of a many-steps operation, you can also change the HUD status __while__ it's showing with:
-
-<pre>
-+ (void)setStatus:(NSString*)string;
-</pre>
-
-Additionally, you can use SVProgressHUD to display a simple confirmation/success HUD using:
+Optionally, you can have the HUD display a status and/or an image glyph before automatically getting dismissed 1s later (not customizable anymore to discourage lenghty status strings — for which UIAlertViews would be more appropriate).
 
 <pre>
 + (void)showSuccessWithStatus:(NSString*)string;
++ (void)showErrorWithStatus:(NSString *)string;
++ (void)showImage:(UIImage*)image status:(NSString*)status; // use 28x28 white pngs
 </pre>
 
 h3. SVProgressHUDMaskType
 
-You can optionally disable user interactions and dim the background UI using the @maskType@ property:
+You can optionally disable user interactions while a task is being completed by using the show methods that support the @maskType@ property:
 
 <pre>
 enum {

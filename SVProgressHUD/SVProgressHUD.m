@@ -24,14 +24,13 @@
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show;
+- (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
+- (void)dismiss;
+
 - (void)setStatus:(NSString*)string;
 - (void)registerNotifications;
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
 - (void)positionHUD:(NSNotification*)notification;
-
-- (void)dismiss;
-- (void)dismissWithStatus:(NSString*)string error:(BOOL)error;
-- (void)dismissWithStatus:(NSString*)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds;
 
 @end
 
@@ -76,22 +75,28 @@
     [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:NO];
 }
 
+#pragma mark - Show then dismiss methods
+
 + (void)showSuccessWithStatus:(NSString *)string {
-    [SVProgressHUD showSuccessWithStatus:string duration:1];
+    [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/success.png"] status:string];
 }
 
 + (void)showSuccessWithStatus:(NSString *)string duration:(NSTimeInterval)duration {
     [SVProgressHUD show];
-    [SVProgressHUD dismissWithSuccess:string afterDelay:duration];
+    [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/success.png"] status:string];
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
-    [SVProgressHUD showErrorWithStatus:string duration:1];
+    [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/error.png"] status:string];
 }
 
 + (void)showErrorWithStatus:(NSString *)string duration:(NSTimeInterval)duration {
     [SVProgressHUD show];
-    [SVProgressHUD dismissWithError:string afterDelay:duration];
+    [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/error.png"] status:string];
+}
+
++ (void)showImage:(UIImage *)image status:(NSString *)string {
+    [[SVProgressHUD sharedView] showImage:image status:string duration:1.0];
 }
 
 
@@ -101,20 +106,20 @@
 	[[SVProgressHUD sharedView] dismiss];
 }
 
-+ (void)dismissWithSuccess:(NSString*)successString {
-	[[SVProgressHUD sharedView] dismissWithStatus:successString error:NO];
++ (void)dismissWithSuccess:(NSString*)string {
+	[SVProgressHUD showSuccessWithStatus:string];
 }
 
-+ (void)dismissWithSuccess:(NSString *)successString afterDelay:(NSTimeInterval)seconds {
-    [[SVProgressHUD sharedView] dismissWithStatus:successString error:NO afterDelay:seconds];
++ (void)dismissWithSuccess:(NSString *)string afterDelay:(NSTimeInterval)seconds {
+    [[SVProgressHUD sharedView] showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/success.png"] status:string duration:seconds];
 }
 
-+ (void)dismissWithError:(NSString*)errorString {
-	[[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES];
++ (void)dismissWithError:(NSString*)string {
+	[SVProgressHUD showErrorWithStatus:string];
 }
 
-+ (void)dismissWithError:(NSString *)errorString afterDelay:(NSTimeInterval)seconds {
-    [[SVProgressHUD sharedView] dismissWithStatus:errorString error:YES afterDelay:seconds];
++ (void)dismissWithError:(NSString *)string afterDelay:(NSTimeInterval)seconds {
+    [[SVProgressHUD sharedView] showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/error.png"] status:string duration:seconds];
 }
 
 
@@ -373,28 +378,20 @@
 }
 
 
-- (void)dismissWithStatus:(NSString*)string error:(BOOL)error {
-	[self dismissWithStatus:string error:error afterDelay:0.9];
-}
-
-
-- (void)dismissWithStatus:(NSString *)string error:(BOOL)error afterDelay:(NSTimeInterval)seconds {
+- (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
+    if(![SVProgressHUD isVisible])
+        [SVProgressHUD show];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(self.alpha != 1)
-            return;
-        
-        if(error)
-            self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
-        else
-            self.imageView.image = [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
-        
+        self.imageView.image = image;
         self.imageView.hidden = NO;
         [self setStatus:string];
         [self.spinnerView stopAnimating];
         
-        self.fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+        self.fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
     });
 }
+
 
 - (void)dismiss {
     dispatch_async(dispatch_get_main_queue(), ^{
