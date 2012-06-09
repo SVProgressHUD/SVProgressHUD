@@ -11,6 +11,7 @@ SVProgressHUD features:
 * optional loading, success and error status messages
 * automatic positioning based on device type, orientation and keyboard visibility
 * optionally disable user interactions while the HUD is showing with the @maskType@ parameter
+* optionally use your own 28x28 px UIImage in the HUD
 
 h2. Installation
 
@@ -30,6 +31,7 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithStatus:(NSString *)status image:(UIImage *)image;
 </pre>
 
 You dismiss it using one of these:

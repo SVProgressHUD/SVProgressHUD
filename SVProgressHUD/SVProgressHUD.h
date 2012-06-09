@@ -31,6 +31,9 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)showErrorWithStatus:(NSString *)string;
 + (void)showErrorWithStatus:(NSString *)string duration:(NSTimeInterval)duration;
 
++ (void)showWithStatus:(NSString *)status image:(UIImage *)image;
++ (void)showWithStatus:(NSString *)status image:(UIImage *)image duration:(NSTimeInterval)duration;
+
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 
 + (void)dismiss; // simply dismiss the HUD with a fade+scale out animation
