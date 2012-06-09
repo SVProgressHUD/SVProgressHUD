@@ -28,8 +28,8 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 <pre>
 + (void)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
-+ (void)showWithStatus:(NSString*)status;
-+ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithStatus:(NSString*)string;
++ (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)maskType;
 </pre>
 
 It can be dismissed using:
@@ -43,7 +43,7 @@ Optionally, you can have the HUD display a status and/or an image glyph before a
 <pre>
 + (void)showSuccessWithStatus:(NSString*)string;
 + (void)showErrorWithStatus:(NSString *)string;
-+ (void)showImage:(UIImage*)image status:(NSString*)status; // use 28x28 white pngs
++ (void)showImage:(UIImage*)image status:(NSString*)string; // use 28x28 white pngs
 </pre>
 
 h3. SVProgressHUDMaskType
