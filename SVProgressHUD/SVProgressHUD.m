@@ -11,7 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #if ! __has_feature(objc_arc)
-#error This file must be compiled with ARC.
+#error You need to either convert your project to ARC or add the -fobjc-arc compiler flag to SVProgressHUD.m.
 #endif
 
 @interface SVProgressHUD ()
