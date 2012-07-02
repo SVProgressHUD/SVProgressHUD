@@ -18,6 +18,7 @@ enum {
 };
 
 typedef NSUInteger SVProgressHUDMaskType;
+typedef void(^SVSenderBlock)(id sender);
 
 @interface SVProgressHUD : UIView
 
@@ -26,6 +27,7 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType cancelBlock:(SVSenderBlock)cancelBlock;
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 

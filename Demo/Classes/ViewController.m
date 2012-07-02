@@ -27,6 +27,11 @@
 	[SVProgressHUD showWithStatus:@"Doing Stuff"];
 }
 
+- (void)showWithStatusCancelBlock {
+  [SVProgressHUD showWithStatus:@"Doing Cancelable Stuff" maskType:SVProgressHUDMaskTypeGradient cancelBlock:^(id sender) {
+    [SVProgressHUD dismiss];
+  }];
+}
 
 #pragma mark -
 #pragma mark Dismiss Methods Sample
