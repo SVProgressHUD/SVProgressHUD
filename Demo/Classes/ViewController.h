@@ -12,6 +12,7 @@
 
 - (IBAction)show;
 - (IBAction)showWithStatus;
+- (IBAction)showWithStatusCancelBlock;
 
 - (IBAction)dismiss;
 - (IBAction)dismissSuccess;

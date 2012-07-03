@@ -27,7 +27,9 @@
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
-- (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show;
+@property (nonatomic, copy) SVSenderBlock cancelBlock;
+@property (nonatomic, strong, readonly) UIButton *cancelButton;
+
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
 - (void)dismiss;
 
@@ -41,7 +43,7 @@
 
 @implementation SVProgressHUD
 
-@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
+@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight, cancelBlock, cancelButton;
 
 - (void)dealloc {
 	self.fadeOutTimer = nil;
@@ -64,19 +66,23 @@
 #pragma mark - Show Methods
 
 + (void)show {
-    [[SVProgressHUD sharedView] showWithStatus:nil maskType:SVProgressHUDMaskTypeNone networkIndicator:NO];
+    [[SVProgressHUD sharedView] showWithStatus:nil maskType:SVProgressHUDMaskTypeNone networkIndicator:NO cancelBlock:nil];
 }
 
 + (void)showWithStatus:(NSString *)status {
-    [[SVProgressHUD sharedView] showWithStatus:status maskType:SVProgressHUDMaskTypeNone networkIndicator:NO];
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:SVProgressHUDMaskTypeNone networkIndicator:NO cancelBlock:nil];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
-    [[SVProgressHUD sharedView] showWithStatus:nil maskType:maskType networkIndicator:NO];
+    [[SVProgressHUD sharedView] showWithStatus:nil maskType:maskType networkIndicator:NO cancelBlock:nil];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:NO];
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:NO cancelBlock:nil];
+}
+
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType cancelBlock:(SVSenderBlock)cancelBlock {
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:NO cancelBlock:cancelBlock];
 }
 
 #pragma mark - Show then dismiss methods
@@ -340,9 +346,15 @@
     self.hudView.center = newCenter;
 }
 
+- (void)cancel:(id)sender
+{
+    if(self.cancelBlock)
+        self.cancelBlock(self);
+}
+
 #pragma mark - Master show/dismiss methods
 
-- (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
+- (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show cancelBlock:(SVSenderBlock)theCancelBlock {
     dispatch_async(dispatch_get_main_queue(), ^{
         if(!self.superview)
             [self.overlayWindow addSubview:self];
@@ -350,6 +362,7 @@
         self.fadeOutTimer = nil;
         self.imageView.hidden = YES;
         self.maskType = hudMaskType;
+        self.cancelBlock = theCancelBlock;
         
         [self setStatus:string];
         [self.spinnerView startAnimating];
@@ -358,6 +371,10 @@
             self.overlayWindow.userInteractionEnabled = YES;
         } else {
             self.overlayWindow.userInteractionEnabled = NO;
+        }
+
+        if(self.cancelBlock) {
+            [self addCancelButton];
         }
         
         [self.overlayWindow setHidden:NO];
@@ -497,6 +514,34 @@
         [self.hudView addSubview:spinnerView];
     
     return spinnerView;
+}
+
+- (UIButton *)addCancelButton {
+  if (cancelButton == nil) {
+    cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelButton.layer.borderWidth = 1;
+    cancelButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    cancelButton.layer.cornerRadius = 10;
+    cancelButton.showsTouchWhenHighlighted = YES;
+    [cancelButton addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton setTitle:NSLocalizedString(@"Cancel",nil) forState:UIControlStateNormal];
+    self.userInteractionEnabled = YES;
+  }
+  
+  CGRect frame = self.stringLabel.frame;
+  frame = CGRectOffset(frame, 10, frame.size.height + 8);
+  frame.size.width -= 20;
+  frame.size.height = 35;
+  cancelButton.frame = frame;
+  
+  CGRect hudBounds = self.hudView.bounds;
+  hudBounds.size.height += 40;
+  self.hudView.bounds = hudBounds;
+
+  if(!cancelButton.superview)
+    [self.hudView addSubview:cancelButton];
+  
+  return cancelButton;
 }
 
 - (CGFloat)visibleKeyboardHeight {
