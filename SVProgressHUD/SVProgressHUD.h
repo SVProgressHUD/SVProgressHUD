@@ -19,6 +19,13 @@ enum {
 
 typedef NSUInteger SVProgressHUDMaskType;
 
+enum {
+    SVProgressHUDIndicatorTypeSpinner = 1, // default spinner
+    SVProgressHUDIndicatorTypeProgressBar, // progress bar
+};
+
+typedef NSUInteger SVProgressHUDIndicatorType;
+
 @interface SVProgressHUD : UIView
 
 + (void)show;
@@ -26,8 +33,12 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType indicatorType:(SVProgressHUDIndicatorType)indicatorType;
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
+
++ (void)setProgress:(CGFloat)progress;
++ (CGFloat)progress;
 
 // stops the activity indicator, shows a glyph + status, and dismisses HUD 1s later
 + (void)showSuccessWithStatus:(NSString*)string;
