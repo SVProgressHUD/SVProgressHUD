@@ -553,8 +553,10 @@
 
     if (progressBarView == nil) {
         progressBarView = [[SVProgressBarView alloc] init];
-		[self.hudView addSubview:progressBarView];
     }
+
+    if(!progressBarView.superview)
+        [self.hudView addSubview:progressBarView];
 
     return progressBarView;
 }
