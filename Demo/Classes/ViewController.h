@@ -17,5 +17,8 @@
 - (IBAction)dismissSuccess;
 - (IBAction)dismissError;
 
+- (IBAction)pushActivity;
+- (IBAction)popActivity;
+
 @end
 

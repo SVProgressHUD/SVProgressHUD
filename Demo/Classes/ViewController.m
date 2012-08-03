@@ -43,4 +43,16 @@
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
 }
 
+
+#pragma mark -
+#pragma mark Activity Counter Methods Sample
+
+- (void)pushActivity {
+    [SVProgressHUD pushActivity];
+}
+
+- (void)popActivity {
+    [SVProgressHUD popActivity];
+}
+
 @end

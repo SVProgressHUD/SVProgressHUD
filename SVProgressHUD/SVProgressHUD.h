@@ -38,6 +38,10 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 + (BOOL)isVisible;
 
++ (void)pushActivity;
++ (void)popActivity;
++ (void)resetActivity;
+
 
 // deprecated June 9th; custom durations encourages uncessarily long status strings (inappropriate, use UIAlertView instead)
 + (void)showSuccessWithStatus:(NSString *)string duration:(NSTimeInterval)duration DEPRECATED_ATTRIBUTE;
