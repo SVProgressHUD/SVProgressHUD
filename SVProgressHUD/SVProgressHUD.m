@@ -10,6 +10,7 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
+
 #if ! __has_feature(objc_arc)
 #error You need to either convert your project to ARC or add the -fobjc-arc compiler flag to SVProgressHUD.m.
 #endif
@@ -42,6 +43,8 @@
 @implementation SVProgressHUD
 
 @synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
+
+static NSInteger activityCount;
 
 - (void)dealloc {
 	self.fadeOutTimer = nil;
@@ -424,6 +427,56 @@
                          }];
     });
 }
+
+- (NSInteger)activityCount {
+    @synchronized([SVProgressHUD sharedView]) {
+        return activityCount;
+    }
+}
+
+- (void)refreshActivityIndicator {
+    if(![NSThread isMainThread]) {
+        SEL sel_refresh = @selector(refreshActivityIndicator);
+        [self performSelectorOnMainThread:sel_refresh withObject:nil waitUntilDone:NO];
+        return;
+    }
+    BOOL active = (self.activityCount > 0);
+    if (active) {
+        if ([SVProgressHUD isVisible]) {
+            return;
+        } else {
+            [SVProgressHUD show];
+        }
+    } else {
+        [SVProgressHUD dismiss];
+    }
+}
+
++ (void)pushActivity {
+    @synchronized([SVProgressHUD sharedView]) {
+        activityCount++;
+    }
+    [[SVProgressHUD sharedView] refreshActivityIndicator];
+}
+
++ (void)popActivity {
+    @synchronized([SVProgressHUD sharedView]) {
+        if (activityCount > 0) {
+            activityCount--;
+        } else {
+            activityCount = 0;
+        }
+    }
+    [[SVProgressHUD sharedView] refreshActivityIndicator];
+}
+
++ (void)resetActivity {
+    @synchronized([SVProgressHUD sharedView]) {
+        activityCount = 0;
+    }
+    [[SVProgressHUD sharedView] refreshActivityIndicator];
+}
+
 
 #pragma mark - Utilities
 
