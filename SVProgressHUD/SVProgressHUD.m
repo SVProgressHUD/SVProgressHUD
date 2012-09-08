@@ -343,42 +343,40 @@
 #pragma mark - Master show/dismiss methods
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(!self.superview)
-            [self.overlayWindow addSubview:self];
+    if(!self.superview)
+        [self.overlayWindow addSubview:self];
+    
+    self.fadeOutTimer = nil;
+    self.imageView.hidden = YES;
+    self.maskType = hudMaskType;
+    
+    [self setStatus:string];
+    [self.spinnerView startAnimating];
+    
+    if(self.maskType != SVProgressHUDMaskTypeNone) {
+        self.overlayWindow.userInteractionEnabled = YES;
+    } else {
+        self.overlayWindow.userInteractionEnabled = NO;
+    }
+    
+    [self.overlayWindow setHidden:NO];
+    [self positionHUD:nil];
+    
+    if(self.alpha != 1) {
+        [self registerNotifications];
+        self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
         
-        self.fadeOutTimer = nil;
-        self.imageView.hidden = YES;
-        self.maskType = hudMaskType;
-        
-        [self setStatus:string];
-        [self.spinnerView startAnimating];
-        
-        if(self.maskType != SVProgressHUDMaskTypeNone) {
-            self.overlayWindow.userInteractionEnabled = YES;
-        } else {
-            self.overlayWindow.userInteractionEnabled = NO;
-        }
-        
-        [self.overlayWindow setHidden:NO];
-        [self positionHUD:nil];
-        
-        if(self.alpha != 1) {
-            [self registerNotifications];
-            self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-            
-            [UIView animateWithDuration:0.15
-                                  delay:0
-                                options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
-                             animations:^{	
-                                 self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
-                                 self.alpha = 1;
-                             }
-                             completion:NULL];
-        }
-        
-        [self setNeedsDisplay];
-    });
+        [UIView animateWithDuration:0.15
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
+                             self.alpha = 1;
+                         }
+                         completion:NULL];
+    }
+    
+    [self setNeedsDisplay];
 }
 
 
@@ -386,42 +384,37 @@
     if(![SVProgressHUD isVisible])
         [SVProgressHUD show];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.imageView.image = image;
-        self.imageView.hidden = NO;
-        [self setStatus:string];
-        [self.spinnerView stopAnimating];
-        
-        self.fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
-    });
+    self.imageView.image = image;
+    self.imageView.hidden = NO;
+    [self setStatus:string];
+    [self.spinnerView stopAnimating];
+    
+    self.fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
 }
 
 
 - (void)dismiss {
-    dispatch_async(dispatch_get_main_queue(), ^{
-
-        [UIView animateWithDuration:0.15
-                              delay:0
-                            options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
-                         animations:^{	
-                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
-                             self.alpha = 0;
+    [UIView animateWithDuration:0.15
+                          delay:0
+                        options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
+                         self.alpha = 0;
+                     }
+                     completion:^(BOOL finished){
+                         if(self.alpha == 0) {
+                             [[NSNotificationCenter defaultCenter] removeObserver:self];
+                             [hudView removeFromSuperview];
+                             hudView = nil;
+                             
+                             [overlayWindow removeFromSuperview];
+                             overlayWindow = nil;
+                             
+                             // uncomment to make sure UIWindow is gone from app.windows
+                             //NSLog(@"%@", [UIApplication sharedApplication].windows);
+                             //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
                          }
-                         completion:^(BOOL finished){ 
-                             if(self.alpha == 0) {
-                                 [[NSNotificationCenter defaultCenter] removeObserver:self];
-                                 [hudView removeFromSuperview];
-                                 hudView = nil;
-
-                                 [overlayWindow removeFromSuperview];
-                                 overlayWindow = nil;
-                                 
-                                 // uncomment to make sure UIWindow is gone from app.windows
-                                 //NSLog(@"%@", [UIApplication sharedApplication].windows);
-                                 //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
-                             }
-                         }];
-    });
+                     }];
 }
 
 #pragma mark - Utilities
