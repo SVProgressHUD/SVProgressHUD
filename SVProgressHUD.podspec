@@ -14,4 +14,5 @@ Pod::Spec.new do |s|
   s.preserve_paths  = 'Demo'
   s.framework    = 'QuartzCore'
   s.resources    = 'SVProgressHUD/SVProgressHUD.bundle'
+  s.requires_arc = true
 end
