@@ -11,12 +11,12 @@
 @class ViewController;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    ViewController *viewController;
+    UIWindow *__weak window;
+    ViewController *__weak viewController;
 }
 
-@property (nonatomic) IBOutlet UIWindow *window;
-@property (nonatomic) IBOutlet ViewController *viewController;
+@property (weak, nonatomic) IBOutlet UIWindow *window;
+@property (weak, nonatomic) IBOutlet ViewController *viewController;
 
 @end
 
