@@ -10,13 +10,10 @@
 
 @class ViewController;
 
-@interface AppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *__weak window;
-    ViewController *__weak viewController;
-}
+@interface AppDelegate : NSObject <UIApplicationDelegate>
 
-@property (weak, nonatomic) IBOutlet UIWindow *window;
-@property (weak, nonatomic) IBOutlet ViewController *viewController;
+@property (strong, nonatomic) IBOutlet UIWindow *window;
+@property (strong, nonatomic) IBOutlet ViewController *viewController;
 
 @end
 
