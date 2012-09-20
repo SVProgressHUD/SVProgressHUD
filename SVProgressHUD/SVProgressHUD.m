@@ -23,7 +23,9 @@
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
-- (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show;
+@property (nonatomic, copy) void (^cancelBlock)(void);
+
+- (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show cancelBlock:(void(^)(void))block;
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
 - (void)dismiss;
 
@@ -32,15 +34,18 @@
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
 - (void)positionHUD:(NSNotification*)notification;
 
+- (IBAction)tapHudAction:(id)sender;
+
 @end
 
 
 @implementation SVProgressHUD
 
-@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
+@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight, cancelBlock;
 
 - (void)dealloc {
 	self.fadeOutTimer = nil;
+    self.cancelBlock = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -60,19 +65,35 @@
 #pragma mark - Show Methods
 
 + (void)show {
-    [[SVProgressHUD sharedView] showWithStatus:nil maskType:SVProgressHUDMaskTypeNone networkIndicator:NO];
+    [[SVProgressHUD sharedView] showWithStatus:nil maskType:SVProgressHUDMaskTypeNone networkIndicator:NO cancelBlock:nil];
+}
+
++ (void)showWithCancelBlock:(void (^)(void))block {
+    [[SVProgressHUD sharedView] showWithStatus:nil maskType:SVProgressHUDMaskTypeGradient networkIndicator:NO cancelBlock:block];
 }
 
 + (void)showWithStatus:(NSString *)status {
-    [[SVProgressHUD sharedView] showWithStatus:status maskType:SVProgressHUDMaskTypeNone networkIndicator:NO];
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:SVProgressHUDMaskTypeNone networkIndicator:NO cancelBlock:nil];
+}
+
++ (void)showWithStatus:(NSString*)status cancelBlock:(void (^)(void))block {
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:SVProgressHUDMaskTypeGradient networkIndicator:NO cancelBlock:block];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
-    [[SVProgressHUD sharedView] showWithStatus:nil maskType:maskType networkIndicator:NO];
+    [[SVProgressHUD sharedView] showWithStatus:nil maskType:maskType networkIndicator:NO cancelBlock:nil];
+}
+
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType cancelBlock:(void (^)(void))block {
+    [[SVProgressHUD sharedView] showWithStatus:nil maskType:maskType networkIndicator:NO cancelBlock:block];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:NO];
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:NO cancelBlock:nil];
+}
+
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType cancelBlock:(void (^)(void))block {
+    [[SVProgressHUD sharedView] showWithStatus:status maskType:maskType networkIndicator:NO cancelBlock:block];
 }
 
 #pragma mark - Show then dismiss methods
@@ -338,7 +359,7 @@
 
 #pragma mark - Master show/dismiss methods
 
-- (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
+- (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show cancelBlock:(void(^)(void))block {
     if(!self.superview)
         [self.overlayWindow addSubview:self];
     
@@ -349,11 +370,17 @@
     [self setStatus:string];
     [self.spinnerView startAnimating];
     
-    if(self.maskType != SVProgressHUDMaskTypeNone) {
+    // if maskType == SVProgressHUDMaskTypeNone && block ,then can't interaction outside hudView
+    // i think SVProgressHUDMaskTypeNone and block shouldn't be used at the same time
+    if(self.maskType != SVProgressHUDMaskTypeNone || block) {
+        self.userInteractionEnabled = YES;
         self.overlayWindow.userInteractionEnabled = YES;
     } else {
+        self.userInteractionEnabled = NO;
         self.overlayWindow.userInteractionEnabled = NO;
     }
+    
+    self.cancelBlock = block;
     
     [self.overlayWindow setHidden:NO];
     [self positionHUD:nil];
@@ -387,6 +414,8 @@
     
     self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
     [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
+    
+    self.cancelBlock = nil;
 }
 
 
@@ -412,6 +441,8 @@
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
                          }
                      }];
+    
+    self.cancelBlock = nil;
 }
 
 #pragma mark - Utilities
@@ -440,6 +471,8 @@
 		hudView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
         hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
+        
+        [hudView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHudAction:)]];
         
         [self addSubview:hudView];
     }
@@ -518,6 +551,14 @@
         return foundKeyboard.bounds.size.height;
     
     return 0;
+}
+
+# pragma mark - Tap Action
+- (void) tapHudAction:(id)sender {
+    if (self.cancelBlock) {
+        self.cancelBlock();
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Cancelled", nil)];
+    }
 }
 
 @end

@@ -24,7 +24,10 @@
 }
 
 - (void)showWithStatus {
-	[SVProgressHUD showWithStatus:@"Doing Stuff"];
+//	[SVProgressHUD showWithStatus:@"Doing Stuff"];
+    [SVProgressHUD showWithStatus:@"Doing Stuff" cancelBlock:^{
+        NSLog(@"cancel something here");
+    }];
 }
 
 
