@@ -22,10 +22,14 @@ typedef NSUInteger SVProgressHUDMaskType;
 @interface SVProgressHUD : UIView
 
 + (void)show;
++ (void)showWithCancelBlock:(void (^)(void))block;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType cancelBlock:(void (^)(void))block;
 
 + (void)showWithStatus:(NSString*)status;
++ (void)showWithStatus:(NSString*)status cancelBlock:(void (^)(void))block;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType cancelBlock:(void (^)(void))block;
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 
