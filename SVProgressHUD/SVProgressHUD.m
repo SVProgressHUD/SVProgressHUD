@@ -407,6 +407,13 @@
                              [overlayWindow removeFromSuperview];
                              overlayWindow = nil;
                              
+                             [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id window, NSUInteger idx, BOOL *stop) {
+                                 if([window isMemberOfClass:[UIWindow class]]) {
+                                     [window makeKeyWindow];
+                                     *stop = YES;
+                                 }
+                             }];
+                             
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
