@@ -452,7 +452,11 @@
 		stringLabel.textColor = [UIColor whiteColor];
 		stringLabel.backgroundColor = [UIColor clearColor];
 		stringLabel.adjustsFontSizeToFitWidth = YES;
-		stringLabel.textAlignment = UITextAlignmentCenter;
+		#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
+			stringLabel.textAlignment = UITextAlignmentCenter;
+		#else
+			stringLabel.textAlignment = NSTextAlignmentCenter;
+		#endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 		stringLabel.font = [UIFont boldSystemFontOfSize:16];
 		stringLabel.shadowColor = [UIColor blackColor];
