@@ -361,7 +361,14 @@
     if(self.alpha != 1) {
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-        
+        if (self.maskType == SVProgressHUDMaskTypeNone) {
+            self.hudView.accessibilityLabel = string;
+            self.hudView.isAccessibilityElement = YES;
+        } else {
+            self.accessibilityLabel = string;
+            self.isAccessibilityElement = YES;
+        }
+
         [UIView animateWithDuration:0.15
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
@@ -369,9 +376,12 @@
                              self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
                              self.alpha = 1;
                          }
-                         completion:NULL];
+                         completion:^(BOOL finished){
+                             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, string);
+                         }];
     }
-    
+
+
     [self setNeedsDisplay];
 }
 
@@ -406,7 +416,9 @@
                              
                              [overlayWindow removeFromSuperview];
                              overlayWindow = nil;
-                             
+
+                             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
