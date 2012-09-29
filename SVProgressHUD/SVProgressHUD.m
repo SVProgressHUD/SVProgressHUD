@@ -351,23 +351,20 @@
     
     if(self.maskType != SVProgressHUDMaskTypeNone) {
         self.overlayWindow.userInteractionEnabled = YES;
+        self.accessibilityLabel = string;
+        self.isAccessibilityElement = YES;
     } else {
         self.overlayWindow.userInteractionEnabled = NO;
+        self.hudView.accessibilityLabel = string;
+        self.hudView.isAccessibilityElement = YES;
     }
-    
+
     [self.overlayWindow setHidden:NO];
     [self positionHUD:nil];
     
     if(self.alpha != 1) {
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-        if (self.maskType == SVProgressHUDMaskTypeNone) {
-            self.hudView.accessibilityLabel = string;
-            self.hudView.isAccessibilityElement = YES;
-        } else {
-            self.accessibilityLabel = string;
-            self.isAccessibilityElement = YES;
-        }
 
         [UIView animateWithDuration:0.15
                               delay:0
