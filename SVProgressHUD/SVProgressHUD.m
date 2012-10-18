@@ -351,17 +351,21 @@
     
     if(self.maskType != SVProgressHUDMaskTypeNone) {
         self.overlayWindow.userInteractionEnabled = YES;
+        self.accessibilityLabel = string;
+        self.isAccessibilityElement = YES;
     } else {
         self.overlayWindow.userInteractionEnabled = NO;
+        self.hudView.accessibilityLabel = string;
+        self.hudView.isAccessibilityElement = YES;
     }
-    
+
     [self.overlayWindow setHidden:NO];
     [self positionHUD:nil];
     
     if(self.alpha != 1) {
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-        
+
         [UIView animateWithDuration:0.15
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
@@ -369,9 +373,12 @@
                              self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
                              self.alpha = 1;
                          }
-                         completion:NULL];
+                         completion:^(BOOL finished){
+                             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, string);
+                         }];
     }
-    
+
+
     [self setNeedsDisplay];
 }
 
@@ -406,7 +413,9 @@
                              
                              [overlayWindow removeFromSuperview];
                              overlayWindow = nil;
-                             
+
+                             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
@@ -452,7 +461,11 @@
 		stringLabel.textColor = [UIColor whiteColor];
 		stringLabel.backgroundColor = [UIColor clearColor];
 		stringLabel.adjustsFontSizeToFitWidth = YES;
-		stringLabel.textAlignment = UITextAlignmentCenter;
+		#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
+			stringLabel.textAlignment = UITextAlignmentCenter;
+		#else
+			stringLabel.textAlignment = NSTextAlignmentCenter;
+		#endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 		stringLabel.font = [UIFont boldSystemFontOfSize:16];
 		stringLabel.shadowColor = [UIColor blackColor];
