@@ -38,6 +38,9 @@
 @implementation SVProgressHUD
 
 @synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+@synthesize hudBackgroundColor, hudForegroundColor, hudStatusShadowColor, hudFont;
+#endif
 
 - (void)dealloc {
 	self.fadeOutTimer = nil;
@@ -132,6 +135,24 @@
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+        // UIAppearance
+        self.hudBackgroundColor = [[[self class] appearance] hudBackgroundColor];
+        if(self.hudBackgroundColor == nil)
+            self.hudBackgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+        
+        self.hudForegroundColor = [[[self class] appearance] hudForegroundColor];
+        if(self.hudForegroundColor == nil)
+            self.hudForegroundColor = [UIColor whiteColor];
+        
+        self.hudStatusShadowColor = [[[self class] appearance] hudStatusShadowColor];
+        if(self.hudStatusShadowColor == nil)
+            self.hudStatusShadowColor = [UIColor blackColor];
+        
+        self.hudFont = [[[self class] appearance] hudFont];
+        if(self.hudFont == nil)
+            self.hudFont = [UIFont boldSystemFontOfSize:16];
+#endif
     }
 	
     return self;
@@ -446,7 +467,11 @@
     if(!hudView) {
         hudView = [[UIView alloc] initWithFrame:CGRectZero];
         hudView.layer.cornerRadius = 10;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+		hudView.backgroundColor = self.hudBackgroundColor;
+#else
 		hudView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+#endif
         hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
         
@@ -458,7 +483,6 @@
 - (UILabel *)stringLabel {
     if (stringLabel == nil) {
         stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-		stringLabel.textColor = [UIColor whiteColor];
 		stringLabel.backgroundColor = [UIColor clearColor];
 		stringLabel.adjustsFontSizeToFitWidth = YES;
 		#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
@@ -467,8 +491,15 @@
 			stringLabel.textAlignment = NSTextAlignmentCenter;
 		#endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+		stringLabel.textColor = self.hudForegroundColor;
+		stringLabel.font = self.hudFont;
+		stringLabel.shadowColor = self.hudStatusShadowColor;
+#else
+		stringLabel.textColor = [UIColor whiteColor];
 		stringLabel.font = [UIFont boldSystemFontOfSize:16];
 		stringLabel.shadowColor = [UIColor blackColor];
+#endif
 		stringLabel.shadowOffset = CGSizeMake(0, -1);
         stringLabel.numberOfLines = 0;
     }
@@ -494,6 +525,9 @@
         spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		spinnerView.hidesWhenStopped = YES;
 		spinnerView.bounds = CGRectMake(0, 0, 37, 37);
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+        spinnerView.color = self.hudForegroundColor;
+#endif
     }
     
     if(!spinnerView.superview)
