@@ -39,11 +39,6 @@
 
 @synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
 
-- (void)dealloc {
-	self.fadeOutTimer = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
