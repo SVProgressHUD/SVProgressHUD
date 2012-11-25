@@ -351,6 +351,10 @@
             self.overlayWindow.userInteractionEnabled = NO;
         }
         
+        UIWindow* keyWindow = [[UIApplication sharedApplication] keyWindow];
+        if(keyWindow != self.overlayWindow && keyWindow.windowLevel>self.overlayWindow.windowLevel) {
+            self.overlayWindow.windowLevel = keyWindow.windowLevel+1;
+        }
         [self.overlayWindow makeKeyAndVisible];
         [self positionHUD:nil];
         
