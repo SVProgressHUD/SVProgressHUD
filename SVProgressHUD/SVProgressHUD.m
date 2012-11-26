@@ -433,6 +433,7 @@
         overlayWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         overlayWindow.backgroundColor = [UIColor clearColor];
         overlayWindow.userInteractionEnabled = NO;
+        overlayWindow.windowLevel = UIWindowLevelStatusBar;
     }
     return overlayWindow;
 }
