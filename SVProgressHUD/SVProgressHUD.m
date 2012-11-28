@@ -18,7 +18,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
 @property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
 
-@property (nonatomic, strong, readonly) UIWindow *overlayWindow;
+@property (nonatomic, strong, readonly) UIView *overlayView;
 @property (nonatomic, strong, readonly) UIView *hudView;
 @property (nonatomic, strong, readonly) UILabel *stringLabel;
 @property (nonatomic, strong, readonly) UIImageView *imageView;
@@ -51,8 +51,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 @implementation SVProgressHUD
 
-@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
-
+@synthesize overlayView, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
 
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
@@ -60,7 +59,6 @@ CGFloat SVProgressHUDRingThickness = 6;
     dispatch_once(&once, ^ { sharedView = [[SVProgressHUD alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
     return sharedView;
 }
-
 
 + (void)setStatus:(NSString *)string {
 	[[SVProgressHUD sharedView] setStatus:string];
@@ -369,7 +367,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
     if(!self.superview)
-        [self.overlayWindow addSubview:self];
+        [self.overlayView addSubview:self];
     
     self.fadeOutTimer = nil;
     self.imageView.hidden = YES;
@@ -390,17 +388,17 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
     
     if(self.maskType != SVProgressHUDMaskTypeNone) {
-        self.overlayWindow.userInteractionEnabled = YES;
+        self.overlayView.userInteractionEnabled = YES;
         self.accessibilityLabel = string;
         self.isAccessibilityElement = YES;
-    }
-    else {
-        self.overlayWindow.userInteractionEnabled = NO;
+    } else {
+        self.overlayView.userInteractionEnabled = NO;
         self.hudView.accessibilityLabel = string;
         self.hudView.isAccessibilityElement = YES;
     }
-
-    [self.overlayWindow setHidden:NO];
+    
+    [UIApplication.sharedApplication.keyWindow addSubview:self.overlayView];
+    [self.overlayView setHidden:NO];
     [self positionHUD:nil];
     
     if(self.alpha != 1) {
@@ -455,16 +453,8 @@ CGFloat SVProgressHUDRingThickness = 6;
                              [hudView removeFromSuperview];
                              hudView = nil;
                              
-                             [overlayWindow removeFromSuperview];
-                             overlayWindow = nil;
-                             
-                             // fixes bug where keyboard wouldn't return as keyWindow upon dismissal of HUD
-                             [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id window, NSUInteger idx, BOOL *stop) {
-                                 if([window isMemberOfClass:[UIWindow class]]) {
-                                     [window makeKeyWindow];
-                                     *stop = YES;
-                                 }
-                             }];
+                             [self.overlayView removeFromSuperview];
+                             overlayView = nil;
 
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 
@@ -560,15 +550,14 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 #pragma mark - Getters
 
-- (UIWindow *)overlayWindow {
-    if(!overlayWindow) {
-        overlayWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        overlayWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        overlayWindow.backgroundColor = [UIColor clearColor];
-        overlayWindow.userInteractionEnabled = NO;
-        overlayWindow.windowLevel = UIWindowLevelStatusBar;
+- (UIView *)overlayView {
+    if(!overlayView) {
+        overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        overlayView.backgroundColor = [UIColor clearColor];
+        overlayView.userInteractionEnabled = NO;
     }
-    return overlayWindow;
+    return overlayView;
 }
 
 - (UIView *)hudView {
