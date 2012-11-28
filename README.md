@@ -2,17 +2,10 @@ _**If your project doesn't use ARC**: you must add the `-fobjc-arc` compiler fla
 
 # SVProgressHUD
 
-SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It's a simplified and prettified alternative to the popular [MBProgressHUD](https://github.com/jdg/MBProgressHUD). The success and error icons are from [Glyphish](http://glyphish.com/).
+SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
 
 
-![SVProgressHUD](http://f.cl.ly/items/2I3U2M1g0d34432O3R0q/screenshots.png)
-
-SVProgressHUD features:
-
-* very simple singleton convenience methods (`[SVProgressHUD show]`, `[SVProgressHUD dismiss]`, etc.)
-* display of status strings and/or images to quickly communicate the state of the ongoing task
-* automatic positioning based on device type, orientation and keyboard visibility
-* optionally disable user interactions for ongoing tasks using a `maskType` parameter
+![SVProgressHUD](http://f.cl.ly/items/433a3M1v1b3Z2N343T0O/screenshots2.png)
 
 ## Installation
 
@@ -77,4 +70,4 @@ Or show a confirmation glyph before before getting dismissed 1 second later usin
 
 ## Credits
 
-SVProgressHUD is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by [creating new issues](https://github.com/samvermette/SVProgressHUD/issues/new). If you're using SVProgressHUD in your project, attribution would be nice.
+SVProgressHUD is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). The success and error icons are from [Glyphish](http://glyphish.com/). If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by [creating new issues](https://github.com/samvermette/SVProgressHUD/issues/new). If you're using SVProgressHUD in your project, attribution would be nice.
