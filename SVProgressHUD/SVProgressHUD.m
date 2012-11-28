@@ -10,7 +10,7 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
-CGFloat SVProgressHUDRingRadius = 18;
+CGFloat SVProgressHUDRingRadius = 14;
 CGFloat SVProgressHUDRingThickness = 6;
 
 @interface SVProgressHUD ()
