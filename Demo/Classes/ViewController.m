@@ -32,13 +32,13 @@
 static float progress = 0.0f;
 - (IBAction)showWithProgress:(id)sender {
     progress = 0.0f;
-    [SVProgressHUD showProgress:0 status:@"test"];
+    [SVProgressHUD showProgress:0 status:@"Loading"];
     timer = [NSTimer scheduledTimerWithTimeInterval:0.3f target:self selector:@selector(setProgress) userInfo:nil repeats:YES];
 }
 
 - (void)setProgress {
     progress+=0.1f;
-    [SVProgressHUD showProgress:progress status:@"test"];
+    [SVProgressHUD showProgress:progress status:@"Loading"];
     
     if(progress >= 1.0f) {
         [timer invalidate];

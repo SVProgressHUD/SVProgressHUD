@@ -3,7 +3,7 @@ __*Important note if your project doesn't use ARC*: you must add the @-fobjc-arc
 SVProgressHUD is an easy-to-use, clean and lightweight progress HUD for iOS. It's a simplified and prettified alternative to the popular "MBProgressHUD":https://github.com/jdg/MBProgressHUD. The success and error icons are from "Glyphish":http://glyphish.com/.
 
 
-!http://f.cl.ly/items/231Y2A0t0t1J0B0r3N0p/svprogresshud3.png!
+!http://f.cl.ly/items/2I3U2M1g0d34432O3R0q/screenshots.png!
 
 SVProgressHUD features:
 
@@ -25,9 +25,9 @@ h2. Usage
 
 SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call @[SVProgressHUD method]@).
 
-You can show the status of inderterminate tasks using:
-
 h3. Showing the HUD
+
+You can show the status of inderterminate tasks using:
 
 <pre>
 + (void)show;
@@ -46,7 +46,7 @@ If you'd like the HUD to reflect the progress of a task, use:
 
 h5. SVProgressHUDMaskType
 
-You can optionally disable user interactions while a task is being completed by using the show methods that support the @maskType@ property:
+You can optionally disable user interactions while the HUD is shown using the @maskType@ property:
 
 <pre>
 enum {
