@@ -25,6 +25,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, strong, readonly) UIActivityIndicatorView *spinnerView;
 
 @property (nonatomic, readwrite) CGFloat progress;
+@property (nonatomic, strong) CAShapeLayer *backgroundRingLayer;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
@@ -230,13 +231,13 @@ CGFloat SVProgressHUDRingThickness = 6;
 		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.hudView.bounds)/2)+0.5, 40.5);
         
         if(self.progress != -1)
-            self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), (CGRectGetWidth(self.hudView.bounds)/2-SVProgressHUDRingRadius)-8);
+            self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), (CGRectGetWidth(self.hudView.bounds)/2-SVProgressHUDRingRadius)-8);
 	}
     else {
 		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.hudView.bounds)/2)+0.5, ceil(self.hudView.bounds.size.height/2)+0.5);
         
         if(self.progress != -1)
-            self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetWidth(self.hudView.bounds)/2-SVProgressHUDRingRadius);
+            self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetWidth(self.hudView.bounds)/2-SVProgressHUDRingRadius);
     }
 }
 
@@ -481,18 +482,22 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (CAShapeLayer *)ringLayer {
     if(!_ringLayer) {
-        _ringLayer = [self newRingLayer];
+        CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
+        _ringLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:[UIColor whiteColor]];
         [self.hudView.layer addSublayer:_ringLayer];
     }
     return _ringLayer;
 }
 
-- (CAShapeLayer *)newRingLayer {
-    CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
-    CAShapeLayer *layer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:[UIColor whiteColor]];
-    return layer;
+- (CAShapeLayer *)backgroundRingLayer {
+    if(!_backgroundRingLayer) {
+        CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
+        _backgroundRingLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:[UIColor darkGrayColor]];
+        _backgroundRingLayer.strokeEnd = 1;
+        [self.hudView.layer addSublayer:_backgroundRingLayer];
+    }
+    return _backgroundRingLayer;
 }
-
 
 - (void)cancelRingLayerAnimation {
     [CATransaction begin];
@@ -504,6 +509,11 @@ CGFloat SVProgressHUDRingThickness = 6;
         [_ringLayer removeFromSuperlayer];
     }
     _ringLayer = nil;
+    
+    if (_backgroundRingLayer.superlayer) {
+        [_backgroundRingLayer removeFromSuperlayer];
+    }
+    _backgroundRingLayer = nil;
     
     [CATransaction commit];
 }
