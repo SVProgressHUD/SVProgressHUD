@@ -29,49 +29,49 @@ h3. Showing the HUD
 
 You can show the status of inderterminate tasks using:
 
-<pre>
+```objective-c
 + (void)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)string;
 + (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)maskType;
-</pre>
+```
 
 If you'd like the HUD to reflect the progress of a task, use:
 
-<pre>
+```objective-c
 + (void)showProgress:(CGFloat)progress;
 + (void)showProgress:(CGFloat)progress status:(NSString*)status;
 + (void)showProgress:(CGFloat)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
-</pre>
+```
 
 h5. SVProgressHUDMaskType
 
 You can optionally disable user interactions while the HUD is shown using the @maskType@ property:
 
-<pre>
+```objective-c
 enum {
     SVProgressHUDMaskTypeNone = 1, // allow user interactions, don't dim background UI (default)
     SVProgressHUDMaskTypeClear, // disable user interactions, don't dim background UI
     SVProgressHUDMaskTypeBlack, // disable user interactions, dim background UI with 50% translucent black
     SVProgressHUDMaskTypeGradient // disable user interactions, dim background UI with translucent radial gradient (a-la-alertView)
 };
-</pre>
+```
 
 h3. Dismissing the HUD
 
 It can be dismissed right away using:
 
-<pre>
+```objective-c
 + (void)dismiss;
-</pre>
+```
 
 Or show a confirmation glyph before before getting dismissed 1 second later using:
 
-<pre>
+```objective-c
 + (void)showSuccessWithStatus:(NSString*)string;
 + (void)showErrorWithStatus:(NSString *)string;
 + (void)showImage:(UIImage*)image status:(NSString*)string; // use 28x28 white pngs
-</pre>
+```
 
 h2. Credits
 
