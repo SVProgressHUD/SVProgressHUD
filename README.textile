@@ -23,7 +23,11 @@ h2. Usage
 
 (see sample Xcode project in @/Demo@)
 
-SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call @[SVProgressHUD method]@) and can be shown using one of the following convenience/class methods:
+SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call @[SVProgressHUD method]@).
+
+You can show the status of inderterminate tasks using:
+
+h3. Showing the HUD
 
 <pre>
 + (void)show;
@@ -32,21 +36,15 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 + (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)maskType;
 </pre>
 
-It can be dismissed using:
+If you'd like the HUD to reflect the progress of a task, use:
 
 <pre>
-+ (void)dismiss;
++ (void)showProgress:(CGFloat)progress;
++ (void)showProgress:(CGFloat)progress status:(NSString*)status;
++ (void)showProgress:(CGFloat)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 </pre>
 
-Optionally, you can have the HUD display a status and/or an image glyph before automatically getting dismissed 1s later (not customizable anymore to discourage lenghty status strings — for which UIAlertViews would be more appropriate).
-
-<pre>
-+ (void)showSuccessWithStatus:(NSString*)string;
-+ (void)showErrorWithStatus:(NSString *)string;
-+ (void)showImage:(UIImage*)image status:(NSString*)string; // use 28x28 white pngs
-</pre>
-
-h3. SVProgressHUDMaskType
+h5. SVProgressHUDMaskType
 
 You can optionally disable user interactions while a task is being completed by using the show methods that support the @maskType@ property:
 
@@ -57,6 +55,22 @@ enum {
     SVProgressHUDMaskTypeBlack, // disable user interactions, dim background UI with 50% translucent black
     SVProgressHUDMaskTypeGradient // disable user interactions, dim background UI with translucent radial gradient (a-la-alertView)
 };
+</pre>
+
+h3. Dismissing the HUD
+
+It can be dismissed right away using:
+
+<pre>
++ (void)dismiss;
+</pre>
+
+Or show a confirmation glyph before before getting dismissed 1 second later using:
+
+<pre>
++ (void)showSuccessWithStatus:(NSString*)string;
++ (void)showErrorWithStatus:(NSString *)string;
++ (void)showImage:(UIImage*)image status:(NSString*)string; // use 28x28 white pngs
 </pre>
 
 h2. Credits
