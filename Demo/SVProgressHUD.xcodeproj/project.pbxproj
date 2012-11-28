@@ -66,6 +66,7 @@
 				2899E5210DE3E06400AC0155 /* ViewController.xib */,
 				1D3623240D0F684500981E51 /* AppDelegate.h */,
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -81,7 +82,6 @@
 		22EBCD17134128130074B281 /* Resources-iPad */ = {
 			isa = PBXGroup;
 			children = (
-				22EBCD18134128130074B281 /* MainWindow-iPad.xib */,
 			);
 			name = "Resources-iPad";
 			sourceTree = "<group>";
@@ -93,7 +93,6 @@
 				2265DEED14706A8900B3EBF7 /* README.textile */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				63ADC4B81364C1360060E45B /* SVProgressHUD */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				22EBCD17134128130074B281 /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -105,17 +104,19 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				22EBCD18134128130074B281 /* MainWindow-iPad.xib */,
+				8D1107310486CEB800E47090 /* SVProgressHUD-Info.plist */,
 				32CA4F630368D1EE00C91783 /* SVProgressHUD_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
-				8D1107310486CEB800E47090 /* SVProgressHUD-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
