@@ -24,6 +24,9 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 
++ (void)showRingWithProgress:(CGFloat)progress;
++ (void)setRingProgress:(CGFloat)progress;
+
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 

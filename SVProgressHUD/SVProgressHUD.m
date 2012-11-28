@@ -21,6 +21,10 @@
 @property (nonatomic, strong, readonly) UIImageView *imageView;
 @property (nonatomic, strong, readonly) UIActivityIndicatorView *spinnerView;
 
+@property (nonatomic, assign) CGFloat progress;
+@property (nonatomic, strong) CAShapeLayer *ringLayer;
+@property (nonatomic, strong) CAShapeLayer *bgRingLayer;
+
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show;
@@ -60,6 +64,14 @@
 
 + (void)showWithStatus:(NSString *)status {
     [[SVProgressHUD sharedView] showWithStatus:status maskType:SVProgressHUDMaskTypeNone networkIndicator:NO];
+}
+
++ (void)showRingWithProgress:(CGFloat)progress {
+    [[SVProgressHUD sharedView] showRingWithProgress:progress];
+}
+
++ (void)setRingProgress:(CGFloat)progress {
+    [[SVProgressHUD sharedView] setRingProgress:progress];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
@@ -334,6 +346,7 @@
 #pragma mark - Master show/dismiss methods
 
 - (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
+    [self cancelRingLayerAnimation];
     if(!self.superview)
         [self.overlayWindow addSubview:self];
     
@@ -379,6 +392,7 @@
 
 
 - (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
+    [self cancelRingLayerAnimation];
     if(![SVProgressHUD isVisible])
         [SVProgressHUD show];
     
@@ -393,6 +407,7 @@
 
 
 - (void)dismiss {
+    [self cancelRingLayerAnimation];
     [UIView animateWithDuration:0.15
                           delay:0
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
@@ -424,6 +439,116 @@
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
                          }
                      }];
+}
+
+
+#pragma mark -
+#pragma mark Ring progress animation
+
+- (void)showRingWithProgress:(CGFloat)progress {
+    [self cancelRingLayerAnimation];
+    
+    if(![SVProgressHUD isVisible])
+        [SVProgressHUD show];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        self.imageView.image = nil;
+        self.imageView.hidden = NO;
+        [self setStatus:[NSString stringWithFormat:@"%d%%", (int)(progress*100)]];
+        [self.spinnerView stopAnimating];
+        
+        CGPoint center = CGPointMake( CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2 );
+        self.stringLabel.center = center;
+        
+        self.progress = progress;
+        
+        if (!_ringLayer) {
+            CAShapeLayer *ringLayer = [self createRingLayerWithCenter:center radius:30 lineWidth:3 color:[UIColor whiteColor]];
+            self.ringLayer = ringLayer;
+        }
+        if (!_bgRingLayer) {
+            CAShapeLayer *bgLayer = [self createRingLayerWithCenter:center radius:30 lineWidth:3 color:[UIColor darkGrayColor]];
+            self.bgRingLayer = bgLayer;
+        }
+        [hudView.layer addSublayer:self.bgRingLayer];
+        self.ringLayer.strokeEnd = self.progress;
+        [hudView.layer addSublayer:self.ringLayer];
+        
+    });
+    
+}
+
+- (void)setRingProgress:(CGFloat)progress {
+    _progress = progress;
+    if (_progress > 1.0f) {
+        _progress = 1.0f;
+    }
+    _ringLayer.strokeEnd = progress;
+    self.stringLabel.text = [NSString stringWithFormat:@"%d%%", (int)(progress*100)];
+    
+}
+
+- (void)cancelRingLayerAnimation {
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    [hudView.layer removeAllAnimations];
+    
+    _ringLayer.strokeEnd = 0.0f;
+    if (_ringLayer.superlayer) {
+        [_ringLayer removeFromSuperlayer];
+    }
+    _ringLayer = nil;
+    
+    _bgRingLayer.strokeEnd = 0.0f;
+    if (_bgRingLayer.superlayer) {
+        [_bgRingLayer removeFromSuperlayer];
+    }
+    _bgRingLayer = nil;
+    
+    [CATransaction commit];
+}
+
+- (CGPoint)pointOnCircleWithCenter:(CGPoint)center radius:(double)radius angleInDegrees:(double)angleInDegrees {
+    float x = (float)(radius * cos(angleInDegrees * M_PI / 180)) + center.x;
+    float y = (float)(radius * sin(angleInDegrees * M_PI / 180)) + center.y;
+    return CGPointMake(x, y);
+}
+
+
+- (UIBezierPath *)createCirclePathWithCenter:(CGPoint)center radius:(CGFloat)radius sampleCount:(NSInteger)sampleCount {
+    
+    UIBezierPath *smoothedPath = [UIBezierPath bezierPath];
+    CGPoint startPoint = [self pointOnCircleWithCenter:center radius:radius angleInDegrees:-90];
+    
+    [smoothedPath moveToPoint:startPoint];
+    
+    CGFloat delta = 360.0f/sampleCount;
+    CGFloat angleInDegrees = -90;
+    for (NSInteger i=1; i<sampleCount; i++) {
+        angleInDegrees += delta;
+        CGPoint point = [self pointOnCircleWithCenter:center radius:radius angleInDegrees:angleInDegrees];
+        [smoothedPath addLineToPoint:point];
+    }
+    
+    [smoothedPath addLineToPoint:startPoint];
+    
+    return smoothedPath;
+}
+
+
+- (CAShapeLayer *)createRingLayerWithCenter:(CGPoint)center radius:(CGFloat)radius lineWidth:(CGFloat)lineWidth color:(UIColor *)color {
+    
+    UIBezierPath *smoothedPath = [self createCirclePathWithCenter:center radius:radius sampleCount:72];
+    
+    CAShapeLayer *slice = [CAShapeLayer layer];
+    slice.fillColor = [UIColor clearColor].CGColor;
+    slice.strokeColor = color.CGColor;
+    slice.lineWidth = lineWidth;
+    slice.lineCap = kCALineJoinRound;
+    slice.lineJoin = kCALineJoinRound;
+    slice.path = smoothedPath.CGPath;
+    return slice;
 }
 
 #pragma mark - Utilities
