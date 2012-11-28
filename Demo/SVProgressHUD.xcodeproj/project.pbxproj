@@ -82,13 +82,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		22EBCD17134128130074B281 /* Resources-iPad */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Resources-iPad";
-			sourceTree = "<group>";
-		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,8 +89,6 @@
 				2265DEED14706A8900B3EBF7 /* README.textile */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				63ADC4B81364C1360060E45B /* SVProgressHUD */,
-				29B97317FDCFA39411CA2CEA /* Resources */,
-				22EBCD17134128130074B281 /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -115,13 +106,6 @@
 			);
 			name = "Other Sources";
 			path = ..;
-			sourceTree = "<group>";
-		};
-		29B97317FDCFA39411CA2CEA /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
