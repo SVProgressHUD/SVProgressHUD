@@ -45,7 +45,6 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (void)registerNotifications;
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
 - (void)positionHUD:(NSNotification*)notification;
-- (CAShapeLayer*)newRingLayer;
 
 @end
 
