@@ -368,8 +368,10 @@ CGFloat SVProgressHUDRingThickness = 6;
 #pragma mark - Master show/dismiss methods
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType networkIndicator:(BOOL)show {
-    if(!self.superview)
-        [self.overlayWindow addSubview:self];
+    if(!self.superview){
+        self.overlayWindow.rootViewController = [[UIViewController alloc] init];
+        [self.overlayWindow.rootViewController.view addSubview:self];
+    }
     
     self.fadeOutTimer = nil;
     self.imageView.hidden = YES;
