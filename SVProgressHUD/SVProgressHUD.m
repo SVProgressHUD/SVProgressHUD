@@ -198,22 +198,29 @@ CGFloat SVProgressHUDRingThickness = 6;
     CGRect labelRect = CGRectZero;
     
     NSString *string = self.stringLabel.text;
+    // False if it's text-only
+    BOOL imageUsed = (self.imageView.image) || (self.imageView.hidden);
     
     if(string) {
         CGSize stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
         stringWidth = stringSize.width;
         stringHeight = stringSize.height;
-        hudHeight = 80+stringHeight;
+        if (imageUsed)
+            hudHeight = 80+stringHeight;
+        else
+            hudHeight = 20+stringHeight;
         
         if(stringWidth > hudWidth)
             hudWidth = ceil(stringWidth/2)*2;
         
+        CGFloat labelRectY = imageUsed ? 66 : 9;
+        
         if(hudHeight > 100) {
-            labelRect = CGRectMake(12, 66, hudWidth, stringHeight);
+            labelRect = CGRectMake(12, labelRectY, hudWidth, stringHeight);
             hudWidth+=24;
         } else {
             hudWidth+=24;
-            labelRect = CGRectMake(0, 66, hudWidth, stringHeight);
+            labelRect = CGRectMake(0, labelRectY, hudWidth, stringHeight);
         }
     }
 	
@@ -385,7 +392,8 @@ CGFloat SVProgressHUDRingThickness = 6;
     self.maskType = hudMaskType;
     self.progress = progress;
     
-    [self setStatus:string];
+    self.stringLabel.text = string;
+    [self updatePosition];
     
     if(progress >= 0) {
         self.imageView.image = nil;
@@ -441,7 +449,8 @@ CGFloat SVProgressHUDRingThickness = 6;
     
     self.imageView.image = image;
     self.imageView.hidden = NO;
-    [self setStatus:string];
+    self.stringLabel.text = string;
+    [self updatePosition];
     [self.spinnerView stopAnimating];
     
     self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
