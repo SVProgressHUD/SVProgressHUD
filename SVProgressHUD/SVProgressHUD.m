@@ -189,13 +189,15 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 }
 
-- (void)setStatus:(NSString *)string {
+- (void)updatePosition {
 	
     CGFloat hudWidth = 100;
     CGFloat hudHeight = 100;
     CGFloat stringWidth = 0;
     CGFloat stringHeight = 0;
     CGRect labelRect = CGRectZero;
+    
+    NSString *string = self.stringLabel.text;
     
     if(string) {
         CGSize stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
@@ -210,8 +212,8 @@ CGFloat SVProgressHUDRingThickness = 6;
             labelRect = CGRectMake(12, 66, hudWidth, stringHeight);
             hudWidth+=24;
         } else {
-            hudWidth+=24;  
-            labelRect = CGRectMake(0, 66, hudWidth, stringHeight);   
+            hudWidth+=24;
+            labelRect = CGRectMake(0, 66, hudWidth, stringHeight);
         }
     }
 	
@@ -223,7 +225,6 @@ CGFloat SVProgressHUDRingThickness = 6;
        	self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2);
 	
 	self.stringLabel.hidden = NO;
-	self.stringLabel.text = string;
 	self.stringLabel.frame = labelRect;
 	
 	if(string) {
@@ -238,6 +239,14 @@ CGFloat SVProgressHUDRingThickness = 6;
         if(self.progress != -1)
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetWidth(self.hudView.bounds)/2-SVProgressHUDRingRadius);
     }
+    
+}
+
+- (void)setStatus:(NSString *)string {
+    
+	self.stringLabel.text = string;
+    [self updatePosition];
+    
 }
 
 - (void)setFadeOutTimer:(NSTimer *)newTimer {
