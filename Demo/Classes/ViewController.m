@@ -29,6 +29,10 @@
 	[SVProgressHUD showWithStatus:@"Doing Stuff"];
 }
 
+- (void)showWithTextOnlyStatus {
+    [SVProgressHUD showImage:nil status:@"Just some text"];
+}
+
 static float progress = 0.0f;
 - (IBAction)showWithProgress:(id)sender {
     progress = 0.0f;

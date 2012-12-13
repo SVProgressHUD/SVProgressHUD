@@ -12,6 +12,7 @@
 
 - (IBAction)show;
 - (IBAction)showWithStatus;
+- (IBAction)showWithTextOnlyStatus;
 
 - (IBAction)dismiss;
 - (IBAction)dismissSuccess;
