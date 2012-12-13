@@ -62,14 +62,17 @@ static float progress = 0.0f;
 
 - (void)dismiss {
 	[SVProgressHUD dismiss];
+    [timer invalidate];
 }
 
 - (void)dismissSuccess {
 	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
+    [timer invalidate];
 }
 
 - (void)dismissError {
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
+    [timer invalidate];
 }
 
 @end
