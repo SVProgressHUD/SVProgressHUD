@@ -33,13 +33,17 @@ static float progress = 0.0f;
 - (IBAction)showWithProgress:(id)sender {
     progress = 0.0f;
     [SVProgressHUD showProgress:0 status:@"Loading"];
+    if (timer) {
+        [timer invalidate];
+    }
+        
     timer = [NSTimer scheduledTimerWithTimeInterval:0.3f target:self selector:@selector(setProgress) userInfo:nil repeats:YES];
 }
 
 - (void)setProgress {
     progress+=0.1f;
     [SVProgressHUD showProgress:progress status:@"Loading"];
-    
+
     if(progress >= 1.0f) {
         [timer invalidate];
         timer = nil;
@@ -54,14 +58,17 @@ static float progress = 0.0f;
 
 - (void)dismiss {
 	[SVProgressHUD dismiss];
+    [timer invalidate];
 }
 
 - (void)dismissSuccess {
 	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
+    [timer invalidate];
 }
 
 - (void)dismissError {
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
+    [timer invalidate];
 }
 
 @end
