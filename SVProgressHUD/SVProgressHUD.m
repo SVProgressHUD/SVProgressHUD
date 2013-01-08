@@ -442,6 +442,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 
 - (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
+    self.progress = -1;
     [self cancelRingLayerAnimation];
     
     if(![SVProgressHUD isVisible])
