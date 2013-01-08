@@ -45,12 +45,25 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
 - (void)positionHUD:(NSNotification*)notification;
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 50000
+- (UIColor *)hudBackgroundColor;
+- (UIColor *)hudForegroundColor;
+- (UIColor *)hudStatusShadowColor;
+- (UIFont *)hudFont;
+#endif
+
 @end
 
 
 @implementation SVProgressHUD
 
 @synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+@synthesize hudBackgroundColor = _uiHudBgColor;
+@synthesize hudForegroundColor = _uiHudFgColor;
+@synthesize hudStatusShadowColor = _uiHudStatusShColor;
+@synthesize hudFont = _uiHudFont;
+#endif
 
 
 + (SVProgressHUD*)sharedView {
@@ -602,7 +615,10 @@ CGFloat SVProgressHUDRingThickness = 6;
     if(!hudView) {
         hudView = [[UIView alloc] initWithFrame:CGRectZero];
         hudView.layer.cornerRadius = 10;
-		hudView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+
+        // UIAppearance is used when iOS >= 5.0
+		hudView.backgroundColor = self.hudBackgroundColor;
+
         hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
         
@@ -614,7 +630,6 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (UILabel *)stringLabel {
     if (stringLabel == nil) {
         stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-		stringLabel.textColor = [UIColor whiteColor];
 		stringLabel.backgroundColor = [UIColor clearColor];
 		stringLabel.adjustsFontSizeToFitWidth = YES;
 		#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
@@ -623,8 +638,12 @@ CGFloat SVProgressHUDRingThickness = 6;
 			stringLabel.textAlignment = NSTextAlignmentCenter;
 		#endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-		stringLabel.font = [UIFont boldSystemFontOfSize:16];
-		stringLabel.shadowColor = [UIColor blackColor];
+
+        // UIAppearance is used when iOS >= 5.0
+		stringLabel.textColor = self.hudForegroundColor;
+		stringLabel.font = self.hudFont;
+		stringLabel.shadowColor = self.hudStatusShadowColor;
+
 		stringLabel.shadowOffset = CGSizeMake(0, -1);
         stringLabel.numberOfLines = 0;
     }
@@ -650,6 +669,9 @@ CGFloat SVProgressHUDRingThickness = 6;
         spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		spinnerView.hidesWhenStopped = YES;
 		spinnerView.bounds = CGRectMake(0, 0, 37, 37);
+
+        // UIAppearance is used when iOS >= 5.0
+        spinnerView.color = self.hudForegroundColor;
     }
     
     if(!spinnerView.superview)
@@ -674,6 +696,64 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
     
     return 0;
+}
+
+#pragma mark - UIAppearance getters
+
+- (UIColor *)hudBackgroundColor {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudBgColor == nil) {
+        _uiHudBgColor = [[[self class] appearance] hudBackgroundColor];
+    }
+    
+    if(_uiHudBgColor != nil) {
+        return _uiHudBgColor;
+    }
+#endif
+    
+    return [UIColor colorWithWhite:0 alpha:0.8];
+}
+
+- (UIColor *)hudForegroundColor {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudFgColor == nil) {
+        _uiHudFgColor = [[[self class] appearance] hudForegroundColor];
+    }
+    
+    if(_uiHudFgColor != nil) {
+        return _uiHudFgColor;
+    }
+#endif
+    
+    return [UIColor whiteColor];
+}
+
+- (UIColor *)hudStatusShadowColor {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudStatusShColor == nil) {
+        _uiHudStatusShColor = [[[self class] appearance] hudStatusShadowColor];
+    }
+    
+    if(_uiHudStatusShColor != nil) {
+        return _uiHudStatusShColor;
+    }
+#endif
+ 
+    return [UIColor blackColor];
+}
+
+- (UIFont *)hudFont {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudFont == nil) {
+        _uiHudFont = [[[self class] appearance] hudFont];
+    }
+    
+    if(_uiHudFont != nil) {
+        return _uiHudFont;
+    }
+#endif
+    
+    return [UIFont boldSystemFontOfSize:16];
 }
 
 @end
