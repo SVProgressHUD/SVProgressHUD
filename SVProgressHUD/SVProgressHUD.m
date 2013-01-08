@@ -114,17 +114,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/success.png"] status:string];
 }
 
-+ (void)showSuccessWithStatus:(NSString *)string duration:(NSTimeInterval)duration {
-    [SVProgressHUD show];
-    [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/success.png"] status:string];
-}
-
 + (void)showErrorWithStatus:(NSString *)string {
-    [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/error.png"] status:string];
-}
-
-+ (void)showErrorWithStatus:(NSString *)string duration:(NSTimeInterval)duration {
-    [SVProgressHUD show];
     [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/error.png"] status:string];
 }
 
@@ -137,22 +127,6 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 + (void)dismiss {
 	[[SVProgressHUD sharedView] dismiss];
-}
-
-+ (void)dismissWithSuccess:(NSString*)string {
-	[SVProgressHUD showSuccessWithStatus:string];
-}
-
-+ (void)dismissWithSuccess:(NSString *)string afterDelay:(NSTimeInterval)seconds {
-    [[SVProgressHUD sharedView] showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/success.png"] status:string duration:seconds];
-}
-
-+ (void)dismissWithError:(NSString*)string {
-	[SVProgressHUD showErrorWithStatus:string];
-}
-
-+ (void)dismissWithError:(NSString *)string afterDelay:(NSTimeInterval)seconds {
-    [[SVProgressHUD sharedView] showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/error.png"] status:string duration:seconds];
 }
 
 
