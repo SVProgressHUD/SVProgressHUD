@@ -10,6 +10,8 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
+NSInteger SVProgressHUDUnsetTag = 0;
+
 CGFloat SVProgressHUDRingRadius = 14;
 CGFloat SVProgressHUDRingThickness = 6;
 
@@ -29,6 +31,11 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
+
+@property (nonatomic, readwrite) NSInteger alertTag;    // reserving tag for internal use
+
+@property (nonatomic, strong) SVDismissedBlock dismissedBlock;
+@property (nonatomic, strong) SVProgressChangedBlock progressChangedBlock;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -422,6 +429,10 @@ CGFloat SVProgressHUDRingThickness = 6;
                          }];
     }
 
+    if (self.progressChangedBlock != nil && progress >= 0.0f) {
+        self.progressChangedBlock(progress);
+    }
+    
 
     [self setNeedsDisplay];
 }
@@ -445,7 +456,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 
-- (void)dismiss {
+- (void)dismiss {   
     [UIView animateWithDuration:0.15
                           delay:0
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
@@ -473,6 +484,12 @@ CGFloat SVProgressHUDRingThickness = 6;
 
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 
+                             if (self.dismissedBlock != nil) {
+                                 self.dismissedBlock();
+                             }
+
+                             self.alertTag = SVProgressHUDUnsetTag;
+                             
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
@@ -569,6 +586,28 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 + (BOOL)isVisible {
     return ([SVProgressHUD sharedView].alpha == 1);
+}
+
+
+#pragma mark - Alert tagging
+
++ (void)tagAlert:(NSInteger)tag {
+    [SVProgressHUD sharedView].alertTag = tag;
+}
+
++ (NSInteger)alertTag {
+    return [SVProgressHUD sharedView].alertTag;
+}
+
+
+#pragma mark - Block definition
+
++ (void)setDismissedBlock:(SVDismissedBlock)dismissedBlock {
+    [SVProgressHUD sharedView].dismissedBlock = dismissedBlock;
+}
+
++ (void)setProgressChangedBlock:(SVProgressChangedBlock)progressChangedBlock {
+    [SVProgressHUD sharedView].progressChangedBlock = progressChangedBlock;
 }
 
 

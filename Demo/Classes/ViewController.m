@@ -13,6 +13,15 @@
     NSTimer *timer;
 }
 
+- (void)viewDidLoad {
+    [SVProgressHUD setDismissedBlock:^{
+        NSLog(@"HUD was dismissed. Tag: %d", [SVProgressHUD alertTag]);
+    }];
+    
+    [SVProgressHUD setProgressChangedBlock:^(CGFloat progress) {
+        NSLog(@"HUD progress changed: %f", progress);
+    }];
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return YES;
@@ -26,7 +35,8 @@
 }
 
 - (void)showWithStatus {
-	[SVProgressHUD showWithStatus:@"Doing Stuff"];
+    [SVProgressHUD tagAlert:100];
+    [SVProgressHUD showWithStatus:@"Doing Stuff"];
 }
 
 static float progress = 0.0f;
