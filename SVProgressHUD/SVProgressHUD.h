@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
 
+extern NSInteger SVProgressHUDUnsetTag;
+
 enum {
     SVProgressHUDMaskTypeNone = 1, // allow user interactions while HUD is displayed
     SVProgressHUDMaskTypeClear, // don't allow
@@ -18,6 +20,10 @@ enum {
 };
 
 typedef NSUInteger SVProgressHUDMaskType;
+
+typedef void (^SVDismissedBlock)();
+typedef void (^SVProgressChangedBlock)(CGFloat progress);
+
 
 @interface SVProgressHUD : UIView
 
@@ -47,5 +53,11 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)dismiss;
 
 + (BOOL)isVisible;
+
++ (void)tagAlert:(NSInteger)tag;
++ (NSInteger)alertTag;
+
++ (void)setDismissedBlock:(SVDismissedBlock)dismissedBlock;
++ (void)setProgressChangedBlock:(SVProgressChangedBlock)progressChangedBlock;
 
 @end
