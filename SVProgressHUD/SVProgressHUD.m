@@ -420,10 +420,9 @@ CGFloat SVProgressHUDRingThickness = 6;
                          completion:^(BOOL finished){
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, string);
                          }];
+        
+        [self setNeedsDisplay];
     }
-
-
-    [self setNeedsDisplay];
 }
 
 
