@@ -13,7 +13,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		2265DEEE14706A8900B3EBF7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2265DEED14706A8900B3EBF7 /* README.md */; };
 		22A748961630AD6A004893A8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22A748951630AD6A004893A8 /* Default-568h@2x.png */; };
-		22B9D43616B92DC200E71652 /* SVProgressHUD.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 22B9D43516B92DC200E71652 /* SVProgressHUD.podspec */; };
+		22B9D43816B92E4D00E71652 /* SVProgressHUD.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 22B9D43716B92E4D00E71652 /* SVProgressHUD.podspec */; };
 		22D13AB71365FEAC0025FCC9 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22D13AB61365FEAC0025FCC9 /* SVProgressHUD.bundle */; };
 		22EBCD19134128130074B281 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCD18134128130074B281 /* MainWindow-iPad.xib */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
@@ -32,7 +32,7 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2265DEED14706A8900B3EBF7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		22A748951630AD6A004893A8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		22B9D43516B92DC200E71652 /* SVProgressHUD.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SVProgressHUD.podspec; sourceTree = "<group>"; };
+		22B9D43716B92E4D00E71652 /* SVProgressHUD.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SVProgressHUD.podspec; path = ../SVProgressHUD.podspec; sourceTree = "<group>"; };
 		22D13AB61365FEAC0025FCC9 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		22EBCD18134128130074B281 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -88,7 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				2265DEED14706A8900B3EBF7 /* README.md */,
-				22B9D43516B92DC200E71652 /* SVProgressHUD.podspec */,
+				22B9D43716B92E4D00E71652 /* SVProgressHUD.podspec */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				63ADC4B81364C1360060E45B /* SVProgressHUD */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -191,7 +191,7 @@
 				22D13AB71365FEAC0025FCC9 /* SVProgressHUD.bundle in Resources */,
 				2265DEEE14706A8900B3EBF7 /* README.md in Resources */,
 				22A748961630AD6A004893A8 /* Default-568h@2x.png in Resources */,
-				22B9D43616B92DC200E71652 /* SVProgressHUD.podspec in Resources */,
+				22B9D43816B92E4D00E71652 /* SVProgressHUD.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
