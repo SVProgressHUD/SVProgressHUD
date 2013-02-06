@@ -29,6 +29,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
+@property (nonatomic, weak, readonly) UIWindow *keyWindowBeforeShow;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -57,7 +58,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 @implementation SVProgressHUD
 
-@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
+@synthesize overlayWindow, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight, keyWindowBeforeShow;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
 @synthesize hudBackgroundColor = _uiHudBgColor;
 @synthesize hudForegroundColor = _uiHudFgColor;
@@ -391,7 +392,12 @@ CGFloat SVProgressHUDRingThickness = 6;
         [self cancelRingLayerAnimation];
         [self.spinnerView startAnimating];
     }
-    
+
+    // Save the current key window before showing the overlay. If
+    // the overlay becomes the key window, we can restore the previous one
+    // on dismissal.
+    keyWindowBeforeShow = [[UIApplication sharedApplication] keyWindow];
+
     if(self.maskType != SVProgressHUDMaskTypeNone) {
         self.overlayWindow.userInteractionEnabled = YES;
         self.accessibilityLabel = string;
@@ -461,14 +467,10 @@ CGFloat SVProgressHUDRingThickness = 6;
                              
                              [overlayWindow removeFromSuperview];
                              overlayWindow = nil;
-                             
-                             // fixes bug where keyboard wouldn't return as keyWindow upon dismissal of HUD
-                             [[UIApplication sharedApplication].windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id window, NSUInteger idx, BOOL *stop) {
-                                 if([window isMemberOfClass:[UIWindow class]]) {
-                                     [window makeKeyWindow];
-                                     *stop = YES;
-                                 }
-                             }];
+
+                             // Fixes bug where keyboard wouldn't return as keyWindow upon dismissal of HUD
+                             [self.keyWindowBeforeShow makeKeyWindow];
+                             keyWindowBeforeShow = nil;
 
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 
