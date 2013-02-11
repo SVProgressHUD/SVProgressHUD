@@ -443,6 +443,16 @@ CGFloat SVProgressHUDRingThickness = 6;
     [self updatePosition];
     [self.spinnerView stopAnimating];
     
+    if(self.maskType != SVProgressHUDMaskTypeNone) {
+        self.accessibilityLabel = string;
+        self.isAccessibilityElement = YES;
+    } else {
+        self.hudView.accessibilityLabel = string;
+        self.hudView.isAccessibilityElement = YES;
+    }
+
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, string);
+    
     self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
     [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
 }
