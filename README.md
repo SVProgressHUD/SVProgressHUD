@@ -68,6 +68,12 @@ Or show a confirmation glyph before before getting dismissed 1 second later usin
 + (void)showImage:(UIImage*)image status:(NSString*)string; // use 28x28 white pngs
 ```
 
+Default timeout is 1 second - change it using:
+
+```objective-c
++ (void)setDefaultTimeout:(NSTimeIntervall)seconds;
+```
+
 ## Credits
 
 SVProgressHUD is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). The success and error icons are from [Glyphish](http://glyphish.com/). If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by [creating new issues](https://github.com/samvermette/SVProgressHUD/issues/new). If you're using SVProgressHUD in your project, attribution would be nice.
