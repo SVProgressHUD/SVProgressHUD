@@ -22,7 +22,7 @@ SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly a
 
 ### Showing the HUD
 
-You can show the status of inderterminate tasks using:
+You can show the status of indeterminate tasks using:
 
 ```objective-c
 + (void)show;
