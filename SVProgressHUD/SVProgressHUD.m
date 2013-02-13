@@ -374,8 +374,6 @@ CGFloat SVProgressHUDRingThickness = 6;
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
-        NSLog(@"Windows: %@", frontToBackWindows);
-        
         for (UIWindow *window in frontToBackWindows)
             if (window.windowLevel == UIWindowLevelNormal) {
                 [window addSubview:self.overlayView];
