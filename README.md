@@ -71,7 +71,7 @@ Or show a confirmation glyph before before getting dismissed 1 second later usin
 Default timeout is 1 second - change it using:
 
 ```objective-c
-+ (void)setDefaultTimeout:(NSTimeIntervall)seconds;
++ (void)setDefaultTimeout:(NSTimeInterval)seconds;
 ```
 
 ## Credits
