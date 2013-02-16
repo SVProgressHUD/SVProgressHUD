@@ -29,6 +29,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
+@property (nonatomic, readwrite) NSTimeInterval defaultTimeout;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -119,7 +120,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
-    [[SVProgressHUD sharedView] showImage:image status:string duration:1.0];
+    [[SVProgressHUD sharedView] showImage:image status:string duration:[SVProgressHUD sharedView].defaultTimeout];
 }
 
 
@@ -138,6 +139,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 		self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0;
+        self.defaultTimeout = 1.0;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
 	
@@ -741,6 +743,10 @@ CGFloat SVProgressHUDRingThickness = 6;
 #endif
     
     return [UIFont boldSystemFontOfSize:16];
+}
+
++ (void)setDefaultTimeout:(NSTimeInterval)seconds {
+    [SVProgressHUD sharedView].defaultTimeout = seconds;
 }
 
 @end

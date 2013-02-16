@@ -48,4 +48,6 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 + (BOOL)isVisible;
 
++ (void)setDefaultTimeout:(NSTimeInterval)seconds;
+
 @end
