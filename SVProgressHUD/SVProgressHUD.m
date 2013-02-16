@@ -431,7 +431,8 @@ CGFloat SVProgressHUDRingThickness = 6;
                              self.alpha = 1;
                          }
                          completion:^(BOOL finished){
-                             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, string);
+                             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+                             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
                          }];
         
         [self setNeedsDisplay];
@@ -460,7 +461,8 @@ CGFloat SVProgressHUDRingThickness = 6;
         self.hudView.isAccessibilityElement = YES;
     }
 
-    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, string);
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
     
     self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
     [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
