@@ -25,6 +25,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, strong, readonly) UIActivityIndicatorView *spinnerView;
 
 @property (nonatomic, readwrite) CGFloat progress;
+@property (nonatomic, readwrite) NSUInteger activityCount;
 @property (nonatomic, strong) CAShapeLayer *backgroundRingLayer;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
 
@@ -127,6 +128,12 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 #pragma mark - Dismiss Methods
 
++ (void)popActivity {
+    [SVProgressHUD sharedView].activityCount--;
+    if([SVProgressHUD sharedView].activityCount == 0)
+        [[SVProgressHUD sharedView] dismiss];
+}
+
 + (void)dismiss {
 	[[SVProgressHUD sharedView] dismiss];
 }
@@ -141,6 +148,7 @@ CGFloat SVProgressHUDRingThickness = 6;
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.activityCount = 0;
     }
 	
     return self;
@@ -373,6 +381,8 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
     
+    self.activityCount++;
+    
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
@@ -468,8 +478,9 @@ CGFloat SVProgressHUDRingThickness = 6;
     [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
 }
 
-
 - (void)dismiss {
+    self.activityCount = 0;
+    
     [UIView animateWithDuration:0.15
                           delay:0
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
