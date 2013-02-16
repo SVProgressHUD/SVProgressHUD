@@ -44,6 +44,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (void)registerNotifications;
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
 - (void)positionHUD:(NSNotification*)notification;
+- (NSTimeInterval)displayDurationForString:(NSString*)string;
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 50000
 - (UIColor *)hudBackgroundColor;
@@ -119,7 +120,8 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
-    [[SVProgressHUD sharedView] showImage:image status:string duration:1.0];
+    NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForString:string];
+    [[SVProgressHUD sharedView] showImage:image status:string duration:displayInterval];
 }
 
 
@@ -585,6 +587,10 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 
 #pragma mark - Getters
+
+- (NSTimeInterval)displayDurationForString:(NSString*)string {
+    return (float)string.length*0.06 + 0.3;
+}
 
 - (UIView *)overlayView {
     if(!overlayView) {
