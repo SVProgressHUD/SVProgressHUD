@@ -60,6 +60,14 @@ It can be dismissed right away using:
 + (void)dismiss;
 ```
 
+If you'd like to stack HUDs, you can balance out every show call using:
+
+```objective-c
++ (void)popActivity;
+```
+
+The HUD will get dismissed once the `popActivity` calls will match the number of show calls.  
+
 Or show a confirmation glyph before before getting dismissed 1 second later using:
 
 ```objective-c
