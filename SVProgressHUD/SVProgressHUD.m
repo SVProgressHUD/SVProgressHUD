@@ -10,6 +10,8 @@
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
+NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
+
 CGFloat SVProgressHUDRingRadius = 14;
 CGFloat SVProgressHUDRingThickness = 6;
 
@@ -18,7 +20,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
 @property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
 
-@property (nonatomic, strong, readonly) UIView *overlayView;
+@property (nonatomic, strong, readonly) UIButton *overlayView;
 @property (nonatomic, strong, readonly) UIView *hudView;
 @property (nonatomic, strong, readonly) UILabel *stringLabel;
 @property (nonatomic, strong, readonly) UIImageView *imageView;
@@ -377,6 +379,10 @@ CGFloat SVProgressHUDRingThickness = 6;
     self.hudView.center = newCenter;
 }
 
+- (void)overlayViewDidReceiveTouchEvent {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification object:self];
+}
+
 #pragma mark - Master show/dismiss methods
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
@@ -605,12 +611,13 @@ CGFloat SVProgressHUDRingThickness = 6;
     return (float)string.length*0.06 + 0.3;
 }
 
-- (UIView *)overlayView {
+- (UIButton *)overlayView {
     if(!overlayView) {
-        overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        overlayView = [[UIButton alloc] initWithFrame:[UIScreen mainScreen].bounds];
         overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         overlayView.backgroundColor = [UIColor clearColor];
-        overlayView.userInteractionEnabled = NO;
+        overlayView.userInteractionEnabled = YES;
+        [overlayView addTarget:self action:@selector(overlayViewDidReceiveTouchEvent) forControlEvents:UIControlEventTouchUpInside];
     }
     return overlayView;
 }

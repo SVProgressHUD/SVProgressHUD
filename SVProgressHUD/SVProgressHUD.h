@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
 
+extern NSString * const SVProgressHUDDidReceiveTouchEventNotification;
+
 enum {
     SVProgressHUDMaskTypeNone = 1, // allow user interactions while HUD is displayed
     SVProgressHUDMaskTypeClear, // don't allow
