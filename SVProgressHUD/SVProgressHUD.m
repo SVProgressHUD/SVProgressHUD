@@ -380,7 +380,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 - (void)overlayViewDidReceiveTouchEvent {
-    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification object:nil];
 }
 
 #pragma mark - Master show/dismiss methods
