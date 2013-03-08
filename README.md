@@ -1,18 +1,21 @@
-_**If your project doesn't use ARC**: you must add the `-fobjc-arc` compiler flag to `SVProgressHUD.m` in Target Settings > Build Phases > Compile Sources._
-
 # SVProgressHUD
 
 SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
-
 
 ![SVProgressHUD](http://f.cl.ly/items/3r2x0b1E1O2F0V422a3R/screenshots2.png)
 
 ## Installation
 
+### From CocoaPods
+
+Add `pod 'SVProgressHUD'` to your Podfile or `pod 'SVProgressHUD', :head` if you're feeling adventurous.
+
+### Manually
+
+_**Important note if your project doesn't use ARC**: you must add the `-fobjc-arc` compiler flag to `SVProgressHUD.m` in Target Settings > Build Phases > Compile Sources._
+
 * Drag the `SVProgressHUD/SVProgressHUD` folder into your project.
 * Add the **QuartzCore** framework to your project.
-
-_If you plan on using SVProgressHUD in a lot of places inside your app, I recommend importing it directly inside your prefix file._
 
 ## Usage
 
