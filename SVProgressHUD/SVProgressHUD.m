@@ -387,8 +387,6 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
     
-    self.activityCount++;
-    
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
@@ -415,8 +413,12 @@ CGFloat SVProgressHUDRingThickness = 6;
         self.imageView.hidden = NO;
         [self.spinnerView stopAnimating];
         self.ringLayer.strokeEnd = progress;
+        
+        if(progress == 0)
+            self.activityCount++;
     }
     else {
+        self.activityCount++;
         [self cancelRingLayerAnimation];
         [self.spinnerView startAnimating];
     }
