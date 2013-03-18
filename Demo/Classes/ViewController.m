@@ -49,7 +49,7 @@ static float progress = 0.0f;
 #pragma mark Dismiss Methods Sample
 
 - (void)dismiss {
-	[SVProgressHUD popActivity];
+	[SVProgressHUD dismiss];
 }
 
 - (void)dismissSuccess {
