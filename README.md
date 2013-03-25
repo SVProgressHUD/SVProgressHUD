@@ -12,7 +12,7 @@ Add `pod 'SVProgressHUD'` to your Podfile or `pod 'SVProgressHUD', :head` if you
 
 ### Manually
 
-_**Important note if your project doesn't use ARC**: you must add the `-fobjc-arc` compiler flag to `SVProgressHUD.m` in Target Settings > Build Phases > Compile Sources._
+_**Important note if your project doesn't use ARC**: you must add the `-fno-objc-arc` compiler flag to `SVProgressHUD.m` in Target Settings > Build Phases > Compile Sources._
 
 * Drag the `SVProgressHUD/SVProgressHUD` folder into your project.
 * Add the **QuartzCore** framework to your project.
