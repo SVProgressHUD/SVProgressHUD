@@ -51,4 +51,6 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 + (BOOL)isVisible;
 
+- (NSTimeInterval)displayDurationForString:(NSString*)string;
+
 @end
