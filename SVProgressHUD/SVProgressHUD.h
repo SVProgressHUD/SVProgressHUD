@@ -11,6 +11,10 @@
 #import <AvailabilityMacros.h>
 
 extern NSString * const SVProgressHUDDidReceiveTouchEventNotification;
+extern NSString * const SVProgressHUDWillDisappearNotification;
+extern NSString * const SVProgressHUDDidDisappearNotification;
+
+extern NSString * const SVProgressHUDStatusUserInfoKey;
 
 enum {
     SVProgressHUDMaskTypeNone = 1, // allow user interactions while HUD is displayed

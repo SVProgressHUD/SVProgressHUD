@@ -11,6 +11,10 @@
 #import <QuartzCore/QuartzCore.h>
 
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
+NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
+NSString * const SVProgressHUDDidDisappearNotification = @"SVProgressHUDDidDisappearNotification";
+
+NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
 
 CGFloat SVProgressHUDRingRadius = 14;
 CGFloat SVProgressHUDRingThickness = 6;
@@ -488,6 +492,11 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 - (void)dismiss {
+    NSDictionary *notificationUserInfo = (self.stringLabel.text ? @{SVProgressHUDStatusUserInfoKey : self.stringLabel.text} : nil);
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
+                                                        object:nil
+                                                      userInfo:notificationUserInfo];
+    
     self.activityCount = 0;
      SVProgressHUD *__weak weakSelf=self;
     [UIView animateWithDuration:0.15
@@ -509,6 +518,10 @@ CGFloat SVProgressHUDRingThickness = 6;
 
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 
+                             [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
+                                                                                 object:nil
+                                                                               userInfo:notificationUserInfo];
+                             
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
