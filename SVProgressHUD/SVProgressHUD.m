@@ -619,7 +619,6 @@ CGFloat SVProgressHUDRingThickness = 6;
         overlayView = [[UIButton alloc] initWithFrame:[UIScreen mainScreen].bounds];
         overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         overlayView.backgroundColor = [UIColor clearColor];
-        overlayView.userInteractionEnabled = YES;
         [overlayView addTarget:self action:@selector(overlayViewDidReceiveTouchEvent) forControlEvents:UIControlEventTouchDown];
     }
     return overlayView;
