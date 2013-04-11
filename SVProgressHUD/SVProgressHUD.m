@@ -77,71 +77,71 @@ CGFloat SVProgressHUDRingThickness = 6;
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
     static SVProgressHUD *sharedView;
-    dispatch_once(&once, ^ { sharedView = [[SVProgressHUD alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+    dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
     return sharedView;
 }
 
 
 + (void)setStatus:(NSString *)string {
-	[[SVProgressHUD sharedView] setStatus:string];
+	[[self sharedView] setStatus:string];
 }
 
 #pragma mark - Show Methods
 
 + (void)show {
-    [[SVProgressHUD sharedView] showProgress:-1 status:nil maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:-1 status:nil maskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showWithStatus:(NSString *)status {
-    [[SVProgressHUD sharedView] showProgress:-1 status:status maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:-1 status:status maskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
-    [[SVProgressHUD sharedView] showProgress:-1 status:nil maskType:maskType];
+    [[self sharedView] showProgress:-1 status:nil maskType:maskType];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    [[SVProgressHUD sharedView] showProgress:-1 status:status maskType:maskType];
+    [[self sharedView] showProgress:-1 status:status maskType:maskType];
 }
 
 + (void)showProgress:(CGFloat)progress {
-    [[SVProgressHUD sharedView] showProgress:progress status:nil maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:progress status:nil maskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showProgress:(CGFloat)progress status:(NSString *)status {
-    [[SVProgressHUD sharedView] showProgress:progress status:status maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:progress status:status maskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showProgress:(CGFloat)progress status:(NSString *)status maskType:(SVProgressHUDMaskType)maskType {
-    [[SVProgressHUD sharedView] showProgress:progress status:status maskType:maskType];
+    [[self sharedView] showProgress:progress status:status maskType:maskType];
 }
 
 #pragma mark - Show then dismiss methods
 
 + (void)showSuccessWithStatus:(NSString *)string {
-    [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/success.png"] status:string];
+    [self showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/success.png"] status:string];
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
-    [SVProgressHUD showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/error.png"] status:string];
+    [self showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/error.png"] status:string];
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
     NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForString:string];
-    [[SVProgressHUD sharedView] showImage:image status:string duration:displayInterval];
+    [[self sharedView] showImage:image status:string duration:displayInterval];
 }
 
 
 #pragma mark - Dismiss Methods
 
 + (void)popActivity {
-    [SVProgressHUD sharedView].activityCount--;
-    if([SVProgressHUD sharedView].activityCount == 0)
-        [[SVProgressHUD sharedView] dismiss];
+    [self sharedView].activityCount--;
+    if([self sharedView].activityCount == 0)
+        [[self sharedView] dismiss];
 }
 
 + (void)dismiss {
-	[[SVProgressHUD sharedView] dismiss];
+	[[self sharedView] dismiss];
 }
 
 
@@ -467,8 +467,8 @@ CGFloat SVProgressHUDRingThickness = 6;
     self.progress = -1;
     [self cancelRingLayerAnimation];
     
-    if(![SVProgressHUD isVisible])
-        [SVProgressHUD show];
+    if(![self.class isVisible])
+        [self.class show];
     
     self.imageView.image = image;
     self.imageView.hidden = NO;
@@ -617,7 +617,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 #pragma mark - Utilities
 
 + (BOOL)isVisible {
-    return ([SVProgressHUD sharedView].alpha == 1);
+    return ([self sharedView].alpha == 1);
 }
 
 
