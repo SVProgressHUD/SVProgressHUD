@@ -104,6 +104,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     [[self sharedView] showProgress:-1 status:status maskType:maskType];
 }
 
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType image:(UIImage *)image {
+    [[self sharedView] showProgress:-1 status:status maskType:maskType];
+    [[self sharedView] showImage:image status:status duration:-1];
+}
+
 + (void)showProgress:(CGFloat)progress {
     [[self sharedView] showProgress:progress status:nil maskType:SVProgressHUDMaskTypeNone];
 }
@@ -487,8 +492,10 @@ CGFloat SVProgressHUDRingThickness = 6;
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
     
-    self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
-    [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
+    if(duration != -1) {
+        self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+        [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
+    }
 }
 
 - (void)dismiss {
