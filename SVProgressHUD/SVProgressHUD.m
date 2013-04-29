@@ -62,6 +62,8 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (UIColor *)hudForegroundColor;
 - (UIColor *)hudStatusShadowColor;
 - (UIFont *)hudFont;
+- (UIImage *)hudSuccessImage;
+- (UIImage *)hudErrorImage;
 #endif
 
 @end
@@ -75,6 +77,8 @@ CGFloat SVProgressHUDRingThickness = 6;
 @synthesize hudForegroundColor = _uiHudFgColor;
 @synthesize hudStatusShadowColor = _uiHudStatusShColor;
 @synthesize hudFont = _uiHudFont;
+@synthesize hudSuccessImage = _uiHudSuccessImage;
+@synthesize hudErrorImage = _uiHudErrorImage;
 #endif
 
 
@@ -123,11 +127,11 @@ CGFloat SVProgressHUDRingThickness = 6;
 #pragma mark - Show then dismiss methods
 
 + (void)showSuccessWithStatus:(NSString *)string {
-    [self showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/success.png"] status:string];
+    [self showImage:[[self sharedView] hudSuccessImage] status:string];
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
-    [self showImage:[UIImage imageNamed:@"SVProgressHUD.bundle/error.png"] status:string];
+    [self showImage:[[self sharedView] hudErrorImage] status:string];
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
@@ -787,6 +791,34 @@ CGFloat SVProgressHUDRingThickness = 6;
 #endif
     
     return [UIFont boldSystemFontOfSize:16];
+}
+
+- (UIImage *)hudSuccessImage {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudSuccessImage == nil) {
+        _uiHudSuccessImage = [[[self class] appearance] hudSuccessImage];
+    }
+
+    if(_uiHudSuccessImage != nil) {
+        return _uiHudSuccessImage;
+    }
+#endif
+
+    return [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
+}
+
+- (UIImage *)hudErrorImage {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudErrorImage == nil) {
+        _uiHudErrorImage = [[[self class] appearance] hudErrorImage];
+    }
+
+    if(_uiHudErrorImage != nil) {
+        return _uiHudErrorImage;
+    }
+#endif
+
+    return [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
 }
 
 @end
