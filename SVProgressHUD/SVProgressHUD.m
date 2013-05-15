@@ -28,7 +28,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
 @property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
 
-@property (nonatomic, strong, readonly) UIButton *overlayView;
+@property (nonatomic, strong, readonly) UIControl *overlayView;
 @property (nonatomic, strong, readonly) UIView *hudView;
 @property (nonatomic, strong, readonly) UILabel *stringLabel;
 @property (nonatomic, strong, readonly) UIImageView *imageView;
@@ -392,8 +392,8 @@ CGFloat SVProgressHUDRingThickness = 6;
     self.hudView.center = newCenter;
 }
 
-- (void)overlayViewDidReceiveTouchEvent {
-    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification object:nil];
+- (void)overlayViewDidReceiveTouchEvent:(id)sender forEvent:(UIEvent *)event {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification object:event];
 }
 
 #pragma mark - Master show/dismiss methods
@@ -635,14 +635,12 @@ CGFloat SVProgressHUDRingThickness = 6;
     return (float)string.length*0.06 + 0.3;
 }
 
-- (UIButton *)overlayView {
+- (UIControl *)overlayView {
     if(!overlayView) {
-        overlayView = [[UIButton alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        overlayView = [[UIControl alloc] initWithFrame:[UIScreen mainScreen].bounds];
         overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         overlayView.backgroundColor = [UIColor clearColor];
-        [overlayView addTarget:self action:@selector(overlayViewDidReceiveTouchEvent) forControlEvents:UIControlEventTouchDown];
-        [overlayView setBackgroundImage:[UIImage new] forState:UIControlStateNormal];
-        [overlayView setBackgroundImage:[UIImage new] forState:UIControlStateDisabled];
+        [overlayView addTarget:self action:@selector(overlayViewDidReceiveTouchEvent:forEvent:) forControlEvents:UIControlEventTouchDown];
     }
     return overlayView;
 }
