@@ -372,7 +372,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     } 
     
     if(notification) {
-        SVProgressHUD *__weak weakSelf=self;
+        SVProgressHUD *__unsafe_unretained weakSelf=self;
         [UIView animateWithDuration:animationDuration 
                               delay:0 
                             options:UIViewAnimationOptionAllowUserInteraction 
@@ -453,7 +453,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     if(self.alpha != 1) {
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-        SVProgressHUD *__weak weakSelf=self;
+        SVProgressHUD *__unsafe_unretained weakSelf=self;
         [UIView animateWithDuration:0.15
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
@@ -506,7 +506,7 @@ CGFloat SVProgressHUDRingThickness = 6;
                                                       userInfo:notificationUserInfo];
     
     self.activityCount = 0;
-     SVProgressHUD *__weak weakSelf=self;
+     SVProgressHUD *__unsafe_unretained weakSelf=self;
     [UIView animateWithDuration:0.15
                           delay:0
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
