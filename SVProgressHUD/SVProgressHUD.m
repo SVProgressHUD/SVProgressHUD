@@ -79,6 +79,10 @@ CGFloat SVProgressHUDRingThickness = 6;
 @synthesize hudFont = _uiHudFont;
 @synthesize hudSuccessImage = _uiHudSuccessImage;
 @synthesize hudErrorImage = _uiHudErrorImage;
+@synthesize hudShadowOffset = _uiHudShadowOffset;
+@synthesize hudShadowRadius = _uiHudShadowRadius;
+@synthesize hudShadowOpacity = _uiHudShadowOpacity;
+@synthesize hudShadowColor = _uiHudShadowColor;
 #endif
 
 
@@ -651,10 +655,14 @@ CGFloat SVProgressHUDRingThickness = 6;
     if(!hudView) {
         hudView = [[UIView alloc] initWithFrame:CGRectZero];
         hudView.layer.cornerRadius = 10;
-        hudView.layer.masksToBounds = YES;
+        hudView.layer.masksToBounds = NO;
         
         // UIAppearance is used when iOS >= 5.0
 		hudView.backgroundColor = self.hudBackgroundColor;
+        hudView.layer.shadowColor = [self.hudShadowColor CGColor];
+        hudView.layer.shadowOpacity = self.hudShadowOpacity;
+        hudView.layer.shadowOffset = self.hudShadowOffset;
+        hudView.layer.shadowRadius = self.hudShadowRadius;
 
         hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
@@ -819,6 +827,47 @@ CGFloat SVProgressHUDRingThickness = 6;
 #endif
 
     return [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
+}
+
+- (CGSize)hudShadowOffset {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    _uiHudShadowOffset = [[[self class] appearance] hudShadowOffset];
+    return _uiHudShadowOffset;
+#endif
+    
+    return CGSizeZero;
+}
+
+- (CGFloat)hudShadowRadius {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    _uiHudShadowRadius = [[[self class] appearance] hudShadowRadius];
+    return _uiHudShadowRadius;
+#endif
+    
+    return 0;
+}
+
+- (CGFloat)hudShadowOpacity {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    _uiHudShadowOpacity = [[[self class] appearance] hudShadowOpacity];
+    return _uiHudShadowOpacity;
+#endif
+    
+    return 0;
+}
+
+- (UIColor *)hudShadowColor {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudShadowColor == nil) {
+        _uiHudShadowColor = [[[self class] appearance] hudShadowColor];
+    }
+    
+    if(_uiHudShadowColor != nil) {
+        return _uiHudShadowColor;
+    }
+#endif
+    
+    return [UIColor clearColor];
 }
 
 @end

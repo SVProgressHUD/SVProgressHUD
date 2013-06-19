@@ -34,6 +34,10 @@ typedef NSUInteger SVProgressHUDMaskType;
 @property (readwrite, nonatomic, retain) UIFont *hudFont NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 @property (readwrite, nonatomic, retain) UIImage *hudSuccessImage NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 @property (readwrite, nonatomic, retain) UIImage *hudErrorImage NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
+@property (readwrite, nonatomic) CGSize hudShadowOffset NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
+@property (readwrite, nonatomic) CGFloat hudShadowRadius NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
+@property (readwrite, nonatomic) CGFloat hudShadowOpacity NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
+@property (readwrite, nonatomic, retain) UIColor *hudShadowColor NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 #endif
 
 + (void)show;
