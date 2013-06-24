@@ -453,13 +453,12 @@ CGFloat SVProgressHUDRingThickness = 6;
     if(self.alpha != 1) {
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-        SVProgressHUD *__weak weakSelf=self;
         [UIView animateWithDuration:0.15
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
-                             weakSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
-                             weakSelf.alpha = 1;
+                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
+                             self.alpha = 1;
                          }
                          completion:^(BOOL finished){
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
@@ -506,18 +505,17 @@ CGFloat SVProgressHUDRingThickness = 6;
                                                       userInfo:notificationUserInfo];
     
     self.activityCount = 0;
-     SVProgressHUD *__weak weakSelf=self;
     [UIView animateWithDuration:0.15
                           delay:0
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
                      animations:^{
-                         weakSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
-                         weakSelf.alpha = 0;
+                         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
+                         self.alpha = 0;
                      }
                      completion:^(BOOL finished){
-                         if(weakSelf.alpha == 0) {
-                             [[NSNotificationCenter defaultCenter] removeObserver:weakSelf];
-                             [weakSelf cancelRingLayerAnimation];
+                         if(self.alpha == 0) {
+                             [[NSNotificationCenter defaultCenter] removeObserver:self];
+                             [self cancelRingLayerAnimation];
                              [hudView removeFromSuperview];
                              hudView = nil;
                              
