@@ -25,6 +25,12 @@ enum {
 
 typedef NSUInteger SVProgressHUDMaskType;
 
+typedef enum {
+    SVProgressHUDStyleDefault = 1,
+    SVProgressHUDStyleCircle
+} SVProgressHUDStyle;
+
+
 @interface SVProgressHUD : UIView
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
@@ -34,6 +40,7 @@ typedef NSUInteger SVProgressHUDMaskType;
 @property (readwrite, nonatomic, retain) UIFont *hudFont NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 @property (readwrite, nonatomic, retain) UIImage *hudSuccessImage NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 @property (readwrite, nonatomic, retain) UIImage *hudErrorImage NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
+@property (readwrite, nonatomic, assign) SVProgressHUDStyle hudStyle NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 #endif
 
 + (void)show;

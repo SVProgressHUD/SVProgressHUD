@@ -64,6 +64,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (UIFont *)hudFont;
 - (UIImage *)hudSuccessImage;
 - (UIImage *)hudErrorImage;
+- (SVProgressHUDStyle)hudStyle;
 #endif
 
 @end
@@ -79,6 +80,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @synthesize hudFont = _uiHudFont;
 @synthesize hudSuccessImage = _uiHudSuccessImage;
 @synthesize hudErrorImage = _uiHudErrorImage;
+@synthesize hudStyle = _hudStyle;
 #endif
 
 
@@ -206,13 +208,15 @@ CGFloat SVProgressHUDRingThickness = 6;
     CGFloat stringWidth = 0;
     CGFloat stringHeight = 0;
     CGRect labelRect = CGRectZero;
+    CGFloat imageViewY = 36;
+    CGFloat spinnerViewY = 40.5;
     
     NSString *string = self.stringLabel.text;
     // False if it's text-only
     BOOL imageUsed = (self.imageView.image) || (self.imageView.hidden);
     
     if(string) {
-        CGSize stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
+        CGSize stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(1000, 300)];
         stringWidth = stringSize.width;
         stringHeight = stringSize.height;
         if (imageUsed)
@@ -233,11 +237,34 @@ CGFloat SVProgressHUDRingThickness = 6;
             labelRect = CGRectMake(0, labelRectY, hudWidth, stringHeight);
         }
     }
+    
+    if(self.hudStyle == SVProgressHUDStyleCircle) {
+        CGFloat minSize = 150;
+        CGFloat padding = 10;
+        CGFloat adjustedImagePosition;
+        
+        hudWidth = hudWidth < minSize ? minSize : hudWidth;
+        hudWidth += padding;
+        if(hudWidth > hudHeight) {
+            hudHeight = hudWidth;
+        } else {
+            hudWidth = hudHeight;
+        }
+        self.hudView.layer.cornerRadius = hudWidth / 2;
+        
+        labelRect.size.width = hudWidth;
+        labelRect.origin.x = 0;
+        labelRect.origin.y = (hudHeight / 2) + 8;
+        
+        adjustedImagePosition = (hudHeight / 2) - 22;
+        imageViewY = adjustedImagePosition;
+        spinnerViewY = adjustedImagePosition;
+    }
 	
 	self.hudView.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
 	
     if(string)
-        self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36);
+        self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, imageViewY);
 	else
        	self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2);
 	
@@ -245,10 +272,10 @@ CGFloat SVProgressHUDRingThickness = 6;
 	self.stringLabel.frame = labelRect;
 	
 	if(string) {
-		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.hudView.bounds)/2)+0.5, 40.5);
+		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.hudView.bounds)/2)+0.5, spinnerViewY);
         
         if(self.progress != -1)
-            self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36);
+            self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), imageViewY);
 	}
     else {
 		self.spinnerView.center = CGPointMake(ceil(CGRectGetWidth(self.hudView.bounds)/2)+0.5, ceil(self.hudView.bounds.size.height/2)+0.5);
@@ -819,6 +846,20 @@ CGFloat SVProgressHUDRingThickness = 6;
 #endif
 
     return [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
+}
+
+- (SVProgressHUDStyle)hudStyle {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(!_hudStyle) {
+        _hudStyle = [[[self class] appearance] hudStyle];
+    }
+    
+    if(_hudStyle) {
+        return _hudStyle;
+    }
+#endif
+    
+    return SVProgressHUDStyleDefault;
 }
 
 @end
