@@ -19,7 +19,6 @@
 #pragma mark Show Methods Sample
 
 - (void)show {
-    [[SVProgressHUD appearance] setHudStyle:SVProgressHUDStyleCircle];
 	[SVProgressHUD show];
 }
 
@@ -31,15 +30,13 @@ static float progress = 0.0f;
 
 - (IBAction)showWithProgress:(id)sender {
     progress = 0.0f;
-    [SVProgressHUD showProgress:0];
-    //[SVProgressHUD showProgress:0 status:@"Loading"];
+    [SVProgressHUD showProgress:0 status:@"Loading"];
     [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3];
 }
 
 - (void)increaseProgress {
     progress+=0.1f;
-    [SVProgressHUD showProgress:progress];
-    //[SVProgressHUD showProgress:progress status:@"Loading"];
+    [SVProgressHUD showProgress:progress status:@"Loading"];
 
     if(progress < 1.0f)
         [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3];
