@@ -40,6 +40,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
+@property (nonatomic, assign) UIOffset offsetFromCenter;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -153,6 +154,16 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 
+#pragma mark - Offset
+
++ (void)setOffsetFromCenter:(UIOffset)offset {
+    [self sharedView].offsetFromCenter = offset;
+}
+
++ (void)resetOffsetFromCenter {
+    [self setOffsetFromCenter:UIOffsetZero];
+}
+
 #pragma mark - Instance Methods
 
 - (id)initWithFrame:(CGRect)frame {
@@ -235,7 +246,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 	
 	self.hudView.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
-	
+
     if(string)
         self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36);
 	else
@@ -389,7 +400,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle {
     self.hudView.transform = CGAffineTransformMakeRotation(angle); 
-    self.hudView.center = newCenter;
+    self.hudView.center = CGPointMake(newCenter.x + self.offsetFromCenter.horizontal, newCenter.y + self.offsetFromCenter.vertical);
 }
 
 - (void)overlayViewDidReceiveTouchEvent {
