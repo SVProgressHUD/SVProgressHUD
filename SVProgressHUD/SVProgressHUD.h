@@ -48,8 +48,12 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 
 // stops the activity indicator, shows a glyph + status, and dismisses HUD 1s later
-+ (void)showSuccessWithStatus:(NSString*)string;
++ (void)showSuccessWithStatus:(NSString *)string;
 + (void)showErrorWithStatus:(NSString *)string;
++ (void)showSuccessWithStatus:(NSString *)string duration:(float)duration;
++ (void)showErrorWithStatus:(NSString *)string duration:(float)duration;
++ (void)showSuccessWithStatus:(NSString *)string duration:(float)duration completion:(void (^)(void))callback;
++ (void)showErrorWithStatus:(NSString *)string duration:(float)duration completion:(void (^)(void))callback;
 + (void)showImage:(UIImage*)image status:(NSString*)status; // use 28x28 white pngs
 
 + (void)popActivity;

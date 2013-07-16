@@ -71,6 +71,8 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 @implementation SVProgressHUD
 
+static void(^_callback)(void);
+
 @synthesize overlayView, hudView, maskType, fadeOutTimer, stringLabel, imageView, spinnerView, visibleKeyboardHeight;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
 @synthesize hudBackgroundColor = _uiHudBgColor;
@@ -127,11 +129,29 @@ CGFloat SVProgressHUDRingThickness = 6;
 #pragma mark - Show then dismiss methods
 
 + (void)showSuccessWithStatus:(NSString *)string {
-    [self showImage:[[self sharedView] hudSuccessImage] status:string];
+    [self showSuccessWithStatus:string duration:1.0f];  // Default to 1s
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
-    [self showImage:[[self sharedView] hudErrorImage] status:string];
+    [self showErrorWithStatus:string duration:1.0f];    // Default to 1s
+}
+
++ (void)showSuccessWithStatus:(NSString *)string duration:(float)duration {
+    [[self sharedView] showImage:[[self sharedView] hudSuccessImage] status:string duration:duration];
+}
+
++ (void)showErrorWithStatus:(NSString *)string duration:(float)duration {
+    [[self sharedView] showImage:[[self sharedView] hudErrorImage] status:string duration:duration];
+}
+
++ (void)showSuccessWithStatus:(NSString *)string duration:(float)duration completion:(void (^)(void))callback   {
+    _callback = callback;
+    [[self sharedView] showImage:[[self sharedView] hudSuccessImage] status:string duration:duration];
+}
+
++ (void)showErrorWithStatus:(NSString *)string duration:(float)duration completion:(void (^)(void))callback {
+    _callback = callback;
+    [[self sharedView] showImage:[[self sharedView] hudErrorImage] status:string duration:duration];
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
@@ -530,6 +550,10 @@ CGFloat SVProgressHUDRingThickness = 6;
                                                                                  object:nil
                                                                                userInfo:notificationUserInfo];
                              
+                             if(_callback) {
+                                 _callback();
+                             }
+
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
