@@ -37,13 +37,22 @@ typedef NSUInteger SVProgressHUDMaskType;
 #endif
 
 + (void)show;
-+ (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)status;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
+
++ (void)showInView:(UIView *)view;
++ (void)showInView:(UIView *)view withStatus:(NSString *)status;
++ (void)showInView:(UIView *)view withMaskType:(SVProgressHUDMaskType)maskType;
++ (void)showInView:(UIView *)view withStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 
 + (void)showProgress:(CGFloat)progress;
 + (void)showProgress:(CGFloat)progress status:(NSString*)status;
 + (void)showProgress:(CGFloat)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
+
++ (void)showInView:(UIView *)view withProgress:(CGFloat)progress;
++ (void)showInView:(UIView *)view withProgress:(CGFloat)progress status:(NSString *)status;
++ (void)showInView:(UIView *)view withProgress:(CGFloat)progress status:(NSString *)status maskType:(SVProgressHUDMaskType)maskType;
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 
