@@ -641,7 +641,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 #pragma mark - Getters
 
 - (NSTimeInterval)displayDurationForString:(NSString*)string {
-    return (float)string.length*0.06 + 0.3;
+    return MIN((float)string.length*0.06 + 0.3, 5.0);
 }
 
 - (UIButton *)overlayView {
