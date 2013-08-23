@@ -10,6 +10,12 @@
 #import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
 
+extern NSString * const SVProgressHUDDidReceiveTouchEventNotification;
+extern NSString * const SVProgressHUDWillDisappearNotification;
+extern NSString * const SVProgressHUDDidDisappearNotification;
+
+extern NSString * const SVProgressHUDStatusUserInfoKey;
+
 enum {
     SVProgressHUDMaskTypeNone = 1, // allow user interactions while HUD is displayed
     SVProgressHUDMaskTypeClear, // don't allow
@@ -26,6 +32,8 @@ typedef NSUInteger SVProgressHUDMaskType;
 @property (readwrite, nonatomic, retain) UIColor *hudForegroundColor NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 @property (readwrite, nonatomic, retain) UIColor *hudStatusShadowColor NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 @property (readwrite, nonatomic, retain) UIFont *hudFont NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
+@property (readwrite, nonatomic, retain) UIImage *hudSuccessImage NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
+@property (readwrite, nonatomic, retain) UIImage *hudErrorImage NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 #endif
 
 + (void)show;
@@ -44,6 +52,7 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)showErrorWithStatus:(NSString *)string;
 + (void)showImage:(UIImage*)image status:(NSString*)status; // use 28x28 white pngs
 
++ (void)popActivity;
 + (void)dismiss;
 
 + (BOOL)isVisible;
