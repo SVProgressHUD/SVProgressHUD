@@ -205,13 +205,6 @@ CGFloat SVProgressHUDRingThickness = 6;
     CGFloat hudHeight = 100;
     CGFloat stringHeightBuffer = 20;
     CGFloat stringAndImageHeightBuffer = 80;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
-    hudHeight += 50;
-    hudWidth += 50;
-    stringHeightBuffer += 50;
-    stringAndImageHeightBuffer += 50;
-#endif  
-    
 
     CGFloat stringWidth = 0;
     CGFloat stringHeight = 0;
@@ -838,7 +831,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIImage imageNamed:@"SVProgressHUD.bundle/success-black"];
+#else
     return [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
+#endif
 }
 
 - (UIImage *)hudErrorImage {
@@ -851,8 +848,12 @@ CGFloat SVProgressHUDRingThickness = 6;
         return _uiHudErrorImage;
     }
 #endif
-
+    
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIImage imageNamed:@"SVProgressHUD.bundle/error-black"];
+#else
     return [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
+#endif
 }
 
 @end
