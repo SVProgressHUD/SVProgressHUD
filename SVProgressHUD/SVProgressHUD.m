@@ -23,6 +23,29 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 CGFloat SVProgressHUDRingRadius = 14;
 CGFloat SVProgressHUDRingThickness = 6;
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+@interface SVPrefferedStatusBarController : UIViewController
+@end
+
+@implementation SVPrefferedStatusBarController
+
+- (UIStatusBarStyle)preferredStatusBarStyle{
+	UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    while (topController.presentedViewController) {
+        topController = topController.presentedViewController;
+    }
+	if ([topController isKindOfClass:[UINavigationController class]]){
+		topController = [[((UINavigationController *)topController) viewControllers] lastObject];
+	}
+	if (topController) {
+		return [topController preferredStatusBarStyle];
+	}
+    return UIStatusBarStyleDefault;
+}
+
+@end
+#endif
+
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
@@ -643,6 +666,12 @@ CGFloat SVProgressHUDRingThickness = 6;
         [overlayView addTarget:self action:@selector(overlayViewDidReceiveTouchEvent) forControlEvents:UIControlEventTouchDown];
         [overlayView setBackgroundImage:[UIImage new] forState:UIControlStateNormal];
         [overlayView setBackgroundImage:[UIImage new] forState:UIControlStateDisabled];
+		
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+		UIViewController *viewController = [[SVPrefferedStatusBarController alloc] init];
+		[viewController.view setBackgroundColor:[UIColor clearColor]];
+		[overlayWindow setRootViewController:viewController];
+#endif
     }
     return overlayView;
 }
