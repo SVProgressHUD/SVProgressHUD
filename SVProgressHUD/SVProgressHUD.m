@@ -530,6 +530,11 @@ CGFloat SVProgressHUDRingThickness = 6;
                                                                                  object:nil
                                                                                userInfo:notificationUserInfo];
                              
+                             // Tell the rootViewController to update the StatusBar appearance
+                             UIViewController *rootController = UIApplication.sharedApplication.delegate.window.rootViewController;
+                             if ([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+                               [rootController setNeedsStatusBarAppearanceUpdate];
+                             }
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
