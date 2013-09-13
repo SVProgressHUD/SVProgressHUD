@@ -17,6 +17,8 @@
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
 NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
 NSString * const SVProgressHUDDidDisappearNotification = @"SVProgressHUDDidDisappearNotification";
+NSString * const SVProgressHUDWillAppearNotification = @"SVProgressHUDWillAppearNotification";
+NSString * const SVProgressHUDDidAppearNotification = @"SVProgressHUDDidAppearNotification";
 
 NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
 
@@ -27,8 +29,9 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
 @property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
+@property (nonatomic, readonly, getter = isClear) BOOL clear;
 
-@property (nonatomic, strong, readonly) UIButton *overlayView;
+@property (nonatomic, strong, readonly) UIControl *overlayView;
 @property (nonatomic, strong, readonly) UIView *hudView;
 @property (nonatomic, strong, readonly) UILabel *stringLabel;
 @property (nonatomic, strong, readonly) UIImageView *imageView;
@@ -40,6 +43,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
+@property (nonatomic, assign) UIOffset offsetFromCenter;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -53,6 +57,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (void)setStatus:(NSString*)string;
 - (void)registerNotifications;
+- (NSDictionary *)notificationUserInfo;
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
 - (void)positionHUD:(NSNotification*)notification;
 - (NSTimeInterval)displayDurationForString:(NSString*)string;
@@ -61,6 +66,8 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (UIColor *)hudBackgroundColor;
 - (UIColor *)hudForegroundColor;
 - (UIColor *)hudStatusShadowColor;
+- (UIColor *)hudRingBackgroundColor;
+- (UIColor *)hudRingForegroundColor;
 - (UIFont *)hudFont;
 - (UIImage *)hudSuccessImage;
 - (UIImage *)hudErrorImage;
@@ -76,6 +83,8 @@ CGFloat SVProgressHUDRingThickness = 6;
 @synthesize hudBackgroundColor = _uiHudBgColor;
 @synthesize hudForegroundColor = _uiHudFgColor;
 @synthesize hudStatusShadowColor = _uiHudStatusShColor;
+@synthesize hudRingBackgroundColor = _uiHudRingBgColor;
+@synthesize hudRingForegroundColor = _uiHudRingFgColor;
 @synthesize hudFont = _uiHudFont;
 @synthesize hudSuccessImage = _uiHudSuccessImage;
 @synthesize hudErrorImage = _uiHudErrorImage;
@@ -149,9 +158,21 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 + (void)dismiss {
-	[[self sharedView] dismiss];
+    if ([self isVisible]) {
+        [[self sharedView] dismiss];
+    }
 }
 
+
+#pragma mark - Offset
+
++ (void)setOffsetFromCenter:(UIOffset)offset {
+    [self sharedView].offsetFromCenter = offset;
+}
+
++ (void)resetOffsetFromCenter {
+    [self setOffsetFromCenter:UIOffsetZero];
+}
 
 #pragma mark - Instance Methods
 
@@ -189,7 +210,9 @@ CGFloat SVProgressHUDRingThickness = 6;
             CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
             CGColorSpaceRelease(colorSpace);
             
-            CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+            CGFloat freeHeight = self.bounds.size.height - self.visibleKeyboardHeight;
+            
+            CGPoint center = CGPointMake(self.bounds.size.width/2, freeHeight/2);
             float radius = MIN(self.bounds.size.width , self.bounds.size.height) ;
             CGContextDrawRadialGradient (context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
             CGGradientRelease(gradient);
@@ -215,9 +238,17 @@ CGFloat SVProgressHUDRingThickness = 6;
     BOOL imageUsed = (self.imageView.image) || (self.imageView.hidden);
     
     if(string) {
-        CGSize stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
+        CGSize constraintSize = CGSizeMake(200, 300);
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+        CGRect stringRect = [string boundingRectWithSize:constraintSize options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin) attributes:@{NSFontAttributeName: self.stringLabel.font} context:NULL];
+        stringWidth = stringRect.size.width;
+        stringHeight = stringRect.size.height;
+#else
+        CGSize stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:constraintSize];
         stringWidth = stringSize.width;
         stringHeight = stringSize.height;
+#endif
+
         if (imageUsed)
             hudHeight = stringAndImageHeightBuffer + stringHeight;
         else
@@ -238,7 +269,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 	
 	self.hudView.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
-	
+
     if(string)
         self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36);
 	else
@@ -304,6 +335,12 @@ CGFloat SVProgressHUDRingThickness = 6;
                                              selector:@selector(positionHUD:) 
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
+}
+
+
+- (NSDictionary *)notificationUserInfo
+{
+    return (self.stringLabel.text ? @{SVProgressHUDStatusUserInfoKey : self.stringLabel.text} : nil);
 }
 
 
@@ -392,11 +429,11 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle {
     self.hudView.transform = CGAffineTransformMakeRotation(angle); 
-    self.hudView.center = newCenter;
+    self.hudView.center = CGPointMake(newCenter.x + self.offsetFromCenter.horizontal, newCenter.y + self.offsetFromCenter.vertical);
 }
 
-- (void)overlayViewDidReceiveTouchEvent {
-    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification object:nil];
+- (void)overlayViewDidReceiveTouchEvent:(id)sender forEvent:(UIEvent *)event {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification object:event];
 }
 
 #pragma mark - Master show/dismiss methods
@@ -454,17 +491,34 @@ CGFloat SVProgressHUDRingThickness = 6;
     [self positionHUD:nil];
     
     if(self.alpha != 1) {
+        NSDictionary *userInfo = [self notificationUserInfo];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillAppearNotification
+                                                            object:nil
+                                                          userInfo:userInfo];
+        
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-        SVProgressHUD *__weak weakSelf=self;
+        
+        if(self.isClear) {
+            self.alpha = 1;
+            self.hudView.alpha = 0;
+        }
+        
         [UIView animateWithDuration:0.15
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
-                             weakSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
-                             weakSelf.alpha = 1;
+                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
+                             
+                             if(self.isClear) // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
+                                 self.hudView.alpha = 1;
+                             else
+                                 self.alpha = 1;
                          }
                          completion:^(BOOL finished){
+                             [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
+                                                                                 object:nil
+                                                                               userInfo:userInfo];
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
                              UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
                          }];
@@ -504,24 +558,29 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 - (void)dismiss {
-    NSDictionary *notificationUserInfo = (self.stringLabel.text ? @{SVProgressHUDStatusUserInfoKey : self.stringLabel.text} : nil);
+    NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
-                                                      userInfo:notificationUserInfo];
+                                                      userInfo:userInfo];
     
     self.activityCount = 0;
-     SVProgressHUD *__weak weakSelf=self;
     [UIView animateWithDuration:0.15
                           delay:0
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
                      animations:^{
-                         weakSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
-                         weakSelf.alpha = 0;
+                         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
+                         if(self.isClear) // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
+                             self.hudView.alpha = 0;
+                         else
+                             self.alpha = 0;
                      }
                      completion:^(BOOL finished){
-                         if(weakSelf.alpha == 0) {
-                             [[NSNotificationCenter defaultCenter] removeObserver:weakSelf];
-                             [weakSelf cancelRingLayerAnimation];
+                         if(self.alpha == 0 || self.hudView.alpha == 0) {
+                             self.alpha = 0;
+                             self.hudView.alpha = 0;
+                             
+                             [[NSNotificationCenter defaultCenter] removeObserver:self];
+                             [self cancelRingLayerAnimation];
                              [hudView removeFromSuperview];
                              hudView = nil;
                              
@@ -532,8 +591,13 @@ CGFloat SVProgressHUDRingThickness = 6;
 
                              [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
                                                                                  object:nil
-                                                                               userInfo:notificationUserInfo];
+                                                                               userInfo:userInfo];
                              
+                             // Tell the rootViewController to update the StatusBar appearance
+                             UIViewController *rootController = UIApplication.sharedApplication.delegate.window.rootViewController;
+                             if ([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+                               [rootController setNeedsStatusBarAppearanceUpdate];
+                             }
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
                              //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
@@ -548,7 +612,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (CAShapeLayer *)ringLayer {
     if(!_ringLayer) {
         CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
-        _ringLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:[UIColor whiteColor]];
+        _ringLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:_uiHudRingFgColor];
         [self.hudView.layer addSublayer:_ringLayer];
     }
     return _ringLayer;
@@ -557,7 +621,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (CAShapeLayer *)backgroundRingLayer {
     if(!_backgroundRingLayer) {
         CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
-        _backgroundRingLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:[UIColor darkGrayColor]];
+        _backgroundRingLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:_uiHudRingBgColor];
         _backgroundRingLayer.strokeEnd = 1;
         [self.hudView.layer addSublayer:_backgroundRingLayer];
     }
@@ -639,14 +703,16 @@ CGFloat SVProgressHUDRingThickness = 6;
     return MIN((float)string.length*0.06 + 0.3, 5.0);
 }
 
-- (UIButton *)overlayView {
+- (BOOL)isClear { // used for iOS 7
+    return (self.maskType == SVProgressHUDMaskTypeClear || self.maskType == SVProgressHUDMaskTypeNone);
+}
+
+- (UIControl *)overlayView {
     if(!overlayView) {
-        overlayView = [[UIButton alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        overlayView = [[UIControl alloc] initWithFrame:[UIScreen mainScreen].bounds];
         overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         overlayView.backgroundColor = [UIColor clearColor];
-        [overlayView addTarget:self action:@selector(overlayViewDidReceiveTouchEvent) forControlEvents:UIControlEventTouchDown];
-        [overlayView setBackgroundImage:[UIImage new] forState:UIControlStateNormal];
-        [overlayView setBackgroundImage:[UIImage new] forState:UIControlStateDisabled];
+        [overlayView addTarget:self action:@selector(overlayViewDidReceiveTouchEvent:forEvent:) forControlEvents:UIControlEventTouchDown];
     }
     return overlayView;
 }
@@ -683,19 +749,22 @@ CGFloat SVProgressHUDRingThickness = 6;
         stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		stringLabel.backgroundColor = [UIColor clearColor];
 		stringLabel.adjustsFontSizeToFitWidth = YES;
-		#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
-			stringLabel.textAlignment = UITextAlignmentCenter;
-		#else
-			stringLabel.textAlignment = NSTextAlignmentCenter;
-		#endif
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
+        stringLabel.textAlignment = UITextAlignmentCenter;
+#else
+        stringLabel.textAlignment = NSTextAlignmentCenter;
+#endif
+        
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 
         // UIAppearance is used when iOS >= 5.0
 		stringLabel.textColor = self.hudForegroundColor;
 		stringLabel.font = self.hudFont;
+        
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 70000
 		stringLabel.shadowColor = self.hudStatusShadowColor;
-
 		stringLabel.shadowOffset = CGSizeMake(0, -1);
+#endif
         stringLabel.numberOfLines = 0;
     }
     
@@ -786,6 +855,34 @@ CGFloat SVProgressHUDRingThickness = 6;
 #else
     return [UIColor whiteColor];
 #endif
+}
+
+- (UIColor *)hudRingBackgroundColor {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudRingBgColor == nil) {
+        _uiHudRingBgColor = [[[self class] appearance] hudRingBackgroundColor];
+    }
+    
+    if(_uiHudRingBgColor != nil) {
+        return _uiHudRingBgColor;
+    }
+#endif
+    
+    return [UIColor colorWithWhite:0 alpha:0.8];
+}
+
+- (UIColor *)hudRingForegroundColor {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudRingFgColor == nil) {
+        _uiHudRingFgColor = [[[self class] appearance] hudRingForegroundColor];
+    }
+    
+    if(_uiHudRingFgColor != nil) {
+        return _uiHudRingFgColor;
+    }
+#endif
+    
+    return [UIColor whiteColor];
 }
 
 - (UIColor *)hudStatusShadowColor {
