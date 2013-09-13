@@ -40,6 +40,9 @@ typedef NSUInteger SVProgressHUDMaskType;
 @property (readwrite, nonatomic, retain) UIImage *hudErrorImage NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 #endif
 
++ (void)setOffsetFromCenter:(UIOffset)offset;
++ (void)resetOffsetFromCenter;
+
 + (void)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)status;
