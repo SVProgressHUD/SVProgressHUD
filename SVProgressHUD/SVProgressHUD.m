@@ -203,6 +203,9 @@ CGFloat SVProgressHUDRingThickness = 6;
 	
     CGFloat hudWidth = 100;
     CGFloat hudHeight = 100;
+    CGFloat stringHeightBuffer = 20;
+    CGFloat stringAndImageHeightBuffer = 80;
+
     CGFloat stringWidth = 0;
     CGFloat stringHeight = 0;
     CGRect labelRect = CGRectZero;
@@ -224,9 +227,9 @@ CGFloat SVProgressHUDRingThickness = 6;
 #endif
 
         if (imageUsed)
-            hudHeight = 80+stringHeight;
+            hudHeight = stringAndImageHeightBuffer + stringHeight;
         else
-            hudHeight = 20+stringHeight;
+            hudHeight = stringHeightBuffer + stringHeight;
         
         if(stringWidth > hudWidth)
             hudWidth = ceil(stringWidth/2)*2;
@@ -488,6 +491,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     
     self.imageView.image = image;
     self.imageView.hidden = NO;
+    
     self.stringLabel.text = string;
     [self updatePosition];
     [self.spinnerView stopAnimating];
@@ -657,13 +661,23 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (UIView *)hudView {
     if(!hudView) {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+        hudView = [[UIToolbar alloc] initWithFrame:CGRectZero];
+        ((UIToolbar *)hudView).translucent = YES;
+        ((UIToolbar *)hudView).barTintColor = self.hudBackgroundColor;
+#else
         hudView = [[UIView alloc] initWithFrame:CGRectZero];
-        hudView.layer.cornerRadius = 10;
-        hudView.layer.masksToBounds = YES;
+        
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
         
         // UIAppearance is used when iOS >= 5.0
 		hudView.backgroundColor = self.hudBackgroundColor;
+#endif
+#endif
 
+        hudView.layer.cornerRadius = 10;
+        hudView.layer.masksToBounds = YES;
+        
         hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
         
@@ -746,6 +760,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 #pragma mark - UIAppearance getters
 
 - (UIColor *)hudBackgroundColor {
+    
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
     if(_uiHudBgColor == nil) {
         _uiHudBgColor = [[[self class] appearance] hudBackgroundColor];
@@ -756,7 +771,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
     
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIColor whiteColor];
+#else
     return [UIColor colorWithWhite:0 alpha:0.8];
+#endif
 }
 
 - (UIColor *)hudForegroundColor {
@@ -770,7 +789,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
     
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIColor colorWithWhite:0 alpha:0.8];
+#else
     return [UIColor whiteColor];
+#endif
 }
 
 - (UIColor *)hudStatusShadowColor {
@@ -784,7 +807,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
  
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIColor colorWithWhite:200.0f/255.0f alpha:0.8];
+#else
     return [UIColor blackColor];
+#endif
 }
 
 - (UIFont *)hudFont {
@@ -812,7 +839,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIImage imageNamed:@"SVProgressHUD.bundle/success-black"];
+#else
     return [UIImage imageNamed:@"SVProgressHUD.bundle/success.png"];
+#endif
 }
 
 - (UIImage *)hudErrorImage {
@@ -825,8 +856,12 @@ CGFloat SVProgressHUDRingThickness = 6;
         return _uiHudErrorImage;
     }
 #endif
-
+    
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIImage imageNamed:@"SVProgressHUD.bundle/error-black"];
+#else
     return [UIImage imageNamed:@"SVProgressHUD.bundle/error.png"];
+#endif
 }
 
 @end
