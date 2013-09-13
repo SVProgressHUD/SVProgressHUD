@@ -29,6 +29,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
 @property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
+@property (nonatomic, readonly, getter = isClear) BOOL clear;
 
 @property (nonatomic, strong, readonly) UIControl *overlayView;
 @property (nonatomic, strong, readonly) UIView *hudView;
@@ -497,12 +498,22 @@ CGFloat SVProgressHUDRingThickness = 6;
         
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
+        
+        if(self.isClear) {
+            self.alpha = 1;
+            self.hudView.alpha = 0;
+        }
+        
         [UIView animateWithDuration:0.15
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
                              self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
-                             self.alpha = 1;
+                             
+                             if(self.isClear) // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
+                                 self.hudView.alpha = 1;
+                             else
+                                 self.alpha = 1;
                          }
                          completion:^(BOOL finished){
                              [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
@@ -558,10 +569,16 @@ CGFloat SVProgressHUDRingThickness = 6;
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
-                         self.alpha = 0;
+                         if(self.isClear) // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
+                             self.hudView.alpha = 0;
+                         else
+                             self.alpha = 0;
                      }
                      completion:^(BOOL finished){
-                         if(self.alpha == 0) {
+                         if(self.alpha == 0 || self.hudView.alpha == 0) {
+                             self.alpha = 0;
+                             self.hudView.alpha = 0;
+                             
                              [[NSNotificationCenter defaultCenter] removeObserver:self];
                              [self cancelRingLayerAnimation];
                              [hudView removeFromSuperview];
@@ -684,6 +701,10 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (NSTimeInterval)displayDurationForString:(NSString*)string {
     return MIN((float)string.length*0.06 + 0.3, 5.0);
+}
+
+- (BOOL)isClear { // used for iOS 7
+    return (self.maskType == SVProgressHUDMaskTypeClear || self.maskType == SVProgressHUDMaskTypeNone);
 }
 
 - (UIControl *)overlayView {
