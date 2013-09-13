@@ -13,6 +13,8 @@
 extern NSString * const SVProgressHUDDidReceiveTouchEventNotification;
 extern NSString * const SVProgressHUDWillDisappearNotification;
 extern NSString * const SVProgressHUDDidDisappearNotification;
+extern NSString * const SVProgressHUDWillAppearNotification;
+extern NSString * const SVProgressHUDDidAppearNotification;
 
 extern NSString * const SVProgressHUDStatusUserInfoKey;
 

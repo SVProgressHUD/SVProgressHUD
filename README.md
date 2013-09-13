@@ -81,11 +81,13 @@ Or show a confirmation glyph before before getting dismissed 1 second later usin
 
 ### Observing HUD Notifications
 
-`SVProgressHUD` posts two notifications via `NSNotificationCenter` in response to being dismissed:
+`SVProgressHUD` posts four notifications via `NSNotificationCenter` in response to being shown/dismissed:
+* `SVProgressHUDWillAppearNotification` when the show animation starts
+* `SVProgressHUDDidAppearNotification` when the show animation completes
 * `SVProgressHUDWillDisappearNotification` when the dismiss animation starts
 * `SVProgressHUDDidDisappearNotification` when the dismiss animation completes
 
-Both of the aforementioned notifications will pass a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`
+Each notification passes a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`
 
 ## Credits
 

@@ -17,6 +17,8 @@
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
 NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
 NSString * const SVProgressHUDDidDisappearNotification = @"SVProgressHUDDidDisappearNotification";
+NSString * const SVProgressHUDWillAppearNotification = @"SVProgressHUDWillAppearNotification";
+NSString * const SVProgressHUDDidAppearNotification = @"SVProgressHUDDidAppearNotification";
 
 NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
 
@@ -53,6 +55,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (void)setStatus:(NSString*)string;
 - (void)registerNotifications;
+- (NSDictionary *)notificationUserInfo;
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
 - (void)positionHUD:(NSNotification*)notification;
 - (NSTimeInterval)displayDurationForString:(NSString*)string;
@@ -319,6 +322,12 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 
+- (NSDictionary *)notificationUserInfo
+{
+    return (self.stringLabel.text ? @{SVProgressHUDStatusUserInfoKey : self.stringLabel.text} : nil);
+}
+
+
 - (void)positionHUD:(NSNotification*)notification {
     
     CGFloat keyboardHeight;
@@ -466,6 +475,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     [self positionHUD:nil];
     
     if(self.alpha != 1) {
+        NSDictionary *userInfo = [self notificationUserInfo];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillAppearNotification
+                                                            object:nil
+                                                          userInfo:userInfo];
+        
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
         SVProgressHUD *__weak weakSelf=self;
@@ -477,6 +491,9 @@ CGFloat SVProgressHUDRingThickness = 6;
                              weakSelf.alpha = 1;
                          }
                          completion:^(BOOL finished){
+                             [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
+                                                                                 object:nil
+                                                                               userInfo:userInfo];
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
                              UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
                          }];
@@ -516,10 +533,10 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 - (void)dismiss {
-    NSDictionary *notificationUserInfo = (self.stringLabel.text ? @{SVProgressHUDStatusUserInfoKey : self.stringLabel.text} : nil);
+    NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
-                                                      userInfo:notificationUserInfo];
+                                                      userInfo:userInfo];
     
     self.activityCount = 0;
      SVProgressHUD *__weak weakSelf=self;
@@ -544,7 +561,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
                              [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
                                                                                  object:nil
-                                                                               userInfo:notificationUserInfo];
+                                                                               userInfo:userInfo];
                              
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
