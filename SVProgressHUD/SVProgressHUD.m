@@ -42,6 +42,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
+@property (nonatomic, assign) UIOffset offsetFromCenter;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -156,9 +157,21 @@ CGFloat SVProgressHUDRingThickness = 6;
 }
 
 + (void)dismiss {
-	[[self sharedView] dismiss];
+    if ([self isVisible]) {
+        [[self sharedView] dismiss];
+    }
 }
 
+
+#pragma mark - Offset
+
++ (void)setOffsetFromCenter:(UIOffset)offset {
+    [self sharedView].offsetFromCenter = offset;
+}
+
++ (void)resetOffsetFromCenter {
+    [self setOffsetFromCenter:UIOffsetZero];
+}
 
 #pragma mark - Instance Methods
 
@@ -255,7 +268,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 	
 	self.hudView.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
-	
+
     if(string)
         self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36);
 	else
@@ -415,7 +428,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle {
     self.hudView.transform = CGAffineTransformMakeRotation(angle); 
-    self.hudView.center = newCenter;
+    self.hudView.center = CGPointMake(newCenter.x + self.offsetFromCenter.horizontal, newCenter.y + self.offsetFromCenter.vertical);
 }
 
 - (void)overlayViewDidReceiveTouchEvent:(id)sender forEvent:(UIEvent *)event {
@@ -484,13 +497,12 @@ CGFloat SVProgressHUDRingThickness = 6;
         
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-        SVProgressHUD *__weak weakSelf=self;
         [UIView animateWithDuration:0.15
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
-                             weakSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
-                             weakSelf.alpha = 1;
+                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
+                             self.alpha = 1;
                          }
                          completion:^(BOOL finished){
                              [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
@@ -541,18 +553,17 @@ CGFloat SVProgressHUDRingThickness = 6;
                                                       userInfo:userInfo];
     
     self.activityCount = 0;
-     SVProgressHUD *__weak weakSelf=self;
     [UIView animateWithDuration:0.15
                           delay:0
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
                      animations:^{
-                         weakSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
-                         weakSelf.alpha = 0;
+                         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8, 0.8);
+                         self.alpha = 0;
                      }
                      completion:^(BOOL finished){
-                         if(weakSelf.alpha == 0) {
-                             [[NSNotificationCenter defaultCenter] removeObserver:weakSelf];
-                             [weakSelf cancelRingLayerAnimation];
+                         if(self.alpha == 0) {
+                             [[NSNotificationCenter defaultCenter] removeObserver:self];
+                             [self cancelRingLayerAnimation];
                              [hudView removeFromSuperview];
                              hudView = nil;
                              
