@@ -74,9 +74,13 @@ The HUD will get dismissed once the `popActivity` calls will match the number of
 Or show a confirmation glyph before before getting dismissed 1 second later using:
 
 ```objective-c
-+ (void)showSuccessWithStatus:(NSString*)string;
++ (void)showSuccessWithStatus:(NSString *)string;
++ (void)showSuccessWithStatus:(NSString *)string duration:(float)duration;
++ (void)showSuccessWithStatus:(NSString *)string duration:(float)duration completion:(void (^)(void))callback;
 + (void)showErrorWithStatus:(NSString *)string;
-+ (void)showImage:(UIImage*)image status:(NSString*)string; // use 28x28 white pngs
++ (void)showErrorWithStatus:(NSString *)string duration:(float)duration;
++ (void)showErrorWithStatus:(NSString *)string duration:(float)duration completion:(void (^)(void))callback;
++ (void)showImage:(UIImage *)image status:(NSString *)string; // use 28x28 white pngs
 ```
 
 ### Observing HUD Notifications
