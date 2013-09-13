@@ -927,7 +927,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
     
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+#else
     return [UIFont boldSystemFontOfSize:16];
+#endif
 }
 
 - (UIImage *)hudSuccessImage {
