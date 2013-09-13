@@ -61,6 +61,8 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (UIColor *)hudBackgroundColor;
 - (UIColor *)hudForegroundColor;
 - (UIColor *)hudStatusShadowColor;
+- (UIColor *)hudRingBackgroundColor;
+- (UIColor *)hudRingForegroundColor;
 - (UIFont *)hudFont;
 - (UIImage *)hudSuccessImage;
 - (UIImage *)hudErrorImage;
@@ -76,6 +78,8 @@ CGFloat SVProgressHUDRingThickness = 6;
 @synthesize hudBackgroundColor = _uiHudBgColor;
 @synthesize hudForegroundColor = _uiHudFgColor;
 @synthesize hudStatusShadowColor = _uiHudStatusShColor;
+@synthesize hudRingBackgroundColor = _uiHudRingBgColor;
+@synthesize hudRingForegroundColor = _uiHudRingFgColor;
 @synthesize hudFont = _uiHudFont;
 @synthesize hudSuccessImage = _uiHudSuccessImage;
 @synthesize hudErrorImage = _uiHudErrorImage;
@@ -556,7 +560,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (CAShapeLayer *)ringLayer {
     if(!_ringLayer) {
         CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
-        _ringLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:[UIColor whiteColor]];
+        _ringLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:_uiHudRingFgColor];
         [self.hudView.layer addSublayer:_ringLayer];
     }
     return _ringLayer;
@@ -565,7 +569,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (CAShapeLayer *)backgroundRingLayer {
     if(!_backgroundRingLayer) {
         CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
-        _backgroundRingLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:[UIColor darkGrayColor]];
+        _backgroundRingLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:_uiHudRingBgColor];
         _backgroundRingLayer.strokeEnd = 1;
         [self.hudView.layer addSublayer:_backgroundRingLayer];
     }
@@ -794,6 +798,34 @@ CGFloat SVProgressHUDRingThickness = 6;
 #else
     return [UIColor whiteColor];
 #endif
+}
+
+- (UIColor *)hudRingBackgroundColor {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudRingBgColor == nil) {
+        _uiHudRingBgColor = [[[self class] appearance] hudRingBackgroundColor];
+    }
+    
+    if(_uiHudRingBgColor != nil) {
+        return _uiHudRingBgColor;
+    }
+#endif
+    
+    return [UIColor colorWithWhite:0 alpha:0.8];
+}
+
+- (UIColor *)hudRingForegroundColor {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
+    if(_uiHudRingFgColor == nil) {
+        _uiHudRingFgColor = [[[self class] appearance] hudRingForegroundColor];
+    }
+    
+    if(_uiHudRingFgColor != nil) {
+        return _uiHudRingFgColor;
+    }
+#endif
+    
+    return [UIColor whiteColor];
 }
 
 - (UIColor *)hudStatusShadowColor {
