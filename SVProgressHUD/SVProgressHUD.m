@@ -22,8 +22,13 @@ NSString * const SVProgressHUDDidAppearNotification = @"SVProgressHUDDidAppearNo
 
 NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+CGFloat SVProgressHUDRingRadius = 14;
+CGFloat SVProgressHUDRingThickness = 1;
+#else
 CGFloat SVProgressHUDRingRadius = 14;
 CGFloat SVProgressHUDRingThickness = 6;
+#endif
 
 @interface SVProgressHUD ()
 
@@ -612,7 +617,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (CAShapeLayer *)ringLayer {
     if(!_ringLayer) {
         CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
-        _ringLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:_uiHudRingFgColor];
+        _ringLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:self.hudRingForegroundColor];
         [self.hudView.layer addSublayer:_ringLayer];
     }
     return _ringLayer;
@@ -621,7 +626,7 @@ CGFloat SVProgressHUDRingThickness = 6;
 - (CAShapeLayer *)backgroundRingLayer {
     if(!_backgroundRingLayer) {
         CGPoint center = CGPointMake(CGRectGetWidth(hudView.frame)/2, CGRectGetHeight(hudView.frame)/2);
-        _backgroundRingLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:_uiHudRingBgColor];
+        _backgroundRingLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius lineWidth:SVProgressHUDRingThickness color:self.hudRingBackgroundColor];
         _backgroundRingLayer.strokeEnd = 1;
         [self.hudView.layer addSublayer:_backgroundRingLayer];
     }
@@ -868,7 +873,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
     
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIColor whiteColor];
+#else
     return [UIColor colorWithWhite:0 alpha:0.8];
+#endif
 }
 
 - (UIColor *)hudRingForegroundColor {
@@ -882,7 +891,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
     
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return self.tintColor;
+#else
     return [UIColor whiteColor];
+#endif
 }
 
 - (UIColor *)hudStatusShadowColor {
@@ -914,7 +927,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     }
 #endif
     
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    return [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+#else
     return [UIFont boldSystemFontOfSize:16];
+#endif
 }
 
 - (UIImage *)hudSuccessImage {
