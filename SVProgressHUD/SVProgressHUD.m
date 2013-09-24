@@ -600,7 +600,7 @@ CGFloat SVProgressHUDRingThickness = 6;
                              
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
                              // Tell the rootViewController to update the StatusBar appearance
-                             UIViewController *rootController = UIApplication.sharedApplication.delegate.window.rootViewController;
+                             UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
                              if ([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
                                [rootController setNeedsStatusBarAppearanceUpdate];
                              }
