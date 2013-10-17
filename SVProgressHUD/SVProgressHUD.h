@@ -13,6 +13,8 @@
 extern NSString * const SVProgressHUDDidReceiveTouchEventNotification;
 extern NSString * const SVProgressHUDWillDisappearNotification;
 extern NSString * const SVProgressHUDDidDisappearNotification;
+extern NSString * const SVProgressHUDWillAppearNotification;
+extern NSString * const SVProgressHUDDidAppearNotification;
 
 extern NSString * const SVProgressHUDStatusUserInfoKey;
 
@@ -38,14 +40,17 @@ typedef NSUInteger SVProgressHUDMaskType;
 @property (readwrite, nonatomic, retain) UIImage *hudErrorImage NS_AVAILABLE_IOS(5_0) UI_APPEARANCE_SELECTOR;
 #endif
 
++ (void)setOffsetFromCenter:(UIOffset)offset;
++ (void)resetOffsetFromCenter;
+
 + (void)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 
-+ (void)showProgress:(CGFloat)progress;
-+ (void)showProgress:(CGFloat)progress status:(NSString*)status;
-+ (void)showProgress:(CGFloat)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showProgress:(float)progress;
++ (void)showProgress:(float)progress status:(NSString*)status;
++ (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 
