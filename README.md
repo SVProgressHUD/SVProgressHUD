@@ -2,7 +2,9 @@
 
 SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
 
-![SVProgressHUD](http://f.cl.ly/items/3r2x0b1E1O2F0V422a3R/screenshots2.png)
+![SVProgressHUD-iOS7](http://f.cl.ly/items/1U0T1W0q0u2Z213k1n0o/SVProgressHUD.png)
+
+![SVProgressHUD-iOS6](http://f.cl.ly/items/3r2x0b1E1O2F0V422a3R/screenshots2.png)
 
 ## Installation
 
