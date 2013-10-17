@@ -189,26 +189,6 @@ CGFloat SVProgressHUDRingThickness = 6;
 		self.alpha = 0;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.activityCount = 0;
-        
-        //
-        // add motion effect
-        //
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
-        {
-            CGFloat depth = 10;
-            
-            UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-            effectX.minimumRelativeValue = @(-depth);
-            effectX.maximumRelativeValue = @(depth);
-            
-            UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-            effectY.minimumRelativeValue = @(-depth);
-            effectY.maximumRelativeValue = @(depth);
-            
-            [self addMotionEffect: effectX];
-            [self addMotionEffect: effectY];
-        }
-#endif
     }
 	
     return self;
@@ -765,6 +745,26 @@ CGFloat SVProgressHUDRingThickness = 6;
         
         hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
+        
+        //
+        // add motion effect
+        //
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+        {
+            CGFloat depth = 10;
+            
+            UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+            effectX.minimumRelativeValue = @(-depth);
+            effectX.maximumRelativeValue = @(depth);
+            
+            UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+            effectY.minimumRelativeValue = @(-depth);
+            effectY.maximumRelativeValue = @(depth);
+            
+            [hudView addMotionEffect: effectX];
+            [hudView addMotionEffect: effectY];
+        }
+#endif
         
         [self addSubview:hudView];
     }
