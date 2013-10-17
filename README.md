@@ -89,7 +89,9 @@ Or show a confirmation glyph before before getting dismissed 1 second later usin
 * `SVProgressHUDWillDisappearNotification` when the dismiss animation starts
 * `SVProgressHUDDidDisappearNotification` when the dismiss animation completes
 
-Each notification passes a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`
+Each notification passes a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`.
+
+`SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the screen. For this notification `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
 
 ## Credits
 
