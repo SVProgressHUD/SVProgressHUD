@@ -23,11 +23,12 @@ NSString * const SVProgressHUDDidAppearNotification = @"SVProgressHUDDidAppearNo
 NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
-CGFloat SVProgressHUDRingRadius = 14;
-CGFloat SVProgressHUDRingThickness = 1;
+static const CGFloat SVProgressHUDRingRadius = 14;
+static const CGFloat SVProgressHUDRingThickness = 1;
+static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #else
-CGFloat SVProgressHUDRingRadius = 14;
-CGFloat SVProgressHUDRingThickness = 6;
+static const CGFloat SVProgressHUDRingRadius = 14;
+static const CGFloat SVProgressHUDRingThickness = 6;
 #endif
 
 @interface SVProgressHUD ()
@@ -751,15 +752,13 @@ CGFloat SVProgressHUDRingThickness = 6;
         //
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
         {
-            CGFloat depth = 10;
-            
             UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-            effectX.minimumRelativeValue = @(-depth);
-            effectX.maximumRelativeValue = @(depth);
+            effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+            effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
             
             UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-            effectY.minimumRelativeValue = @(-depth);
-            effectY.maximumRelativeValue = @(depth);
+            effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+            effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
             
             [hudView addMotionEffect: effectX];
             [hudView addMotionEffect: effectY];
