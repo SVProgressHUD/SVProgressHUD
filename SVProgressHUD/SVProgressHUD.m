@@ -417,12 +417,11 @@ CGFloat SVProgressHUDRingThickness = 6;
     } 
     
     if(notification) {
-        SVProgressHUD *__weak weakSelf=self;
-        [UIView animateWithDuration:animationDuration 
+        [UIView animateWithDuration:animationDuration
                               delay:0 
                             options:UIViewAnimationOptionAllowUserInteraction 
                          animations:^{
-                             [weakSelf moveToPoint:newCenter rotateAngle:rotateAngle];
+                             [self moveToPoint:newCenter rotateAngle:rotateAngle];
                          } completion:NULL];
     } 
     
