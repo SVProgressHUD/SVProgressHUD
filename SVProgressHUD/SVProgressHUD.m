@@ -686,6 +686,7 @@ CGFloat SVProgressHUDRingThickness = 6;
     UIBezierPath *smoothedPath = [self createCirclePathWithCenter:center radius:radius sampleCount:72];
     
     CAShapeLayer *slice = [CAShapeLayer layer];
+    slice.contentsScale = [[UIScreen mainScreen] scale];
     slice.frame = CGRectMake(center.x-radius, center.y-radius, radius*2, radius*2);
     slice.fillColor = [UIColor clearColor].CGColor;
     slice.strokeColor = color.CGColor;
