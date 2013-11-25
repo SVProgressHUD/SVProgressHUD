@@ -654,37 +654,9 @@ static const CGFloat SVProgressHUDRingThickness = 6;
     [CATransaction commit];
 }
 
-- (CGPoint)pointOnCircleWithCenter:(CGPoint)center radius:(double)radius angleInDegrees:(double)angleInDegrees {
-    float x = (float)(radius * cos(angleInDegrees * M_PI / 180)) + radius;
-    float y = (float)(radius * sin(angleInDegrees * M_PI / 180)) + radius;
-    return CGPointMake(x, y);
-}
-
-
-- (UIBezierPath *)createCirclePathWithCenter:(CGPoint)center radius:(CGFloat)radius sampleCount:(NSInteger)sampleCount {
-    
-    UIBezierPath *smoothedPath = [UIBezierPath bezierPath];
-    CGPoint startPoint = [self pointOnCircleWithCenter:center radius:radius angleInDegrees:-90];
-    
-    [smoothedPath moveToPoint:startPoint];
-    
-    CGFloat delta = 360.0f/sampleCount;
-    CGFloat angleInDegrees = -90;
-    for (NSInteger i=1; i<sampleCount; i++) {
-        angleInDegrees += delta;
-        CGPoint point = [self pointOnCircleWithCenter:center radius:radius angleInDegrees:angleInDegrees];
-        [smoothedPath addLineToPoint:point];
-    }
-    
-    [smoothedPath addLineToPoint:startPoint];
-    
-    return smoothedPath;
-}
-
-
 - (CAShapeLayer *)createRingLayerWithCenter:(CGPoint)center radius:(CGFloat)radius lineWidth:(CGFloat)lineWidth color:(UIColor *)color {
     
-    UIBezierPath *smoothedPath = [self createCirclePathWithCenter:center radius:radius sampleCount:72];
+    UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(radius, radius) radius:radius startAngle:-M_PI_2 endAngle:(M_PI + M_PI_2) clockwise:YES];
     
     CAShapeLayer *slice = [CAShapeLayer layer];
     slice.contentsScale = [[UIScreen mainScreen] scale];
