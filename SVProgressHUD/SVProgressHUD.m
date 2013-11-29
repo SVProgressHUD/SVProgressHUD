@@ -577,7 +577,9 @@ static const CGFloat SVProgressHUDRingThickness = 6;
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
                                                       userInfo:userInfo];
-    
+
+    self.blurredBackgroundImage = nil;
+
     self.activityCount = 0;
     [UIView animateWithDuration:0.15
                           delay:0
