@@ -19,10 +19,12 @@ extern NSString * const SVProgressHUDDidAppearNotification;
 extern NSString * const SVProgressHUDStatusUserInfoKey;
 
 enum {
-    SVProgressHUDMaskTypeNone = 1, // allow user interactions while HUD is displayed
-    SVProgressHUDMaskTypeClear, // don't allow
-    SVProgressHUDMaskTypeBlack, // don't allow and dim the UI in the back of the HUD
-    SVProgressHUDMaskTypeGradient // don't allow and dim the UI with a a-la-alert-view bg gradient
+    SVProgressHUDMaskTypeNone = 1,  // allow user interactions while HUD is displayed
+    SVProgressHUDMaskTypeClear,     // don't allow
+    SVProgressHUDMaskTypeBlack,     // don't allow and dim the UI in the back of the HUD
+    SVProgressHUDMaskTypeGradient,  // don't allow and dim the UI with a a-la-alert-view bg gradient
+    SVProgressHUDMaskTypeBlurLight, // don't allow and blur/dim the UI in the back of the HUD
+    SVProgressHUDMaskTypeBlurDark   // don't allow and blur/lighten the UI in the back of the HUD
 };
 
 typedef NSUInteger SVProgressHUDMaskType;
