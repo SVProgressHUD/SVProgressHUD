@@ -51,11 +51,6 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
 
-@property (nonatomic, strong) UIFont *statusFont;
-@property (nonatomic, strong) UIImage *successImage;
-@property (nonatomic, strong) UIImage *errorImage;
-@property (nonatomic, strong) UIColor *backgroundColor;
-
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
