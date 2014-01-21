@@ -732,8 +732,9 @@ static const CGFloat SVProgressHUDRingThickness = 6;
             effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
             effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
             
-            [hudView addMotionEffect: effectX];
-            [hudView addMotionEffect: effectY];
+            UIMotionEffectGroup *effectGroup = [[UIMotionEffectGroup alloc] init];
+            effectGroup.motionEffects = @[effectX, effectY]
+            [hudView addMotionEffect:effectGroup];
         }
 #endif
         
