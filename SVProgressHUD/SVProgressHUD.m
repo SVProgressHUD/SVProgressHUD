@@ -227,9 +227,12 @@ static const CGFloat SVProgressHUDRingThickness = 6;
     
     if(string) {
         CGSize constraintSize = CGSizeMake(200, 300);
-        CGRect stringRect = [string boundingRectWithSize:constraintSize options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin) attributes:@{NSFontAttributeName: self.stringLabel.font} context:NULL];
+        CGRect stringRect = [string boundingRectWithSize:constraintSize
+                                                 options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
+                                              attributes:@{NSFontAttributeName: self.stringLabel.font}
+                                                 context:NULL];
         stringWidth = stringRect.size.width;
-        stringHeight = stringRect.size.height;
+        stringHeight = ceil(stringRect.size.height);
 
         if (imageUsed)
             hudHeight = stringAndImageHeightBuffer + stringHeight;
