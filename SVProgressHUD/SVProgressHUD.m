@@ -51,7 +51,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
 
-- (void)showProgress:(float)progress
+- (void)showProgress:(CGFloat)progress
               status:(NSString*)string
             maskType:(SVProgressHUDMaskType)hudMaskType;
 
@@ -127,15 +127,15 @@ static const CGFloat SVProgressHUDRingThickness = 6;
     [[self sharedView] showProgress:-1 status:status maskType:maskType];
 }
 
-+ (void)showProgress:(float)progress {
++ (void)showProgress:(CGFloat)progress {
     [[self sharedView] showProgress:progress status:nil maskType:SVProgressHUDMaskTypeNone];
 }
 
-+ (void)showProgress:(float)progress status:(NSString *)status {
++ (void)showProgress:(CGFloat)progress status:(NSString *)status {
     [[self sharedView] showProgress:progress status:status maskType:SVProgressHUDMaskTypeNone];
 }
 
-+ (void)showProgress:(float)progress status:(NSString *)status maskType:(SVProgressHUDMaskType)maskType {
++ (void)showProgress:(CGFloat)progress status:(NSString *)status maskType:(SVProgressHUDMaskType)maskType {
     [[self sharedView] showProgress:progress status:status maskType:maskType];
 }
 
@@ -219,7 +219,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
             CGFloat freeHeight = self.bounds.size.height - self.visibleKeyboardHeight;
             
             CGPoint center = CGPointMake(self.bounds.size.width/2, freeHeight/2);
-            float radius = MIN(self.bounds.size.width , self.bounds.size.height) ;
+            CGFloat radius = MIN(self.bounds.size.width , self.bounds.size.height) ;
             CGContextDrawRadialGradient (context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
             CGGradientRelease(gradient);
             
@@ -377,7 +377,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
     CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
     
     if(UIInterfaceOrientationIsLandscape(orientation)) {
-        float temp = orientationFrame.size.width;
+        CGFloat temp = orientationFrame.size.width;
         orientationFrame.size.width = orientationFrame.size.height;
         orientationFrame.size.height = temp;
         
@@ -443,7 +443,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 
 #pragma mark - Master show/dismiss methods
 
-- (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
+- (void)showProgress:(CGFloat)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
     
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
