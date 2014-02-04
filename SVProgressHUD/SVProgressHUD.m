@@ -385,6 +385,16 @@ static const CGFloat SVProgressHUDRingThickness = 6;
         statusBarFrame.size.width = statusBarFrame.size.height;
         statusBarFrame.size.height = temp;
     }
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+    {
+        if (UIDeviceOrientationIsLandscape(orientation)) {
+            [self addMotionEffectInLandscape];
+        } else {
+            [self addMotionEffectInPortrait];
+        }
+    }
+#endif
     
     CGFloat activeHeight = orientationFrame.size.height;
     
@@ -724,22 +734,50 @@ static const CGFloat SVProgressHUDRingThickness = 6;
         //
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
         {
-            UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-            effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
-            effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
-            
-            UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-            effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
-            effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
-            
-            [hudView addMotionEffect: effectX];
-            [hudView addMotionEffect: effectY];
+            UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+            if (UIDeviceOrientationIsLandscape(orientation)) {
+                [self addMotionEffectInLandscape];
+            } else {
+                [self addMotionEffectInPortrait];
+            }
         }
 #endif
         
         [self addSubview:hudView];
     }
     return hudView;
+}
+
+- (void)addMotionEffectInPortrait
+{
+    hudView.motionEffects = @[];
+    
+    UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+    effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
+    
+    UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+    effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
+    
+    [hudView addMotionEffect: effectX];
+    [hudView addMotionEffect: effectY];
+}
+
+- (void)addMotionEffectInLandscape
+{
+    hudView.motionEffects = @[];
+
+    UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+    effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
+    
+    UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+    effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
+    
+    [hudView addMotionEffect: effectX];
+    [hudView addMotionEffect: effectY];
 }
 
 - (UILabel *)stringLabel {
