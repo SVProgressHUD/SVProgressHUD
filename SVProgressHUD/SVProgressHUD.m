@@ -100,13 +100,20 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
     static SVProgressHUD *sharedView;
-    dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+    dispatch_once(&once, ^ {
+        sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        sharedView.windowLevel = UIWindowLevelNormal;
+    });
     return sharedView;
 }
 
 
 + (void)setStatus:(NSString *)string {
 	[[self sharedView] setStatus:string];
+}
+
++ (void)setWindowLevel:(UIWindowLevel)windowLevel {
+    [[self sharedView] setWindowLevel:windowLevel];
 }
 
 #pragma mark - Show Methods
@@ -449,7 +456,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
         for (UIWindow *window in frontToBackWindows)
-            if (window.windowLevel == UIWindowLevelNormal) {
+            if (window.windowLevel == self.windowLevel) {
                 [window addSubview:self.overlayView];
                 break;
             }
