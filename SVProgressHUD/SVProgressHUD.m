@@ -91,6 +91,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 + (void)setBackgroundColor:(UIColor *)color {
     SVProgressHUDBackgroundColor = color;
+    [self sharedView].hudView.backgroundColor = color;
 }
 
 + (void)setForegroundColor:(UIColor *)color {
