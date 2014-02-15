@@ -24,6 +24,7 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
 static const CGFloat SVProgressHUDRingRadius = 18;
+static const CGFloat SVProgressHUDRingNoTextRadius = 24;
 static const CGFloat SVProgressHUDRingThickness = 4;
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #else
@@ -41,7 +42,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 @property (nonatomic, strong) UIView *hudView;
 @property (nonatomic, strong) UILabel *stringLabel;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) CALayer *indefiniteAnimatedLayer;
+@property (nonatomic, strong) CAShapeLayer *indefiniteAnimatedLayer;
 
 @property (nonatomic, readwrite) CGFloat progress;
 @property (nonatomic, readwrite) NSUInteger activityCount;
@@ -578,6 +579,9 @@ static const CGFloat SVProgressHUDRingThickness = 6;
                              
                              [_overlayView removeFromSuperview];
                              _overlayView = nil;
+                             
+                             [_indefiniteAnimatedLayer removeFromSuperlayer];
+                             _indefiniteAnimatedLayer = nil;
 
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 
@@ -600,48 +604,65 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 
 #pragma mark - Ring progress animation
 
-- (CALayer*)indefiniteAnimatedLayer {
+- (CAShapeLayer*)indefiniteAnimatedLayer {
     if(!_indefiniteAnimatedLayer) {
         CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
-        CGPoint arcCenter = CGPointMake(SVProgressHUDRingRadius+SVProgressHUDRingThickness/2, SVProgressHUDRingRadius+SVProgressHUDRingThickness/2);
+        CGFloat radius = self.stringLabel.text ? SVProgressHUDRingRadius : SVProgressHUDRingNoTextRadius;
+        CGPoint arcCenter = CGPointMake(radius+SVProgressHUDRingThickness/2+5, radius+SVProgressHUDRingThickness/2+5);
+        CGRect rect = CGRectMake(center.x-radius, center.y-radius, arcCenter.x*2, arcCenter.y*2);
+        
         UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:arcCenter
-                                                                    radius:SVProgressHUDRingRadius
-                                                                startAngle:-M_PI_2 + M_PI*0.05
-                                                                  endAngle:-M_PI_2 - M_PI*0.05
+                                                                    radius:radius
+                                                                startAngle:M_PI*3/2
+                                                                  endAngle:M_PI/2+M_PI*5
                                                                  clockwise:YES];
         
-        CAShapeLayer *slice = [CAShapeLayer layer];
-        slice.contentsScale = [[UIScreen mainScreen] scale];
-        slice.frame = CGRectMake(center.x-SVProgressHUDRingRadius-SVProgressHUDRingThickness,
-                                 center.y-SVProgressHUDRingRadius-SVProgressHUDRingThickness,
-                                 SVProgressHUDRingRadius*2+SVProgressHUDRingThickness,
-                                 SVProgressHUDRingRadius*2+SVProgressHUDRingThickness);
-        slice.fillColor = [UIColor clearColor].CGColor;
-        slice.strokeColor = self.tintColor.CGColor;
-        slice.lineWidth = SVProgressHUDRingThickness;
-        slice.lineCap = kCALineCapRound;
-        slice.lineJoin = kCALineJoinBevel;
-        slice.path = smoothedPath.CGPath;
-        slice.masksToBounds = YES;
-        
-        _indefiniteAnimatedLayer = slice;
+        _indefiniteAnimatedLayer = [CAShapeLayer layer];
+        _indefiniteAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
+        _indefiniteAnimatedLayer.frame = rect;
+        _indefiniteAnimatedLayer.fillColor = [UIColor clearColor].CGColor;
+        _indefiniteAnimatedLayer.strokeColor = self.tintColor.CGColor;
+        _indefiniteAnimatedLayer.lineWidth = SVProgressHUDRingThickness;
+        _indefiniteAnimatedLayer.lineCap = kCALineCapRound;
+        _indefiniteAnimatedLayer.lineJoin = kCALineJoinBevel;
+        _indefiniteAnimatedLayer.path = smoothedPath.CGPath;
         
         CALayer *maskLayer = [CALayer layer];
         maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask@2x.png"] CGImage];
-        maskLayer.frame = slice.bounds;
-
+        maskLayer.frame = _indefiniteAnimatedLayer.bounds;
         _indefiniteAnimatedLayer.mask = maskLayer;
+        
+        NSTimeInterval animationDuration = 2;
+        CAMediaTimingFunction *linearCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
 
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
         animation.fromValue = 0;
         animation.toValue = [NSNumber numberWithFloat:M_PI*2];
-        animation.duration = 1;
-        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+        animation.duration = animationDuration;
+        animation.timingFunction = linearCurve;
         animation.removedOnCompletion = NO;
         animation.repeatCount = INFINITY;
         animation.fillMode = kCAFillModeForwards;
         animation.autoreverses = NO;
-        [_indefiniteAnimatedLayer addAnimation:animation forKey:@"rotate"];
+        [_indefiniteAnimatedLayer.mask addAnimation:animation forKey:@"rotate"];
+        
+        CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+        animationGroup.duration = animationDuration;
+        animationGroup.repeatCount = INFINITY;
+        animationGroup.removedOnCompletion = NO;
+        animationGroup.timingFunction = linearCurve;
+        
+        CABasicAnimation *strokeStartAnimation = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
+        strokeStartAnimation.fromValue = @0.015;
+        strokeStartAnimation.toValue = @0.515;
+        
+        CABasicAnimation *strokeEndAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+        strokeEndAnimation.fromValue = @0.485;
+        strokeEndAnimation.toValue = @0.985;
+        
+        animationGroup.animations = @[strokeStartAnimation, strokeEndAnimation];
+        [_indefiniteAnimatedLayer addAnimation:animationGroup forKey:@"progress"];
+
     }
     return _indefiniteAnimatedLayer;
 }
