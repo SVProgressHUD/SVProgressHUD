@@ -789,10 +789,8 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 
 - (UIView *)hudView {
     if(!_hudView) {
-        _hudView = [[UIToolbar alloc] initWithFrame:CGRectZero];
-        ((UIToolbar *)_hudView).translucent = YES;
-        ((UIToolbar *)_hudView).barTintColor = self.backgroundColor;
-        
+        _hudView = [[UIView alloc] initWithFrame:CGRectZero];
+        _hudView.backgroundColor = SVProgressHUDBackgroundColor;
         _hudView.layer.cornerRadius = 14;
         _hudView.layer.masksToBounds = YES;
         
