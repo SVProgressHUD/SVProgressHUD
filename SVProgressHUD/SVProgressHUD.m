@@ -29,14 +29,9 @@ UIFont *SVProgressHUDFont;
 UIImage *SVProgressHUDSuccessImage;
 UIImage *SVProgressHUDErrorImage;
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
-#else
-static const CGFloat SVProgressHUDRingRadius = 14;
-static const CGFloat SVProgressHUDRingThickness = 6;
-#endif
 
 @interface SVProgressHUD ()
 
