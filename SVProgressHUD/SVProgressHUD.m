@@ -22,12 +22,12 @@ NSString * const SVProgressHUDDidAppearNotification = @"SVProgressHUDDidAppearNo
 
 NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
 
-UIColor *SVProgressHUDBackgroundColor;
-UIColor *SVProgressHUDForegroundColor;
-CGFloat SVProgressHUDRingThickness;
-UIFont *SVProgressHUDFont;
-UIImage *SVProgressHUDSuccessImage;
-UIImage *SVProgressHUDErrorImage;
+static UIColor *SVProgressHUDBackgroundColor;
+static UIColor *SVProgressHUDForegroundColor;
+static CGFloat SVProgressHUDRingThickness;
+static UIFont *SVProgressHUDFont;
+static UIImage *SVProgressHUDSuccessImage;
+static UIImage *SVProgressHUDErrorImage;
 
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
@@ -90,27 +90,32 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 + (void)setBackgroundColor:(UIColor *)color {
-    SVProgressHUDBackgroundColor = color;
     [self sharedView].hudView.backgroundColor = color;
+    SVProgressHUDBackgroundColor = color;
 }
 
 + (void)setForegroundColor:(UIColor *)color {
+    [self sharedView];
     SVProgressHUDForegroundColor = color;
 }
 
 + (void)setFont:(UIFont *)font {
+    [self sharedView];
     SVProgressHUDFont = font;
 }
 
 + (void)setRingThickness:(CGFloat)width {
+    [self sharedView];
     SVProgressHUDRingThickness = width;
 }
 
 + (void)setSuccessImage:(UIImage *)image {
+    [self sharedView];
     SVProgressHUDSuccessImage = image;
 }
 
 + (void)setErrorImage:(UIImage *)image {
+    [self sharedView];
     SVProgressHUDErrorImage = image;
 }
 
