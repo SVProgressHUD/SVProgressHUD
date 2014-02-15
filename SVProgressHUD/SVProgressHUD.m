@@ -649,7 +649,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         _indefiniteAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
         _indefiniteAnimatedLayer.frame = rect;
         _indefiniteAnimatedLayer.fillColor = [UIColor clearColor].CGColor;
-        _indefiniteAnimatedLayer.strokeColor = self.tintColor.CGColor;
+        _indefiniteAnimatedLayer.strokeColor = SVProgressHUDForegroundColor.CGColor;
         _indefiniteAnimatedLayer.lineWidth = SVProgressHUDRingThickness;
         _indefiniteAnimatedLayer.lineCap = kCALineCapRound;
         _indefiniteAnimatedLayer.lineJoin = kCALineJoinBevel;
@@ -701,7 +701,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         _ringLayer = [self createRingLayerWithCenter:center
                                               radius:SVProgressHUDRingRadius
                                            lineWidth:SVProgressHUDRingThickness
-                                               color:self.tintColor];
+                                               color:SVProgressHUDForegroundColor];
         [self.hudView.layer addSublayer:_ringLayer];
     }
     return _ringLayer;
@@ -713,7 +713,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         _backgroundRingLayer = [self createRingLayerWithCenter:center
                                                         radius:SVProgressHUDRingRadius
                                                      lineWidth:SVProgressHUDRingThickness
-                                                         color:[self.tintColor colorWithAlphaComponent:0.1]];
+                                                         color:[SVProgressHUDForegroundColor colorWithAlphaComponent:0.1]];
         _backgroundRingLayer.strokeEnd = 1;
         [self.hudView.layer addSublayer:_backgroundRingLayer];
     }
@@ -815,7 +815,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 		_stringLabel.adjustsFontSizeToFitWidth = YES;
         _stringLabel.textAlignment = NSTextAlignmentCenter;
 		_stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-		_stringLabel.textColor = self.tintColor;
+		_stringLabel.textColor = SVProgressHUDForegroundColor;
 		_stringLabel.font = SVProgressHUDFont;
         _stringLabel.numberOfLines = 0;
     }
