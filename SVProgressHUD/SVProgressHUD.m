@@ -22,10 +22,16 @@ NSString * const SVProgressHUDDidAppearNotification = @"SVProgressHUDDidAppearNo
 
 NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
 
+UIColor *SVProgressHUDBackgroundColor;
+UIColor *SVProgressHUDForegroundColor;
+CGFloat SVProgressHUDRingThickness;
+UIFont *SVProgressHUDFont;
+UIImage *SVProgressHUDSuccessImage;
+UIImage *SVProgressHUDErrorImage;
+
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
-static const CGFloat SVProgressHUDRingThickness = 4;
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #else
 static const CGFloat SVProgressHUDRingRadius = 14;
@@ -82,9 +88,34 @@ static const CGFloat SVProgressHUDRingThickness = 6;
     return sharedView;
 }
 
+#pragma mark - Setters
 
 + (void)setStatus:(NSString *)string {
 	[[self sharedView] setStatus:string];
+}
+
++ (void)setBackgroundColor:(UIColor *)color {
+    SVProgressHUDBackgroundColor = color;
+}
+
++ (void)setForegroundColor:(UIColor *)color {
+    SVProgressHUDForegroundColor = color;
+}
+
++ (void)setFont:(UIFont *)font {
+    SVProgressHUDFont = font;
+}
+
++ (void)setRingThickness:(CGFloat)width {
+    SVProgressHUDRingThickness = width;
+}
+
++ (void)setSuccessImage:(UIImage *)image {
+    SVProgressHUDSuccessImage = image;
+}
+
++ (void)setErrorImage:(UIImage *)image {
+    SVProgressHUDErrorImage = image;
 }
 
 #pragma mark - Show Methods
@@ -120,11 +151,11 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 #pragma mark - Show then dismiss methods
 
 + (void)showSuccessWithStatus:(NSString *)string {
-    [self showImage:[[self sharedView] successImage] status:string];
+    [self showImage:SVProgressHUDSuccessImage status:string];
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
-    [self showImage:[[self sharedView] errorImage] status:string];
+    [self showImage:SVProgressHUDErrorImage status:string];
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
@@ -169,10 +200,12 @@ static const CGFloat SVProgressHUDRingThickness = 6;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.activityCount = 0;
         
-        self.backgroundColor = [UIColor whiteColor];
-        self.statusFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        self.successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success-black"];
-        self.errorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error-black"];
+        SVProgressHUDBackgroundColor = [UIColor whiteColor];
+        SVProgressHUDForegroundColor = [UIColor blackColor];
+        SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        SVProgressHUDSuccessImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success-black"];
+        SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error-black"];
+        SVProgressHUDRingThickness = 4;
     }
 	
     return self;
@@ -790,7 +823,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
         _stringLabel.textAlignment = NSTextAlignmentCenter;
 		_stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 		_stringLabel.textColor = self.tintColor;
-		_stringLabel.font = self.statusFont;
+		_stringLabel.font = SVProgressHUDFont;
         _stringLabel.numberOfLines = 0;
     }
     

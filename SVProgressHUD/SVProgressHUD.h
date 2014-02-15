@@ -29,12 +29,13 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 @interface SVProgressHUD : UIView
 
-+ (SVProgressHUD*)sharedView;
-
-@property (nonatomic, strong) UIFont *statusFont;
-@property (nonatomic, strong) UIImage *successImage;
-@property (nonatomic, strong) UIImage *errorImage;
-@property (nonatomic, strong) UIColor *backgroundColor;
+// one-time customization
++ (void)setBackgroundColor:(UIColor*)color;
++ (void)setForegroundColor:(UIColor*)color;
++ (void)setRingThickness:(CGFloat)width;
++ (void)setFont:(UIFont*)font;
++ (void)setSuccessImage:(UIImage*)image;
++ (void)setErrorImage:(UIImage*)image;
 
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;
