@@ -666,7 +666,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         maskLayer.frame = _indefiniteAnimatedLayer.bounds;
         _indefiniteAnimatedLayer.mask = maskLayer;
         
-        NSTimeInterval animationDuration = 2;
+        NSTimeInterval animationDuration = 1;
         CAMediaTimingFunction *linearCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
 
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
