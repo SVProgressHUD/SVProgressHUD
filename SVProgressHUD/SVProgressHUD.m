@@ -429,7 +429,13 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 #pragma mark - Master show/dismiss methods
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
-    
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showProgress:progress status:string maskType:hudMaskType];
+        });
+        return;
+    }
+
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
@@ -521,6 +527,13 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 
 
 - (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showImage:image status:string duration:duration];
+        });
+        return;
+    }
+
     self.progress = -1;
     [self cancelRingLayerAnimation];
     
@@ -550,6 +563,11 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 }
 
 - (void)dismiss {
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(dismiss) withObject:nil waitUntilDone:NO];
+        return;
+    }
+
     NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
