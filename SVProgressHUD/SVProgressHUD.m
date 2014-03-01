@@ -31,6 +31,8 @@ static const CGFloat SVProgressHUDRingRadius = 14;
 static const CGFloat SVProgressHUDRingThickness = 6;
 #endif
 
+static const float SVProgressHUDUndefinedProgress = -1;
+
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
@@ -89,19 +91,19 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 #pragma mark - Show Methods
 
 + (void)show {
-    [[self sharedView] showProgress:-1 status:nil maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:nil maskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showWithStatus:(NSString *)status {
-    [[self sharedView] showProgress:-1 status:status maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:status maskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
-    [[self sharedView] showProgress:-1 status:nil maskType:maskType];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:nil maskType:maskType];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    [[self sharedView] showProgress:-1 status:status maskType:maskType];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:status maskType:maskType];
 }
 
 + (void)showProgress:(float)progress {
@@ -270,14 +272,14 @@ static const CGFloat SVProgressHUDRingThickness = 6;
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36);
         self.indefiniteAnimatedLayer.position = center;
         
-        if(self.progress != -1)
+        if(self.progress != SVProgressHUDUndefinedProgress)
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36);
 	}
     else {
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetHeight(self.hudView.bounds)/2);
         self.indefiniteAnimatedLayer.position = center;
         
-        if(self.progress != -1)
+        if(self.progress != SVProgressHUDUndefinedProgress)
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetHeight(self.hudView.bounds)/2);
     }
     
@@ -521,7 +523,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 
 
 - (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
-    self.progress = -1;
+    self.progress = SVProgressHUDUndefinedProgress;
     [self cancelRingLayerAnimation];
     
     if(![self.class isVisible])
