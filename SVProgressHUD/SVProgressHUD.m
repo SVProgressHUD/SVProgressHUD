@@ -556,6 +556,10 @@ static const CGFloat SVProgressHUDRingThickness = 6;
                                                       userInfo:userInfo];
     
     self.activityCount = 0;
+       
+    //Update alpha because it is used to detect whether the HUD is visible.
+    self.alpha -= 0.01;
+
     [UIView animateWithDuration:0.15
                           delay:0
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
