@@ -472,7 +472,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         
         for (UIWindow *window in frontToBackWindows)
             if (window.windowLevel == UIWindowLevelNormal) {
-                [window addSubview:self.hudView];
+                [window addSubview:self.overlayView];
                 break;
             }
     }
