@@ -21,9 +21,21 @@ I'm not a big fan of CocoaPods, so tend to not keep it updated. If you really wa
 
 SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call `[SVProgressHUD method]`).
 
+Using SVProgressHUD in your app will usually look as simple as this (using Grand Central Dispatch):
+
+```objective-c
+[SVProgressHUD show];
+dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    // time-consuming task
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+});
+```
+
 ### Showing the HUD
 
-You can show the status of indeterminate tasks using:
+You can show the status of indeterminate tasks using one of the following:
 
 ```objective-c
 + (void)show;
@@ -32,7 +44,7 @@ You can show the status of indeterminate tasks using:
 + (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)maskType;
 ```
 
-If you'd like the HUD to reflect the progress of a task, use:
+If you'd like the HUD to reflect the progress of a task, use one of these:
 
 ```objective-c
 + (void)showProgress:(CGFloat)progress;
