@@ -21,6 +21,8 @@ I'm not a big fan of CocoaPods, so tend to not keep it updated. If you really wa
 
 SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call `[SVProgressHUD method]`).
 
+**Use SVProgressHUD wisely! Only use it if you absolutely need to perform a task before taking the user forward. Bad use case examples: pull to refresh, infinite scrolling, sending message.**
+
 Using SVProgressHUD in your app will usually look as simple as this (using Grand Central Dispatch):
 
 ```objective-c
