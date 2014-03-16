@@ -152,10 +152,12 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #pragma mark - Show then dismiss methods
 
 + (void)showSuccessWithStatus:(NSString *)string {
+    [self sharedView];
     [self showImage:SVProgressHUDSuccessImage status:string];
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
+    [self sharedView];
     [self showImage:SVProgressHUDErrorImage status:string];
 }
 
@@ -204,8 +206,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
         SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        SVProgressHUDSuccessImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success-black"];
-        SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error-black"];
+        SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         SVProgressHUDRingThickness = 4;
     }
 	
@@ -562,6 +564,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     if(![self.class isVisible])
         [self.class show];
     
+    self.imageView.tintColor = SVProgressHUDForegroundColor;
     self.imageView.image = image;
     self.imageView.hidden = NO;
     
