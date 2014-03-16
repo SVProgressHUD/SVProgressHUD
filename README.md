@@ -2,19 +2,15 @@
 
 SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
 
-![SVProgressHUD-iOS7](http://f.cl.ly/items/1U0T1W0q0u2Z213k1n0o/SVProgressHUD.png)
-
-![SVProgressHUD-iOS6](http://f.cl.ly/items/3r2x0b1E1O2F0V422a3R/screenshots2.png)
+![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
 
 ## Installation
 
 ### From CocoaPods
 
-Add `pod 'SVProgressHUD'` to your Podfile or `pod 'SVProgressHUD', :head` if you're feeling adventurous.
+I'm not a big fan of CocoaPods, so tend to not keep it updated. If you really want to use SVProgressHUD with CocoaPods, I suggest you use `pod 'SVProgressHUD', :head` to pull from the `master` branch directly. I'm usually careful about what I push there and is the version I use myself in all my projects.
 
 ### Manually
-
-_**Important note if your project doesn't use ARC**: you must add the `-fobjc-arc` compiler flag to `SVProgressHUD.m` in Target Settings > Build Phases > Compile Sources._
 
 * Drag the `SVProgressHUD/SVProgressHUD` folder into your project.
 * Add the **QuartzCore** framework to your project.
@@ -44,19 +40,6 @@ If you'd like the HUD to reflect the progress of a task, use:
 + (void)showProgress:(CGFloat)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 ```
 
-##### SVProgressHUDMaskType
-
-You can optionally disable user interactions while the HUD is shown using the `maskType` property:
-
-```objective-c
-enum {
-    SVProgressHUDMaskTypeNone = 1, // allow user interactions, don't dim background UI (default)
-    SVProgressHUDMaskTypeClear, // disable user interactions, don't dim background UI
-    SVProgressHUDMaskTypeBlack, // disable user interactions, dim background UI with 50% translucent black
-    SVProgressHUDMaskTypeGradient // disable user interactions, dim background UI with translucent radial gradient (a-la-alertView)
-};
-```
-
 ### Dismissing the HUD
 
 It can be dismissed right away using:
@@ -78,10 +61,23 @@ Or show a confirmation glyph before before getting dismissed 1 second later usin
 ```objective-c
 + (void)showSuccessWithStatus:(NSString*)string;
 + (void)showErrorWithStatus:(NSString *)string;
-+ (void)showImage:(UIImage*)image status:(NSString*)string; // use 28x28 white pngs
++ (void)showImage:(UIImage*)image status:(NSString*)string; // use 28x28 pngs
 ```
 
-### Observing HUD Notifications
+## Customization
+
+SVProgressHUD can be customized via the following methods:
+
+```objective-c
++ (void)setBackgroundColor:(UIColor*)color;
++ (void)setForegroundColor:(UIColor*)color;
++ (void)setRingThickness:(CGFloat)width;
++ (void)setFont:(UIFont*)font;
++ (void)setSuccessImage:(UIImage*)image;
++ (void)setErrorImage:(UIImage*)image;
+```
+
+## Notifications
 
 `SVProgressHUD` posts four notifications via `NSNotificationCenter` in response to being shown/dismissed:
 * `SVProgressHUDWillAppearNotification` when the show animation starts
