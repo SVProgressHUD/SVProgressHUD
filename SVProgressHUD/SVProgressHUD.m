@@ -53,6 +53,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
 
+@property NSObject *displaySemaphore;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -156,16 +157,42 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [self showImage:SVProgressHUDSuccessImage status:string];
 }
 
++ (void)showSuccessWithStatus:(NSString *)string exclusive:(BOOL)exclusive
+{
+    [self showImage:SVProgressHUDSuccessImage status:string exclusive:exclusive];
+}
+
 + (void)showErrorWithStatus:(NSString *)string {
     [self sharedView];
     [self showImage:SVProgressHUDErrorImage status:string];
 }
 
-+ (void)showImage:(UIImage *)image status:(NSString *)string {
-    NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForString:string];
-    [[self sharedView] showImage:image status:string duration:displayInterval];
++ (void)showErrorWithStatus:(NSString *)string exclusive:(BOOL)exclusive
+{
+    [self showImage:SVProgressHUDErrorImage status:string exclusive:exclusive];
 }
 
++ (void)showImage:(UIImage *)image status:(NSString *)string {
+    [self showImage:image status:string exclusive:NO];
+}
+
++ (void)showImage:(UIImage *)image status:(NSString *)string exclusive:(BOOL)exclusive {
+
+   [self sharedView];
+  
+    NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForString:string];
+  
+    [[self sharedView] showImage:image status:string duration:displayInterval];
+
+    if (exclusive) {
+      self.sharedView.displaySemaphore = [[NSObject alloc] init];
+      double delayInSeconds = displayInterval - 0.3f;
+      dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+      dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        self.sharedView.displaySemaphore = nil;
+      });
+    }
+}
 
 #pragma mark - Dismiss Methods
 
@@ -466,7 +493,9 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #pragma mark - Master show/dismiss methods
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
-    
+  
+    if (self.displaySemaphore) {return;}
+  
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
@@ -558,6 +587,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 
 - (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
+    if (self.displaySemaphore) {return;}
+
     self.progress = -1;
     [self cancelRingLayerAnimation];
     
@@ -588,6 +619,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 - (void)dismiss {
+    if (self.displaySemaphore) {return;}
+
     NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
