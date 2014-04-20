@@ -463,38 +463,47 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification object:event];
 }
 
-#pragma mark - Master show/dismiss methods
+- (void)runOnMainThread:(void (^)())block {
+    dispatch_async(dispatch_get_main_queue(), block);
+}
 
+
+#pragma mark - Master show/dismiss methods
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
-    
+    [self runOnMainThread:^{
+        [self showProgressInMainThread:progress string:string hudMaskType:hudMaskType];
+    }];
+}
+
+- (void)showProgressInMainThread:(float)progress string:(NSString *)string hudMaskType:(SVProgressHUDMaskType)hudMaskType {
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
-        
+
         for (UIWindow *window in frontToBackWindows)
             if (window.windowLevel == UIWindowLevelNormal) {
                 [window addSubview:self.overlayView];
                 break;
             }
     }
-    
+
     if(!self.superview)
         [self.overlayView addSubview:self];
-    
+
     self.fadeOutTimer = nil;
     self.imageView.hidden = YES;
     self.maskType = hudMaskType;
     self.progress = progress;
-    
+
     self.stringLabel.text = string;
     [self updatePosition];
-    
+
     if(progress >= 0) {
         self.imageView.image = nil;
         self.imageView.hidden = NO;
         [self.indefiniteAnimatedLayer removeFromSuperlayer];
 
         self.ringLayer.strokeEnd = progress;
-        
+
         if(progress == 0)
             self.activityCount++;
     }
@@ -503,7 +512,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         [self cancelRingLayerAnimation];
         [self.hudView.layer addSublayer:self.indefiniteAnimatedLayer];
     }
-    
+
     if(self.maskType != SVProgressHUDMaskTypeNone) {
         self.overlayView.userInteractionEnabled = YES;
         self.accessibilityLabel = string;
@@ -518,27 +527,27 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [self.overlayView setHidden:NO];
     self.overlayView.backgroundColor = [UIColor clearColor];
     [self positionHUD:nil];
-    
+
     if(self.alpha != 1) {
         NSDictionary *userInfo = [self notificationUserInfo];
         [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillAppearNotification
                                                             object:nil
                                                           userInfo:userInfo];
-        
+
         [self registerNotifications];
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-        
+
         if(self.isClear) {
             self.alpha = 1;
             self.hudView.alpha = 0;
         }
-        
+
         [UIView animateWithDuration:0.15
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
                              self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
-                             
+
                              if(self.isClear) // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
                                  self.hudView.alpha = 1;
                              else
@@ -551,27 +560,33 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
                              UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
                          }];
-        
+
         [self setNeedsDisplay];
     }
 }
 
 
 - (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
+    [self runOnMainThread:^{
+        [self showImageInMainThread:image string:string duration:duration];
+    }];
+}
+
+- (void)showImageInMainThread:(UIImage *)image string:(NSString *)string duration:(NSTimeInterval)duration {
     self.progress = -1;
     [self cancelRingLayerAnimation];
-    
+
     if(![self.class isVisible])
         [self.class show];
-    
+
     self.imageView.tintColor = SVProgressHUDForegroundColor;
     self.imageView.image = image;
     self.imageView.hidden = NO;
-    
+
     self.stringLabel.text = string;
     [self updatePosition];
     [self.indefiniteAnimatedLayer removeFromSuperlayer];
-    
+
     if(self.maskType != SVProgressHUDMaskTypeNone) {
         self.accessibilityLabel = string;
         self.isAccessibilityElement = YES;
@@ -582,7 +597,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
-    
+
     self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
     [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
 }
