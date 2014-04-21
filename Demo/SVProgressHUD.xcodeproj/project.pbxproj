@@ -225,7 +225,7 @@
 				GCC_PREFIX_HEADER = SVProgressHUD_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "SVProgressHUD-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DSVPROGRESSHUD_DISABLE_NETWORK_INDICATOR";
 				PRODUCT_NAME = SVProgressHUD;
 				SDKROOT = iphoneos;
@@ -244,7 +244,7 @@
 				GCC_PREFIX_HEADER = SVProgressHUD_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "SVProgressHUD-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = SVProgressHUD;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
