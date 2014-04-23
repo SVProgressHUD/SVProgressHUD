@@ -599,7 +599,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
 
     self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
-    [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
+    [self performSelector:@selector(dismiss) withObject:self afterDelay:duration];
 }
 
 - (void)dismiss {
