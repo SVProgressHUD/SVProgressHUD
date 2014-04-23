@@ -21,3 +21,6 @@ build/
 # Backup files
 *~.nib
 / graphics/
+
+#AppCode
+**/.idea/*
