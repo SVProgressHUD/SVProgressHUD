@@ -212,7 +212,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
           SVProgressHUDBackgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
           SVProgressHUDForegroundColor = [UIColor whiteColor];
         }
-        if ([[UIImage class] respondsToSelector:@selector(imageWithRenderingMode:)]) {
+        if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
           SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
           SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         } else {
