@@ -60,7 +60,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 - (void)showImage:(UIImage*)image
            status:(NSString*)status
-         duration:(NSTimeInterval)duration;
+         duration:(NSTimeInterval)duration
+         maskType:(SVProgressHUDMaskType)maskType;
 
 - (void)dismiss;
 
@@ -152,18 +153,30 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #pragma mark - Show then dismiss methods
 
 + (void)showSuccessWithStatus:(NSString *)string {
+    [self showSuccessWithStatus:string maskType:SVProgressHUDMaskTypeNone];
+}
+
++ (void)showSuccessWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)maskType {
     [self sharedView];
     [self showImage:SVProgressHUDSuccessImage status:string];
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
-    [self sharedView];
-    [self showImage:SVProgressHUDErrorImage status:string];
+    [self showErrorWithStatus:string maskType:SVProgressHUDMaskTypeNone];
 }
 
-+ (void)showImage:(UIImage *)image status:(NSString *)string {
++ (void)showErrorWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType {
+    [self sharedView];
+    [self showImage:SVProgressHUDErrorImage status:string maskType:maskType];
+}
+
++ (void)showImage:(UIImage*)image status:(NSString*)status {
+    [self showImage:image status:status maskType:SVProgressHUDMaskTypeNone];
+}
+
++ (void)showImage:(UIImage *)image status:(NSString *)string maskType:(SVProgressHUDMaskType)maskType {
     NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForString:string];
-    [[self sharedView] showImage:image status:string duration:displayInterval];
+    [[self sharedView] showImage:image status:string duration:displayInterval maskType:maskType];
 }
 
 
@@ -557,16 +570,18 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 
-- (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
+- (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration maskType:(SVProgressHUDMaskType)hudMaskType {
     self.progress = -1;
     [self cancelRingLayerAnimation];
     
     if(![self.class isVisible])
         [self.class show];
     
+    self.maskType = hudMaskType;
     self.imageView.tintColor = SVProgressHUDForegroundColor;
     self.imageView.image = image;
     self.imageView.hidden = NO;
+    
     
     self.stringLabel.text = string;
     [self updatePosition];
