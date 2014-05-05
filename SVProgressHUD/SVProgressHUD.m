@@ -575,9 +575,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [self cancelRingLayerAnimation];
     
     if(![self.class isVisible])
-        [self.class show];
+        [self.class showWithMaskType:hudMaskType];
     
-    self.maskType = hudMaskType;
     self.imageView.tintColor = SVProgressHUDForegroundColor;
     self.imageView.image = image;
     self.imageView.hidden = NO;
