@@ -43,7 +43,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 @property (nonatomic, strong) UIView *hudView;
 @property (nonatomic, strong) UILabel *stringLabel;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) CAShapeLayer *indefiniteAnimatedLayer;
+@property (nonatomic, strong) SVIndefiniteAnimatedView *indefiniteAnimatedView;
 
 @property (nonatomic, readwrite) CGFloat progress;
 @property (nonatomic, readwrite) NSUInteger activityCount;
@@ -230,7 +230,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
             
             size_t locationsCount = 2;
             CGFloat locations[2] = {0.0f, 1.0f};
-            CGFloat colors[8] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.75f}; 
+            CGFloat colors[8] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.75f};
             CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
             CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
             CGColorSpaceRelease(colorSpace);
@@ -253,7 +253,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     CGFloat hudHeight = 100;
     CGFloat stringHeightBuffer = 20;
     CGFloat stringAndImageHeightBuffer = 80;
-
+    
     CGFloat stringWidth = 0;
     CGFloat stringHeight = 0;
     CGRect labelRect = CGRectZero;
@@ -270,7 +270,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                                                  context:NULL];
         stringWidth = stringRect.size.width;
         stringHeight = ceil(stringRect.size.height);
-
+        
         if (imageUsed)
             hudHeight = stringAndImageHeightBuffer + stringHeight;
         else
@@ -291,7 +291,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     }
 	
 	self.hudView.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
-
+    
     if(string)
         self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36);
 	else
@@ -304,15 +304,21 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
 	
 	if(string) {
+        self.indefiniteAnimatedView.radius = SVProgressHUDRingRadius;
+        [self.indefiniteAnimatedView sizeToFit];
+        
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36);
-        self.indefiniteAnimatedLayer.position = center;
+        self.indefiniteAnimatedView.center = center;
         
         if(self.progress != -1)
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36);
 	}
     else {
+        self.indefiniteAnimatedView.radius = SVProgressHUDRingNoTextRadius;
+        [self.indefiniteAnimatedView sizeToFit];
+        
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetHeight(self.hudView.bounds)/2);
-        self.indefiniteAnimatedLayer.position = center;
+        self.indefiniteAnimatedView.center = center;
         
         if(self.progress != -1)
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetHeight(self.hudView.bounds)/2);
@@ -339,28 +345,28 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 
 - (void)registerNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(positionHUD:) 
-                                                 name:UIApplicationDidChangeStatusBarOrientationNotification 
-                                               object:nil];  
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(positionHUD:)
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
+                                               object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(positionHUD:) 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(positionHUD:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(positionHUD:) 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(positionHUD:)
                                                  name:UIKeyboardDidHideNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(positionHUD:) 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(positionHUD:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(positionHUD:) 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(positionHUD:)
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
 }
@@ -420,9 +426,9 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     CGPoint newCenter;
     CGFloat rotateAngle;
     
-    switch (orientation) { 
+    switch (orientation) {
         case UIInterfaceOrientationPortraitUpsideDown:
-            rotateAngle = M_PI; 
+            rotateAngle = M_PI;
             newCenter = CGPointMake(posX, orientationFrame.size.height-posY);
             break;
         case UIInterfaceOrientationLandscapeLeft:
@@ -437,16 +443,16 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
             rotateAngle = 0.0;
             newCenter = CGPointMake(posX, posY);
             break;
-    } 
+    }
     
     if(notification) {
         [UIView animateWithDuration:animationDuration
-                              delay:0 
-                            options:UIViewAnimationOptionAllowUserInteraction 
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              [self moveToPoint:newCenter rotateAngle:rotateAngle];
                          } completion:NULL];
-    } 
+    }
     
     else {
         [self moveToPoint:newCenter rotateAngle:rotateAngle];
@@ -455,7 +461,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle {
-    self.hudView.transform = CGAffineTransformMakeRotation(angle); 
+    self.hudView.transform = CGAffineTransformMakeRotation(angle);
     self.hudView.center = CGPointMake(newCenter.x + self.offsetFromCenter.horizontal, newCenter.y + self.offsetFromCenter.vertical);
 }
 
@@ -491,8 +497,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     if(progress >= 0) {
         self.imageView.image = nil;
         self.imageView.hidden = NO;
-        [self.indefiniteAnimatedLayer removeFromSuperlayer];
-
+        [self.indefiniteAnimatedView removeFromSuperview];
+        
         self.ringLayer.strokeEnd = progress;
         
         if(progress == 0)
@@ -501,7 +507,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     else {
         self.activityCount++;
         [self cancelRingLayerAnimation];
-        [self.hudView.layer addSublayer:self.indefiniteAnimatedLayer];
+        [self.hudView addSubview:self.indefiniteAnimatedView];
     }
     
     if(self.maskType != SVProgressHUDMaskTypeNone) {
@@ -514,7 +520,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         self.hudView.accessibilityLabel = string;
         self.hudView.isAccessibilityElement = YES;
     }
-
+    
     [self.overlayView setHidden:NO];
     self.overlayView.backgroundColor = [UIColor clearColor];
     [self positionHUD:nil];
@@ -570,7 +576,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     
     self.stringLabel.text = string;
     [self updatePosition];
-    [self.indefiniteAnimatedLayer removeFromSuperlayer];
+    [self.indefiniteAnimatedView removeFromSuperview];
     
     if(self.maskType != SVProgressHUDMaskTypeNone) {
         self.accessibilityLabel = string;
@@ -579,7 +585,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         self.hudView.accessibilityLabel = string;
         self.hudView.isAccessibilityElement = YES;
     }
-
+    
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
     
@@ -617,11 +623,11 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                              [_overlayView removeFromSuperview];
                              _overlayView = nil;
                              
-                             [_indefiniteAnimatedLayer removeFromSuperlayer];
-                             _indefiniteAnimatedLayer = nil;
-
+                             [_indefiniteAnimatedView removeFromSuperview];
+                             _indefiniteAnimatedView = nil;
+                             
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-
+                             
                              [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
                                                                                  object:nil
                                                                                userInfo:userInfo];
@@ -629,7 +635,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                              // Tell the rootViewController to update the StatusBar appearance
                              UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
                              if ([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-                               [rootController setNeedsStatusBarAppearanceUpdate];
+                                 [rootController setNeedsStatusBarAppearanceUpdate];
                              }
                              // uncomment to make sure UIWindow is gone from app.windows
                              //NSLog(@"%@", [UIApplication sharedApplication].windows);
@@ -641,67 +647,13 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 #pragma mark - Ring progress animation
 
-- (CAShapeLayer*)indefiniteAnimatedLayer {
-    if(!_indefiniteAnimatedLayer) {
-        CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
-        CGFloat radius = self.stringLabel.text ? SVProgressHUDRingRadius : SVProgressHUDRingNoTextRadius;
-        CGPoint arcCenter = CGPointMake(radius+SVProgressHUDRingThickness/2+5, radius+SVProgressHUDRingThickness/2+5);
-        CGRect rect = CGRectMake(center.x-radius, center.y-radius, arcCenter.x*2, arcCenter.y*2);
-        
-        UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:arcCenter
-                                                                    radius:radius
-                                                                startAngle:M_PI*3/2
-                                                                  endAngle:M_PI/2+M_PI*5
-                                                                 clockwise:YES];
-        
-        _indefiniteAnimatedLayer = [CAShapeLayer layer];
-        _indefiniteAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
-        _indefiniteAnimatedLayer.frame = rect;
-        _indefiniteAnimatedLayer.fillColor = [UIColor clearColor].CGColor;
-        _indefiniteAnimatedLayer.strokeColor = SVProgressHUDForegroundColor.CGColor;
-        _indefiniteAnimatedLayer.lineWidth = SVProgressHUDRingThickness;
-        _indefiniteAnimatedLayer.lineCap = kCALineCapRound;
-        _indefiniteAnimatedLayer.lineJoin = kCALineJoinBevel;
-        _indefiniteAnimatedLayer.path = smoothedPath.CGPath;
-        
-        CALayer *maskLayer = [CALayer layer];
-        maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask@2x.png"] CGImage];
-        maskLayer.frame = _indefiniteAnimatedLayer.bounds;
-        _indefiniteAnimatedLayer.mask = maskLayer;
-        
-        NSTimeInterval animationDuration = 1;
-        CAMediaTimingFunction *linearCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-
-        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
-        animation.fromValue = 0;
-        animation.toValue = [NSNumber numberWithFloat:M_PI*2];
-        animation.duration = animationDuration;
-        animation.timingFunction = linearCurve;
-        animation.removedOnCompletion = NO;
-        animation.repeatCount = INFINITY;
-        animation.fillMode = kCAFillModeForwards;
-        animation.autoreverses = NO;
-        [_indefiniteAnimatedLayer.mask addAnimation:animation forKey:@"rotate"];
-        
-        CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
-        animationGroup.duration = animationDuration;
-        animationGroup.repeatCount = INFINITY;
-        animationGroup.removedOnCompletion = NO;
-        animationGroup.timingFunction = linearCurve;
-        
-        CABasicAnimation *strokeStartAnimation = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
-        strokeStartAnimation.fromValue = @0.015;
-        strokeStartAnimation.toValue = @0.515;
-        
-        CABasicAnimation *strokeEndAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-        strokeEndAnimation.fromValue = @0.485;
-        strokeEndAnimation.toValue = @0.985;
-        
-        animationGroup.animations = @[strokeStartAnimation, strokeEndAnimation];
-        [_indefiniteAnimatedLayer addAnimation:animationGroup forKey:@"progress"];
-
+- (SVIndefiniteAnimatedView *)indefiniteAnimatedView {
+    if (_indefiniteAnimatedView == nil) {
+        _indefiniteAnimatedView = [[SVIndefiniteAnimatedView alloc] initWithFrame:CGRectZero];
+        _indefiniteAnimatedView.radius = self.stringLabel.text ? SVProgressHUDRingRadius : SVProgressHUDRingNoTextRadius;
+        [_indefiniteAnimatedView sizeToFit];
     }
-    return _indefiniteAnimatedLayer;
+    return _indefiniteAnimatedView;
 }
 
 - (CAShapeLayer *)ringLayer {
@@ -847,7 +799,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 
 - (CGFloat)visibleKeyboardHeight {
-        
+    
     UIWindow *keyboardWindow = nil;
     for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
         if(![[testWindow class] isEqual:[UIWindow class]]) {
@@ -862,6 +814,136 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     }
     
     return 0;
+}
+
+@end
+
+#pragma mark SVIndefiniteAnimatedView
+
+@interface SVIndefiniteAnimatedView ()
+
+@property (nonatomic, strong) CAShapeLayer *indefiniteAnimatedLayer;
+
+@end
+
+@implementation SVIndefiniteAnimatedView
+
+- (id)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.strokeThickness = SVProgressHUDRingThickness;
+        self.radius = SVProgressHUDRingRadius;
+        self.strokeColor = SVProgressHUDForegroundColor;
+    }
+    return self;
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    if (newSuperview != nil) {
+        [self layoutAnimatedLayer];
+    }
+    else {
+        [_indefiniteAnimatedLayer removeFromSuperlayer];
+        _indefiniteAnimatedLayer = nil;
+    }
+}
+
+- (void)layoutAnimatedLayer {
+    CALayer *layer = self.indefiniteAnimatedLayer;
+    
+    [self.layer addSublayer:layer];
+    layer.position = CGPointMake(self.bounds.size.width - layer.bounds.size.width / 2, self.bounds.size.height - layer.bounds.size.height / 2);
+}
+
+- (CAShapeLayer*)indefiniteAnimatedLayer {
+    if(!_indefiniteAnimatedLayer) {
+        CGPoint arcCenter = CGPointMake(self.radius+self.strokeThickness/2+5, self.radius+self.strokeThickness/2+5);
+        CGRect rect = CGRectMake(0, 0, arcCenter.x*2, arcCenter.y*2);
+        
+        UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:arcCenter
+                                                                    radius:self.radius
+                                                                startAngle:M_PI*3/2
+                                                                  endAngle:M_PI/2+M_PI*5
+                                                                 clockwise:YES];
+        
+        _indefiniteAnimatedLayer = [CAShapeLayer layer];
+        _indefiniteAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
+        _indefiniteAnimatedLayer.frame = rect;
+        _indefiniteAnimatedLayer.fillColor = [UIColor clearColor].CGColor;
+        _indefiniteAnimatedLayer.strokeColor = self.strokeColor.CGColor;
+        _indefiniteAnimatedLayer.lineWidth = self.strokeThickness;
+        _indefiniteAnimatedLayer.lineCap = kCALineCapRound;
+        _indefiniteAnimatedLayer.lineJoin = kCALineJoinBevel;
+        _indefiniteAnimatedLayer.path = smoothedPath.CGPath;
+        
+        CALayer *maskLayer = [CALayer layer];
+        maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask@2x.png"] CGImage];
+        maskLayer.frame = _indefiniteAnimatedLayer.bounds;
+        _indefiniteAnimatedLayer.mask = maskLayer;
+        
+        NSTimeInterval animationDuration = 1;
+        CAMediaTimingFunction *linearCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+        
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+        animation.fromValue = 0;
+        animation.toValue = [NSNumber numberWithFloat:M_PI*2];
+        animation.duration = animationDuration;
+        animation.timingFunction = linearCurve;
+        animation.removedOnCompletion = NO;
+        animation.repeatCount = INFINITY;
+        animation.fillMode = kCAFillModeForwards;
+        animation.autoreverses = NO;
+        [_indefiniteAnimatedLayer.mask addAnimation:animation forKey:@"rotate"];
+        
+        CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+        animationGroup.duration = animationDuration;
+        animationGroup.repeatCount = INFINITY;
+        animationGroup.removedOnCompletion = NO;
+        animationGroup.timingFunction = linearCurve;
+        
+        CABasicAnimation *strokeStartAnimation = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
+        strokeStartAnimation.fromValue = @0.015;
+        strokeStartAnimation.toValue = @0.515;
+        
+        CABasicAnimation *strokeEndAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+        strokeEndAnimation.fromValue = @0.485;
+        strokeEndAnimation.toValue = @0.985;
+        
+        animationGroup.animations = @[strokeStartAnimation, strokeEndAnimation];
+        [_indefiniteAnimatedLayer addAnimation:animationGroup forKey:@"progress"];
+        
+    }
+    return _indefiniteAnimatedLayer;
+}
+
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    
+    if (self.superview != nil) {
+        [self layoutAnimatedLayer];
+    }
+}
+
+- (void)setRadius:(CGFloat)radius {
+    _radius = radius;
+    
+    [_indefiniteAnimatedLayer removeFromSuperlayer];
+    _indefiniteAnimatedLayer = nil;
+    
+    [self layoutAnimatedLayer];
+}
+
+- (void)setStrokeColor:(UIColor *)strokeColor {
+    _strokeColor = strokeColor;
+    _indefiniteAnimatedLayer.strokeColor = strokeColor.CGColor;
+}
+
+- (void)setStrokeThickness:(CGFloat)strokeThickness {
+    _strokeThickness = strokeThickness;
+    _indefiniteAnimatedLayer.lineWidth = _strokeThickness;
+}
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    return CGSizeMake((self.radius+self.strokeThickness/2+5)*2, (self.radius+self.strokeThickness/2+5)*2);
 }
 
 @end
