@@ -1,16 +1,3 @@
-# zhfish's modify 
- 
-* add ios6 support 
-* add two method 
-
-```objective-c 
-+ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone 
-+ (void)setBaseDisplayDuration:(NSTimeInterval)duration; // default is 1.0 second 
-``` 
-### From CocoaPods 
- 
-pod 'SVProgressHUD', :git => 'https://github.com/zhfish/SVProgressHUD.git'
-
 # SVProgressHUD
 
 SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
