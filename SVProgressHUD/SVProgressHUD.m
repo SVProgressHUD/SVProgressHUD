@@ -28,6 +28,8 @@ static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
 static UIImage *SVProgressHUDSuccessImage;
 static UIImage *SVProgressHUDErrorImage;
+static SVProgressHUDMaskType defaultMaskType;
+static NSTimeInterval baseDisplayDuration;
 
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
@@ -119,14 +121,26 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     SVProgressHUDErrorImage = image;
 }
 
++ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType
+{
+    [self sharedView];
+    defaultMaskType = maskType;
+}
+
++ (void)setBaseDisplayDuration:(NSTimeInterval)duration
+{
+    [self sharedView];
+    baseDisplayDuration = duration;
+}
+
 #pragma mark - Show Methods
 
 + (void)show {
-    [[self sharedView] showProgress:-1 status:nil maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:-1 status:nil maskType:defaultMaskType];
 }
 
 + (void)showWithStatus:(NSString *)status {
-    [[self sharedView] showProgress:-1 status:status maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:-1 status:status maskType:defaultMaskType];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
@@ -138,11 +152,11 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 + (void)showProgress:(float)progress {
-    [[self sharedView] showProgress:progress status:nil maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:progress status:nil maskType:defaultMaskType];
 }
 
 + (void)showProgress:(float)progress status:(NSString *)status {
-    [[self sharedView] showProgress:progress status:status maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:progress status:status maskType:defaultMaskType];
 }
 
 + (void)showProgress:(float)progress status:(NSString *)status maskType:(SVProgressHUDMaskType)maskType {
@@ -205,10 +219,28 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
-        SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        if ([UIFont instancesRespondToSelector:@selector(preferredFontForTextStyle:)])
+        {
+            SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        }
+        else
+        {
+            SVProgressHUDFont = [UIFont systemFontOfSize:15];
+        }
+        
+        if ([UIImage instancesRespondToSelector:@selector(imageWithRenderingMode:)])
+        {
+            SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        }
+        else
+        {
+            SVProgressHUDSuccessImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success_black"];
+            SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error_black"];
+        }
         SVProgressHUDRingThickness = 4;
+        defaultMaskType = SVProgressHUDMaskTypeNone;
+        baseDisplayDuration = 1.0f;
     }
 	
     return self;
@@ -264,10 +296,22 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     
     if(string) {
         CGSize constraintSize = CGSizeMake(200, 300);
-        CGRect stringRect = [string boundingRectWithSize:constraintSize
-                                                 options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
-                                              attributes:@{NSFontAttributeName: self.stringLabel.font}
-                                                 context:NULL];
+        CGRect stringRect = CGRectZero;
+        if ([string respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)])
+        {
+            stringRect = [string boundingRectWithSize:constraintSize
+                                                     options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
+                                                  attributes:@{NSFontAttributeName: self.stringLabel.font}
+                                                     context:NULL];
+        }
+        else
+        {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            stringRect.size = [string sizeWithFont:self.stringLabel.font constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
+#pragma clang diagnostic pop
+        }
+
         stringWidth = stringRect.size.width;
         stringHeight = ceil(stringRect.size.height);
         
@@ -570,7 +614,10 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     if(![self.class isVisible])
         [self.class show];
     
-    self.imageView.tintColor = SVProgressHUDForegroundColor;
+    if ([self.imageView respondsToSelector:@selector(setTintColor:)])
+    {
+        self.imageView.tintColor = SVProgressHUDForegroundColor;
+    }
     self.imageView.image = image;
     self.imageView.hidden = NO;
     
@@ -726,7 +773,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #pragma mark - Getters
 
 - (NSTimeInterval)displayDurationForString:(NSString*)string {
-    return MIN((float)string.length*0.06 + 0.3, 5.0);
+    return MIN((float)string.length*0.1 + baseDisplayDuration, 5.0);
 }
 
 - (BOOL)isClear { // used for iOS 7
@@ -753,16 +800,19 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         _hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                      UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
         
-        UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
-        effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
-        
-        UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-        effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
-        effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
-        
-        [_hudView addMotionEffect: effectX];
-        [_hudView addMotionEffect: effectY];
+        if ([_hudView respondsToSelector:@selector(addMotionEffect:)])
+        {
+            UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+            effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+            effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
+            
+            UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+            effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+            effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
+            
+            [_hudView addMotionEffect: effectX];
+            [_hudView addMotionEffect: effectY];
+        }
         
         [self addSubview:_hudView];
     }

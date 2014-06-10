@@ -37,6 +37,8 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)setFont:(UIFont*)font; // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setSuccessImage:(UIImage*)image; // default is bundled success image from Glyphish
 + (void)setErrorImage:(UIImage*)image; // default is bundled error image from Glyphish
++ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
++ (void)setBaseDisplayDuration:(NSTimeInterval)duration; // default is 1.0 second
 
 #pragma mark - Show Methods
 
