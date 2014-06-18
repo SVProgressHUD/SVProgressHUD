@@ -169,6 +169,12 @@ static const CGFloat SVProgressHUDRingThickness = 6;
     }
 }
 
++ (void)dismissDelay:(NSTimeInterval)ti
+{
+    if ([self isVisible]) {
+        [[self sharedView] dismissDelay:ti];
+    }
+}
 
 #pragma mark - Offset
 
@@ -612,6 +618,10 @@ static const CGFloat SVProgressHUDRingThickness = 6;
                      }];
 }
 
+- (void)dismissDelay:(NSTimeInterval)ti
+{
+    [self performSelector:@selector(dismiss) withObject:nil afterDelay:ti];
+}
 
 #pragma mark -
 #pragma mark Ring progress animation
