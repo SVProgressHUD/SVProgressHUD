@@ -507,11 +507,13 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
     
-    if(!self.overlayView.superview){
-        NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
+    if( !self.overlayView.superview || self.overlayView.superview.hidden ){
+        [self.overlayView removeFromSuperview];
+        
+        NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication] windows] reverseObjectEnumerator];
         
         for (UIWindow *window in frontToBackWindows)
-            if (window.windowLevel == UIWindowLevelNormal) {
+            if (window.windowLevel == UIWindowLevelNormal && !window.hidden) {
                 [window addSubview:self.overlayView];
                 break;
             }
