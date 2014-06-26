@@ -52,7 +52,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
-
+@property (nonatomic) CGFloat secondPerChar;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -117,6 +117,10 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 + (void)setErrorImage:(UIImage *)image {
     [self sharedView];
     SVProgressHUDErrorImage = image;
+}
+
++ (void)setSecondPerChar:(CGFloat)second {
+    [[self sharedView] setSecondPerChar:second];
 }
 
 #pragma mark - Show Methods
@@ -726,6 +730,9 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #pragma mark - Getters
 
 - (NSTimeInterval)displayDurationForString:(NSString*)string {
+    if (_secondPerChar > 0) {
+        return MIN((float)string.length*_secondPerChar + 0.3, 5.0);
+    }
     return MIN((float)string.length*0.06 + 0.3, 5.0);
 }
 
