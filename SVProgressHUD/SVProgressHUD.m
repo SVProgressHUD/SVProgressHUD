@@ -28,6 +28,7 @@ static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
 static UIImage *SVProgressHUDSuccessImage;
 static UIImage *SVProgressHUDErrorImage;
+static CGSize SVProgressHUDMinSize;
 
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
@@ -117,6 +118,11 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 + (void)setErrorImage:(UIImage *)image {
     [self sharedView];
     SVProgressHUDErrorImage = image;
+}
+
++ (void)setMinSize:(CGSize)minSize {
+    [self sharedView];
+    SVProgressHUDMinSize = minSize;
 }
 
 #pragma mark - Show Methods
@@ -290,8 +296,10 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         }
     }
 	
-	self.hudView.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
+	self.hudView.bounds = CGRectMake(0, 0, MAX(SVProgressHUDMinSize.width, hudWidth), MAX(SVProgressHUDMinSize.height, hudHeight));
     
+	labelRect.size.width += MAX(0, SVProgressHUDMinSize.width - hudWidth);
+	
     if(string)
         self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36);
 	else

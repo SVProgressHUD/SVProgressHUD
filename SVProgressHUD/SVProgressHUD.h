@@ -37,6 +37,7 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)setFont:(UIFont*)font; // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setSuccessImage:(UIImage*)image; // default is bundled success image from Glyphish
 + (void)setErrorImage:(UIImage*)image; // default is bundled error image from Glyphish
++ (void)setMinSize:(CGSize)minSize; // default is CGSizeZero; can be used to avoid resizing for a larger success/error message
 
 #pragma mark - Show Methods
 
