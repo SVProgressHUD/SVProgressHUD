@@ -53,6 +53,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
 
+@property (nonatomic, strong) NSDate *showDate;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -117,6 +118,11 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 + (void)setErrorImage:(UIImage *)image {
     [self sharedView];
     SVProgressHUDErrorImage = image;
+}
+
++ (void)setMinShowTime:(NSTimeInterval)minShowTime {
+	[self sharedView];
+    SVProgressHUDMinShowTime = minShowTime;
 }
 
 #pragma mark - Show Methods
@@ -594,6 +600,14 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 - (void)dismiss {
+	if (SVProgressHUDMinShowTime > 0 && [self.showDate timeIntervalSinceNow] > -SVProgressHUDMinShowTime) {
+		[self performSelector:@selector(dismissReally) withObject:nil afterDelay:SVProgressHUDMinShowTime + [self.showDate timeIntervalSinceNow]];
+	} else {
+		[self dismissReally];
+	}
+}
+
+- (void)dismissReally {
     NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil

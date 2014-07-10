@@ -38,6 +38,10 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)setSuccessImage:(UIImage*)image; // default is bundled success image from Glyphish
 + (void)setErrorImage:(UIImage*)image; // default is bundled error image from Glyphish
 
+#pragma mark - Timing
+
++ (void)setMinShowTime:(NSTimeInterval)minShowTime; // default is 0; if the HUD is displayed, it's shown at least this time
+
 #pragma mark - Show Methods
 
 + (void)show;
