@@ -33,6 +33,10 @@ static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
+@interface SVRadialGradientLayer : CALayer
+@property (nonatomic) CGPoint gradientCenter;
+@end
+
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
@@ -47,6 +51,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 @property (nonatomic, readwrite) CGFloat progress;
 @property (nonatomic, readwrite) NSUInteger activityCount;
+@property (nonatomic, strong) SVRadialGradientLayer *backgroundGradientLayer;
 @property (nonatomic, strong) CAShapeLayer *backgroundRingLayer;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
 
@@ -212,39 +217,6 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     }
 	
     return self;
-}
-
-- (void)drawRect:(CGRect)rect {
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    switch (self.maskType) {
-            
-        case SVProgressHUDMaskTypeBlack: {
-            [[UIColor colorWithWhite:0 alpha:0.5] set];
-            CGContextFillRect(context, self.bounds);
-            break;
-        }
-            
-        case SVProgressHUDMaskTypeGradient: {
-            
-            size_t locationsCount = 2;
-            CGFloat locations[2] = {0.0f, 1.0f};
-            CGFloat colors[8] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.75f};
-            CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-            CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
-            CGColorSpaceRelease(colorSpace);
-            
-            CGFloat freeHeight = self.bounds.size.height - self.visibleKeyboardHeight;
-            
-            CGPoint center = CGPointMake(self.bounds.size.width/2, freeHeight/2);
-            float radius = MIN(self.bounds.size.width , self.bounds.size.height) ;
-            CGContextDrawRadialGradient (context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
-            CGGradientRelease(gradient);
-            
-            break;
-        }
-    }
 }
 
 - (void)updatePosition {
@@ -473,6 +445,28 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
     
+    self.maskType = hudMaskType;
+    switch (self.maskType) {
+            
+        case SVProgressHUDMaskTypeBlack: {
+            self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
+            break;
+        }
+            
+        case SVProgressHUDMaskTypeGradient: {
+			self.backgroundGradientLayer = [SVRadialGradientLayer layer];
+			self.backgroundGradientLayer.frame = self.bounds;
+			CGPoint gradientCenter = self.center;
+			gradientCenter.y = (self.bounds.size.height - self.visibleKeyboardHeight) / 2;
+			self.backgroundGradientLayer.gradientCenter = gradientCenter;
+			[self.backgroundGradientLayer setNeedsDisplay];
+			
+			[self.layer addSublayer:self.backgroundGradientLayer];
+			break;
+        }
+    }
+	
+
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
@@ -488,7 +482,6 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     
     self.fadeOutTimer = nil;
     self.imageView.hidden = YES;
-    self.maskType = hudMaskType;
     self.progress = progress;
     
     self.stringLabel.text = string;
@@ -626,6 +619,9 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                              [_indefiniteAnimatedView removeFromSuperview];
                              _indefiniteAnimatedView = nil;
                              
+							 [self.backgroundGradientLayer removeFromSuperlayer];
+							 self.backgroundGradientLayer = nil;
+							 
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
                              
                              [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
@@ -944,6 +940,23 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 - (CGSize)sizeThatFits:(CGSize)size {
     return CGSizeMake((self.radius+self.strokeThickness/2+5)*2, (self.radius+self.strokeThickness/2+5)*2);
+}
+
+@end
+
+@implementation SVRadialGradientLayer
+
+- (void)drawInContext:(CGContextRef)context {
+	size_t locationsCount = 2;
+	CGFloat locations[2] = {0.0f, 1.0f};
+	CGFloat colors[8] = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.75f};
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
+	CGColorSpaceRelease(colorSpace);
+	
+	float radius = MIN(self.bounds.size.width , self.bounds.size.height) ;
+	CGContextDrawRadialGradient (context, gradient, self.gradientCenter, 0, self.gradientCenter, radius, kCGGradientDrawsAfterEndLocation);
+	CGGradientRelease(gradient);
 }
 
 @end
