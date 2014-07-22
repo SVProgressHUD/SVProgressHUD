@@ -162,7 +162,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
-    NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForString:string];
+    NSTimeInterval displayInterval = [[self sharedView] displayDurationForString:string];
     [[self sharedView] showImage:image status:string duration:displayInterval];
 }
 
