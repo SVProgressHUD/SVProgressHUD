@@ -89,6 +89,10 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 	[[self sharedView] setStatus:string];
 }
 
++ (void)setMaskType:(SVProgressHUDMaskType)maskType {
+    [self sharedView].maskType = maskType;
+}
+
 + (void)setBackgroundColor:(UIColor *)color {
     [self sharedView].hudView.backgroundColor = color;
     SVProgressHUDBackgroundColor = color;
