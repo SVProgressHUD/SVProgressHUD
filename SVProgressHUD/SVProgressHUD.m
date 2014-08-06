@@ -481,6 +481,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                 [window addSubview:self.overlayView];
                 break;
             }
+    } else {
+        [self.overlayView.superview bringSubviewToFront:self.overlayView];
     }
     
     if(!self.superview)
