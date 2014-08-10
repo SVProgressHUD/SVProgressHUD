@@ -90,7 +90,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 + (void)setBackgroundColor:(UIColor *)color {
-    [self sharedView].hudView.backgroundColor = color;
+    ((UIToolbar *)[self sharedView].hudView).barTintColor = color;
     SVProgressHUDBackgroundColor = color;
 }
 
@@ -203,7 +203,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.activityCount = 0;
         
-        SVProgressHUDBackgroundColor = [UIColor whiteColor];
+        SVProgressHUDBackgroundColor = nil;
         SVProgressHUDForegroundColor = [UIColor blackColor];
         if ([UIFont respondsToSelector:@selector(preferredFontForTextStyle:)]) {
           SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
@@ -779,8 +779,9 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 - (UIView *)hudView {
     if(!_hudView) {
-        _hudView = [[UIView alloc] initWithFrame:CGRectZero];
-        _hudView.backgroundColor = SVProgressHUDBackgroundColor;
+        _hudView = [[UIToolbar alloc] initWithFrame:CGRectZero];
+        ((UIToolbar *)_hudView).translucent = YES;
+        ((UIToolbar *)_hudView).barTintColor = SVProgressHUDBackgroundColor;
         _hudView.layer.cornerRadius = 14;
         _hudView.layer.masksToBounds = YES;
         
