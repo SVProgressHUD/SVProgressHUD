@@ -401,6 +401,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     double animationDuration;
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    // no transforms applied to window in iOS 8
+    BOOL ignoreOrientation = [[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)];
     
     if(notification) {
         NSDictionary* keyboardInfo = [notification userInfo];
@@ -408,7 +410,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         animationDuration = [[keyboardInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         
         if(notification.name == UIKeyboardWillShowNotification || notification.name == UIKeyboardDidShowNotification) {
-            if(UIInterfaceOrientationIsPortrait(orientation))
+            if(ignoreOrientation || UIInterfaceOrientationIsPortrait(orientation))
                 keyboardHeight = keyboardFrame.size.height;
             else
                 keyboardHeight = keyboardFrame.size.width;
@@ -418,10 +420,10 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         keyboardHeight = self.visibleKeyboardHeight;
     }
     
-    CGRect orientationFrame = [UIScreen mainScreen].bounds;
+    CGRect orientationFrame = self.window.bounds;
     CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
     
-    if(UIInterfaceOrientationIsLandscape(orientation)) {
+    if(!ignoreOrientation && UIInterfaceOrientationIsLandscape(orientation)) {
         float temp = orientationFrame.size.width;
         orientationFrame.size.width = orientationFrame.size.height;
         orientationFrame.size.height = temp;
@@ -443,23 +445,28 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     CGPoint newCenter;
     CGFloat rotateAngle;
     
-    switch (orientation) {
-        case UIInterfaceOrientationPortraitUpsideDown:
-            rotateAngle = M_PI;
-            newCenter = CGPointMake(posX, orientationFrame.size.height-posY);
-            break;
-        case UIInterfaceOrientationLandscapeLeft:
-            rotateAngle = -M_PI/2.0f;
-            newCenter = CGPointMake(posY, posX);
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            rotateAngle = M_PI/2.0f;
-            newCenter = CGPointMake(orientationFrame.size.height-posY, posX);
-            break;
-        default: // as UIInterfaceOrientationPortrait
-            rotateAngle = 0.0;
-            newCenter = CGPointMake(posX, posY);
-            break;
+    if (ignoreOrientation) {
+        rotateAngle = 0.0;
+        newCenter = CGPointMake(posX, posY);
+    } else {
+        switch (orientation) {
+            case UIInterfaceOrientationPortraitUpsideDown:
+                rotateAngle = M_PI;
+                newCenter = CGPointMake(posX, orientationFrame.size.height-posY);
+                break;
+            case UIInterfaceOrientationLandscapeLeft:
+                rotateAngle = -M_PI/2.0f;
+                newCenter = CGPointMake(posY, posX);
+                break;
+            case UIInterfaceOrientationLandscapeRight:
+                rotateAngle = M_PI/2.0f;
+                newCenter = CGPointMake(orientationFrame.size.height-posY, posX);
+                break;
+            default: // as UIInterfaceOrientationPortrait
+                rotateAngle = 0.0;
+                newCenter = CGPointMake(posX, posY);
+                break;
+        }
     }
     
     if(notification) {
