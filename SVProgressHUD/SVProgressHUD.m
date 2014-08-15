@@ -13,6 +13,7 @@
 
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIImage+ImageEffects.h"
 
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
 NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
@@ -49,6 +50,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 @property (nonatomic, readwrite) NSUInteger activityCount;
 @property (nonatomic, strong) CAShapeLayer *backgroundRingLayer;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
+@property (nonatomic, strong) UIImage *blurredBackgroundImage;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
@@ -253,6 +255,12 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
             CGContextDrawRadialGradient (context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
             CGGradientRelease(gradient);
             
+            break;
+        }
+
+        case SVProgressHUDMaskTypeBlurDark:
+        case SVProgressHUDMaskTypeBlurLight: {
+            [self.blurredBackgroundImage drawInRect:self.bounds];
             break;
         }
     }
@@ -509,7 +517,9 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     
     if(!self.superview)
         [self.overlayView addSubview:self];
-    
+
+    [self createBlurImageIfNecessary:hudMaskType];
+
     self.fadeOutTimer = nil;
     self.imageView.hidden = YES;
     self.maskType = hudMaskType;
@@ -639,7 +649,9 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
                                                       userInfo:userInfo];
-    
+
+    self.blurredBackgroundImage = nil;
+
     self.activityCount = 0;
     [UIView animateWithDuration:0.15
                           delay:0
@@ -755,6 +767,66 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     slice.lineJoin = kCALineJoinBevel;
     slice.path = smoothedPath.CGPath;
     return slice;
+}
+
+#pragma mark - Blur methods
+
+- (void)createBlurImageIfNecessary:(SVProgressHUDMaskType)hudMaskType
+{
+    if (hudMaskType != SVProgressHUDMaskTypeBlurDark && hudMaskType != SVProgressHUDMaskTypeBlurLight)
+        return;
+
+    UIImage *image = [self captureBackgroundImage];
+
+    if (hudMaskType == SVProgressHUDMaskTypeBlurDark)
+        self.blurredBackgroundImage = [image applyDarkEffect];
+    else if (hudMaskType == SVProgressHUDMaskTypeBlurLight)
+        self.blurredBackgroundImage = [image applyLightEffect];
+}
+
+- (UIImage *)captureBackgroundImage
+{
+    CGSize imageSize = [[UIScreen mainScreen] bounds].size;
+    if (NULL != UIGraphicsBeginImageContextWithOptions)
+        UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+    else
+        UIGraphicsBeginImageContext(imageSize);
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    for (UIWindow *window in [[UIApplication sharedApplication] windows])
+    {
+        if (![window respondsToSelector:@selector(screen)] || [window screen] == [UIScreen mainScreen])
+        {
+            // -renderInContext: renders in the coordinate space of the layer,
+            // so we must first apply the layer's geometry to the graphics context
+            CGContextSaveGState(context);
+            // Center the context around the window's anchor point
+            CGContextTranslateCTM(context, [window center].x, [window center].y);
+            // Apply the window's transform about the anchor point
+            CGContextConcatCTM(context, [window transform]);
+            // Offset by the portion of the bounds left of and above the anchor point
+            CGContextTranslateCTM(context,
+                                  -[window bounds].size.width * [[window layer] anchorPoint].x,
+                                  -[window bounds].size.height * [[window layer] anchorPoint].y);
+
+            // Render the layer hierarchy to the current context
+            if ([window respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
+                BOOL success = [window drawViewHierarchyInRect:window.bounds afterScreenUpdates:YES];
+                NSAssert(success, @"drawViewHierarchyInRect failed");
+            } else {
+                [window.layer renderInContext:UIGraphicsGetCurrentContext()];
+            }
+
+            // Restore the context
+            CGContextRestoreGState(context);
+        }
+    }
+
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 #pragma mark - Utilities
