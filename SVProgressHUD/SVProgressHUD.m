@@ -205,9 +205,20 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
-        SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        if ([UIFont respondsToSelector:@selector(preferredFontForTextStyle:)]) {
+          SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        } else {
+          SVProgressHUDFont = [UIFont systemFontOfSize:14.0];
+          SVProgressHUDBackgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+          SVProgressHUDForegroundColor = [UIColor whiteColor];
+        }
+        if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
+          SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+          SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        } else {
+          SVProgressHUDSuccessImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success"];
+          SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
+        }
         SVProgressHUDRingThickness = 4;
     }
 	
@@ -264,10 +275,16 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     
     if(string) {
         CGSize constraintSize = CGSizeMake(200, 300);
-        CGRect stringRect = [string boundingRectWithSize:constraintSize
-                                                 options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
-                                              attributes:@{NSFontAttributeName: self.stringLabel.font}
-                                                 context:NULL];
+        CGRect stringRect;
+        if ([string respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
+          stringRect = [string boundingRectWithSize:constraintSize
+                                            options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
+                                         attributes:@{NSFontAttributeName: self.stringLabel.font}
+                                            context:NULL];
+        } else {
+          CGSize stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
+          stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
+        }
         stringWidth = stringRect.size.width;
         stringHeight = ceil(stringRect.size.height);
         
@@ -384,6 +401,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     double animationDuration;
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    // no transforms applied to window in iOS 8
+    BOOL ignoreOrientation = [[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)];
     
     if(notification) {
         NSDictionary* keyboardInfo = [notification userInfo];
@@ -391,7 +410,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         animationDuration = [[keyboardInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         
         if(notification.name == UIKeyboardWillShowNotification || notification.name == UIKeyboardDidShowNotification) {
-            if(UIInterfaceOrientationIsPortrait(orientation))
+            if(ignoreOrientation || UIInterfaceOrientationIsPortrait(orientation))
                 keyboardHeight = keyboardFrame.size.height;
             else
                 keyboardHeight = keyboardFrame.size.width;
@@ -401,10 +420,10 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         keyboardHeight = self.visibleKeyboardHeight;
     }
     
-    CGRect orientationFrame = [UIScreen mainScreen].bounds;
+    CGRect orientationFrame = self.window.bounds;
     CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
     
-    if(UIInterfaceOrientationIsLandscape(orientation)) {
+    if(!ignoreOrientation && UIInterfaceOrientationIsLandscape(orientation)) {
         float temp = orientationFrame.size.width;
         orientationFrame.size.width = orientationFrame.size.height;
         orientationFrame.size.height = temp;
@@ -426,23 +445,28 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     CGPoint newCenter;
     CGFloat rotateAngle;
     
-    switch (orientation) {
-        case UIInterfaceOrientationPortraitUpsideDown:
-            rotateAngle = M_PI;
-            newCenter = CGPointMake(posX, orientationFrame.size.height-posY);
-            break;
-        case UIInterfaceOrientationLandscapeLeft:
-            rotateAngle = -M_PI/2.0f;
-            newCenter = CGPointMake(posY, posX);
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            rotateAngle = M_PI/2.0f;
-            newCenter = CGPointMake(orientationFrame.size.height-posY, posX);
-            break;
-        default: // as UIInterfaceOrientationPortrait
-            rotateAngle = 0.0;
-            newCenter = CGPointMake(posX, posY);
-            break;
+    if (ignoreOrientation) {
+        rotateAngle = 0.0;
+        newCenter = CGPointMake(posX, posY);
+    } else {
+        switch (orientation) {
+            case UIInterfaceOrientationPortraitUpsideDown:
+                rotateAngle = M_PI;
+                newCenter = CGPointMake(posX, orientationFrame.size.height-posY);
+                break;
+            case UIInterfaceOrientationLandscapeLeft:
+                rotateAngle = -M_PI/2.0f;
+                newCenter = CGPointMake(posY, posX);
+                break;
+            case UIInterfaceOrientationLandscapeRight:
+                rotateAngle = M_PI/2.0f;
+                newCenter = CGPointMake(orientationFrame.size.height-posY, posX);
+                break;
+            default: // as UIInterfaceOrientationPortrait
+                rotateAngle = 0.0;
+                newCenter = CGPointMake(posX, posY);
+                break;
+        }
     }
     
     if(notification) {
@@ -562,6 +586,19 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     }
 }
 
+- (UIImage *)image:(UIImage *)image withTintColor:(UIColor *)color
+{
+  CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+  UIGraphicsBeginImageContextWithOptions(rect.size, NO, image.scale);
+  CGContextRef c = UIGraphicsGetCurrentContext();
+  [image drawInRect:rect];
+  CGContextSetFillColorWithColor(c, [color CGColor]);
+  CGContextSetBlendMode(c, kCGBlendModeSourceAtop);
+  CGContextFillRect(c, rect);
+  UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return tintedImage;
+}
 
 - (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
     self.progress = -1;
@@ -569,8 +606,12 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     
     if(![self.class isVisible])
         [self.class show];
-    
-    self.imageView.tintColor = SVProgressHUDForegroundColor;
+  
+    if ([self.imageView respondsToSelector:@selector(setTintColor:)]) {
+      self.imageView.tintColor = SVProgressHUDForegroundColor;
+    } else {
+      image = [self image:image withTintColor:SVProgressHUDForegroundColor];
+    }
     self.imageView.image = image;
     self.imageView.hidden = NO;
     
@@ -752,7 +793,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         
         _hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                      UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
-        
+      
+      if ([_hudView respondsToSelector:@selector(addMotionEffect:)]) {
         UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
         effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
         effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
@@ -763,7 +805,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         
         [_hudView addMotionEffect: effectX];
         [_hudView addMotionEffect: effectY];
-        
+      }
+      
         [self addSubview:_hudView];
     }
     return _hudView;
