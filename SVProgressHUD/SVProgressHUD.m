@@ -702,10 +702,12 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
         _ringLayer = [self createRingLayerWithCenter:center
                                               radius:SVProgressHUDRingRadius
-                                           lineWidth:SVProgressHUDRingThickness
-                                               color:SVProgressHUDForegroundColor];
+                                           lineWidth:SVProgressHUDRingThickness];
         [self.hudView.layer addSublayer:_ringLayer];
     }
+    
+    _ringLayer.strokeColor = SVProgressHUDForegroundColor.CGColor;
+    
     return _ringLayer;
 }
 
@@ -714,11 +716,13 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
         _backgroundRingLayer = [self createRingLayerWithCenter:center
                                                         radius:SVProgressHUDRingRadius
-                                                     lineWidth:SVProgressHUDRingThickness
-                                                         color:[SVProgressHUDForegroundColor colorWithAlphaComponent:0.1]];
+                                                     lineWidth:SVProgressHUDRingThickness];
         _backgroundRingLayer.strokeEnd = 1;
         [self.hudView.layer addSublayer:_backgroundRingLayer];
     }
+    
+    _ringLayer.strokeColor = [SVProgressHUDForegroundColor colorWithAlphaComponent:0.1].CGColor;
+    
     return _backgroundRingLayer;
 }
 
@@ -741,7 +745,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [CATransaction commit];
 }
 
-- (CAShapeLayer *)createRingLayerWithCenter:(CGPoint)center radius:(CGFloat)radius lineWidth:(CGFloat)lineWidth color:(UIColor *)color {
+- (CAShapeLayer *)createRingLayerWithCenter:(CGPoint)center radius:(CGFloat)radius lineWidth:(CGFloat)lineWidth {
     
     UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(radius, radius) radius:radius startAngle:-M_PI_2 endAngle:(M_PI + M_PI_2) clockwise:YES];
     
@@ -749,7 +753,6 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     slice.contentsScale = [[UIScreen mainScreen] scale];
     slice.frame = CGRectMake(center.x-radius, center.y-radius, radius*2, radius*2);
     slice.fillColor = [UIColor clearColor].CGColor;
-    slice.strokeColor = color.CGColor;
     slice.lineWidth = lineWidth;
     slice.lineCap = kCALineCapRound;
     slice.lineJoin = kCALineJoinBevel;
@@ -819,10 +822,11 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 		_stringLabel.adjustsFontSizeToFitWidth = YES;
         _stringLabel.textAlignment = NSTextAlignmentCenter;
 		_stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-		_stringLabel.textColor = SVProgressHUDForegroundColor;
-		_stringLabel.font = SVProgressHUDFont;
         _stringLabel.numberOfLines = 0;
     }
+    
+    _stringLabel.textColor = SVProgressHUDForegroundColor;
+    _stringLabel.font = SVProgressHUDFont;
     
     if(!_stringLabel.superview)
         [self.hudView addSubview:_stringLabel];
