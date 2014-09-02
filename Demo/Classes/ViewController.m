@@ -94,7 +94,7 @@ static float progress = 0.0f;
 }
 
 - (void)dismissInfo {
-	[SVProgressHUD showInfoWithStatus:@"Notification info."];
+	[SVProgressHUD showInfoWithStatus:@"Some Useful Info."];
 }
 
 @end
