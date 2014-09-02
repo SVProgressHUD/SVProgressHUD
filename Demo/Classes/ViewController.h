@@ -16,6 +16,7 @@
 - (IBAction)dismiss;
 - (IBAction)dismissSuccess;
 - (IBAction)dismissError;
+- (IBAction)dismissInfo;
 
 @end
 
