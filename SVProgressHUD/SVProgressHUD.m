@@ -203,6 +203,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.activityCount = 0;
         
+        NSString *resourcePath =[[NSBundle bundleForClass:[self class]]resourcePath];
+        
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
         if ([UIFont respondsToSelector:@selector(preferredFontForTextStyle:)]) {
@@ -213,11 +215,13 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
           SVProgressHUDForegroundColor = [UIColor whiteColor];
         }
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
-          SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-          SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            SVProgressHUDSuccessImage = [[UIImage imageWithContentsOfFile:[resourcePath stringByAppendingPathComponent:@"SVProgressHUD.bundle/success@2x.png"]]
+                                       imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+          SVProgressHUDErrorImage = [[UIImage imageWithContentsOfFile:[resourcePath stringByAppendingPathComponent:@"SVProgressHUD.bundle/error@2x.png"]]
+                                     imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         } else {
-          SVProgressHUDSuccessImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success"];
-          SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
+            SVProgressHUDSuccessImage = [UIImage imageWithContentsOfFile:[resourcePath stringByAppendingPathComponent:@"SVProgressHUD.bundle/success@2x.png"]];
+            SVProgressHUDErrorImage = [UIImage imageWithContentsOfFile:[resourcePath stringByAppendingPathComponent:@"SVProgressHUD.bundle/error@2x.png"]];
         }
         SVProgressHUDRingThickness = 4;
     }
@@ -929,7 +933,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         _indefiniteAnimatedLayer.path = smoothedPath.CGPath;
         
         CALayer *maskLayer = [CALayer layer];
-        maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask@2x.png"] CGImage];
+        NSString *resourcePath =[[NSBundle bundleForClass:[self class]]resourcePath];
+        maskLayer.contents = (id)[[UIImage imageWithContentsOfFile:[resourcePath stringByAppendingPathComponent:@"SVProgressHUD.bundle/angle-mask@2x.png"]] CGImage];
         maskLayer.frame = _indefiniteAnimatedLayer.bounds;
         _indefiniteAnimatedLayer.mask = maskLayer;
         
