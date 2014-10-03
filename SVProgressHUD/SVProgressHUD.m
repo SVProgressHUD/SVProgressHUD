@@ -284,7 +284,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         } else {
             CGSize stringSize;
             
-            if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) {
+            if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_0) {
             	
                 stringSize = [string sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:self.stringLabel.font.fontName size:self.stringLabel.font.pointSize]}];
             }
