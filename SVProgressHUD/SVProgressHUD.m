@@ -276,23 +276,11 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     if(string) {
         CGSize constraintSize = CGSizeMake(200, 300);
         CGRect stringRect;
-        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
-            stringRect = [string boundingRectWithSize:constraintSize
-                                                  options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
-                                               attributes:@{NSFontAttributeName: self.stringLabel.font}
-                                                  context:NULL];
-        #else
-            if ([string respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
-                stringRect = [string boundingRectWithSize:constraintSize
-                                                  options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
-                                               attributes:@{NSFontAttributeName: self.stringLabel.font}
-                                                  context:NULL];
-            else {
-                CGSize stringSize;
-                stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
-                stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
-            }
-        #endif
+
+        stringRect = [string boundingRectWithSize:constraintSize
+                                              options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
+                                           attributes:@{NSFontAttributeName: self.stringLabel.font}
+                                              context:NULL];
         
         stringWidth = stringRect.size.width;
         stringHeight = ceil(stringRect.size.height);
