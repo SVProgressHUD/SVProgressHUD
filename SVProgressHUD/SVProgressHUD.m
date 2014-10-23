@@ -412,6 +412,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGFloat keyboardHeight;
     double animationDuration = 0;
     
+    [SVProgressHUD sharedView].frame = [UIScreen mainScreen].bounds;
+    
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     // no transforms applied to window in iOS 8, but only if compiled with iOS 8 sdk as base sdk, otherwise system supports old rotation logic.
     BOOL ignoreOrientation = NO;
