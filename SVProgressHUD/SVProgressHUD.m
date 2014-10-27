@@ -283,11 +283,14 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                                             context:NULL];
         } else {
             CGSize stringSize;
-            #ifdef __IPHONE_8_0
-                stringSize = [string sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:self.stringLabel.font.fontName size:self.stringLabel.font.pointSize]}];
-            #else
-                stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
-            #endif
+			if([string respondsToSelector:@selector(sizeWithAttributes:)])
+			{
+				stringSize = [string sizeWithAttributes:@{NSFontAttributeName : [UIFont fontWithName:self.stringLabel.font.fontName size:self.stringLabel.font.pointSize]}];
+			}
+			else
+			{
+				stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
+			}
             stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
         }
         stringWidth = stringRect.size.width;
