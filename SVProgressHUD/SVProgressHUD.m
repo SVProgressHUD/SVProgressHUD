@@ -203,7 +203,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 		self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0;
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.activityCount = 0;
         
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
@@ -412,7 +411,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGFloat keyboardHeight;
     double animationDuration = 0;
     
-    [SVProgressHUD sharedView].frame = [UIScreen mainScreen].bounds;
+    self.frame = [UIScreen mainScreen].bounds;
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     // no transforms applied to window in iOS 8, but only if compiled with iOS 8 sdk as base sdk, otherwise system supports old rotation logic.
@@ -439,7 +438,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         keyboardHeight = self.visibleKeyboardHeight;
     }
     
-    CGRect orientationFrame = self.window.bounds;
+    CGRect orientationFrame = self.bounds;
     CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
     
     if(!ignoreOrientation && UIInterfaceOrientationIsLandscape(orientation)) {
@@ -494,11 +493,13 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              [self moveToPoint:newCenter rotateAngle:rotateAngle];
+                             [self setNeedsDisplay];
                          } completion:NULL];
     }
     
     else {
         [self moveToPoint:newCenter rotateAngle:rotateAngle];
+        [self setNeedsDisplay];
     }
     
 }
