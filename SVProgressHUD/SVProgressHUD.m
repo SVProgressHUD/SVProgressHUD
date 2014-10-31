@@ -405,6 +405,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     CGFloat keyboardHeight;
     double animationDuration;
     
+    [SVProgressHUD sharedView].frame = [UIScreen mainScreen].bounds;
+    
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     // no transforms applied to window in iOS 8, but only if compiled with iOS 8 sdk as base sdk, otherwise system supports old rotation logic.
     BOOL ignoreOrientation = NO;
@@ -511,7 +513,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
         for (UIWindow *window in frontToBackWindows)
-            if (window.windowLevel == UIWindowLevelNormal) {
+            if (window.windowLevel < UIWindowLevelStatusBar) {
                 [window addSubview:self.overlayView];
                 break;
             }
