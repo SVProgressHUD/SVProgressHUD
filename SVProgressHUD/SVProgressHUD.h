@@ -41,18 +41,29 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)status;
++ (void)showWithAttributedStatus:(NSAttributedString*)attributedStatus;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithAttributedStatus:(NSAttributedString*)attributedStatus maskType:(SVProgressHUDMaskType)maskType;
+
 
 + (void)showProgress:(float)progress;
 + (void)showProgress:(float)progress status:(NSString*)status;
++ (void)showProgress:(float)progress attributedStatus:(NSAttributedString*)attributedStatus;
 + (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showProgress:(float)progress attributedStatus:(NSAttributedString*)attributedStatus maskType:(SVProgressHUDMaskType)maskType;
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
++ (void)setAttributedStatus:(NSAttributedString *)attributedString; // change the HUD loading status while it's showing with an attributed string
 
 // stops the activity indicator, shows a glyph + status, and dismisses HUD 1s later
+
+//Attributed
 + (void)showSuccessWithStatus:(NSString*)string;
++ (void)showSuccessWithAttributedStatus:(NSAttributedString*)attributedString;
 + (void)showErrorWithStatus:(NSString *)string;
++ (void)showErrorWithAttributedStatus:(NSAttributedString *)attributedString;
 + (void)showImage:(UIImage*)image status:(NSString*)status; // use 28x28 white pngs
++ (void)showImage:(UIImage*)image attributedStatus:(NSAttributedString*)attributedStatus;
 
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;

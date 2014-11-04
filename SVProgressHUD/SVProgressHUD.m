@@ -53,24 +53,6 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
 
-
-- (void)showProgress:(float)progress
-              status:(NSString*)string
-            maskType:(SVProgressHUDMaskType)hudMaskType;
-
-- (void)showImage:(UIImage*)image
-           status:(NSString*)status
-         duration:(NSTimeInterval)duration;
-
-- (void)dismiss;
-
-- (void)setStatus:(NSString*)string;
-- (void)registerNotifications;
-- (NSDictionary *)notificationUserInfo;
-- (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
-- (void)positionHUD:(NSNotification*)notification;
-- (NSTimeInterval)displayDurationForString:(NSString*)string;
-
 @end
 
 
@@ -86,7 +68,15 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #pragma mark - Setters
 
 + (void)setStatus:(NSString *)string {
-	[[self sharedView] setStatus:string];
+    SVProgressHUD *sharedView = [self sharedView];
+    [sharedView setStatus:string];
+    [sharedView updatePosition];
+}
+
++ (void)setAttributedStatus:(NSAttributedString *)attributedString {
+    SVProgressHUD *sharedView = [self sharedView];
+    [sharedView setAttributedStatus:attributedString];
+    [sharedView updatePosition];
 }
 
 + (void)setBackgroundColor:(UIColor *)color {
@@ -129,12 +119,20 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [[self sharedView] showProgress:-1 status:status maskType:SVProgressHUDMaskTypeNone];
 }
 
++ (void)showWithAttributedStatus:(NSAttributedString *)attributedStatus {
+    [[self sharedView] showProgress:-1 attributedStatus:attributedStatus maskType:SVProgressHUDMaskTypeNone];
+}
+
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
     [[self sharedView] showProgress:-1 status:nil maskType:maskType];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
     [[self sharedView] showProgress:-1 status:status maskType:maskType];
+}
+
++ (void)showWithAttributedStatus:(NSAttributedString *)attributedStatus maskType:(SVProgressHUDMaskType)maskType {
+    [[self sharedView] showProgress:-1 attributedStatus:attributedStatus maskType:maskType];
 }
 
 + (void)showProgress:(float)progress {
@@ -145,8 +143,16 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [[self sharedView] showProgress:progress status:status maskType:SVProgressHUDMaskTypeNone];
 }
 
++ (void)showProgress:(float)progress attributedStatus:(NSAttributedString *)attributedStatus {
+    [[self sharedView] showProgress:progress attributedStatus:attributedStatus maskType:SVProgressHUDMaskTypeNone];
+}
+
 + (void)showProgress:(float)progress status:(NSString *)status maskType:(SVProgressHUDMaskType)maskType {
     [[self sharedView] showProgress:progress status:status maskType:maskType];
+}
+
++ (void)showProgress:(float)progress attributedStatus:(NSAttributedString *)attributedStatus maskType:(SVProgressHUDMaskType)maskType {
+    [[self sharedView] showProgress:progress attributedStatus:attributedStatus maskType:maskType];
 }
 
 #pragma mark - Show then dismiss methods
@@ -156,14 +162,29 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [self showImage:SVProgressHUDSuccessImage status:string];
 }
 
++ (void)showSuccessWithAttributedStatus:(NSAttributedString *)attributedString {
+    [self sharedView];
+    [self showImage:SVProgressHUDSuccessImage attributedStatus:attributedString];
+}
+
 + (void)showErrorWithStatus:(NSString *)string {
     [self sharedView];
     [self showImage:SVProgressHUDErrorImage status:string];
 }
 
++ (void)showErrorWithAttributedStatus:(NSAttributedString *)attributedString {
+    [self sharedView];
+    [self showImage:SVProgressHUDErrorImage attributedStatus:attributedString];
+}
+
 + (void)showImage:(UIImage *)image status:(NSString *)string {
-    NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForString:string];
+    NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForStringLength:string.length];
     [[self sharedView] showImage:image status:string duration:displayInterval];
+}
+
++(void)showImage:(UIImage *)image attributedStatus:(NSAttributedString *)attributedStatus {
+    NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForStringLength:attributedStatus.length];
+    [[self sharedView] showImage:image attributedStatus:attributedStatus duration:displayInterval];
 }
 
 
@@ -350,12 +371,12 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 - (void)setStatus:(NSString *)string {
-    
 	self.stringLabel.text = string;
-    [self updatePosition];
-    
 }
 
+- (void)setAttributedStatus:(NSAttributedString *)attributedString {
+    self.stringLabel.attributedText =attributedString;
+}
 - (void)setFadeOutTimer:(NSTimer *)newTimer {
     
     if(_fadeOutTimer)
@@ -504,8 +525,17 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 #pragma mark - Master show/dismiss methods
-
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
+    [self setStatus:string];
+    [self showProgress:progress maskType:hudMaskType];
+}
+
+- (void)showProgress:(float)progress attributedStatus:(NSAttributedString *)attributedString maskType:(SVProgressHUDMaskType)hudMaskType {
+    [self setAttributedStatus:attributedString];
+    [self showProgress:progress maskType:hudMaskType];
+}
+
+- (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)hudMaskType {
     
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
@@ -525,7 +555,6 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     self.maskType = hudMaskType;
     self.progress = progress;
     
-    self.stringLabel.text = string;
     [self updatePosition];
     
     if(progress >= 0) {
@@ -546,12 +575,12 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     
     if(self.maskType != SVProgressHUDMaskTypeNone) {
         self.overlayView.userInteractionEnabled = YES;
-        self.accessibilityLabel = string;
+        self.accessibilityLabel = self.stringLabel.text;
         self.isAccessibilityElement = YES;
     }
     else {
         self.overlayView.userInteractionEnabled = NO;
-        self.hudView.accessibilityLabel = string;
+        self.hudView.accessibilityLabel = self.stringLabel.text;
         self.hudView.isAccessibilityElement = YES;
     }
     
@@ -589,7 +618,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                                                                                  object:nil
                                                                                userInfo:userInfo];
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-                             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
+                             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, self.stringLabel.text);
                          }];
         
         [self setNeedsDisplay];
@@ -616,7 +645,23 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     
     if(![self.class isVisible])
         [self.class show];
-  
+    
+    [self setStatus:string];
+    [self showImage:image duration:duration];
+}
+
+- (void)showImage:(UIImage *)image attributedStatus:(NSAttributedString *)attributedString duration:(NSTimeInterval)duration {
+    self.progress = -1;
+    [self cancelRingLayerAnimation];
+    
+    if(![self.class isVisible])
+        [self.class show];
+    
+    [self setAttributedStatus:attributedString];
+    [self showImage:image duration:duration];
+}
+
+- (void)showImage:(UIImage *)image duration:(NSTimeInterval)duration {
     if ([self.imageView respondsToSelector:@selector(setTintColor:)]) {
       self.imageView.tintColor = SVProgressHUDForegroundColor;
     } else {
@@ -625,20 +670,19 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     self.imageView.image = image;
     self.imageView.hidden = NO;
     
-    self.stringLabel.text = string;
     [self updatePosition];
     [self.indefiniteAnimatedView removeFromSuperview];
     
     if(self.maskType != SVProgressHUDMaskTypeNone) {
-        self.accessibilityLabel = string;
+        self.accessibilityLabel = self.stringLabel.text;
         self.isAccessibilityElement = YES;
     } else {
-        self.hudView.accessibilityLabel = string;
+        self.hudView.accessibilityLabel = self.stringLabel.text;
         self.hudView.isAccessibilityElement = YES;
     }
     
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
+    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, self.stringLabel.text);
     
     self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
     [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
@@ -776,8 +820,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 #pragma mark - Getters
 
-- (NSTimeInterval)displayDurationForString:(NSString*)string {
-    return MIN((float)string.length*0.06 + 0.3, 5.0);
+- (NSTimeInterval)displayDurationForStringLength:(NSUInteger)stringLength {
+    return MIN((float)stringLength*0.06 + 0.3, 5.0);
 }
 
 - (BOOL)isClear { // used for iOS 7

@@ -56,7 +56,14 @@
 }
 
 - (void)showWithStatus {
-	[SVProgressHUD showWithStatus:@"Doing Stuff"];
+    UIFont *font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+    UIFont *bold = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
+    
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:@"Doing Stuff"];
+    NSRange stuffRange = [message.string rangeOfString:@"Stuff"];
+    [message addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, stuffRange.location)];
+    [message addAttribute:NSFontAttributeName value:bold range:stuffRange];
+    [SVProgressHUD showWithAttributedStatus:message];
 }
 
 static float progress = 0.0f;
@@ -90,7 +97,9 @@ static float progress = 0.0f;
 }
 
 - (void)dismissError {
-	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
+    NSMutableAttributedString *errorMessage = [[NSMutableAttributedString alloc] initWithString:@"Failed with Error"];
+    [errorMessage addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:[errorMessage.string rangeOfString:@"Error"]];
+	[SVProgressHUD showErrorWithAttributedStatus:errorMessage];
 }
 
 @end
