@@ -514,7 +514,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
         for (UIWindow *window in frontToBackWindows)
-            if (window.windowLevel < UIWindowLevelStatusBar) {
+            if (window.windowLevel == UIWindowLevelNormal) {
                 [window addSubview:self.overlayView];
                 break;
             }
