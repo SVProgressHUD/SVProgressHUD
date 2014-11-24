@@ -255,6 +255,9 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
             
             break;
         }
+            
+        default:
+            break;
     }
 }
 
@@ -283,11 +286,12 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                                             context:NULL];
         } else {
             CGSize stringSize;
-            #ifdef __IPHONE_8_0
+            
+            if ([string respondsToSelector:@selector(sizeWithAttributes:)])
                 stringSize = [string sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:self.stringLabel.font.fontName size:self.stringLabel.font.pointSize]}];
-            #else
+            else
                 stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
-            #endif
+            
             stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
         }
         stringWidth = stringRect.size.width;
