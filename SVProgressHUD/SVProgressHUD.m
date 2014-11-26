@@ -170,7 +170,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #pragma mark - Dismiss Methods
 
 + (void)popActivity {
-    [self sharedView].activityCount--;
+    if([self sharedView].activityCount > 0)
+        [self sharedView].activityCount--;
     if([self sharedView].activityCount == 0)
         [[self sharedView] dismiss];
 }
