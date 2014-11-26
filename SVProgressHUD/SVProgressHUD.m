@@ -32,8 +32,7 @@ static UIImage *SVProgressHUDErrorImage;
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
-
-static const float SVProgressHUDUndefinedProgress = -1;
+static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 @interface SVProgressHUD ()
 
