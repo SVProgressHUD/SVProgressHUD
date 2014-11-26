@@ -820,8 +820,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
         effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
         
-        [_hudView addMotionEffect: effectX];
-        [_hudView addMotionEffect: effectY];
+        UIMotionEffectGroup *effectGroup = [[UIMotionEffectGroup alloc] init];
+        effectGroup.motionEffects = @[effectX, effectY];
+        [_hudView addMotionEffect:effectGroup];
       }
       
         [self addSubview:_hudView];
