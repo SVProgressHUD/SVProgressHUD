@@ -33,6 +33,8 @@ static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
+static const float SVProgressHUDUndefinedProgress = -1;
+
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
@@ -122,19 +124,19 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 #pragma mark - Show Methods
 
 + (void)show {
-    [[self sharedView] showProgress:-1 status:nil maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:nil maskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showWithStatus:(NSString *)status {
-    [[self sharedView] showProgress:-1 status:status maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:status maskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
-    [[self sharedView] showProgress:-1 status:nil maskType:maskType];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:nil maskType:maskType];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    [[self sharedView] showProgress:-1 status:status maskType:maskType];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:status maskType:maskType];
 }
 
 + (void)showProgress:(float)progress {
@@ -336,7 +338,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36);
         self.indefiniteAnimatedView.center = center;
         
-        if(self.progress != -1)
+        if(self.progress != SVProgressHUDUndefinedProgress)
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36);
 	}
     else {
@@ -346,7 +348,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetHeight(self.hudView.bounds)/2);
         self.indefiniteAnimatedView.center = center;
         
-        if(self.progress != -1)
+        if(self.progress != SVProgressHUDUndefinedProgress)
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetHeight(self.hudView.bounds)/2);
     }
     
@@ -616,7 +618,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 - (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
-    self.progress = -1;
+    self.progress = SVProgressHUDUndefinedProgress;
     [self cancelRingLayerAnimation];
     
     if(![self.class isVisible])
