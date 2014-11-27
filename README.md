@@ -101,7 +101,7 @@ SVProgressHUD can be customized via the following methods:
 
 Each notification passes a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`.
 
-`SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the screen. For this notification `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
+`SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the overall screen or `SVProgressHUDDidTouchDownInsideNotification` when a user touches on the hud directly. For this notifications `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
 
 ## Contributing to this project
 
