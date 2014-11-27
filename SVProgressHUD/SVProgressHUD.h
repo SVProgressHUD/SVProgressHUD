@@ -61,6 +61,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)popActivity;
 + (void)dismiss;
 
++ (void)setSecondPerChar:(CGFloat)second;
+
 + (BOOL)isVisible;
 
 @end
