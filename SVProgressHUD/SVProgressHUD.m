@@ -544,6 +544,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                 [window addSubview:self.overlayView];
                 break;
             }
+    } else {
+        // Ensure that overlay will be exactly on top of rootViewController (which may be changed during runtime).
+        [self.overlayView.superview bringSubviewToFront:self.overlayView];
     }
     
     if(!self.superview)
