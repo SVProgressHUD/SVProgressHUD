@@ -49,6 +49,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
++ (void)setMaskType:(SVProgressHUDMaskType)maskType;
 
 // stops the activity indicator, shows a glyph + status, and dismisses HUD 1s later
 + (void)showSuccessWithStatus:(NSString*)string;
