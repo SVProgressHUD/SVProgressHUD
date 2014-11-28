@@ -329,7 +329,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             hudWidth+=24;
         } else {
             hudWidth+=24;
-            labelRect = CGRectMake(0, labelRectY, hudWidth, stringHeight);
+            CGFloat labelRectX = (hudWidth - stringWidth) / 2;
+            labelRect = CGRectMake(labelRectX, labelRectY, stringWidth, stringHeight);
         }
     }
 	
