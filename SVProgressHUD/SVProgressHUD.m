@@ -247,10 +247,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
             CGColorSpaceRelease(colorSpace);
             
-            CGFloat freeHeight = self.bounds.size.height - self.visibleKeyboardHeight;
+            CGFloat freeHeight = CGRectGetHeight(self.bounds) - self.visibleKeyboardHeight;
             
-            CGPoint center = CGPointMake(self.bounds.size.width/2, freeHeight/2);
-            float radius = MIN(self.bounds.size.width , self.bounds.size.height) ;
+            CGPoint center = CGPointMake(CGRectGetWidth(self.bounds)/2, freeHeight/2);
+            float radius = MIN(CGRectGetWidth(self.bounds) , CGRectGetHeight(self.bounds)) ;
             CGContextDrawRadialGradient (context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
             CGGradientRelease(gradient);
             
@@ -296,7 +296,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
         }
         stringWidth = stringRect.size.width;
-        stringHeight = ceil(stringRect.size.height);
+        stringHeight = ceil(CGRectGetHeight(stringRect));
         
         if (imageUsed)
             hudHeight = stringAndImageHeightBuffer + stringHeight;
@@ -428,9 +428,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         
         if(notification.name == UIKeyboardWillShowNotification || notification.name == UIKeyboardDidShowNotification) {
             if(ignoreOrientation || UIInterfaceOrientationIsPortrait(orientation))
-                keyboardHeight = keyboardFrame.size.height;
+                keyboardHeight = CGRectGetHeight(keyboardFrame);
             else
-                keyboardHeight = keyboardFrame.size.width;
+                keyboardHeight = CGRectGetWidth(keyboardFrame);
         }
     } else {
         keyboardHeight = self.visibleKeyboardHeight;
@@ -440,23 +440,23 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGRect statusBarFrame = UIApplication.sharedApplication.statusBarFrame;
     
     if(!ignoreOrientation && UIInterfaceOrientationIsLandscape(orientation)) {
-        float temp = orientationFrame.size.width;
-        orientationFrame.size.width = orientationFrame.size.height;
+        float temp = CGRectGetWidth(orientationFrame);
+        orientationFrame.size.width = CGRectGetHeight(orientationFrame);
         orientationFrame.size.height = temp;
         
-        temp = statusBarFrame.size.width;
-        statusBarFrame.size.width = statusBarFrame.size.height;
+        temp = CGRectGetWidth(statusBarFrame);
+        statusBarFrame.size.width = CGRectGetHeight(statusBarFrame);
         statusBarFrame.size.height = temp;
     }
     
-    CGFloat activeHeight = orientationFrame.size.height;
+    CGFloat activeHeight = CGRectGetHeight(orientationFrame);
     
     if(keyboardHeight > 0)
-        activeHeight += statusBarFrame.size.height*2;
+        activeHeight += CGRectGetHeight(statusBarFrame)*2;
     
     activeHeight -= keyboardHeight;
     CGFloat posY = floor(activeHeight*0.45);
-    CGFloat posX = orientationFrame.size.width/2;
+    CGFloat posX = CGRectGetWidth(orientationFrame)/2;
     
     CGPoint newCenter;
     CGFloat rotateAngle;
@@ -468,7 +468,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         switch (orientation) {
             case UIInterfaceOrientationPortraitUpsideDown:
                 rotateAngle = M_PI;
-                newCenter = CGPointMake(posX, orientationFrame.size.height-posY);
+                newCenter = CGPointMake(posX, CGRectGetHeight(orientationFrame)-posY);
                 break;
             case UIInterfaceOrientationLandscapeLeft:
                 rotateAngle = -M_PI/2.0f;
@@ -476,7 +476,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                 break;
             case UIInterfaceOrientationLandscapeRight:
                 rotateAngle = M_PI/2.0f;
-                newCenter = CGPointMake(orientationFrame.size.height-posY, posX);
+                newCenter = CGPointMake(CGRectGetHeight(orientationFrame)-posY, posX);
                 break;
             default: // as UIInterfaceOrientationPortrait
                 rotateAngle = 0.0;
@@ -595,7 +595,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                          animations:^{
                              self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
                              
-                             if(self.isClear) // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
+                             if(self.isClear) // handle iOS 7 and 8 UIToolbar which not answers well to hierarchy opacity change
                                  self.hudView.alpha = 1;
                              else
                                  self.alpha = 1;
@@ -798,7 +798,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     return MIN((float)string.length*0.06 + 0.5, 5.0);
 }
 
-- (BOOL)isClear { // used for iOS 7
+- (BOOL)isClear { // used for iOS 7 and above
     return (self.maskType == SVProgressHUDMaskTypeClear || self.maskType == SVProgressHUDMaskTypeNone);
 }
 
@@ -883,11 +883,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     for (__strong UIView *possibleKeyboard in [keyboardWindow subviews]) {
         if ([possibleKeyboard isKindOfClass:NSClassFromString(@"UIPeripheralHostView")] || [possibleKeyboard isKindOfClass:NSClassFromString(@"UIKeyboard")]) {
-            return possibleKeyboard.bounds.size.height;
+            return CGRectGetHeight(possibleKeyboard.bounds);
         } else if ([possibleKeyboard isKindOfClass:NSClassFromString(@"UIInputSetContainerView")]) {
             for (__strong UIView *possibleKeyboardSubview in [possibleKeyboard subviews]) {
                 if ([possibleKeyboardSubview isKindOfClass:NSClassFromString(@"UIInputSetHostView")]) {
-                    return possibleKeyboardSubview.bounds.size.height;
+                    return CGRectGetHeight(possibleKeyboardSubview.bounds);
                 }
             }
         }
@@ -931,7 +931,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CALayer *layer = self.indefiniteAnimatedLayer;
     
     [self.layer addSublayer:layer];
-    layer.position = CGPointMake(self.bounds.size.width - layer.bounds.size.width / 2, self.bounds.size.height - layer.bounds.size.height / 2);
+    layer.position = CGPointMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(layer.bounds) / 2, CGRectGetHeight(self.bounds) - CGRectGetHeight(layer.bounds) / 2);
 }
 
 - (CAShapeLayer*)indefiniteAnimatedLayer {
