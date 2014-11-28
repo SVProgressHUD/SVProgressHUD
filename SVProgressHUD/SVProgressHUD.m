@@ -62,7 +62,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (void)showImage:(UIImage*)image
            status:(NSString*)status
-         duration:(NSTimeInterval)duration;
+         duration:(NSTimeInterval)duration
+         maskType:(SVProgressHUDMaskType)maskType;
 
 - (void)dismiss;
 
@@ -154,20 +155,31 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Show then dismiss methods
 
 + (void)showSuccessWithStatus:(NSString *)string {
+    [self showSuccessWithStatus:string maskType:SVProgressHUDMaskTypeNone];
+}
+
++ (void)showSuccessWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType {
     [self sharedView];
-    [self showImage:SVProgressHUDSuccessImage status:string];
+    [self showImage:SVProgressHUDSuccessImage status:string maskType:maskType];
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
+    [self showErrorWithStatus:string maskType:SVProgressHUDMaskTypeNone];
+}
+
++ (void)showErrorWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType {
     [self sharedView];
-    [self showImage:SVProgressHUDErrorImage status:string];
+    [self showImage:SVProgressHUDErrorImage status:string maskType:maskType];
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
-    NSTimeInterval displayInterval = [[self sharedView] displayDurationForString:string];
-    [[self sharedView] showImage:image status:string duration:displayInterval];
+    [self showImage:image status:string maskType:SVProgressHUDMaskTypeNone];
 }
 
++ (void)showImage:(UIImage *)image status:(NSString *)string maskType:(SVProgressHUDMaskType)maskType {
+    NSTimeInterval displayInterval = [[self sharedView] displayDurationForString:string];
+    [[self sharedView] showImage:image status:string duration:displayInterval maskType:maskType];
+}
 
 #pragma mark - Dismiss Methods
 
@@ -628,7 +640,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
   return tintedImage;
 }
 
-- (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration {
+- (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)duration maskType:(SVProgressHUDMaskType)maskType {
     self.progress = SVProgressHUDUndefinedProgress;
     [self cancelRingLayerAnimation];
     
@@ -642,6 +654,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     }
     self.imageView.image = image;
     self.imageView.hidden = NO;
+    self.maskType = maskType;
     
     self.stringLabel.text = string;
     [self updatePosition];
