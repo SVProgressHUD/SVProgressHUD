@@ -291,8 +291,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             
             if ([string respondsToSelector:@selector(sizeWithAttributes:)])
                 stringSize = [string sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:self.stringLabel.font.fontName size:self.stringLabel.font.pointSize]}];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
             else
                 stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200, 300)];
+#pragma clang diagnostic pop
             
             stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
         }
