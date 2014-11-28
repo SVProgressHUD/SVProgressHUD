@@ -62,14 +62,22 @@
 static float progress = 0.0f;
 
 - (IBAction)showWithProgress:(id)sender {
+    [self _showWithProgressAndMask:NO];
+}
+
+- (IBAction)showWithProgressAndMask:(id)sender {
+    [self _showWithProgressAndMask:YES];
+}
+
+- (void)_showWithProgressAndMask:(BOOL)showMask {
     progress = 0.0f;
-    [SVProgressHUD showProgress:0 status:@"Loading"];
+    [SVProgressHUD showProgress:0 status:@"Loading" maskType:showMask ? SVProgressHUDMaskTypeBlack : SVProgressHUDMaskTypeNone];
     [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3];
 }
 
 - (void)increaseProgress {
     progress+=0.1f;
-    [SVProgressHUD showProgress:progress status:@"Loading"];
+    [SVProgressHUD showProgress:progress status:@"Loading" maskType:SVProgressHUDMaskTypeBlack];
 
     if(progress < 1.0f)
         [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3];

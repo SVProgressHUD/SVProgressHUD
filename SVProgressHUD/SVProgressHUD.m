@@ -36,6 +36,9 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 @interface SVProgressHUD ()
+{
+    BOOL ignoreOrientation;
+}
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
 @property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
@@ -82,7 +85,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
     static SVProgressHUD *sharedView;
-    dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+    dispatch_once(&once, ^ {
+        CGRect screenBounds = [[UIScreen mainScreen] bounds];
+        CGFloat maxDimension = MAX(screenBounds.size.width, screenBounds.size.height);
+        sharedView = [[self alloc] initWithFrame:(CGRect){ CGPointZero, { maxDimension, maxDimension } }];
+    });
     return sharedView;
 }
 
@@ -215,6 +222,15 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (id)initWithFrame:(CGRect)frame {
 	
     if ((self = [super initWithFrame:frame])) {
+        
+        // no transforms applied to window in iOS 8, but only if compiled with iOS 8 sdk as base sdk, otherwise system supports old rotation logic.
+        ignoreOrientation = NO;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+        if ([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)]) {
+            ignoreOrientation = YES;
+        }
+#endif
+        
 		self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0;
@@ -420,7 +436,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     return (self.stringLabel.text ? @{SVProgressHUDStatusUserInfoKey : self.stringLabel.text} : nil);
 }
 
-
 - (void)positionHUD:(NSNotification*)notification {
     
     CGFloat keyboardHeight;
@@ -429,13 +444,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.frame = [UIScreen mainScreen].bounds;
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    // no transforms applied to window in iOS 8, but only if compiled with iOS 8 sdk as base sdk, otherwise system supports old rotation logic.
-    BOOL ignoreOrientation = NO;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if ([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)]) {
-      ignoreOrientation = YES;
-    }
-#endif
 
     if(notification) {
         NSDictionary* keyboardInfo = [notification userInfo];
