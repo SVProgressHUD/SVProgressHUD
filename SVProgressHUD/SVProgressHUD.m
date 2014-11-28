@@ -548,6 +548,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                 [window addSubview:self.overlayView];
                 break;
             }
+    } else {
+        [self.overlayView.superview bringSubviewToFront:self.overlayView];
     }
     
     if(!self.superview)
