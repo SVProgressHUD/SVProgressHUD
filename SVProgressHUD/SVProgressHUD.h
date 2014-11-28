@@ -36,6 +36,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setFont:(UIFont*)font; // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setSuccessImage:(UIImage*)image; // default is bundled success image from Glyphish
 + (void)setErrorImage:(UIImage*)image; // default is bundled error image from Glyphish
++ (void)setInfoImage:(UIImage*)image;
 
 #pragma mark - Show Methods
 
@@ -53,6 +54,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 // stops the activity indicator, shows a glyph + status, and dismisses HUD 1s later
 + (void)showSuccessWithStatus:(NSString*)string;
 + (void)showErrorWithStatus:(NSString *)string;
++ (void)showInfoWithStatus:(NSString*)string;
 + (void)showImage:(UIImage*)image status:(NSString*)status; // use 28x28 white pngs
 
 + (void)setOffsetFromCenter:(UIOffset)offset;

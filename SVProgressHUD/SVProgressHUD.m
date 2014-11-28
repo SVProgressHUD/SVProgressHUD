@@ -29,6 +29,7 @@ static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
 static UIImage *SVProgressHUDSuccessImage;
 static UIImage *SVProgressHUDErrorImage;
+static UIImage *SVProgressHUDInfoImage;
 
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
@@ -121,6 +122,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDErrorImage = image;
 }
 
++ (void)setInfoImage:(UIImage *)image {
+    [self sharedView];
+    SVProgressHUDInfoImage = image;
+}
+
 #pragma mark - Show Methods
 
 + (void)show {
@@ -161,6 +167,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)showErrorWithStatus:(NSString *)string {
     [self sharedView];
     [self showImage:SVProgressHUDErrorImage status:string];
+}
+
++ (void)showInfoWithStatus:(NSString *)string {
+    [self sharedView];
+    [self showImage:SVProgressHUDInfoImage status:string];
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
@@ -217,9 +228,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
           SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
           SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+          SVProgressHUDInfoImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/info"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         } else {
           SVProgressHUDSuccessImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success"];
           SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
+          SVProgressHUDInfoImage = [UIImage imageNamed:@"SVProgressHUD.bundle/info"];
         }
         SVProgressHUDRingThickness = 4;
     }

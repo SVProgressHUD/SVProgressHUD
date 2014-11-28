@@ -90,7 +90,11 @@ static float progress = 0.0f;
 }
 
 - (void)dismissError {
-	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
+	[SVProgressHUD showErrorWithStatus:@"Failed With Error"];
+}
+
+- (void)dismissInfo {
+	[SVProgressHUD showInfoWithStatus:@"Some Useful Info."];
 }
 
 @end
