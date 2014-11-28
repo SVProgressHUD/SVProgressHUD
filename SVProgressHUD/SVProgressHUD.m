@@ -339,8 +339,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         
         if(self.progress != SVProgressHUDUndefinedProgress)
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
-	}
-    else {
+	} else {
         self.indefiniteAnimatedView.radius = SVProgressHUDRingNoTextRadius;
         [self.indefiniteAnimatedView sizeToFit];
         
@@ -493,9 +492,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                              [self moveToPoint:newCenter rotateAngle:rotateAngle];
                              [self setNeedsDisplay];
                          } completion:NULL];
-    }
-    
-    else {
+    } else {
         [self moveToPoint:newCenter rotateAngle:rotateAngle];
         [self setNeedsDisplay];
     }
@@ -553,8 +550,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         
         if(progress == 0)
             self.activityCount++;
-    }
-    else {
+    } else {
         self.activityCount++;
         [self cancelRingLayerAnimation];
         [self.hudView addSubview:self.indefiniteAnimatedView];
@@ -564,8 +560,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         self.overlayView.userInteractionEnabled = YES;
         self.accessibilityLabel = string;
         self.isAccessibilityElement = YES;
-    }
-    else {
+    } else {
         self.overlayView.userInteractionEnabled = NO;
         self.hudView.accessibilityLabel = string;
         self.hudView.isAccessibilityElement = YES;
@@ -842,7 +837,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (UILabel *)stringLabel {
-    if (_stringLabel == nil) {
+    if (!_stringLabel) {
         _stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		_stringLabel.backgroundColor = [UIColor clearColor];
 		_stringLabel.adjustsFontSizeToFitWidth = YES;
@@ -861,7 +856,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (UIImageView *)imageView {
-    if (_imageView == nil)
+    if (!_imageView)
         _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 28.0f, 28.0f)];
     
     if(!_imageView.superview)
@@ -918,10 +913,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
-    if (newSuperview != nil) {
+    if (newSuperview) {
         [self layoutAnimatedLayer];
-    }
-    else {
+    } else {
         [_indefiniteAnimatedLayer removeFromSuperlayer];
         _indefiniteAnimatedLayer = nil;
     }
@@ -998,7 +992,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     
-    if (self.superview != nil) {
+    if (self.superview) {
         [self layoutAnimatedLayer];
     }
 }
