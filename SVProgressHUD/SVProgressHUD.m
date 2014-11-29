@@ -589,7 +589,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.overlayView.backgroundColor = [UIColor clearColor];
     [self positionHUD:nil];
     
-    if(self.alpha != 1) {
+    if(self.alpha != 1 || self.hudView.alpha != 1) {
         NSDictionary *userInfo = [self notificationUserInfo];
         [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillAppearNotification
                                                             object:nil
