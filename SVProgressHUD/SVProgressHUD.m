@@ -280,15 +280,17 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGFloat hudWidth = 100.0f;
     CGFloat hudHeight = 100.0f;
     CGFloat stringHeightBuffer = 20.0f;
-    CGFloat stringAndImageHeightBuffer = 80.0f;
+    CGFloat stringAndContentHeightBuffer = 80.0f;
     
     CGFloat stringWidth = 0.0f;
     CGFloat stringHeight = 0.0f;
     CGRect labelRect = CGRectZero;
     
     NSString *string = self.stringLabel.text;
-    // False if it's text-only
+    
+    // Check if an image or progress ring is displayed
     BOOL imageUsed = (self.imageView.image) || (self.imageView.hidden);
+    BOOL progressUsed = (self.progress != SVProgressHUDUndefinedProgress) && (self.progress >= 0.0f);
     
     if(string) {
         CGSize constraintSize = CGSizeMake(200.0f, 300.0f);
@@ -314,15 +316,15 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         stringWidth = stringRect.size.width;
         stringHeight = ceil(CGRectGetHeight(stringRect));
         
-        if (imageUsed)
-            hudHeight = stringAndImageHeightBuffer + stringHeight;
+        if (imageUsed || progressUsed)
+            hudHeight = stringAndContentHeightBuffer + stringHeight;
         else
             hudHeight = stringHeightBuffer + stringHeight;
         
         if(stringWidth > hudWidth)
             hudWidth = ceil(stringWidth/2)*2;
         
-        CGFloat labelRectY = imageUsed ? 68.0f : 9.0f;
+        CGFloat labelRectY = (imageUsed || progressUsed) ? 68.0f : 9.0f;
         
         if(hudHeight > 100.0f) {
             labelRect = CGRectMake(12.0f, labelRectY, hudWidth, stringHeight);
@@ -530,6 +532,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidTouchDownInsideNotification object:event];
     }
 }
+
 
 #pragma mark - Master show/dismiss methods
 
@@ -833,26 +836,28 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         _hudView.backgroundColor = SVProgressHUDBackgroundColor;
         _hudView.layer.cornerRadius = 14;
         _hudView.layer.masksToBounds = YES;
-        
+
         _hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                      UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
-      
-      if ([_hudView respondsToSelector:@selector(addMotionEffect:)]) {
-        UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
-        effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
-        
-        UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-        effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
-        effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
-        
-        UIMotionEffectGroup *effectGroup = [[UIMotionEffectGroup alloc] init];
-        effectGroup.motionEffects = @[effectX, effectY];
-        [_hudView addMotionEffect:effectGroup];
-      }
-      
-        [self addSubview:_hudView];
+
+        if ([_hudView respondsToSelector:@selector(addMotionEffect:)]) {
+            UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.x" type: UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+            effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+            effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
+
+            UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath: @"center.y" type: UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+            effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
+            effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
+
+            UIMotionEffectGroup *effectGroup = [[UIMotionEffectGroup alloc] init];
+            effectGroup.motionEffects = @[effectX, effectY];
+            [_hudView addMotionEffect:effectGroup];
+        }
     }
+    
+    if(!_hudView.superview)
+        [self addSubview:_hudView];
+    
     return _hudView;
 }
 
