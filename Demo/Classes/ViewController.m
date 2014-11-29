@@ -93,4 +93,25 @@ static float progress = 0.0f;
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
 }
 
+#pragma mark - 
+#pragma mark Change Color
+
+static int colorFlag = 0;
+
+- (IBAction)changeColor:(id)sender {
+    
+    if (colorFlag == 0) {
+        colorFlag = 1;
+        
+        [SVProgressHUD setBackgroundColor:[UIColor blackColor]];
+        [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
+        
+    } else {
+        colorFlag = 0;
+        
+        [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
+        [SVProgressHUD setForegroundColor:[UIColor blackColor]];
+    }
+}
+
 @end
