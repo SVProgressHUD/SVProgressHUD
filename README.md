@@ -86,12 +86,14 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 SVProgressHUD can be customized via the following methods:
 
 ```objective-c
-+ (void)setBackgroundColor:(UIColor*)color; // default is [UIColor whiteColor]
-+ (void)setForegroundColor:(UIColor*)color; // default is [UIColor blackColor]
-+ (void)setRingThickness:(CGFloat)width;    // default is 4 pt
-+ (void)setFont:(UIFont*)font;              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-+ (void)setSuccessImage:(UIImage*)image;    // default is bundled success image from Glyphish
-+ (void)setErrorImage:(UIImage*)image;      // default is bundled error image from Glyphish
++ (void)setBackgroundColor:(UIColor*)color;                 // default is [UIColor whiteColor]
++ (void)setForegroundColor:(UIColor*)color;                 // default is [UIColor blackColor]
++ (void)setRingThickness:(CGFloat)width;                    // default is 4 pt
++ (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Glyphish
++ (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Glyphish
++ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
+
 ```
 
 ## Notifications
