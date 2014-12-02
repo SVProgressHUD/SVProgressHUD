@@ -40,6 +40,10 @@
                                              selector:@selector(handleNotification:)
                                                  name:SVProgressHUDDidDisappearNotification
                                                object:nil];
+    
+    [SVProgressHUD setDefaultStatus:@"Loading..."];
+//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD setDefaultDismissLeadTime:0.5f];
 }
 
 - (void)handleNotification:(NSNotification *)notif

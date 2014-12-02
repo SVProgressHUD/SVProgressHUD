@@ -36,6 +36,11 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setSuccessImage:(UIImage*)image;    // default is the bundled success image provided by Glyphish
 + (void)setErrorImage:(UIImage*)image;      // default is the bundled error image provided by Glyphish
 
+#pragma mark - Defaults
++ (void)setDefaultStatus:(NSString*)string; //default is nil
++ (void)setDefaultMaskType:(SVProgressHUDMaskType*)maskType; //default is SVProgressHUDMaskTypeNone
++ (void)setDefaultDismissLeadTime:(NSTimeInterval) second; //default is 0
+
 #pragma mark - Show Methods
 
 + (void)show;
@@ -65,6 +70,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 + (void)popActivity; // decrease activity count, if activity count == 0 the HUD is dismissed
 + (void)dismiss;
++ (void)dismissAfter:(NSTimeInterval)duration;
 
 + (BOOL)isVisible;
 

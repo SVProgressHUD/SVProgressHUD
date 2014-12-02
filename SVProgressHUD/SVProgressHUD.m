@@ -29,6 +29,10 @@ static UIFont *SVProgressHUDFont;
 static UIImage *SVProgressHUDSuccessImage;
 static UIImage *SVProgressHUDErrorImage;
 
+static NSString *SVProgressHUDDefaultStatus;
+static SVProgressHUDMaskType SVProgressHUDDefaultMaskType;
+static NSTimeInterval SVProgressHUDDefaultDismissLeadTime;
+
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
@@ -116,19 +120,36 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDErrorImage = image;
 }
 
++ (void)setDefaultStatus:(NSString*)string
+{
+    [self sharedView];
+    SVProgressHUDDefaultStatus = string;
+}
+
++ (void)setDefaultMaskType:(SVProgressHUDMaskType*)maskType
+{
+    [self sharedView];
+    SVProgressHUDDefaultMaskType = maskType;
+}
+
++ (void)setDefaultDismissLeadTime:(NSTimeInterval) second
+{
+    [self sharedView];
+    SVProgressHUDDefaultDismissLeadTime = second;
+}
 
 #pragma mark - Show Methods
 
 + (void)show {
-    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:nil maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:SVProgressHUDDefaultStatus maskType:SVProgressHUDDefaultMaskType];
 }
 
 + (void)showWithStatus:(NSString *)status {
-    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:status maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:status maskType:SVProgressHUDDefaultMaskType];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
-    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:nil maskType:maskType];
+    [[self sharedView] showProgress:SVProgressHUDUndefinedProgress status:SVProgressHUDDefaultStatus maskType:maskType];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -136,11 +157,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showProgress:(float)progress {
-    [[self sharedView] showProgress:progress status:nil maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:progress status:SVProgressHUDDefaultStatus maskType:SVProgressHUDDefaultMaskType];
 }
 
 + (void)showProgress:(float)progress status:(NSString *)status {
-    [[self sharedView] showProgress:progress status:status maskType:SVProgressHUDMaskTypeNone];
+    [[self sharedView] showProgress:progress status:status maskType:SVProgressHUDDefaultMaskType];
 }
 
 + (void)showProgress:(float)progress status:(NSString *)status maskType:(SVProgressHUDMaskType)maskType {
@@ -151,7 +172,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Show then dismiss methods
 
 + (void)showSuccessWithStatus:(NSString *)string {
-    [self showSuccessWithStatus:string maskType:SVProgressHUDMaskTypeNone];
+    [self showSuccessWithStatus:string maskType:SVProgressHUDDefaultMaskType];
 }
 
 + (void)showSuccessWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType {
@@ -160,7 +181,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showErrorWithStatus:(NSString *)string {
-    [self showErrorWithStatus:string maskType:SVProgressHUDMaskTypeNone];
+    [self showErrorWithStatus:string maskType:SVProgressHUDDefaultMaskType];
 }
 
 + (void)showErrorWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType {
@@ -169,7 +190,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
-    [self showImage:image status:string maskType:SVProgressHUDMaskTypeNone];
+    [self showImage:image status:string maskType:SVProgressHUDDefaultMaskType];
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string maskType:(SVProgressHUDMaskType)maskType {
@@ -184,15 +205,21 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if([self sharedView].activityCount > 0)
         [self sharedView].activityCount--;
     if([self sharedView].activityCount == 0)
-        [[self sharedView] dismiss];
+        [[self sharedView] dismissAfter:SVProgressHUDDefaultDismissLeadTime];
 }
 
 + (void)dismiss {
     if ([self isVisible]) {
-        [[self sharedView] dismiss];
+        [[self sharedView] dismissAfter:SVProgressHUDDefaultDismissLeadTime];
     }
 }
 
++ (void)dismissAfter:(NSTimeInterval)duration
+{
+    if ([self isVisible]) {
+        [[self sharedView] dismissAfter:duration];
+    }
+}
 
 #pragma mark - Offset
 
@@ -232,6 +259,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
         }
         SVProgressHUDRingThickness = 4;
+        
+        SVProgressHUDDefaultStatus = nil;
+        SVProgressHUDDefaultMaskType = SVProgressHUDMaskTypeNone;
+        SVProgressHUDDefaultDismissLeadTime = 0.0f;
     }
 	
     return self;
@@ -679,6 +710,20 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
 }
 
+- (void)dismissAfter:(NSTimeInterval)duration
+{
+    if (duration == 0)
+    {
+        self.fadeOutTimer = nil;
+        [self dismiss];
+    }
+    else
+    {
+        self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+        [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
+    }
+}
+
 - (void)dismiss {
     NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
@@ -813,7 +858,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Getters
 
 - (NSTimeInterval)displayDurationForString:(NSString*)string {
-    return MIN((float)string.length*0.06 + 0.5, 5.0);
+    return MIN((float)string.length*0.06 + (SVProgressHUDDefaultDismissLeadTime?SVProgressHUDDefaultDismissLeadTime:0.5), 5.0);
 }
 
 - (BOOL)isClear { // used for iOS 7 and above
