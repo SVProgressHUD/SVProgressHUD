@@ -126,7 +126,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDDefaultStatus = string;
 }
 
-+ (void)setDefaultMaskType:(SVProgressHUDMaskType*)maskType
++ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType
 {
     [self sharedView];
     SVProgressHUDDefaultMaskType = maskType;

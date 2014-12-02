@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 #pragma mark - Defaults
 + (void)setDefaultStatus:(NSString*)string; //default is nil
-+ (void)setDefaultMaskType:(SVProgressHUDMaskType*)maskType; //default is SVProgressHUDMaskTypeNone
++ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; //default is SVProgressHUDMaskTypeNone
 + (void)setDefaultDismissLeadTime:(NSTimeInterval) second; //default is 0
 
 #pragma mark - Show Methods
