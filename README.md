@@ -13,6 +13,7 @@ I'm not a big fan of CocoaPods, so tend to not keep it updated. If you really wa
 ### Manually
 
 * Drag the `SVProgressHUD/SVProgressHUD` folder into your project.
+* Take care that "SVProgressHUD.bundle is added to `Targets->Build Phases->Copy Bundle Ressources`.
 * Add the **QuartzCore** framework to your project.
 
 ## Usage
