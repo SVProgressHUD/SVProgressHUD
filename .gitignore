@@ -1,4 +1,5 @@
 # Mac OS X
+._*
 *.DS_Store
 *.psd
 
@@ -10,6 +11,7 @@
 *.xcuserstate
 project.xcworkspace/
 xcuserdata/
+DerivedData/
 
 # Generated files
 build/
