@@ -71,11 +71,3 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 @end
 
-
-@interface SVIndefiniteAnimatedView : UIView
-
-@property (nonatomic, assign) CGFloat strokeThickness;
-@property (nonatomic, assign) CGFloat radius;
-@property (nonatomic, strong) UIColor *strokeColor;
-
-@end
