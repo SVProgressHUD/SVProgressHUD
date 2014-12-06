@@ -33,8 +33,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setForegroundColor:(UIColor*)color;                 // default is [UIColor blackColor]
 + (void)setRingThickness:(CGFloat)width;                    // default is 4 pt
 + (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-+ (void)setSuccessImage:(UIImage*)image;                    // default is the bundled success image provided by Glyphish
-+ (void)setErrorImage:(UIImage*)image;                      // default is the bundled error image provided by Glyphish
++ (void)setSuccessImage:(UIImage*)image;                    // default is the bundled success image provided by Freepik
++ (void)setErrorImage:(UIImage*)image;                      // default is the bundled error image provided by Freepik
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
 
 #pragma mark - Show Methods
@@ -71,11 +71,3 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 @end
 
-
-@interface SVIndefiniteAnimatedView : UIView
-
-@property (nonatomic, assign) CGFloat strokeThickness;
-@property (nonatomic, assign) CGFloat radius;
-@property (nonatomic, strong) UIColor *strokeColor;
-
-@end
