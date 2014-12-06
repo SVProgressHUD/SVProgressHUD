@@ -1,6 +1,6 @@
 # SVProgressHUD
 
-SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
+`SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
 
 ![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
 
@@ -13,18 +13,18 @@ I'm not a big fan of CocoaPods, so tend to not keep it updated. If you really wa
 ### Manually
 
 * Drag the `SVProgressHUD/SVProgressHUD` folder into your project.
-* Take care that `SVProgressHUD.bundle` is added to `Targets->Build Phases->Copy Bundle Ressources`.
+* Take care that `SVProgressHUD.bundle` is added to `Targets->Build Phases->Copy Bundle Resources`.
 * Add the **QuartzCore** framework to your project.
 
 ## Usage
 
 (see sample Xcode project in `/Demo`)
 
-SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call `[SVProgressHUD method]`).
+`SVProgressHUD` is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call `[SVProgressHUD method]`).
 
-**Use SVProgressHUD wisely! Only use it if you absolutely need to perform a task before taking the user forward. Bad use case examples: pull to refresh, infinite scrolling, sending message.**
+**Use `SVProgressHUD` wisely! Only use it if you absolutely need to perform a task before taking the user forward. Bad use case examples: pull to refresh, infinite scrolling, sending message.**
 
-Using SVProgressHUD in your app will usually look as simple as this (using Grand Central Dispatch):
+Using `SVProgressHUD` in your app will usually look as simple as this (using Grand Central Dispatch):
 
 ```objective-c
 [SVProgressHUD show];
@@ -84,7 +84,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 
 ## Customization
 
-SVProgressHUD can be customized via the following methods:
+`SVProgressHUD` can be customized via the following methods:
 
 ```objective-c
 + (void)setBackgroundColor:(UIColor*)color;                 // default is [UIColor whiteColor]
@@ -94,7 +94,6 @@ SVProgressHUD can be customized via the following methods:
 + (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Freepik
 + (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Freepik
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
-
 ```
 
 ## Notifications
@@ -120,4 +119,4 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ## Credits
 
-SVProgressHUD is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). If you're using SVProgressHUD in your project, attribution would be very appreciated. The success and error icons are made by [Freepik](http://www.freepik.com) from [Flaticon](www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
+`SVProgressHUD` is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). If you're using `SVProgressHUD` in your project, attribution would be very appreciated. The success and error icons are made by [Freepik](http://www.freepik.com) from [Flaticon](www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
