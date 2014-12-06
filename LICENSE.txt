@@ -22,5 +22,5 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 A different license may apply to other resources included in this package, 
-including Joseph Wain's Glyphish Icons. Please consult their 
+including Freepik Icons. Please consult their 
 respective headers for the terms of their individual licenses.
