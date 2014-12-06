@@ -91,8 +91,8 @@ SVProgressHUD can be customized via the following methods:
 + (void)setForegroundColor:(UIColor*)color;                 // default is [UIColor blackColor]
 + (void)setRingThickness:(CGFloat)width;                    // default is 4 pt
 + (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-+ (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Glyphish
-+ (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Glyphish
++ (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Freepik
++ (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Freepik
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
 
 ```
@@ -120,4 +120,4 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ## Credits
 
-SVProgressHUD is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). The success and error icons are from [Glyphish](http://glyphish.com/). If you're using SVProgressHUD in your project, attribution would be nice.
+SVProgressHUD is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). If you're using SVProgressHUD in your project, attribution would be very appreciated. The success and error icons are made by [Freepik](http://www.freepik.com) from [Flaticon](www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
