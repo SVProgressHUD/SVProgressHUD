@@ -1,6 +1,6 @@
 # SVProgressHUD
 
-SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
+`SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
 
 ![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
 
@@ -8,23 +8,35 @@ SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an
 
 ### From CocoaPods
 
-I'm not a big fan of CocoaPods, so tend to not keep it updated. If you really want to use SVProgressHUD with CocoaPods, I suggest you use `pod 'SVProgressHUD', :head` to pull from the `master` branch directly. I'm usually careful about what I push there and is the version I use myself in all my projects.
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like `SVProgressHUD` in your projects. Simply add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
+
+```ruby
+pod 'SVProgressHUD'
+```
+
+If you want to use the latest features of `SVProgressHUD` add `:head`:
+
+```ruby
+pod 'SVProgressHUD', :head
+```
+
+This pulls from the `master` branch directly. We are usually careful about what we push there and this is the version we use ourselves in all of our projects.
 
 ### Manually
 
 * Drag the `SVProgressHUD/SVProgressHUD` folder into your project.
-* Take care that `SVProgressHUD.bundle` is added to `Targets->Build Phases->Copy Bundle Ressources`.
+* Take care that `SVProgressHUD.bundle` is added to `Targets->Build Phases->Copy Bundle Resources`.
 * Add the **QuartzCore** framework to your project.
 
 ## Usage
 
 (see sample Xcode project in `/Demo`)
 
-SVProgressHUD is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call `[SVProgressHUD method]`).
+`SVProgressHUD` is created as a singleton (i.e. it doesn't need to be explicitly allocated and instantiated; you directly call `[SVProgressHUD method]`).
 
-**Use SVProgressHUD wisely! Only use it if you absolutely need to perform a task before taking the user forward. Bad use case examples: pull to refresh, infinite scrolling, sending message.**
+**Use `SVProgressHUD` wisely! Only use it if you absolutely need to perform a task before taking the user forward. Bad use case examples: pull to refresh, infinite scrolling, sending message.**
 
-Using SVProgressHUD in your app will usually look as simple as this (using Grand Central Dispatch):
+Using `SVProgressHUD` in your app will usually look as simple as this (using Grand Central Dispatch):
 
 ```objective-c
 [SVProgressHUD show];
@@ -84,17 +96,16 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 
 ## Customization
 
-SVProgressHUD can be customized via the following methods:
+`SVProgressHUD` can be customized via the following methods:
 
 ```objective-c
 + (void)setBackgroundColor:(UIColor*)color;                 // default is [UIColor whiteColor]
 + (void)setForegroundColor:(UIColor*)color;                 // default is [UIColor blackColor]
 + (void)setRingThickness:(CGFloat)width;                    // default is 4 pt
 + (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-+ (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Glyphish
-+ (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Glyphish
++ (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Freepik
++ (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Freepik
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
-
 ```
 
 ## Notifications
@@ -107,7 +118,7 @@ SVProgressHUD can be customized via the following methods:
 
 Each notification passes a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`.
 
-`SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the overall screen or `SVProgressHUDDidTouchDownInsideNotification` when a user touches on the hud directly. For this notifications `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
+`SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the overall screen or `SVProgressHUDDidTouchDownInsideNotification` when a user touches on the HUD directly. For this notifications `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
 
 ## Contributing to this project
 
@@ -120,4 +131,4 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ## Credits
 
-SVProgressHUD is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). The success and error icons are from [Glyphish](http://glyphish.com/). If you're using SVProgressHUD in your project, attribution would be nice.
+`SVProgressHUD` is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). If you're using `SVProgressHUD` in your project, attribution would be very appreciated. The success and error icons are made by [Freepik](http://www.freepik.com) from [Flaticon](www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
