@@ -131,9 +131,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
-    [self showProgress:SVProgressHUDUndefinedProgress status:nil maskType:maskType];
+    [self showProgress:SVProgressHUDUndefinedProgress maskType:maskType];
 }
-
 
 + (void)showWithStatus:(NSString *)status {
     [self showProgress:SVProgressHUDUndefinedProgress status:status];
