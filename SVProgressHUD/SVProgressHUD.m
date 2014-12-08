@@ -125,7 +125,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Show Methods
 
 + (void)show {
-    [self sharedView];
     [self showWithStatus:nil];
 }
 
@@ -140,12 +139,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showProgress:(float)progress {
-    [self sharedView];
     [self showProgress:progress status:nil];
 }
 
 + (void)showProgress:(float)progress status:(NSString *)status {
-    [self sharedView];
     [[self sharedView] showProgress:progress status:status];
 }
 
@@ -160,7 +157,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)showErrorWithStatus:(NSString *)string {
     [self sharedView];
     [self showImage:SVProgressHUDErrorImage status:string];
-
 }
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
@@ -368,7 +364,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
         
         // Create blur effect
-        UIBlurEffectStyle blurEffectStyle = UIBlurEffectStyleDark;
+        UIBlurEffectStyle blurEffectStyle = self.usesLightTheme ? UIBlurEffectStyleLight : UIBlurEffectStyleDark;
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
         UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
         blurEffectView.autoresizingMask = self.hudView.autoresizingMask;
