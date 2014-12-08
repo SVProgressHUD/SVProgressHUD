@@ -33,6 +33,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setForegroundColor:(UIColor*)color;                 // default is [UIColor blackColor]
 + (void)setRingThickness:(CGFloat)width;                    // default is 4 pt
 + (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setInfoImage:(UIImage*)image;                       // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                    // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(UIImage*)image;                      // default is the bundled error image provided by Freepik
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
@@ -52,6 +53,9 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setStatus:(NSString*)string; // change the HUD loading status while it's showing
 
 // stops the activity indicator, shows a glyph + status, and dismisses HUD a little bit later
++ (void)showInfoWithStatus:(NSString *)string;
++ (void)showInfoWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType;
+
 + (void)showSuccessWithStatus:(NSString*)string;
 + (void)showSuccessWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)maskType;
 

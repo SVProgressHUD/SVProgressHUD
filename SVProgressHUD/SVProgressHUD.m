@@ -27,6 +27,7 @@ static UIColor *SVProgressHUDBackgroundColor;
 static UIColor *SVProgressHUDForegroundColor;
 static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
+static UIImage *SVProgressHUDInfoImage;
 static UIImage *SVProgressHUDSuccessImage;
 static UIImage *SVProgressHUDErrorImage;
 static SVProgressHUDMaskType SVProgressHUDDefaultMaskType;
@@ -108,6 +109,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDRingThickness = width;
 }
 
++ (void)setInfoImage:(UIImage*)image{
+    [self sharedView];
+    SVProgressHUDInfoImage = image;
+}
+
 + (void)setSuccessImage:(UIImage *)image {
     [self sharedView];
     SVProgressHUDSuccessImage = image;
@@ -162,6 +168,16 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 
 #pragma mark - Show then dismiss methods
+
++ (void)showInfoWithStatus:(NSString *)string {
+    [self sharedView];
+    [self showInfoWithStatus:string maskType:SVProgressHUDDefaultMaskType];
+}
+
++ (void)showInfoWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType {
+    [self sharedView];
+    [self showImage:SVProgressHUDInfoImage status:string maskType:maskType];
+}
 
 + (void)showSuccessWithStatus:(NSString *)string {
     [self sharedView];
@@ -240,9 +256,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             SVProgressHUDForegroundColor = [UIColor whiteColor];
         }
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
+            SVProgressHUDInfoImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/info"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         } else {
+            SVProgressHUDInfoImage = [UIImage imageNamed:@"SVProgressHUD.bundle/info"];
             SVProgressHUDSuccessImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success"];
             SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
         }

@@ -14,6 +14,7 @@
 - (IBAction)showWithStatus;
 
 - (IBAction)dismiss;
+- (IBAction)dismissInfo;
 - (IBAction)dismissSuccess;
 - (IBAction)dismissError;
 

@@ -84,6 +84,10 @@ static float progress = 0.0f;
 	[SVProgressHUD dismiss];
 }
 
+- (IBAction)dismissInfo{
+    [SVProgressHUD showInfoWithStatus:@"Useful Information."];
+}
+
 - (void)dismissSuccess {
 	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
 }
