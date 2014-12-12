@@ -1,10 +1,10 @@
 //
-//  SVProgressHUDViewController.h
-//  SVProgressHUD
+//  ViewController.h
+//  SVProgressHUD, https://github.com/TransitApp/SVProgressHUD
 //
-//  Created by Sam Vermette on 27.03.11.
-//  Copyright 2011 Sam Vermette. All rights reserved.
+//  Copyright 2011-2014 Sam Vermette. All rights reserved.
 //
+
 
 #import <UIKit/UIKit.h>
 

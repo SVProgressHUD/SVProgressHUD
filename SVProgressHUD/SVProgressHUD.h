@@ -1,9 +1,8 @@
 //
 //  SVProgressHUD.h
+//  SVProgressHUD, https://github.com/TransitApp/SVProgressHUD
 //
 //  Copyright 2011-2014 Sam Vermette. All rights reserved.
-//
-//  https://github.com/samvermette/SVProgressHUD
 //
 
 #import <UIKit/UIKit.h>

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3CD078E41A3B7F2400290D80 /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD078E31A3B7F2400290D80 /* SVRadialGradientLayer.m */; };
+		3CD078E71A3B800600290D80 /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD078E61A3B800600290D80 /* SVIndefiniteAnimatedView.m */; };
 		65F0220015C857EF0030BBEF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F021FF15C857EF0030BBEF /* Foundation.framework */; };
 		65F0220515C857EF0030BBEF /* SVProgressHUD.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65F0220415C857EF0030BBEF /* SVProgressHUD.h */; };
 		65F0220715C857EF0030BBEF /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0220615C857EF0030BBEF /* SVProgressHUD.m */; };
@@ -26,6 +28,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3CD078E21A3B7F2400290D80 /* SVRadialGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRadialGradientLayer.h; sourceTree = "<group>"; };
+		3CD078E31A3B7F2400290D80 /* SVRadialGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRadialGradientLayer.m; sourceTree = "<group>"; };
+		3CD078E51A3B800600290D80 /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
+		3CD078E61A3B800600290D80 /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
 		65F021FC15C857EF0030BBEF /* libSVProgressHUD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSVProgressHUD.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		65F021FF15C857EF0030BBEF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		65F0220315C857EF0030BBEF /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
@@ -74,10 +80,14 @@
 		65F0220115C857EF0030BBEF /* SVProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
+				65F0220215C857EF0030BBEF /* Supporting Files */,
+				3CD078E51A3B800600290D80 /* SVIndefiniteAnimatedView.h */,
+				3CD078E61A3B800600290D80 /* SVIndefiniteAnimatedView.m */,
+				65F0220D15C858060030BBEF /* SVProgressHUD.bundle */,
 				65F0220415C857EF0030BBEF /* SVProgressHUD.h */,
 				65F0220615C857EF0030BBEF /* SVProgressHUD.m */,
-				65F0220D15C858060030BBEF /* SVProgressHUD.bundle */,
-				65F0220215C857EF0030BBEF /* Supporting Files */,
+				3CD078E21A3B7F2400290D80 /* SVRadialGradientLayer.h */,
+				3CD078E31A3B7F2400290D80 /* SVRadialGradientLayer.m */,
 			);
 			path = SVProgressHUD;
 			sourceTree = "<group>";
@@ -142,6 +152,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				65F0220715C857EF0030BBEF /* SVProgressHUD.m in Sources */,
+				3CD078E41A3B7F2400290D80 /* SVRadialGradientLayer.m in Sources */,
+				3CD078E71A3B800600290D80 /* SVIndefiniteAnimatedView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
