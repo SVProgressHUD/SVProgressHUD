@@ -110,7 +110,7 @@ Each notification passes a `userInfo` dictionary holding the HUD's status string
 
 ## Contributing to this project
 
-If you have feature requests or bug reports, feel free to help out by sending pull requests or by [creating new issues](https://github.com/samvermette/SVProgressHUD/issues/new). Please take a moment to
+If you have feature requests or bug reports, feel free to help out by sending pull requests or by [creating new issues](https://github.com/TransitApp/SVProgressHUD/issues/new). Please take a moment to
 review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/):
 
 * [Bug reports](https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#bugs)
@@ -119,4 +119,4 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ## Credits
 
-`SVProgressHUD` is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/samvermette/SVProgressHUD/contributors). If you're using `SVProgressHUD` in your project, attribution would be very appreciated. The success and error icons are made by [Freepik](http://www.freepik.com) from [Flaticon](www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
+`SVProgressHUD` is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/TransitApp/SVProgressHUD/contributors). If you're using `SVProgressHUD` in your project, attribution would be very appreciated. The success and error icons are made by [Freepik](http://www.freepik.com) from [Flaticon](www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
