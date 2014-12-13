@@ -33,12 +33,12 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 #pragma mark - Customization
 
-+ (void)setDefaultStyle:(SVProgressHUDStyle)style;                                              // default is SVProgressHUDStyleLight
-+ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;                                     // default is SVProgressHUDMaskTypeNone
-+ (void)setRingThickness:(CGFloat)width;                                                        // default is 4 pt
-+ (void)setFont:(UIFont*)font;                                                                  // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-+ (void)setSuccessImage:(UIImage*)image;                                                        // default is the bundled success image provided by Freepik
-+ (void)setErrorImage:(UIImage*)image;                                                          // default is the bundled error image provided by Freepik
++ (void)setDefaultStyle:(SVProgressHUDStyle)style;          // default is SVProgressHUDStyleLight
++ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
++ (void)setRingThickness:(CGFloat)width;                    // default is 2 pt
++ (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setSuccessImage:(UIImage*)image;                    // default is the bundled success image provided by Freepik
++ (void)setErrorImage:(UIImage*)image;                      // default is the bundled error image provided by Freepik
 
 #pragma mark - Show Methods
 

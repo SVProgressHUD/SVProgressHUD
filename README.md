@@ -42,9 +42,7 @@ You can show the status of indeterminate tasks using one of the following:
 
 ```objective-c
 + (void)show;
-+ (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)string;
-+ (void)showWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)maskType;
 ```
 
 If you'd like the HUD to reflect the progress of a task, use one of these:
@@ -52,7 +50,6 @@ If you'd like the HUD to reflect the progress of a task, use one of these:
 ```objective-c
 + (void)showProgress:(CGFloat)progress;
 + (void)showProgress:(CGFloat)progress status:(NSString*)status;
-+ (void)showProgress:(CGFloat)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 ```
 
 ### Dismissing the HUD
@@ -75,11 +72,8 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 
 ```objective-c
 + (void)showSuccessWithStatus:(NSString*)string;
-+ (void)showSuccessWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)maskType;
 + (void)showErrorWithStatus:(NSString *)string;
-+ (void)showErrorWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType;
 + (void)showImage:(UIImage*)image status:(NSString*)string;
-+ (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 ```
 
 ## Customization
@@ -87,13 +81,12 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 `SVProgressHUD` can be customized via the following methods:
 
 ```objective-c
-+ (void)setBackgroundColor:(UIColor*)color;                 // default is [UIColor whiteColor]
-+ (void)setForegroundColor:(UIColor*)color;                 // default is [UIColor blackColor]
-+ (void)setRingThickness:(CGFloat)width;                    // default is 4 pt
-+ (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-+ (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Freepik
-+ (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Freepik
++ (void)setDefaultStyle:(SVProgressHUDStyle)style;          // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
++ (void)setRingThickness:(CGFloat)width;                    // default is 2 pt
++ (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setSuccessImage:(UIImage*)image;                    // default is the bundled success image provided by Freepik
++ (void)setErrorImage:(UIImage*)image;                      // default is the bundled error image provided by Freepik
 ```
 
 ## Notifications
