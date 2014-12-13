@@ -535,11 +535,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              [self moveToPoint:newCenter rotateAngle:rotateAngle];
-                             [self setNeedsDisplay];
+                             [self.hudView setNeedsDisplay];
                          } completion:NULL];
     } else {
         [self moveToPoint:newCenter rotateAngle:rotateAngle];
-        [self setNeedsDisplay];
+        [self.hudView setNeedsDisplay];
     }
     
 }

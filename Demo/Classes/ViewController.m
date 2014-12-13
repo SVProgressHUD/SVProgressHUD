@@ -63,8 +63,8 @@ static float progress = 0.0f;
 
 - (IBAction)showWithProgress:(id)sender {
     progress = 0.0f;
-    [SVProgressHUD showProgress:0 status:@"Loading"];
-    [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3];
+    [SVProgressHUD showProgress:0 status:@"Loading" ];
+    [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3f];
 }
 
 - (void)increaseProgress {
@@ -72,7 +72,7 @@ static float progress = 0.0f;
     [SVProgressHUD showProgress:progress status:@"Loading"];
 
     if(progress < 1.0f)
-        [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3];
+        [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3f];
     else
         [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
 }
