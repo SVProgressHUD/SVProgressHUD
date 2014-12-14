@@ -84,7 +84,6 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 
 ```objective-c
 + (void)showInfoWithStatus:(NSString *)string;
-+ (void)showInfoWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType;
 + (void)showSuccessWithStatus:(NSString*)string;
 + (void)showErrorWithStatus:(NSString *)string;
 + (void)showImage:(UIImage*)image status:(NSString*)string;
