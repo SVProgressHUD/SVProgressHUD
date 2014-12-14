@@ -8,7 +8,19 @@
 
 ### From CocoaPods
 
-I'm not a big fan of CocoaPods, so tend to not keep it updated. If you really want to use SVProgressHUD with CocoaPods, I suggest you use `pod 'SVProgressHUD', :head` to pull from the `master` branch directly. I'm usually careful about what I push there and is the version I use myself in all my projects.
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like `SVProgressHUD` in your projects. Simply add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
+
+```ruby
+pod 'SVProgressHUD'
+```
+
+If you want to use the latest features of `SVProgressHUD` add `:head`:
+
+```ruby
+pod 'SVProgressHUD', :head
+```
+
+This pulls from the `master` branch directly. We are usually careful about what we push there and this is the version we use ourselves in all of our projects.
 
 ### Manually
 
@@ -71,6 +83,8 @@ The HUD will get dismissed once the `popActivity` calls will match the number of
 Or show a confirmation glyph before before getting dismissed a little bit later. The display time depends on the length of the given string (between 0.5 and 5 seconds).
 
 ```objective-c
++ (void)showInfoWithStatus:(NSString *)string;
++ (void)showInfoWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType;
 + (void)showSuccessWithStatus:(NSString*)string;
 + (void)showErrorWithStatus:(NSString *)string;
 + (void)showImage:(UIImage*)image status:(NSString*)string;
@@ -85,6 +99,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
 + (void)setRingThickness:(CGFloat)width;                    // default is 2 pt
 + (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setInfoImage:(UIImage*)image;                       // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                    // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(UIImage*)image;                      // default is the bundled error image provided by Freepik
 ```
@@ -99,7 +114,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 
 Each notification passes a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`.
 
-`SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the overall screen or `SVProgressHUDDidTouchDownInsideNotification` when a user touches on the hud directly. For this notifications `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
+`SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the overall screen or `SVProgressHUDDidTouchDownInsideNotification` when a user touches on the HUD directly. For this notifications `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
 
 ## Contributing to this project
 

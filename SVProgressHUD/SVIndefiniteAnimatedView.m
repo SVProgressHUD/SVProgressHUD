@@ -108,7 +108,9 @@
     [_indefiniteAnimatedLayer removeFromSuperlayer];
     _indefiniteAnimatedLayer = nil;
     
-    [self layoutAnimatedLayer];
+    if (self.superview) {
+        [self layoutAnimatedLayer];
+    }
 }
 
 - (void)setStrokeColor:(UIColor *)strokeColor {

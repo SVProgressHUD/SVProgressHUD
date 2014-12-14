@@ -28,6 +28,7 @@ static SVProgressHUDStyle SVProgressHUDDefaultStyle;
 static SVProgressHUDMaskType SVProgressHUDDefaultMaskType;
 static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
+static UIImage *SVProgressHUDInfoImage;
 static UIImage *SVProgressHUDSuccessImage;
 static UIImage *SVProgressHUDErrorImage;
 
@@ -113,6 +114,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDRingThickness = width;
 }
 
++ (void)setInfoImage:(UIImage*)image{
+    [self sharedView];
+    SVProgressHUDInfoImage = image;
+}
+
 + (void)setSuccessImage:(UIImage *)image {
     [self sharedView];
     SVProgressHUDSuccessImage = image;
@@ -123,7 +129,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDErrorImage = image;
 }
 
-
 #pragma mark - Show Methods
 
 + (void)show {
@@ -131,11 +136,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showWithStatus:(NSString *)status {
-    [self sharedView];
-    [self showProgress:SVProgressHUDUndefinedProgress status:status];
-}
-
-+ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
     [self sharedView];
     [self showProgress:SVProgressHUDUndefinedProgress status:status];
 }
@@ -150,6 +150,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 
 #pragma mark - Show then dismiss methods
+
++ (void)showInfoWithStatus:(NSString *)string {
+    [self sharedView];
+    [self showImage:SVProgressHUDInfoImage status:string];
+}
 
 + (void)showSuccessWithStatus:(NSString *)string {
     [self sharedView];
@@ -211,15 +216,17 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             SVProgressHUDFont = [UIFont systemFontOfSize:14.0f];
         }
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
+            SVProgressHUDInfoImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/info"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             SVProgressHUDErrorImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         } else {
+            SVProgressHUDInfoImage = [UIImage imageNamed:@"SVProgressHUD.bundle/info"];
             SVProgressHUDSuccessImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success"];
             SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
         }
         SVProgressHUDRingThickness = 2;
     }
-    
+	
     return self;
 }
 
@@ -400,7 +407,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)setStatus:(NSString *)string {
     self.stringLabel.text = string;
     [self updateHUDFrame];
-    
 }
 
 - (void)setFadeOutTimer:(NSTimer *)newTimer {
@@ -539,11 +545,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              [self moveToPoint:newCenter rotateAngle:rotateAngle];
-                             [self setNeedsDisplay];
+                             [self.hudView setNeedsDisplay];
                          } completion:NULL];
     } else {
         [self moveToPoint:newCenter rotateAngle:rotateAngle];
-        [self setNeedsDisplay];
+        [self.hudView setNeedsDisplay];
     }
     
 }
@@ -573,10 +579,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)showProgress:(float)progress status:(NSString*)string {
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
-        UIScreen *mainScreen = UIScreen.mainScreen;
-        
         for (UIWindow *window in frontToBackWindows){
-            if (window.screen == mainScreen && window.windowLevel == UIWindowLevelNormal) {
+            BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
+            BOOL windowIsVisible = !window.hidden && window.alpha > 0;
+            BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
+            
+            if (windowOnMainScreen && windowIsVisible && windowLevelNormal) {
                 [window addSubview:self.overlayView];
                 break;
             }
@@ -780,7 +788,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         _indefiniteAnimatedView.radius = self.stringLabel.text ? SVProgressHUDRingRadius : SVProgressHUDRingNoTextRadius;
         [_indefiniteAnimatedView sizeToFit];
     }
-    
     _indefiniteAnimatedView.strokeThickness = SVProgressHUDRingThickness;
     _indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
     
@@ -845,6 +852,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     return slice;
 }
+
 
 #pragma mark - Utilities
 
