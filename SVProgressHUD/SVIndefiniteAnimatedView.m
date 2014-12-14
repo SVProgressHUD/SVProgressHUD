@@ -2,7 +2,7 @@
 //  SVIndefiniteAnimatedView.m
 //  SVProgressHUD, https://github.com/TransitApp/SVProgressHUD
 //
-//  Copyright 2014 Guillaume Campagna. All rights reserved.
+//  Copyright (c) 2014 Guillaume Campagna. All rights reserved.
 //
 
 #import "SVIndefiniteAnimatedView.h"
