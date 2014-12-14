@@ -26,6 +26,7 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 static UIColor *SVProgressHUDBackgroundColor;
 static UIColor *SVProgressHUDForegroundColor;
 static CGFloat SVProgressHUDRingThickness;
+static CGFloat SVProgressHUDCornerRadius = 14.0f;
 static UIFont *SVProgressHUDFont;
 static UIImage *SVProgressHUDInfoImage;
 static UIImage *SVProgressHUDSuccessImage;
@@ -107,6 +108,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)setRingThickness:(CGFloat)width {
     [self sharedView];
     SVProgressHUDRingThickness = width;
+}
+
++ (void)setCornerRadius:(CGFloat)radius {
+    [self sharedView];
+    SVProgressHUDCornerRadius = radius;
 }
 
 + (void)setInfoImage:(UIImage*)image{
@@ -864,7 +870,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if(!_hudView) {
         _hudView = [[UIView alloc] initWithFrame:CGRectZero];
         _hudView.backgroundColor = SVProgressHUDBackgroundColor;
-        _hudView.layer.cornerRadius = 14;
+        _hudView.layer.cornerRadius = SVProgressHUDCornerRadius;
         _hudView.layer.masksToBounds = YES;
 
         _hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
