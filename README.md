@@ -109,6 +109,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Freepik
 + (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Freepik
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
++ (void)setViewForExtension:(UIView*)view;                  // default is nil, only used if #define SV_APP_EXTENSIONS is set
 ```
 
 ## Notifications
@@ -122,6 +123,10 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 Each notification passes a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`.
 
 `SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the overall screen or `SVProgressHUDDidTouchDownInsideNotification` when a user touches on the HUD directly. For this notifications `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
+
+## App Extensions
+
+When using `SVProgressHUD` in an App Extension, #define SV_APP_EXTENSIONS to avoid using unavailable APIs. Additionally call `setViewForExtension:` from your extensions view controller with `self.view`.
 
 ## Contributing to this project
 
