@@ -372,13 +372,13 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
         UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
         blurEffectView.autoresizingMask = self.hudView.autoresizingMask;
-        blurEffectView.bounds = self.bounds;
+        blurEffectView.frame = self.hudView.bounds;
         
         // Add vibrancy to the blur effect to make it more vivid
         UIVibrancyEffect *vibrancyEffect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
         UIVisualEffectView *vibrancyEffectView = [[UIVisualEffectView alloc] initWithEffect:vibrancyEffect];
-        vibrancyEffectView.autoresizingMask = self.hudView.autoresizingMask;
-        vibrancyEffectView.bounds = self.bounds;
+        vibrancyEffectView.autoresizingMask = blurEffectView.autoresizingMask;
+        vibrancyEffectView.bounds = blurEffectView.bounds;
         [blurEffectView.contentView addSubview:vibrancyEffectView];
         
         [self.hudView insertSubview:blurEffectView atIndex:0];
