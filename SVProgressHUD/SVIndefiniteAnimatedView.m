@@ -46,7 +46,7 @@
                                                                  clockwise:YES];
         
         _indefiniteAnimatedLayer = [CAShapeLayer layer];
-        _indefiniteAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
+        _indefiniteAnimatedLayer.contentsScale = [UIScreen mainScreen].scale;
         _indefiniteAnimatedLayer.frame = rect;
         _indefiniteAnimatedLayer.fillColor = [UIColor clearColor].CGColor;
         _indefiniteAnimatedLayer.strokeColor = self.strokeColor.CGColor;
@@ -64,8 +64,8 @@
         CAMediaTimingFunction *linearCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
         
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
-        animation.fromValue = 0;
-        animation.toValue = [NSNumber numberWithFloat:M_PI*2];
+        animation.fromValue = @(0);
+        animation.toValue = @(M_PI*2);
         animation.duration = animationDuration;
         animation.timingFunction = linearCurve;
         animation.removedOnCompletion = NO;

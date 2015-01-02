@@ -79,7 +79,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
     static SVProgressHUD *sharedView;
-    dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+    dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[UIScreen mainScreen].bounds]; });
     return sharedView;
 }
 
@@ -245,12 +245,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 #pragma mark - Instance Methods
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
 		self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0.0f;
-        self.activityCount = 0;
+        _activityCount = 0;
         
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
@@ -460,10 +460,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGFloat keyboardHeight = 0.0f;
     double animationDuration = 0.0;
     
-    self.frame = UIScreen.mainScreen.bounds;
+    self.frame = [UIScreen mainScreen].bounds;
     
 #if !defined(SV_APP_EXTENSIONS)
-    UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
 #else
     UIInterfaceOrientation orientation = CGRectGetWidth(self.frame) > CGRectGetHeight(self.frame) ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
 #endif
@@ -476,7 +476,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #endif
 
     if(notification) {
-        NSDictionary* keyboardInfo = [notification userInfo];
+        NSDictionary* keyboardInfo = notification.userInfo;
         CGRect keyboardFrame = [[keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
         animationDuration = [[keyboardInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         
@@ -492,7 +492,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     CGRect orientationFrame = self.bounds;
 #if !defined(SV_APP_EXTENSIONS)
-    CGRect statusBarFrame = UIApplication.sharedApplication.statusBarFrame;
+    CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
 #else
     CGRect statusBarFrame = CGRectZero;
 #endif
@@ -566,7 +566,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)overlayViewDidReceiveTouchEvent:(id)sender forEvent:(UIEvent *)event {
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification object:event];
     
-    UITouch *touch = event.allTouches.anyObject;
+    UITouch *touch = [[event allTouches] anyObject];
     CGPoint touchLocation = [touch locationInView:self];
     
     if (CGRectContainsPoint(self.hudView.frame, touchLocation)) {
@@ -580,9 +580,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType {
     if(!self.overlayView.superview){
 #if !defined(SV_APP_EXTENSIONS)
-        NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
+        NSEnumerator *frontToBackWindows = [[UIApplication sharedApplication].windows reverseObjectEnumerator];
         for (UIWindow *window in frontToBackWindows){
-            BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
+            BOOL windowOnMainScreen = window.screen == [UIScreen mainScreen];
             BOOL windowIsVisible = !window.hidden && window.alpha > 0;
             BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
             
@@ -637,7 +637,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         self.hudView.isAccessibilityElement = YES;
     }
     
-    [self.overlayView setHidden:NO];
+    self.overlayView.hidden = NO;
     self.overlayView.backgroundColor = [UIColor clearColor];
     [self positionHUD:nil];
     
@@ -696,15 +696,18 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.progress = SVProgressHUDUndefinedProgress;
     [self cancelRingLayerAnimation];
     
-    if(![self.class isVisible])
-        [self.class show];
+    if(![[self class] isVisible])
+        [[self class] show];
   
+    UIImage* proxyImage = nil;
+    
     if ([self.imageView respondsToSelector:@selector(setTintColor:)]) {
         self.imageView.tintColor = SVProgressHUDForegroundColor;
     } else {
-        image = [self image:image withTintColor:SVProgressHUDForegroundColor];
+        proxyImage = [self image:image withTintColor:SVProgressHUDForegroundColor];
     }
-    self.imageView.image = image;
+    
+    self.imageView.image = proxyImage;
     self.imageView.hidden = NO;
     self.maskType = hudMaskType;
   
@@ -768,7 +771,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                              
                              // Tell the rootViewController to update the StatusBar appearance
 #if !defined(SV_APP_EXTENSIONS)
-                             UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
+                             UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;
                              if ([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
                                  [rootController setNeedsStatusBarAppearanceUpdate];
                              }
@@ -843,7 +846,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(radius, radius) radius:radius startAngle:-M_PI_2 endAngle:(M_PI + M_PI_2) clockwise:YES];
     
     CAShapeLayer *slice = [CAShapeLayer layer];
-    slice.contentsScale = [[UIScreen mainScreen] scale];
+    slice.contentsScale = [UIScreen mainScreen].scale;
     slice.frame = CGRectMake(center.x-radius, center.y-radius, radius*2, radius*2);
     slice.fillColor = [UIColor clearColor].CGColor;
     slice.strokeColor = color.CGColor;
@@ -946,14 +949,14 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (CGFloat)visibleKeyboardHeight {
 #if !defined(SV_APP_EXTENSIONS)
     UIWindow *keyboardWindow = nil;
-    for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
+    for (UIWindow *testWindow in [UIApplication sharedApplication].windows) {
         if(![[testWindow class] isEqual:[UIWindow class]]) {
             keyboardWindow = testWindow;
             break;
         }
     }
     
-    for (__strong UIView *possibleKeyboard in [keyboardWindow subviews]) {
+    for (__strong UIView *possibleKeyboard in keyboardWindow.subviews) {
         if ([possibleKeyboard isKindOfClass:NSClassFromString(@"UIPeripheralHostView")] || [possibleKeyboard isKindOfClass:NSClassFromString(@"UIKeyboard")]) {
             return CGRectGetHeight(possibleKeyboard.bounds);
         } else if ([possibleKeyboard isKindOfClass:NSClassFromString(@"UIInputSetContainerView")]) {
