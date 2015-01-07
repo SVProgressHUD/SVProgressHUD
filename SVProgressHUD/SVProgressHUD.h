@@ -45,6 +45,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType fromView:(UIView *)aView;
 
 + (void)showProgress:(float)progress;
 + (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType;
