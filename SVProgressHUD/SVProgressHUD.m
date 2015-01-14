@@ -263,9 +263,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
 
         NSBundle* bundle = [NSBundle bundleForClass:self.class];
-        UIImage* infoImage = [UIImage imageNamed:@"info" inBundle:bundle compatibleWithTraitCollection:nil];
-        UIImage* successImage = [UIImage imageNamed:@"success" inBundle:bundle compatibleWithTraitCollection:nil];
-        UIImage* errorImage = [UIImage imageNamed:@"error" inBundle:bundle compatibleWithTraitCollection:nil];
+        UIImage* infoImage = [UIImage imageNamed:@"SVProgressHUD.bundle/info" inBundle:bundle compatibleWithTraitCollection:nil];
+        UIImage* successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success" inBundle:bundle compatibleWithTraitCollection:nil];
+        UIImage* errorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error" inBundle:bundle compatibleWithTraitCollection:nil];
 
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
             SVProgressHUDInfoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
