@@ -29,7 +29,7 @@
 
 - (void)layoutAnimatedLayer {
     CALayer *layer = self.indefiniteAnimatedLayer;
-    
+
     [self.layer addSublayer:layer];
     layer.position = CGPointMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(layer.bounds) / 2, CGRectGetHeight(self.bounds) - CGRectGetHeight(layer.bounds) / 2);
 }
@@ -38,13 +38,13 @@
     if(!_indefiniteAnimatedLayer) {
         CGPoint arcCenter = CGPointMake(self.radius+self.strokeThickness/2+5, self.radius+self.strokeThickness/2+5);
         CGRect rect = CGRectMake(0.0f, 0.0f, arcCenter.x*2, arcCenter.y*2);
-        
+
         UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:arcCenter
                                                                     radius:self.radius
                                                                 startAngle:M_PI*3/2
                                                                   endAngle:M_PI/2+M_PI*5
                                                                  clockwise:YES];
-        
+
         _indefiniteAnimatedLayer = [CAShapeLayer layer];
         _indefiniteAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
         _indefiniteAnimatedLayer.frame = rect;
@@ -54,15 +54,17 @@
         _indefiniteAnimatedLayer.lineCap = kCALineCapRound;
         _indefiniteAnimatedLayer.lineJoin = kCALineJoinBevel;
         _indefiniteAnimatedLayer.path = smoothedPath.CGPath;
-        
+
         CALayer *maskLayer = [CALayer layer];
-        maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask"] CGImage];
+
+        NSBundle* bundle = [NSBundle bundleForClass:self.class];
+        maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask" inBundle:bundle compatibleWithTraitCollection:nil] CGImage];
         maskLayer.frame = _indefiniteAnimatedLayer.bounds;
         _indefiniteAnimatedLayer.mask = maskLayer;
-        
+
         NSTimeInterval animationDuration = 1;
         CAMediaTimingFunction *linearCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-        
+
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
         animation.fromValue = 0;
         animation.toValue = [NSNumber numberWithFloat:M_PI*2];
@@ -73,31 +75,31 @@
         animation.fillMode = kCAFillModeForwards;
         animation.autoreverses = NO;
         [_indefiniteAnimatedLayer.mask addAnimation:animation forKey:@"rotate"];
-        
+
         CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
         animationGroup.duration = animationDuration;
         animationGroup.repeatCount = INFINITY;
         animationGroup.removedOnCompletion = NO;
         animationGroup.timingFunction = linearCurve;
-        
+
         CABasicAnimation *strokeStartAnimation = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
         strokeStartAnimation.fromValue = @0.015;
         strokeStartAnimation.toValue = @0.515;
-        
+
         CABasicAnimation *strokeEndAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
         strokeEndAnimation.fromValue = @0.485;
         strokeEndAnimation.toValue = @0.985;
-        
+
         animationGroup.animations = @[strokeStartAnimation, strokeEndAnimation];
         [_indefiniteAnimatedLayer addAnimation:animationGroup forKey:@"progress"];
-        
+
     }
     return _indefiniteAnimatedLayer;
 }
 
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
-    
+
     if (self.superview) {
         [self layoutAnimatedLayer];
     }
@@ -105,10 +107,10 @@
 
 - (void)setRadius:(CGFloat)radius {
     _radius = radius;
-    
+
     [_indefiniteAnimatedLayer removeFromSuperlayer];
     _indefiniteAnimatedLayer = nil;
-    
+
     if (self.superview) {
         [self layoutAnimatedLayer];
     }
