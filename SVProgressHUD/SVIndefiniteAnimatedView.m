@@ -56,9 +56,7 @@
         _indefiniteAnimatedLayer.path = smoothedPath.CGPath;
         
         CALayer *maskLayer = [CALayer layer];
-        
-        NSBundle* bundle = [NSBundle bundleForClass:self.class];
-        maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask" inBundle:bundle compatibleWithTraitCollection:nil] CGImage];
+        maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask"] CGImage];
         maskLayer.frame = _indefiniteAnimatedLayer.bounds;
         _indefiniteAnimatedLayer.mask = maskLayer;
         

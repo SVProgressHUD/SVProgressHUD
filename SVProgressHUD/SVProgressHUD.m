@@ -261,11 +261,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             SVProgressHUDBackgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
             SVProgressHUDForegroundColor = [UIColor whiteColor];
         }
-
-        NSBundle* bundle = [NSBundle bundleForClass:self.class];
-        UIImage* infoImage = [UIImage imageNamed:@"SVProgressHUD.bundle/info" inBundle:bundle compatibleWithTraitCollection:nil];
-        UIImage* successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success" inBundle:bundle compatibleWithTraitCollection:nil];
-        UIImage* errorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error" inBundle:bundle compatibleWithTraitCollection:nil];
+        
+        UIImage* infoImage = [UIImage imageNamed:@"SVProgressHUD.bundle/info"];
+        UIImage* successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success"];
+        UIImage* errorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
 
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
             SVProgressHUDInfoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
