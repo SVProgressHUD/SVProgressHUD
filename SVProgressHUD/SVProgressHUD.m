@@ -262,9 +262,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             SVProgressHUDForegroundColor = [UIColor whiteColor];
         }
         
-        UIImage* infoImage = [UIImage imageNamed:@"SVProgressHUD.bundle/info"];
-        UIImage* successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success"];
-        UIImage* errorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
+        // Defines the bundle where images are located. Starting from iOS 8.0+, it's in the bundle defined by the current class.
+        NSBundle* bundle = UIDevice.currentDevice.systemVersion.floatValue >= 8.0 ? [NSBundle bundleForClass:self.class] : nil;
+        
+        UIImage* infoImage    = [UIImage imageNamed:@"SVProgressHUD.bundle/info" inBundle:bundle compatibleWithTraitCollection:nil];
+        UIImage* successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success" inBundle:bundle compatibleWithTraitCollection:nil];
+        UIImage* errorImage   = [UIImage imageNamed:@"SVProgressHUD.bundle/error" inBundle:bundle compatibleWithTraitCollection:nil];
 
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
             SVProgressHUDInfoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
