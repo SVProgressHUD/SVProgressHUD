@@ -12,6 +12,7 @@
 
 #import "SVProgressHUD.h"
 #import "SVIndefiniteAnimatedView.h"
+#import "UIImage+Framework.h"
 #import <QuartzCore/QuartzCore.h>
 
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
@@ -262,9 +263,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             SVProgressHUDForegroundColor = [UIColor whiteColor];
         }
         
-        UIImage* infoImage = [UIImage imageNamed:@"SVProgressHUD.bundle/info"];
-        UIImage* successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success"];
-        UIImage* errorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
+        UIImage* infoImage    = [UIImage imageNamed:@"SVProgressHUD.bundle/info" classInFramework:self.class];
+        UIImage* successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success" classInFramework:self.class];
+        UIImage* errorImage   = [UIImage imageNamed:@"SVProgressHUD.bundle/error" classInFramework:self.class];
 
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
             SVProgressHUDInfoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
