@@ -7,6 +7,8 @@
 //
 
 #import "SVIndefiniteAnimatedView.h"
+#import "SVProgressHUD.h"
+#import "UIImage+Framework.h"
 
 #pragma mark SVIndefiniteAnimatedView
 
@@ -56,8 +58,7 @@
         _indefiniteAnimatedLayer.path = smoothedPath.CGPath;
         
         CALayer *maskLayer = [CALayer layer];
-        NSBundle* bundle = UIDevice.currentDevice.systemVersion.floatValue >= 8.0 ? [NSBundle bundleForClass:self.class] : nil;
-        maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask" inBundle:bundle compatibleWithTraitCollection:nil] CGImage];
+        maskLayer.contents = (id)[[UIImage imageNamed:@"SVProgressHUD.bundle/angle-mask" classInFramework:self.class] CGImage];
         maskLayer.frame = _indefiniteAnimatedLayer.bounds;
         _indefiniteAnimatedLayer.mask = maskLayer;
         

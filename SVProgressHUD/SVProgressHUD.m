@@ -12,6 +12,7 @@
 
 #import "SVProgressHUD.h"
 #import "SVIndefiniteAnimatedView.h"
+#import "UIImage+Framework.h"
 #import <QuartzCore/QuartzCore.h>
 
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
@@ -262,12 +263,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             SVProgressHUDForegroundColor = [UIColor whiteColor];
         }
         
-        // Defines the bundle where images are located. Starting from iOS 8.0+, it's in the bundle defined by the current class.
-        NSBundle* bundle = UIDevice.currentDevice.systemVersion.floatValue >= 8.0 ? [NSBundle bundleForClass:self.class] : nil;
-        
-        UIImage* infoImage    = [UIImage imageNamed:@"SVProgressHUD.bundle/info" inBundle:bundle compatibleWithTraitCollection:nil];
-        UIImage* successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success" inBundle:bundle compatibleWithTraitCollection:nil];
-        UIImage* errorImage   = [UIImage imageNamed:@"SVProgressHUD.bundle/error" inBundle:bundle compatibleWithTraitCollection:nil];
+        UIImage* infoImage    = [UIImage imageNamed:@"SVProgressHUD.bundle/info" classInFramework:self.class];
+        UIImage* successImage = [UIImage imageNamed:@"SVProgressHUD.bundle/success" classInFramework:self.class];
+        UIImage* errorImage   = [UIImage imageNamed:@"SVProgressHUD.bundle/error" classInFramework:self.class];
 
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
             SVProgressHUDInfoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
