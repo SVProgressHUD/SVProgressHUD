@@ -22,6 +22,12 @@ pod 'SVProgressHUD', :head
 
 This pulls from the `master` branch directly. We are usually careful about what we push there and this is the version we use ourselves in all of our projects.
 
+### Carthage
+
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/TransitApp/SVProgressHUD)
+
+You can install SVProgressHUD with Carthage
+
 ### Manually
 
 * Drag the `SVProgressHUD/SVProgressHUD` folder into your project.
