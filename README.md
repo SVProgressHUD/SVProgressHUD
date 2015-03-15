@@ -24,9 +24,9 @@ This pulls from the `master` branch directly. We are usually careful about what 
 
 ### Carthage
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/TransitApp/SVProgressHUD)
+You can install SVProgressHUD with [Carthage](https://github.com/Carthage/Carthage).
 
-You can install SVProgressHUD with Carthage
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/TransitApp/SVProgressHUD)
 
 ### Manually
 
