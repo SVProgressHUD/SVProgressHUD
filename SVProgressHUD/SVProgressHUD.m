@@ -211,6 +211,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [self showImage:SVProgressHUDErrorImage status:string maskType:maskType];
 }
 
++ (void)showErrorWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType fromView:(UIView *)aView {
+    SVProgressHUD *progressView = [self sharedView];
+    [aView addSubview:progressView];
+    [self showImage:SVProgressHUDErrorImage status:string maskType:maskType];
+}
+
 + (void)showImage:(UIImage *)image status:(NSString *)string {
     [self sharedView];
     [self showImage:image status:string maskType:SVProgressHUDDefaultMaskType];

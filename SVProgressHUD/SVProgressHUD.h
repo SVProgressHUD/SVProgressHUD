@@ -63,6 +63,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 + (void)showErrorWithStatus:(NSString *)string;
 + (void)showErrorWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType;
++ (void)showErrorWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType fromView:(UIView *)aView;
 
 // use 28x28 white pngs
 + (void)showImage:(UIImage*)image status:(NSString*)status;
