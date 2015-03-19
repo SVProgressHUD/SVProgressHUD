@@ -43,6 +43,10 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 + (void)setMinShowTime:(NSTimeInterval)minShowTime; // default is 0; if the HUD is displayed, it's shown at least this time
 
+#pragma mark - Timing
+
++ (void)setMinShowTime:(NSTimeInterval)minShowTime; // default is 0; if the HUD is displayed, it's shown at least this time
+
 #pragma mark - Show Methods
 
 + (void)show;
