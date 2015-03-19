@@ -58,6 +58,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
 
+@property (nonatomic, strong) NSDate *showDate;
+
 
 - (void)showProgress:(float)progress status:(NSString*)string maskType:(SVProgressHUDMaskType)hudMaskType;
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration maskType:(SVProgressHUDMaskType)hudMaskType;
@@ -128,6 +130,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType{
     [self sharedView];
     SVProgressHUDDefaultMaskType = maskType;
+}
+
++ (void)setMinShowTime:(NSTimeInterval)minShowTime {
+	[self sharedView];
+    SVProgressHUDMinShowTime = minShowTime;
 }
 
 + (void)setViewForExtension:(UIView *)view{
@@ -740,6 +747,14 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (void)dismiss {
+	if (SVProgressHUDMinShowTime > 0 && [self.showDate timeIntervalSinceNow] > -SVProgressHUDMinShowTime) {
+		[self performSelector:@selector(dismissReally) withObject:nil afterDelay:SVProgressHUDMinShowTime + [self.showDate timeIntervalSinceNow]];
+	} else {
+		[self dismissReally];
+	}
+}
+
+- (void)dismissReally {
     NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
