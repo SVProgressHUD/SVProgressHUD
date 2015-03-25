@@ -228,7 +228,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 + (void)dismiss {
     if ([self isVisible]) {
-        [[self sharedView].parent setUserInteractionEnabled:YES];
         [[self sharedView] dismiss];
     }
 }
@@ -749,6 +748,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (void)dismiss {
+    if(self.parent != nil){
+        [self.parent setUserInteractionEnabled:YES];
+    }
     NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
