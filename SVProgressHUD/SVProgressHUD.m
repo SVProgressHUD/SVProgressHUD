@@ -46,6 +46,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 @property (nonatomic, strong) UIControl *overlayView;
 @property (nonatomic, strong) UIView *hudView;
+@property (nonatomic, strong) UIView *parent;
 @property (nonatomic, strong) UILabel *stringLabel;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) SVIndefiniteAnimatedView *indefiniteAnimatedView;
@@ -227,8 +228,16 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 + (void)dismiss {
     if ([self isVisible]) {
+        [[self sharedView].parent setUserInteractionEnabled:YES];
         [[self sharedView] dismiss];
     }
+}
+
+#pragma mark - disable parent
+
++ (void)disableParent:(UIView *) contentView{
+    [self sharedView].parent = contentView;
+    [[self sharedView].parent setUserInteractionEnabled:NO];
 }
 
 
