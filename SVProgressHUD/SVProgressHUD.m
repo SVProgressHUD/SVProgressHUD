@@ -615,6 +615,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if(!self.superview)
         [self.overlayView addSubview:self];
     
+    if(self.fadeOutTimer){
+        self.activityCount = 0;
+    }
     self.fadeOutTimer = nil;
     self.imageView.hidden = YES;
     self.maskType = hudMaskType;
