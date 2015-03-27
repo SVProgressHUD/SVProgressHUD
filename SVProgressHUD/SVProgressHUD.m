@@ -25,6 +25,7 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 
 static UIColor *SVProgressHUDBackgroundColor;
 static UIColor *SVProgressHUDForegroundColor;
+static CGFloat SVProgressHUDCornerRadius;
 static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
 static UIImage *SVProgressHUDInfoImage;
@@ -98,6 +99,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)setForegroundColor:(UIColor *)color {
     [self sharedView];
     SVProgressHUDForegroundColor = color;
+}
+
++ (void)setCornerRadius:(CGFloat)cornerRadius {
+    [self sharedView].hudView.layer.cornerRadius = cornerRadius;
+    SVProgressHUDCornerRadius = cornerRadius;
 }
 
 + (void)setFont:(UIFont *)font {
@@ -254,6 +260,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
+        SVProgressHUDCornerRadius = 14;
         if ([UIFont respondsToSelector:@selector(preferredFontForTextStyle:)]) {
             SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         } else {
@@ -902,7 +909,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if(!_hudView) {
         _hudView = [[UIView alloc] initWithFrame:CGRectZero];
         _hudView.backgroundColor = SVProgressHUDBackgroundColor;
-        _hudView.layer.cornerRadius = 14;
+        _hudView.layer.cornerRadius = SVProgressHUDCornerRadius;
         _hudView.layer.masksToBounds = YES;
 
         _hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
