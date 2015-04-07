@@ -350,7 +350,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         CGRect stringRect;
         if ([string respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]){
             stringRect = [string boundingRectWithSize:constraintSize
-                                              options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
+                                              options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
                                            attributes:@{NSFontAttributeName: self.stringLabel.font}
                                               context:NULL];
         } else {
@@ -678,7 +678,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         
         [UIView animateWithDuration:0.15
                               delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
+                            options:(UIViewAnimationOptions)(UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
                          animations:^{
                              self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
                              
@@ -759,7 +759,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.activityCount = 0;
     [UIView animateWithDuration:0.15
                           delay:0
-                        options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
+                        options:(UIViewAnimationOptions)(UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction)
                      animations:^{
                          self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8f, 0.8f);
                          if(self.isClear) // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
