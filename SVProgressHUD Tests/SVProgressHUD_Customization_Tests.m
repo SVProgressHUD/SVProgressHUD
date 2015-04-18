@@ -32,6 +32,29 @@ describe(@"SVProgressHUD - Customization methods", ^{
         return [SVProgressHUD sharedView];
     });
     
+    
+    context(@"setting the status string", ^{
+        
+        NSString *newStatus = @"this is a new status";
+        [SVProgressHUD setStatus:newStatus];
+        
+        it(@"the status should be euqal to \"this is a new status\"", ^{
+            
+            [[progressHUD.stringLabel.text should] equal:newStatus];
+            
+        });
+        
+        NSString *newStatus_wrong = @"this is a wrong status";
+        
+        it(@"the status should not be equal to \"this is a wrong status\"", ^{
+            
+            [[progressHUD.stringLabel.text shouldNot] equal:newStatus_wrong];
+            
+        });
+    
+    });
+    
+    
     context(@"setting the background color to red", ^{
         
         UIColor *color = [UIColor redColor];
@@ -50,7 +73,7 @@ describe(@"SVProgressHUD - Customization methods", ^{
             [[progressHUD.hudView.backgroundColor shouldNot] equal:color_wrong];
             
         });
-    
+        
     });
     
 });
