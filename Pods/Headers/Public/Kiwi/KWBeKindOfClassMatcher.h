@@ -1,0 +1,1 @@
+../../../Kiwi/Classes/Matchers/KWBeKindOfClassMatcher.h
