@@ -16,6 +16,7 @@
 		4A9D7DF71AB34A620039B273 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 65F0220D15C858060030BBEF /* SVProgressHUD.bundle */; };
 		6546C0781AE2853C00E37975 /* SVProgressHUD_Customization_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6546C0771AE2853C00E37975 /* SVProgressHUD_Customization_Tests.m */; };
 		6546C0791AE2853C00E37975 /* libSVProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F021FC15C857EF0030BBEF /* libSVProgressHUD.a */; };
+		6546C07F1AE2951F00E37975 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 65F0220D15C858060030BBEF /* SVProgressHUD.bundle */; };
 		65F0220015C857EF0030BBEF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F021FF15C857EF0030BBEF /* Foundation.framework */; };
 		65F0220515C857EF0030BBEF /* SVProgressHUD.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65F0220415C857EF0030BBEF /* SVProgressHUD.h */; };
 		65F0220715C857EF0030BBEF /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0220615C857EF0030BBEF /* SVProgressHUD.m */; };
@@ -308,6 +309,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6546C07F1AE2951F00E37975 /* SVProgressHUD.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
