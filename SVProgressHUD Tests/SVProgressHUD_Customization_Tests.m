@@ -60,7 +60,7 @@ describe(@"SVProgressHUD - Customization methods", ^{
         UIColor *color = [UIColor redColor];
         [SVProgressHUD setBackgroundColor:color];
         
-        it(@"the hudView color should be red", ^{
+        it(@"the hudView background color should be red", ^{
             
             [[progressHUD.hudView.backgroundColor should] equal:color];
             
@@ -68,7 +68,7 @@ describe(@"SVProgressHUD - Customization methods", ^{
         
         UIColor *color_wrong = [UIColor greenColor];
         
-        it(@"the hudView color should not be green", ^{
+        it(@"the hudView background color should not be green", ^{
             
             [[progressHUD.hudView.backgroundColor shouldNot] equal:color_wrong];
             
