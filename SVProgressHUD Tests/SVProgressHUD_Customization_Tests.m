@@ -38,6 +38,8 @@ describe(@"SVProgressHUD - Customization methods", ^{
         NSString *newStatus = @"this is a new status";
         [SVProgressHUD setStatus:newStatus];
         
+        NSLog(@"label %@", progressHUD.stringLabel);
+        
         it(@"the status should be euqal to \"this is a new status\"", ^{
             
             [[progressHUD.stringLabel.text should] equal:newStatus];

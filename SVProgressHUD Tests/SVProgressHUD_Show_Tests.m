@@ -14,12 +14,6 @@
 
 @interface SVProgressHUD (ExposePrivate)
 
-@property (nonatomic, strong) UIControl *overlayView;
-@property (nonatomic, strong) UIView *hudView;
-@property (nonatomic, strong) UILabel *stringLabel;
-@property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) SVIndefiniteAnimatedView *indefiniteAnimatedView;
-
 + (SVProgressHUD *)sharedView;
 
 @end
@@ -33,16 +27,18 @@ describe(@"SVProgressHUD - Show methods", ^{
         return [SVProgressHUD sharedView];
     });
     
-    
     context(@"setting if loader is visible", ^{
         
-        [SVProgressHUD show];
+        [SVProgressHUD showWithStatus:@"this is a new status"];
         
         BOOL isVisible = [SVProgressHUD isVisible];
         
         it(@"the view should be visible", ^{
-            
             [[theValue(isVisible) should] equal:theValue(YES)];
+        });
+        
+        it(@"the view shouldn't be not visible", ^{
+            [[theValue(isVisible) shouldNot] equal:theValue(NO)];
         });
     });
     
