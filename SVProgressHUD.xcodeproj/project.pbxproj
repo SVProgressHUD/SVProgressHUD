@@ -20,6 +20,7 @@
 		65F0220015C857EF0030BBEF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F021FF15C857EF0030BBEF /* Foundation.framework */; };
 		65F0220515C857EF0030BBEF /* SVProgressHUD.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65F0220415C857EF0030BBEF /* SVProgressHUD.h */; };
 		65F0220715C857EF0030BBEF /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0220615C857EF0030BBEF /* SVProgressHUD.m */; };
+		9A1A673F1AE297D200C364A6 /* SVProgressHUD_Show_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1A673E1AE297D200C364A6 /* SVProgressHUD_Show_Tests.m */; };
 		A8433F2E5BA9F9B04AA8FF1F /* libPods-SVProgressHUD Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEFB4FA9E09CCDB0328B7101 /* libPods-SVProgressHUD Tests.a */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		65F0220415C857EF0030BBEF /* SVProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		65F0220615C857EF0030BBEF /* SVProgressHUD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		65F0220D15C858060030BBEF /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		9A1A673E1AE297D200C364A6 /* SVProgressHUD_Show_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD_Show_Tests.m; sourceTree = "<group>"; };
 		A9A5ABA022B9433A33B67007 /* Pods-SVProgressHUD Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SVProgressHUD Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SVProgressHUD Tests/Pods-SVProgressHUD Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BEFB4FA9E09CCDB0328B7101 /* libPods-SVProgressHUD Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SVProgressHUD Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				6546C0771AE2853C00E37975 /* SVProgressHUD_Customization_Tests.m */,
+				9A1A673E1AE297D200C364A6 /* SVProgressHUD_Show_Tests.m */,
 				6546C0751AE2853C00E37975 /* Supporting Files */,
 			);
 			path = "SVProgressHUD Tests";
@@ -362,6 +365,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A1A673F1AE297D200C364A6 /* SVProgressHUD_Show_Tests.m in Sources */,
 				6546C0781AE2853C00E37975 /* SVProgressHUD_Customization_Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
