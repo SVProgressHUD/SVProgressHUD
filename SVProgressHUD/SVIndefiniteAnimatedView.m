@@ -70,7 +70,7 @@
         
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
         animation.fromValue = 0;
-        animation.toValue = [NSNumber numberWithFloat:M_PI*2];
+        animation.toValue = @(M_PI*2);
         animation.duration = animationDuration;
         animation.timingFunction = linearCurve;
         animation.removedOnCompletion = NO;

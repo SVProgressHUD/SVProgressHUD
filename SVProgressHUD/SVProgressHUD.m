@@ -251,12 +251,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 #pragma mark - Instance Methods
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
 		self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0.0f;
-        self.activityCount = 0;
+        _activityCount = 0;
         
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
@@ -269,7 +269,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             SVProgressHUDForegroundColor = [UIColor whiteColor];
         }
         
-        NSBundle *bundle = [NSBundle bundleForClass:self.class];
+        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
         NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
         NSBundle *imageBundle = [NSBundle bundleWithURL:url];
         
@@ -495,8 +495,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
     if(notification) {
         NSDictionary* keyboardInfo = [notification userInfo];
-        CGRect keyboardFrame = [[keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-        animationDuration = [[keyboardInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        CGRect keyboardFrame = [keyboardInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+        animationDuration = [keyboardInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         
         if(notification.name == UIKeyboardWillShowNotification || notification.name == UIKeyboardDidShowNotification) {
             if(ignoreOrientation || UIInterfaceOrientationIsPortrait(orientation))
@@ -658,7 +658,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         self.hudView.isAccessibilityElement = YES;
     }
     
-    [self.overlayView setHidden:NO];
+    self.overlayView.hidden = NO;
     self.overlayView.backgroundColor = [UIColor clearColor];
     [self positionHUD:nil];
     
@@ -718,8 +718,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.maskType = hudMaskType;
     [self cancelRingLayerAnimation];
     
-    if(![self.class isVisible])
-        [self.class showWithMaskType:self.maskType];
+    if(![[self class] isVisible])
+        [[self class] showWithMaskType:self.maskType];
   
     if ([self.imageView respondsToSelector:@selector(setTintColor:)]) {
         self.imageView.tintColor = SVProgressHUDForegroundColor;
