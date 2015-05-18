@@ -63,6 +63,8 @@ static float progress = 0.0f;
 
 - (IBAction)showWithProgress:(id)sender {
     progress = 0.0f;
+    [SVProgressHUD setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
+    [SVProgressHUD setFontColor:[UIColor blueColor]];
     [SVProgressHUD showProgress:0 status:@"Loading"];
     [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3];
 }

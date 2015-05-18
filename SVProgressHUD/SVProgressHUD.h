@@ -33,6 +33,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setForegroundColor:(UIColor*)color; // default is [UIColor blackColor]
 + (void)setRingThickness:(CGFloat)width; // default is 4 pt
 + (void)setFont:(UIFont*)font; // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setFontColor:(UIColor*)color; // default is [UIColor blackColor]
 + (void)setSuccessImage:(UIImage*)image; // default is bundled success image from Glyphish
 + (void)setErrorImage:(UIImage*)image; // default is bundled error image from Glyphish
 

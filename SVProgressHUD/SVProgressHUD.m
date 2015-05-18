@@ -26,6 +26,7 @@ static UIColor *SVProgressHUDBackgroundColor;
 static UIColor *SVProgressHUDForegroundColor;
 static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
+static UIColor *SVProgressHUDFontColor;
 static UIImage *SVProgressHUDSuccessImage;
 static UIImage *SVProgressHUDErrorImage;
 
@@ -102,6 +103,11 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 + (void)setFont:(UIFont *)font {
     [self sharedView];
     SVProgressHUDFont = font;
+}
+
++ (void)setFontColor:(UIColor *)color {
+    [self sharedView];
+    SVProgressHUDFontColor = color;
 }
 
 + (void)setRingThickness:(CGFloat)width {
@@ -205,12 +211,14 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
         
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
+        SVProgressHUDFontColor = [UIColor blackColor];
         if ([UIFont respondsToSelector:@selector(preferredFontForTextStyle:)]) {
           SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         } else {
           SVProgressHUDFont = [UIFont systemFontOfSize:14.0];
           SVProgressHUDBackgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
           SVProgressHUDForegroundColor = [UIColor whiteColor];
+            SVProgressHUDFontColor = [UIColor whiteColor];
         }
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
           SVProgressHUDSuccessImage = [[UIImage imageNamed:@"SVProgressHUD.bundle/success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -833,7 +841,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 		_stringLabel.adjustsFontSizeToFitWidth = YES;
         _stringLabel.textAlignment = NSTextAlignmentCenter;
 		_stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-		_stringLabel.textColor = SVProgressHUDForegroundColor;
+		_stringLabel.textColor = SVProgressHUDFontColor;
 		_stringLabel.font = SVProgressHUDFont;
         _stringLabel.numberOfLines = 0;
     }
