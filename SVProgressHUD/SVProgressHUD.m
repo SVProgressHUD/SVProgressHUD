@@ -64,6 +64,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration maskType:(SVProgressHUDMaskType)hudMaskType;
 
 - (void)dismiss;
+- (void)dismissWithDelay:(NSTimeInterval)delay;
 
 - (void)setStatus:(NSString*)string;
 - (void)registerNotifications;
@@ -237,6 +238,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     }
 }
 
++ (void)dismissWithDelay:(NSTimeInterval)delay
+{
+    if ([self isVisible]) {
+        [[self sharedView] dismissWithDelay:delay];
+    }
+}
 
 #pragma mark - Offset
 
@@ -750,7 +757,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
 }
 
-- (void)dismiss {
+- (void)dismissWithDelay:(NSTimeInterval)delay
+{
     NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
@@ -758,7 +766,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     self.activityCount = 0;
     [UIView animateWithDuration:0.15
-                          delay:0
+                          delay:delay
                         options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8f, 0.8f);
@@ -803,6 +811,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                      }];
 }
 
+- (void)dismiss {
+    [self dismissWithDelay:0];
+}
 
 #pragma mark - Ring progress animation
 
