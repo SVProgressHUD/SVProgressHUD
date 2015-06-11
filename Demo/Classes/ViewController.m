@@ -15,8 +15,8 @@
     return YES;
 }
 
-#pragma mark -
-#pragma mark Notification Methods Sample
+
+#pragma mark - Notification Methods Sample
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -48,8 +48,8 @@
     NSLog(@"Status user info key: %@", [notif.userInfo objectForKey:SVProgressHUDStatusUserInfoKey]);
 }
 
-#pragma mark -
-#pragma mark Show Methods Sample
+
+#pragma mark - Show Methods Sample
 
 - (void)show {
 	[SVProgressHUD show];
@@ -66,7 +66,7 @@ static float progress = 0.0f;
     [SVProgressHUD setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
     [SVProgressHUD setFontColor:[UIColor blueColor]];
     [SVProgressHUD showProgress:0 status:@"Loading"];
-    [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3];
+    [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3f];
 }
 
 - (void)increaseProgress {
@@ -74,17 +74,20 @@ static float progress = 0.0f;
     [SVProgressHUD showProgress:progress status:@"Loading"];
 
     if(progress < 1.0f)
-        [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3];
+        [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3f];
     else
         [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
 }
 
 
-#pragma mark -
-#pragma mark Dismiss Methods Sample
+#pragma mark - Dismiss Methods Sample
 
 - (void)dismiss {
 	[SVProgressHUD dismiss];
+}
+
+- (IBAction)dismissInfo{
+    [SVProgressHUD showInfoWithStatus:@"Useful Information."];
 }
 
 - (void)dismissSuccess {
