@@ -21,3 +21,5 @@ build/
 # Backup files
 *~.nib
 / graphics/
+
+*.orig
