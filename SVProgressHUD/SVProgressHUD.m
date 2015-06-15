@@ -258,6 +258,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 		self.alpha = 0.0f;
         _activityCount = 0;
         
+        // add accessibility support
+        self.accessibilityIdentifier = @"SVProgressHUD";
+        self.accessibilityLabel = @"SVProgressHUD";
+        self.isAccessibilityElement = YES;
+        
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
         SVProgressHUDCornerRadius = 14;
