@@ -7,24 +7,14 @@
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
 
 @implementation AppDelegate
-
-@synthesize window;
-@synthesize viewController;
-
 
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
-
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     return YES;
 }
-
-
 
 @end

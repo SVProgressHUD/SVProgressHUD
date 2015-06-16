@@ -24,9 +24,18 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSMainNibFile</key>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
+	<key>UIMainStoryboardFile</key>
 	<string>MainWindow</string>
-	<key>NSMainNibFile~ipad</key>
-	<string>MainWindow-iPad</string>
+	<key>UIMainStoryboardFile~ipad</key>
+	<string>MainWindow</string>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
 </dict>
 </plist>
