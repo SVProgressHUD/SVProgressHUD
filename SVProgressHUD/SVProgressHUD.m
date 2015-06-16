@@ -80,7 +80,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
     static SVProgressHUD *sharedView;
-    dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+    dispatch_once(&once, ^ {
+        sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    });
     return sharedView;
 }
 
