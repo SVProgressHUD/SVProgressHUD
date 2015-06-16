@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
 
+// Framework support
+FOUNDATION_EXPORT double SVProgressHUD_VersionNumber;
+FOUNDATION_EXPORT const unsigned char SVProgressHUD_VersionString[];
+
 extern NSString * const SVProgressHUDDidReceiveTouchEventNotification;
 extern NSString * const SVProgressHUDDidTouchDownInsideNotification;
 extern NSString * const SVProgressHUDWillDisappearNotification;
