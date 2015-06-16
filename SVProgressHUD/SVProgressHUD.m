@@ -80,7 +80,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
     static SVProgressHUD *sharedView;
-    dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+    dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.bounds]; });
     return sharedView;
 }
 
@@ -450,6 +450,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                                              selector:@selector(positionHUD:)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(positionHUD:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(positionHUD:)
@@ -483,7 +487,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGFloat keyboardHeight = 0.0f;
     double animationDuration = 0.0;
     
-    self.frame = UIScreen.mainScreen.bounds;
+    self.frame = [UIApplication sharedApplication].keyWindow.bounds;
     
 #if !defined(SV_APP_EXTENSIONS)
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
@@ -902,7 +906,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (UIControl *)overlayView {
     if(!_overlayView) {
-        _overlayView = [[UIControl alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        CGRect windowBounds = [UIApplication sharedApplication].keyWindow.bounds;
+        _overlayView = [[UIControl alloc] initWithFrame:windowBounds];
         _overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _overlayView.backgroundColor = [UIColor clearColor];
         [_overlayView addTarget:self action:@selector(overlayViewDidReceiveTouchEvent:forEvent:) forControlEvents:UIControlEventTouchDown];
