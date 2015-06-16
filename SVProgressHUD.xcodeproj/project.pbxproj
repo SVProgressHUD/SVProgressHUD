@@ -426,6 +426,7 @@
 				4A9D7DED1AB345990039B273 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		65F021F615C857EF0030BBEF /* Build configuration list for PBXProject "SVProgressHUD" */ = {
 			isa = XCConfigurationList;
