@@ -67,6 +67,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 // use 28x28 white pngs
 + (void)showImage:(UIImage*)image status:(NSString*)status;
 + (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
++ (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
 
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;

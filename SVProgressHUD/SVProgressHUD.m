@@ -221,6 +221,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [[self sharedView] showImage:image status:string duration:displayInterval maskType:maskType];
 }
 
++ (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration {
+    [[self sharedView] showImage:image status:status duration:duration maskType:SVProgressHUDDefaultMaskType];
+}
+
 
 #pragma mark - Dismiss Methods
 
