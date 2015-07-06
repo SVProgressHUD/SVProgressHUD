@@ -76,5 +76,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 + (BOOL)isVisible;
 
+- (NSTimeInterval)displayDurationForString:(NSString*)string;
+
 @end
 

@@ -70,7 +70,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (NSDictionary *)notificationUserInfo;
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
 - (void)positionHUD:(NSNotification*)notification;
-- (NSTimeInterval)displayDurationForString:(NSString*)string;
 
 @end
 
