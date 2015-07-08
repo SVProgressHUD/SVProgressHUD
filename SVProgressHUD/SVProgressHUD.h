@@ -34,6 +34,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setCornerRadius:(CGFloat)cornerRadius;              // default is 14 pt
 + (void)setRingThickness:(CGFloat)width;                    // default is 4 pt
 + (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setFontColor:(UIColor*)color; // default is [UIColor blackColor]
 + (void)setInfoImage:(UIImage*)image;                       // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                    // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(UIImage*)image;                      // default is the bundled error image provided by Freepik

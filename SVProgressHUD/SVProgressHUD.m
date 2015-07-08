@@ -28,6 +28,7 @@ static UIColor *SVProgressHUDForegroundColor;
 static CGFloat SVProgressHUDCornerRadius;
 static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
+static UIColor *SVProgressHUDFontColor;
 static UIImage *SVProgressHUDInfoImage;
 static UIImage *SVProgressHUDSuccessImage;
 static UIImage *SVProgressHUDErrorImage;
@@ -109,6 +110,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)setFont:(UIFont *)font {
     [self sharedView];
     SVProgressHUDFont = font;
+}
+
++ (void)setFontColor:(UIColor *)color {
+    [self sharedView];
+    SVProgressHUDFontColor = color;
 }
 
 + (void)setRingThickness:(CGFloat)width {
@@ -265,6 +271,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
+        SVProgressHUDFontColor = [UIColor blackColor];
         SVProgressHUDCornerRadius = 14;
         if ([UIFont respondsToSelector:@selector(preferredFontForTextStyle:)]) {
             SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
@@ -272,6 +279,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             SVProgressHUDFont = [UIFont systemFontOfSize:14.0f];
             SVProgressHUDBackgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
             SVProgressHUDForegroundColor = [UIColor whiteColor];
+            SVProgressHUDFontColor = [UIColor whiteColor];
         }
         
         NSBundle *bundle = [NSBundle bundleForClass:[self class]];
@@ -959,7 +967,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if(!_stringLabel.superview)
         [self.hudView addSubview:_stringLabel];
 
-    _stringLabel.textColor = SVProgressHUDForegroundColor;
+   _stringLabel.textColor = SVProgressHUDFontColor;
     _stringLabel.font = SVProgressHUDFont;
     
     return _stringLabel;
