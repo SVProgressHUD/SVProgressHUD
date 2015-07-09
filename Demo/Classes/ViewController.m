@@ -11,10 +11,15 @@
 
 @implementation ViewController
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+-(BOOL)shouldAutorotate
+{
     return YES;
 }
 
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAll;
+}
 
 #pragma mark - Notification Methods Sample
 

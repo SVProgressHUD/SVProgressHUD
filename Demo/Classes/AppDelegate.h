@@ -8,12 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class ViewController;
-
-@interface AppDelegate : NSObject <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) IBOutlet UIWindow *window;
-@property (strong, nonatomic) IBOutlet ViewController *viewController;
 
 @end
 
