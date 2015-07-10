@@ -68,6 +68,12 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)showImage:(UIImage*)image status:(NSString*)status;
 + (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 
+// Show Methods With Duration
++ (void)showWithDuration: (NSTimeInterval)duration;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType duration: (NSTimeInterval)duration;
++ (void)showWithStatus:(NSString*)status duration: (NSTimeInterval)duration;
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType duration: (NSTimeInterval)duration;
+
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;
 

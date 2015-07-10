@@ -178,6 +178,25 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [[self sharedView] showProgress:progress status:status maskType:maskType];
 }
 
+#pragma mark - Show Methods with Duration
+
++ (void)showWithDuration: (NSTimeInterval)duration{
+    [self show];
+    [self sharedView].fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+}
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType duration: (NSTimeInterval)duration{
+    [self showWithMaskType:maskType];
+    [self sharedView].fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+}
++ (void)showWithStatus:(NSString*)status duration: (NSTimeInterval)duration{
+    [self showWithStatus:status];
+    [self sharedView].fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+}
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType duration: (NSTimeInterval)duration{
+    [self showWithStatus:status maskType:maskType];
+    [self sharedView].fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+}
+
 
 #pragma mark - Show then dismiss methods
 
