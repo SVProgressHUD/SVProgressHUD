@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "0630"
-   version = "1.3">
+   version = "1.8">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -15,22 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4A9D7DD71AB345980039B273"
-               BuildableName = "SVProgressHUD-Framework.framework"
+               BuildableName = "SVProgressHUD.framework"
                BlueprintName = "SVProgressHUD-Framework"
-               ReferencedContainer = "container:SVProgressHUD.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4A9D7DE11AB345990039B273"
-               BuildableName = "SVProgressHUD-FrameworkTests.xctest"
-               BlueprintName = "SVProgressHUD-FrameworkTests"
                ReferencedContainer = "container:SVProgressHUD.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,26 +28,18 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4A9D7DE11AB345990039B273"
-               BuildableName = "SVProgressHUD-FrameworkTests.xctest"
-               BlueprintName = "SVProgressHUD-FrameworkTests"
-               ReferencedContainer = "container:SVProgressHUD.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A9D7DD71AB345980039B273"
-            BuildableName = "SVProgressHUD-Framework.framework"
+            BuildableName = "SVProgressHUD.framework"
             BlueprintName = "SVProgressHUD-Framework"
             ReferencedContainer = "container:SVProgressHUD.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <AdditionalOptions>
+      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -71,12 +49,13 @@
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A9D7DD71AB345980039B273"
-            BuildableName = "SVProgressHUD-Framework.framework"
+            BuildableName = "SVProgressHUD.framework"
             BlueprintName = "SVProgressHUD-Framework"
             ReferencedContainer = "container:SVProgressHUD.xcodeproj">
          </BuildableReference>
@@ -94,7 +73,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A9D7DD71AB345980039B273"
-            BuildableName = "SVProgressHUD-Framework.framework"
+            BuildableName = "SVProgressHUD.framework"
             BlueprintName = "SVProgressHUD-Framework"
             ReferencedContainer = "container:SVProgressHUD.xcodeproj">
          </BuildableReference>
