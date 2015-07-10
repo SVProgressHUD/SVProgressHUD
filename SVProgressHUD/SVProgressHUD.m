@@ -80,7 +80,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
     static SVProgressHUD *sharedView;
+#if !defined(SV_APP_EXTENSIONS)
     dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.bounds]; });
+#else
+    dispatch_once(&once, ^ { sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+#endif
     return sharedView;
 }
 
@@ -487,11 +491,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGFloat keyboardHeight = 0.0f;
     double animationDuration = 0.0;
     
-    self.frame = [UIApplication sharedApplication].keyWindow.bounds;
-    
 #if !defined(SV_APP_EXTENSIONS)
+    self.frame = [UIApplication sharedApplication].keyWindow.bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
 #else
+    self.frame = UIScreen.mainScreen.bounds;
     UIInterfaceOrientation orientation = CGRectGetWidth(self.frame) > CGRectGetHeight(self.frame) ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
 #endif
     // no transforms applied to window in iOS 8, but only if compiled with iOS 8 sdk as base sdk, otherwise system supports old rotation logic.
@@ -906,8 +910,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (UIControl *)overlayView {
     if(!_overlayView) {
+#if !defined(SV_APP_EXTENSIONS)
         CGRect windowBounds = [UIApplication sharedApplication].keyWindow.bounds;
         _overlayView = [[UIControl alloc] initWithFrame:windowBounds];
+#else
+        _overlayView = [[UIControl alloc] initWithFrame:[UIScreen mainScreen].bounds];
+#endif
         _overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _overlayView.backgroundColor = [UIColor clearColor];
         [_overlayView addTarget:self action:@selector(overlayViewDidReceiveTouchEvent:forEvent:) forControlEvents:UIControlEventTouchDown];
