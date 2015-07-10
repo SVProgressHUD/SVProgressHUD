@@ -256,6 +256,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 		self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
 		self.alpha = 0.0f;
+        [self.layer setShadowOffset:CGSizeMake(1, 1)];
+        [self.layer setShadowRadius:10];
+        [self.layer setShadowOpacity:1];
+        [self.layer setShadowColor:[UIColor grayColor].CGColor];
         _activityCount = 0;
         
         // add accessibility support
