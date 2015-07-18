@@ -40,6 +40,10 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
 + (void)setViewForExtension:(UIView*)view;                  // default is nil, only used if #define SV_APP_EXTENSIONS is set
 
+#pragma mark - Timing
+
++ (void)setMinShowTime:(NSTimeInterval)minShowTime; // default is 0; if the HUD is displayed, it's shown at least this time
+
 #pragma mark - Show Methods
 
 + (void)show;
