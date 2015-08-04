@@ -27,6 +27,8 @@ static UIColor *SVProgressHUDBackgroundColor;
 static UIColor *SVProgressHUDForegroundColor;
 static CGFloat SVProgressHUDCornerRadius;
 static CGFloat SVProgressHUDRingThickness;
+static CGFloat SVProgressHUDBorderThickness;
+static UIColor *SVProgressHUDBorderColor;
 static UIFont *SVProgressHUDFont;
 static UIImage *SVProgressHUDInfoImage;
 static UIImage *SVProgressHUDSuccessImage;
@@ -114,6 +116,16 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)setRingThickness:(CGFloat)width {
     [self sharedView];
     SVProgressHUDRingThickness = width;
+}
+
++ (void)setBorderThickness:(CGFloat)width {
+    [self sharedView];
+    SVProgressHUDBorderThickness = width;
+}
+
++ (void)setBorderColor:(UIColor *)color {
+    [self sharedView];
+    SVProgressHUDBorderColor = color;
 }
 
 + (void)setInfoImage:(UIImage*)image{
@@ -294,6 +306,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
         SVProgressHUDRingThickness = 2;
         SVProgressHUDDefaultMaskType = SVProgressHUDMaskTypeNone;
+        SVProgressHUDBorderThickness = 1;
+        SVProgressHUDBorderColor = [UIColor clearColor];
     }
 	
     return self;
@@ -920,6 +934,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         _hudView = [[UIView alloc] initWithFrame:CGRectZero];
         _hudView.backgroundColor = SVProgressHUDBackgroundColor;
         _hudView.layer.cornerRadius = SVProgressHUDCornerRadius;
+        _hudView.layer.borderWidth = SVProgressHUDBorderThickness;
+        _hudView.layer.borderColor = SVProgressHUDBorderColor.CGColor;
         _hudView.layer.masksToBounds = YES;
 
         _hudView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
