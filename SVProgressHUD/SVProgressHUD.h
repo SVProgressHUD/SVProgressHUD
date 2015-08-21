@@ -40,6 +40,9 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
 + (void)setViewForExtension:(UIView*)view;                  // default is nil, only used if #define SV_APP_EXTENSIONS is set
 
++ (UIColor *)backgroundColor;
++ (UIColor *)foregroundColor;
+
 #pragma mark - Show Methods
 
 + (void)show;

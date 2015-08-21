@@ -141,6 +141,15 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDExtensionView = view;
 }
 
+#pragma mark - Getters
+
++ (UIColor *)backgroundColor {
+    return SVProgressHUDBackgroundColor;
+}
+
++ (UIColor *)foregroundColor {
+    return SVProgressHUDForegroundColor;
+}
 
 #pragma mark - Show Methods
 
