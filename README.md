@@ -137,4 +137,4 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ## Credits
 
-`SVProgressHUD` is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/TransitApp/SVProgressHUD/contributors). If you're using `SVProgressHUD` in your project, attribution would be very appreciated. The success and error icons are made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
+`SVProgressHUD` is brought to you by [Sam Vermette](http://samvermette.com) and [contributors to the project](https://github.com/TransitApp/SVProgressHUD/contributors). If you're using `SVProgressHUD` in your project, attribution would be very appreciated. The success, error and info icons are made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
