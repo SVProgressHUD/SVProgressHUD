@@ -13,8 +13,6 @@
 #import "SVIndefiniteAnimatedView.h"
 #import "SVRadialGradientLayer.h"
 
-#import <QuartzCore/QuartzCore.h>
-
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
 NSString * const SVProgressHUDDidTouchDownInsideNotification = @"SVProgressHUDDidTouchDownInsideNotification";
 NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
@@ -266,9 +264,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGFloat hudHeight = 100.0f;
     CGFloat stringHeightBuffer = 20.0f;
     CGFloat stringAndContentHeightBuffer = 80.0f;
-    
-    CGFloat stringWidth = 0.0f;
-    CGFloat stringHeight = 0.0f;
     CGRect labelRect = CGRectZero;
     
     // Check if an image or progress ring is displayed
@@ -297,8 +292,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             }
             stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
         }
-        stringWidth = stringRect.size.width;
-        stringHeight = ceil(CGRectGetHeight(stringRect));
+
+        CGFloat stringWidth = stringRect.size.width;
+        CGFloat stringHeight = ceilf(CGRectGetHeight(stringRect));
         
         if (imageUsed || progressUsed){
             hudHeight = stringAndContentHeightBuffer + stringHeight;
@@ -306,7 +302,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             hudHeight = stringHeightBuffer + stringHeight;
         }
         if(stringWidth > hudWidth){
-            hudWidth = ceil(stringWidth/2)*2;
+            hudWidth = ceilf(stringWidth/2)*2;
         }
         CGFloat labelRectY = (imageUsed || progressUsed) ? 68.0f : 9.0f;
         if(hudHeight > 100.0f) {
@@ -317,7 +313,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             labelRect = CGRectMake(0.0f, labelRectY, hudWidth, stringHeight);
         }
     }
-    // Update values on suviews
+    // Update values on subviews
     self.hudView.bounds = CGRectMake(0.0f, 0.0f, hudWidth, hudHeight);
     [self updateBlurBounds];
     
@@ -429,7 +425,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         UIMotionEffectGroup *effectGroup = [[UIMotionEffectGroup alloc] init];
         effectGroup.motionEffects = @[effectX, effectY];
         
-        // Update motion effets
+        // Update motion effects
         self.hudView.motionEffects = @[];
         [self.hudView addMotionEffect:effectGroup];
     }
@@ -555,8 +551,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     }
     activeHeight -= keyboardHeight;
     
-    CGFloat posX = CGRectGetWidth(orientationFrame)/2;
-    CGFloat posY = floor(activeHeight*0.45);
+    CGFloat posX = CGRectGetWidth(orientationFrame)/2.0f;
+    CGFloat posY = floorf(activeHeight*0.45f);
 
     CGPoint newCenter;
     CGFloat rotateAngle;
@@ -568,19 +564,19 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     } else {
         switch (orientation) {
             case UIInterfaceOrientationPortraitUpsideDown:
-                rotateAngle = M_PI;
+                rotateAngle = (CGFloat) M_PI;
                 newCenter = CGPointMake(posX, CGRectGetHeight(orientationFrame)-posY);
                 break;
             case UIInterfaceOrientationLandscapeLeft:
-                rotateAngle = -M_PI/2.0f;
+                rotateAngle = (CGFloat) (-M_PI/2.0f);
                 newCenter = CGPointMake(posY, posX);
                 break;
             case UIInterfaceOrientationLandscapeRight:
-                rotateAngle = M_PI/2.0f;
+                rotateAngle = (CGFloat) (M_PI/2.0f);
                 newCenter = CGPointMake(CGRectGetHeight(orientationFrame)-posY, posX);
                 break;
             default: // Same as UIInterfaceOrientationPortrait
-                rotateAngle = 0.0;
+                rotateAngle = 0.0f;
                 newCenter = CGPointMake(posX, posY);
                 break;
         }
@@ -714,7 +710,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
-                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
+                             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3f, 1/1.3f);
                              
                              if(self.isClear){ // handle iOS 7 and 8 UIToolbar which not answers well to hierarchy opacity change
                                  self.hudView.alpha = 1;
@@ -797,7 +793,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.activityCount = 0;
     [UIView animateWithDuration:0.15
                           delay:0
-                        options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
+                        options:(UIViewAnimationOptions) (UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction)
                      animations:^{
                          self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8f, 0.8f);
                          if(self.isClear){ // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
@@ -903,7 +899,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (CAShapeLayer *)createRingLayerWithCenter:(CGPoint)center radius:(CGFloat)radius {
     
-    UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(radius, radius) radius:radius startAngle:-M_PI_2 endAngle:(M_PI + M_PI_2) clockwise:YES];
+    UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(radius, radius) radius:radius startAngle:(CGFloat) -M_PI_2 endAngle:(CGFloat) (M_PI + M_PI_2) clockwise:YES];
     
     CAShapeLayer *slice = [CAShapeLayer layer];
     slice.contentsScale = [[UIScreen mainScreen] scale];

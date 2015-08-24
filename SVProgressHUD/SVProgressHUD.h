@@ -57,7 +57,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)showSuccessWithStatus:(NSString*)string;
 + (void)showErrorWithStatus:(NSString *)string;
 
-// shows a image + status, use 28x28 white pngs
+// shows a image + status, use 28x28 white PNGs
 + (void)showImage:(UIImage*)image status:(NSString*)status;
 
 + (void)setOffsetFromCenter:(UIOffset)offset;

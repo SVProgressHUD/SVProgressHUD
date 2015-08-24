@@ -5,8 +5,6 @@
 //  Copyright (c) 2011-2014 Sam Vermette. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 int main(int argc, char *argv[]) {
     
     @autoreleasepool {
