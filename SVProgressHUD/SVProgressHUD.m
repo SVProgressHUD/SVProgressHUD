@@ -712,7 +712,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         
         [UIView animateWithDuration:0.15
                               delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
+                            options:(UIViewAnimationOptions)(UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
                          animations:^{
                              self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3, 1/1.3);
                              
@@ -797,7 +797,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.activityCount = 0;
     [UIView animateWithDuration:0.15
                           delay:0
-                        options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
+                        options:(UIViewAnimationOptions)(UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction)
                      animations:^{
                          self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8f, 0.8f);
                          if(self.isClear){ // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
@@ -813,14 +813,14 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                              
                              [[NSNotificationCenter defaultCenter] removeObserver:self];
                              [self cancelRingLayerAnimation];
-                             [_hudView removeFromSuperview];
-                             _hudView = nil;
+                             [self->_hudView removeFromSuperview];
+                             self->_hudView = nil;
                              
-                             [_overlayView removeFromSuperview];
-                             _overlayView = nil;
+                             [self->_overlayView removeFromSuperview];
+                             self->_overlayView = nil;
                              
-                             [_indefiniteAnimatedView removeFromSuperview];
-                             _indefiniteAnimatedView = nil;
+                             [self->_indefiniteAnimatedView removeFromSuperview];
+                             self->_indefiniteAnimatedView = nil;
                              
                              UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
                              
