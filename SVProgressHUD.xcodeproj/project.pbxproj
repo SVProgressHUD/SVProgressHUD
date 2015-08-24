@@ -195,7 +195,7 @@
 		65F021F315C857EF0030BBEF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = EmbeddedSources;
 				TargetAttributes = {
 					4A9D7DD71AB345980039B273 = {
