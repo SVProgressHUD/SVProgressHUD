@@ -1,9 +1,8 @@
 //
 //  SVIndefiniteAnimatedView.m
-//  SVProgressHUD
+//  SVProgressHUD, https://github.com/TransitApp/SVProgressHUD
 //
-//  Created by Guillaume Campagna on 2014-12-05.
-//
+//  Copyright (c) 2014 Guillaume Campagna. All rights reserved.
 //
 
 #import "SVIndefiniteAnimatedView.h"
@@ -40,8 +39,8 @@
         
         UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:arcCenter
                                                                     radius:self.radius
-                                                                startAngle:M_PI*3/2
-                                                                  endAngle:M_PI/2+M_PI*5
+                                                                startAngle:(CGFloat) (M_PI*3/2)
+                                                                  endAngle:(CGFloat) (M_PI/2+M_PI*5)
                                                                  clockwise:YES];
         
         _indefiniteAnimatedLayer = [CAShapeLayer layer];
@@ -61,7 +60,7 @@
         NSBundle *imageBundle = [NSBundle bundleWithURL:url];
         NSString *path = [imageBundle pathForResource:@"angle-mask" ofType:@"png"];
         
-        maskLayer.contents = (id)[[UIImage imageWithContentsOfFile:path] CGImage];;
+        maskLayer.contents = (__bridge id)[[UIImage imageWithContentsOfFile:path] CGImage];
         maskLayer.frame = _indefiniteAnimatedLayer.bounds;
         _indefiniteAnimatedLayer.mask = maskLayer;
         
@@ -69,7 +68,7 @@
         CAMediaTimingFunction *linearCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
         
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
-        animation.fromValue = 0;
+        animation.fromValue = (id) 0;
         animation.toValue = @(M_PI*2);
         animation.duration = animationDuration;
         animation.timingFunction = linearCurve;
