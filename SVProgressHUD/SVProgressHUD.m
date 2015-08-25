@@ -31,6 +31,7 @@ static UIImage *SVProgressHUDInfoImage;
 static UIImage *SVProgressHUDSuccessImage;
 static UIImage *SVProgressHUDErrorImage;
 static UIView *SVProgressHUDExtensionView;
+static CGFloat SVProgressHUDCornerRadius;
 
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
@@ -134,10 +135,14 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDErrorImage = image;
 }
 
-
 + (void)setViewForExtension:(UIView *)view{
     [self sharedView];
     SVProgressHUDExtensionView = view;
+}
+
++ (void)setCornerRadius:(CGFloat)radius {
+    [self sharedView];
+    SVProgressHUDCornerRadius = radius;
 }
 
 #pragma mark - Show Methods
@@ -254,6 +259,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
 
         SVProgressHUDRingThickness = 2;
+        SVProgressHUDCornerRadius = 14;
     }
 	
     return self;
@@ -961,7 +967,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (UIView *)hudView {
     if(!_hudView) {
         _hudView = [[UIView alloc] initWithFrame:CGRectZero];
-        _hudView.layer.cornerRadius = 14;
+        _hudView.layer.cornerRadius = SVProgressHUDCornerRadius;
         _hudView.layer.masksToBounds = YES;
         _hudView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     }
