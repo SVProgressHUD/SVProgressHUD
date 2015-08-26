@@ -78,7 +78,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 @end
 
 
-@implementation SVProgressHUD
+@implementation SVProgressHUD {
+    BOOL _isInitializing;
+}
 
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
@@ -216,8 +218,13 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
+        
+        _isInitializing = YES;
+        
         self.userInteractionEnabled = NO;
-        self.backgroundColor = [UIColor clearColor];
+        _useDefaultStyle = YES;
+        _backgroundColor = [UIColor clearColor];
+        _foregroundColor = [UIColor blackColor];
         self.alpha = 0.0f;
         self.activityCount = 0;
         
@@ -254,6 +261,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
 
         SVProgressHUDRingThickness = 2;
+        
+        _isInitializing = NO;
     }
 	
     return self;
@@ -927,11 +936,20 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (UIColor *)foregroundColorForStyle{
-    return self.usesLightTheme ? [UIColor blackColor] : [UIColor whiteColor];
+    
+    if (self.useDefaultStyle) {
+        return self.usesLightTheme ? [UIColor blackColor] : [UIColor whiteColor];
+    }
+    
+    return self.foregroundColor;
 }
 
 - (UIColor *)backgroundColorForStyle{
-    return self.usesLightTheme ? [UIColor whiteColor] : [UIColor blackColor];
+    if (self.useDefaultStyle) {
+        return self.usesLightTheme ? [UIColor whiteColor] : [UIColor whiteColor];
+    }
+    
+    return self.backgroundColor;
 }
 
 - (BOOL)isClear { // used for iOS 7 and above
@@ -1024,6 +1042,23 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     }
 #endif
     return 0;
+}
+
+#pragma mark - UIAppearance Setters
+
+-(void)setUseDefaultStyle:(BOOL)useDefaultStyle {
+    if (!_isInitializing) _useDefaultStyle = useDefaultStyle;
+}
+
+- (void)setBackgroundColor:(UIColor *)color {
+    [super setBackgroundColor:[UIColor clearColor]];
+    // Check needed for UIAppearance to work (since UILabel uses setters in init)
+    if (!_isInitializing) _backgroundColor = color;
+}
+
+- (void)setForegroundColor:(UIColor *)color {
+    // Check needed for UIAppearance to work (since UILabel uses setters in init)
+    if (!_isInitializing) _foregroundColor = color;
 }
 
 @end

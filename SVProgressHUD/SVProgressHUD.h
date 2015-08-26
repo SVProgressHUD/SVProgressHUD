@@ -33,6 +33,10 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 #pragma mark - Customization
 
+@property (assign, nonatomic) BOOL useDefaultStyle UI_APPEARANCE_SELECTOR;     // default is YES
+@property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR; // default is [UIColor whiteColor]
+@property (strong, nonatomic) UIColor *foregroundColor UI_APPEARANCE_SELECTOR; // default is [UIColor blackColor]
+
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;          // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
 + (void)setRingThickness:(CGFloat)width;                    // default is 2 pt
@@ -67,6 +71,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)dismiss;
 
 + (BOOL)isVisible;
+
 
 @end
 
