@@ -25,6 +25,7 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 static SVProgressHUDStyle SVProgressHUDDefaultStyle;
 static SVProgressHUDMaskType SVProgressHUDDefaultMaskType;
 
+static CGFloat SVProgressHUDCornerRadius;
 static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
 static UIImage *SVProgressHUDInfoImage;
@@ -95,8 +96,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 #pragma mark - Setters
 
-+ (void)setStatus:(NSString *)string {
-    [[self sharedView] setStatus:string];
++ (void)setStatus:(NSString *)status{
+    [[self sharedView] setStatus:status];
 }
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style{
@@ -114,9 +115,14 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDFont = font;
 }
 
-+ (void)setRingThickness:(CGFloat)width {
++ (void)setRingThickness:(CGFloat)width{
     [self sharedView];
     SVProgressHUDRingThickness = width;
+}
+
++ (void)setCornerRadius:(CGFloat)cornerRadius{
+    [self sharedView];
+    SVProgressHUDCornerRadius = cornerRadius;
 }
 
 + (void)setInfoImage:(UIImage*)image{
@@ -124,26 +130,32 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDInfoImage = image;
 }
 
-+ (void)setSuccessImage:(UIImage *)image {
++ (void)setSuccessImage:(UIImage *)image{
     [self sharedView];
     SVProgressHUDSuccessImage = image;
 }
 
-+ (void)setErrorImage:(UIImage *)image {
++ (void)setErrorImage:(UIImage *)image{
     [self sharedView];
     SVProgressHUDErrorImage = image;
 }
-
 
 + (void)setViewForExtension:(UIView *)view{
     [self sharedView];
     SVProgressHUDExtensionView = view;
 }
 
+
 #pragma mark - Show Methods
 
-+ (void)show {
++ (void)show{
     [self showWithStatus:nil];
+}
+
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType{
+    [self setDefaultMaskType:maskType];
+    [self show];
+    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showWithStatus:(NSString *)status {
@@ -151,41 +163,82 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [self showProgress:SVProgressHUDUndefinedProgress status:status];
 }
 
-+ (void)showProgress:(float)progress {
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
+    [self setDefaultMaskType:maskType];
+    [self showWithStatus:status];
+    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+}
+
++ (void)showProgress:(float)progress{
     [self showProgress:progress status:nil];
 }
 
-+ (void)showProgress:(float)progress status:(NSString *)status {
++ (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType{
+    [self setDefaultMaskType:maskType];
+    [self showProgress:progress];
+    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+}
+
++ (void)showProgress:(float)progress status:(NSString *)status{
     [[self sharedView] showProgress:progress status:status];
 }
 
-
-#pragma mark - Show then dismiss methods
-
-+ (void)showInfoWithStatus:(NSString *)string {
-    [self sharedView];
-    [self showImage:SVProgressHUDInfoImage status:string];
++ (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
+    [self setDefaultMaskType:maskType];
+    [self showProgress:progress status:status];
+    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
 }
 
-+ (void)showSuccessWithStatus:(NSString *)string {
+#pragma mark - Show, then automatically dismiss methods
+
++ (void)showInfoWithStatus:(NSString *)status{
     [self sharedView];
-    [self showImage:SVProgressHUDSuccessImage status:string];
+    [self showImage:SVProgressHUDInfoImage status:status];
 }
 
-+ (void)showErrorWithStatus:(NSString *)string {
-    [self sharedView];
-    [self showImage:SVProgressHUDErrorImage status:string];
++ (void)showInfoWithStatus:(NSString *)status maskType:(SVProgressHUDMaskType)maskType{
+    [self setDefaultMaskType:maskType];
+    [self showInfoWithStatus:status];
+    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
 }
 
-+ (void)showImage:(UIImage *)image status:(NSString *)string {
-    NSTimeInterval displayInterval = [[self sharedView] displayDurationForString:string];
-    [[self sharedView] showImage:image status:string duration:displayInterval];
++ (void)showSuccessWithStatus:(NSString *)status{
+    [self sharedView];
+    [self showImage:SVProgressHUDSuccessImage status:status];
+}
+
++ (void)showSuccessWithStatus:(NSString *)status maskType:(SVProgressHUDMaskType)maskType{
+    [self setDefaultMaskType:maskType];
+    [self showSuccessWithStatus:status];
+    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+}
+
++ (void)showErrorWithStatus:(NSString *)status{
+    [self sharedView];
+    [self showImage:SVProgressHUDErrorImage status:status];
+}
+
++ (void)showErrorWithStatus:(NSString *)status maskType:(SVProgressHUDMaskType)maskType{
+    [self setDefaultMaskType:maskType];
+    [self showErrorWithStatus:status];
+    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+}
+
++ (void)showImage:(UIImage *)image status:(NSString *)status{
+    NSTimeInterval displayInterval = [[self sharedView] displayDurationForString:status];
+    [[self sharedView] showImage:image status:status duration:displayInterval];
+}
+
++ (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
+    [self setDefaultMaskType:maskType];
+    [self showImage:image status:status];
+    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
 }
 
 
 #pragma mark - Dismiss Methods
 
-+ (void)popActivity {
++ (void)popActivity{
     if([self sharedView].activityCount > 0){
         [self sharedView].activityCount--;
     }
@@ -194,7 +247,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     }
 }
 
-+ (void)dismiss {
++ (void)dismiss{
     if ([self isVisible]) {
         [[self sharedView] dismiss];
     }
@@ -203,7 +256,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 #pragma mark - Offset
 
-+ (void)setOffsetFromCenter:(UIOffset)offset {
++ (void)setOffsetFromCenter:(UIOffset)offset{
     [self sharedView].offsetFromCenter = offset;
 }
 
@@ -214,7 +267,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 #pragma mark - Instance Methods
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame{
     if ((self = [super initWithFrame:frame])) {
         self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
@@ -254,12 +307,13 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
 
         SVProgressHUDRingThickness = 2;
+        SVProgressHUDCornerRadius = 14;
     }
 	
     return self;
 }
 
-- (void)updateHUDFrame {
+- (void)updateHUDFrame{
     CGFloat hudWidth = 100.0f;
     CGFloat hudHeight = 100.0f;
     CGFloat stringHeightBuffer = 20.0f;
@@ -356,6 +410,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (void)updateMask{
+    if(self.backgroundGradientLayer){
+        [self.backgroundGradientLayer removeFromSuperlayer];
+        self.backgroundGradientLayer = nil;
+    }
     switch (self.maskType) {
         case SVProgressHUDMaskTypeBlack: {
             self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
@@ -431,7 +489,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     }
 }
 
-
 - (void)setStatus:(NSString *)string {
     self.stringLabel.text = string;
     [self updateHUDFrame];
@@ -479,7 +536,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
 }
-
 
 - (NSDictionary *)notificationUserInfo{
     return (self.stringLabel.text ? @{SVProgressHUDStatusUserInfoKey : self.stringLabel.text} : nil);
@@ -961,7 +1017,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (UIView *)hudView {
     if(!_hudView) {
         _hudView = [[UIView alloc] initWithFrame:CGRectZero];
-        _hudView.layer.cornerRadius = 14;
+        _hudView.layer.cornerRadius = SVProgressHUDCornerRadius;
         _hudView.layer.masksToBounds = YES;
         _hudView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     }
