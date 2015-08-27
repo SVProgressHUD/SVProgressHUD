@@ -18,5 +18,8 @@
 - (IBAction)dismissSuccess;
 - (IBAction)dismissError;
 
+- (IBAction)changeStyle:(id)sender;
+- (IBAction)changeMaskType:(id)sender;
+
 @end
 

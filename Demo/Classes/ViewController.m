@@ -14,9 +14,7 @@
     return YES;
 }
 
-
 #pragma mark - Notification Methods Sample
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -94,5 +92,30 @@ static float progress = 0.0f;
 - (void)dismissError {
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
 }
+
+#pragma mark - Styling
+- (IBAction)changeStyle:(id)sender{
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    if(segmentedControl.selectedSegmentIndex == 0){
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
+    } else {
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    }
+}
+
+- (IBAction)changeMaskType:(id)sender
+{
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    if(segmentedControl.selectedSegmentIndex == 0){
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    } else if(segmentedControl.selectedSegmentIndex == 1){
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    } else if(segmentedControl.selectedSegmentIndex == 2){
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    } else {
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
+    }
+}
+
 
 @end
