@@ -33,9 +33,18 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 #pragma mark - Customization
 
-@property (assign, nonatomic) BOOL useDefaultStyle UI_APPEARANCE_SELECTOR;     // default is YES
-@property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR; // default is [UIColor whiteColor]
-@property (strong, nonatomic) UIColor *foregroundColor UI_APPEARANCE_SELECTOR; // default is [UIColor blackColor]
+@property (assign, nonatomic) SVProgressHUDStyle defaultStyle UI_APPEARANCE_SELECTOR; // default is SVProgressHUDStyleLight
+@property (assign, nonatomic) SVProgressHUDMaskType maskType UI_APPEARANCE_SELECTOR;  // default is SVProgressHUDMaskTypeNone
+@property (assign, nonatomic) CGFloat ringThickness UI_APPEARANCE_SELECTOR;           // default is 2 pt
+@property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;           // default is 2 pt
+
+@property (strong, nonatomic) UIFont *font UI_APPEARANCE_SELECTOR;                    // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
+@property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;        // default is [UIColor whiteColor]
+@property (strong, nonatomic) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;        // default is [UIColor blackColor]
+@property (strong, nonatomic) UIImage *infoImage UI_APPEARANCE_SELECTOR;              // default is the bundled info image provided by Freepik
+@property (strong, nonatomic) UIImage *successImage UI_APPEARANCE_SELECTOR;           // default is the bundled success image provided by Freepik
+@property (strong, nonatomic) UIImage *errorImage UI_APPEARANCE_SELECTOR;             // default is the bundled error image provided by Freepik
+@property (strong, nonatomic) UIView *viewForExtension UI_APPEARANCE_SELECTOR;        // default is nil, only used if #define SV_APP_EXTENSIONS is set
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;          // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
