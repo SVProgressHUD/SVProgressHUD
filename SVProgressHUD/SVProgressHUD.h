@@ -19,7 +19,8 @@ extern NSString * const SVProgressHUDStatusUserInfoKey;
 
 typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
     SVProgressHUDStyleLight,        // default style, white HUD with black text, HUD background will be blurred on iOS 8 and above
-    SVProgressHUDStyleDark          // black HUD and white text, HUD background will be blurred on iOS 8 and above
+    SVProgressHUDStyleDark,         // black HUD and white text, HUD background will be blurred on iOS 8 and above
+    SVProgressHUDStyleCustom        // uses the fore- and background color properties
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
@@ -38,10 +39,12 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setRingThickness:(CGFloat)width;                    // default is 2 pt
 + (void)setCornerRadius:(CGFloat)cornerRadius;              // default is 14 pt
 + (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setForegroundColor:(UIColor*)color;                 // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
++ (void)setBackgroundColor:(UIColor*)color;                 // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
 + (void)setInfoImage:(UIImage*)image;                       // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                    // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(UIImage*)image;                      // default is the bundled error image provided by Freepik
-+ (void)setViewForExtension:(UIView*)view;                  // default is nil, only used if #define SV_APP_EXTENSIONS is set
++ (void)setViewForExtension:(UIView *)view;                 // default is nil, only used if #define SV_APP_EXTENSIONS is set
 
 #pragma mark - Show Methods
 
@@ -58,10 +61,10 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setStatus:(NSString*)status; // change the HUD loading status while it's showing
 
 // stops the activity indicator, shows a glyph + status, and dismisses the HUD a little bit later
-+ (void)showInfoWithStatus:(NSString *)status;
-+ (void)showInfoWithStatus:(NSString *)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showInfoWithStatus: and setDefaultMaskType: instead.")));
++ (void)showInfoWithStatus:(NSString*)status;
++ (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showInfoWithStatus: and setDefaultMaskType: instead.")));
 + (void)showSuccessWithStatus:(NSString*)status;
-+ (void)showSuccessWithStatus:(NSString *)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showSuccessWithStatus: and setDefaultMaskType: instead.")));
++ (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showSuccessWithStatus: and setDefaultMaskType: instead.")));
 + (void)showErrorWithStatus:(NSString *)status;
 + (void)showErrorWithStatus:(NSString *)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showErrorWithStatus: and setDefaultMaskType: instead.")));
 

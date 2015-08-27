@@ -103,7 +103,10 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;          // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
 + (void)setRingThickness:(CGFloat)width;                    // default is 2 pt
++ (void)setCornerRadius:(CGFloat)cornerRadius;              // default is 14 pt
 + (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setForegroundColor:(UIColor*)color;                 // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
++ (void)setBackgroundColor:(UIColor*)color;                 // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
 + (void)setInfoImage:(UIImage*)image;                       // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Freepik
 + (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Freepik
