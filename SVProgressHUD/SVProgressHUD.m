@@ -236,6 +236,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
 
         _ringThickness = 2;
+        _cornerRadius = 14;
         
         _isInitializing = NO;
     }
@@ -950,7 +951,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (UIView *)hudView {
     if(!_hudView) {
         _hudView = [[UIView alloc] initWithFrame:CGRectZero];
-        _hudView.layer.cornerRadius = 14;
+        _hudView.layer.cornerRadius = self.cornerRadius;
         _hudView.layer.masksToBounds = YES;
         _hudView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     }
@@ -1046,6 +1047,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (void)setRingThickness:(CGFloat)width {
     if (!_isInitializing) _ringThickness = width;
+}
+
+- (void)setCornerRadius:(CGFloat)cornerRadius {
+    if (!_isInitializing) _cornerRadius = cornerRadius;
 }
 
 - (void)setInfoImage:(UIImage*)image{

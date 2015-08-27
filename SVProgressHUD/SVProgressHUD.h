@@ -37,7 +37,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 @property (assign, nonatomic) SVProgressHUDStyle defaultStyle UI_APPEARANCE_SELECTOR; // default is SVProgressHUDStyleLight
 @property (assign, nonatomic) SVProgressHUDMaskType maskType UI_APPEARANCE_SELECTOR;  // default is SVProgressHUDMaskTypeNone
 @property (assign, nonatomic) CGFloat ringThickness UI_APPEARANCE_SELECTOR;           // default is 2 pt
-@property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;           // default is 2 pt
+@property (assign, nonatomic) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;            // default is 14 pt
+@property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;       // default is 0, 0
 
 @property (strong, nonatomic) UIFont *font UI_APPEARANCE_SELECTOR;                    // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 @property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;        // default is [UIColor whiteColor]
