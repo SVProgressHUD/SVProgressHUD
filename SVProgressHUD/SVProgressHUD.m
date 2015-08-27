@@ -356,6 +356,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (void)updateMask{
+    if(self.backgroundGradientLayer){
+        [self.backgroundGradientLayer removeFromSuperlayer];
+        self.backgroundGradientLayer = nil;
+    }
     switch (self.maskType) {
         case SVProgressHUDMaskTypeBlack: {
             self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
