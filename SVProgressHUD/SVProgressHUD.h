@@ -19,7 +19,8 @@ extern NSString * const SVProgressHUDStatusUserInfoKey;
 
 typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
     SVProgressHUDStyleLight,        // default style, white HUD with black text, HUD background will be blurred on iOS 8 and above
-    SVProgressHUDStyleDark          // black HUD and white text, HUD background will be blurred on iOS 8 and above
+    SVProgressHUDStyleDark,         // black HUD and white text, HUD background will be blurred on iOS 8 and above
+    SVProgressHUDStyleCustom        // uses UIAppearance properties
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {

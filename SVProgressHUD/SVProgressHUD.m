@@ -908,7 +908,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (UIColor *)foregroundColorForStyle{
     
-    if (self.useDefaultStyle) {
+    if (self.defaultStyle != SVProgressHUDStyleCustom) {
         return self.usesLightTheme ? [UIColor blackColor] : [UIColor whiteColor];
     }
     
@@ -916,8 +916,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (UIColor *)backgroundColorForStyle{
-    if (self.useDefaultStyle) {
-        return self.usesLightTheme ? [UIColor whiteColor] : [UIColor whiteColor];
+    if (self.defaultStyle != SVProgressHUDStyleCustom) {
+        return self.usesLightTheme ? [UIColor whiteColor] : [UIColor blackColor];
     }
     
     return self.backgroundColor;
