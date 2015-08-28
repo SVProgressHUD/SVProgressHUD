@@ -63,19 +63,35 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
 
-- (void)setStatus:(NSString*)string;
-- (void)showProgress:(float)progress status:(NSString*)string;
-- (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
+- (void)updateHUDFrame;
+- (void)updateMask;
+- (void)updateBlurBounds;
+- (void)updateMotionEffectForOrientation:(UIInterfaceOrientation)orientation;
 
-- (void)dismiss;
+- (void)setStatus:(NSString*)string;
+- (void)setFadeOutTimer:(NSTimer*)newTimer;
 
 - (void)registerNotifications;
 - (NSDictionary*)notificationUserInfo;
-- (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
+
 - (void)positionHUD:(NSNotification*)notification;
+- (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
+
+- (void)overlayViewDidReceiveTouchEvent:(id)sender forEvent:(UIEvent*)event;
+
+- (void)showProgress:(float)progress status:(NSString*)string;
+- (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
+
+- (SVIndefiniteAnimatedView*)indefiniteAnimatedView;
+- (CAShapeLayer*)ringLayer;
+- (CAShapeLayer*)backgroundRingLayer;
+- (void)cancelRingLayerAnimation;
+- (CAShapeLayer*)createRingLayerWithCenter:(CGPoint)center radius:(CGFloat)radius;
+
 - (NSTimeInterval)displayDurationForString:(NSString*)string;
 - (UIColor*)foregroundColorForStyle;
 - (UIColor*)backgroundColorForStyle;
+- (UIImage*)image:(UIImage*)image withTintColor:(UIColor*)color;
 
 @end
 
@@ -805,20 +821,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     }
 }
 
-- (UIImage*)image:(UIImage*)image withTintColor:(UIColor*)color{
-    CGRect rect = CGRectMake(0.0f, 0.0f, image.size.width, image.size.height);
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, image.scale);
-    CGContextRef c = UIGraphicsGetCurrentContext();
-    [image drawInRect:rect];
-    CGContextSetFillColorWithColor(c, [color CGColor]);
-    CGContextSetBlendMode(c, kCGBlendModeSourceAtop);
-    CGContextFillRect(c, rect);
-    UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return tintedImage;
-}
-
 - (void)showImage:(UIImage*)image status:(NSString*)string duration:(NSTimeInterval)duration{
     self.progress = SVProgressHUDUndefinedProgress;
     [self cancelRingLayerAnimation];
@@ -1026,6 +1028,20 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     } else{
         return SVProgressHUDBackgroundColor;
     }
+}
+
+- (UIImage*)image:(UIImage*)image withTintColor:(UIColor*)color{
+    CGRect rect = CGRectMake(0.0f, 0.0f, image.size.width, image.size.height);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, image.scale);
+    CGContextRef c = UIGraphicsGetCurrentContext();
+    [image drawInRect:rect];
+    CGContextSetFillColorWithColor(c, [color CGColor]);
+    CGContextSetBlendMode(c, kCGBlendModeSourceAtop);
+    CGContextFillRect(c, rect);
+    UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return tintedImage;
 }
 
 - (BOOL)isClear{ // used for iOS 7 and above
