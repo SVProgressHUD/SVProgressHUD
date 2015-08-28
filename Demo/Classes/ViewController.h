@@ -19,6 +19,7 @@
 - (IBAction)showErrorWithStatus;
 
 - (IBAction)changeStyle:(id)sender;
+- (IBAction)changeAnimationType:(id)sender;
 - (IBAction)changeMaskType:(id)sender;
 
 @end
