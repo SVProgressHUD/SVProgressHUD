@@ -130,9 +130,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDDefaultMaskType = maskType;
 }
 
-+ (void)setAnimationType:(SVProgressHUDAnimationType)type {
++ (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type {
     [self sharedView];
     SVProgressHUDDefaultAnimationType = type;
+    // Reset indefiniteAnimatedView so it gets recreated with the new style
+    [self sharedView].indefiniteAnimatedView = nil;
 }
 
 + (void)setRingThickness:(CGFloat)width{
@@ -314,8 +316,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         self.isAccessibilityElement = YES;
         
         // Customize properties
-        SVProgressHUDDefaultMaskType = SVProgressHUDMaskTypeNone;
         SVProgressHUDDefaultStyle = SVProgressHUDStyleLight;
+        SVProgressHUDDefaultMaskType = SVProgressHUDMaskTypeNone;
+        SVProgressHUDDefaultAnimationType = SVProgressHUDAnimationTypeFlat;
 
         SVProgressHUDRingThickness = 2;
         SVProgressHUDCornerRadius = 14;
