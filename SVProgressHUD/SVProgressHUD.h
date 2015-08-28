@@ -24,10 +24,15 @@ typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
-    SVProgressHUDMaskTypeNone = 1,  // allow user interactions while HUD is displayed
+    SVProgressHUDMaskTypeNone = 1,  // default mask type, allow user interactions while HUD is displayed
     SVProgressHUDMaskTypeClear,     // don't allow user interactions
     SVProgressHUDMaskTypeBlack,     // don't allow user interactions and dim the UI in the back of the HUD, as on iOS 7 and above
-    SVProgressHUDMaskTypeGradient   // don't allow user interactions and dim the UI with a a-la-alert-view background gradient, as on iOS 6
+    SVProgressHUDMaskTypeGradient   // don't allow user interactions and dim the UI with a a-la UIAlertView background gradient, as on iOS 6
+};
+
+typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
+    SVProgressHUDAnimationTypeFlat,      // default animation type, custom flat animation (indefinite animated ring)
+    SVProgressHUDAnimationTypeIOSNative  // iOS native UIActivityIndicatorView
 };
 
 @interface SVProgressHUD : UIView
@@ -44,7 +49,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)setInfoImage:(UIImage*)image;                       // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                    // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(UIImage*)image;                      // default is the bundled error image provided by Freepik
-+ (void)setViewForExtension:(UIView *)view;                 // default is nil, only used if #define SV_APP_EXTENSIONS is set
++ (void)setViewForExtension:(UIView*)view;                  // default is nil, only used if #define SV_APP_EXTENSIONS is set
++ (void)setAnimationType:(SVProgressHUDAnimationType)type;  // default is SVProgressHUDAnimationTypeFlat which means SVIndefiniteAnimatedView
 
 #pragma mark - Show Methods
 

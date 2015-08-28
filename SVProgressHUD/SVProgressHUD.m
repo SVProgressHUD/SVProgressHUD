@@ -24,6 +24,7 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 
 static SVProgressHUDStyle SVProgressHUDDefaultStyle;
 static SVProgressHUDMaskType SVProgressHUDDefaultMaskType;
+static SVProgressHUDAnimationType SVProgressHUDDefaultAnimationType;
 
 static CGFloat SVProgressHUDCornerRadius;
 static CGFloat SVProgressHUDRingThickness;
@@ -52,7 +53,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 @property (nonatomic, strong) UILabel *stringLabel;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) SVIndefiniteAnimatedView *indefiniteAnimatedView;
+@property (nonatomic, strong) UIView *indefiniteAnimatedView;
 @property (nonatomic, strong) SVRadialGradientLayer *backgroundGradientLayer;
 
 @property (nonatomic, readwrite) CGFloat progress;
@@ -82,7 +83,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)showProgress:(float)progress status:(NSString*)string;
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
 
-- (SVIndefiniteAnimatedView*)indefiniteAnimatedView;
+- (UIActivityIndicatorView *)createActivityIndicatorView;
+- (SVIndefiniteAnimatedView *)createIndefiniteAnimatedView;
+- (UIView *)indefiniteAnimatedView;
 - (CAShapeLayer*)ringLayer;
 - (CAShapeLayer*)backgroundRingLayer;
 - (void)cancelRingLayerAnimation;
@@ -125,6 +128,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType{
     [self sharedView];
     SVProgressHUDDefaultMaskType = maskType;
+}
+
++ (void)setAnimationType:(SVProgressHUDAnimationType)type {
+    [self sharedView];
+    SVProgressHUDDefaultAnimationType = type;
 }
 
 + (void)setRingThickness:(CGFloat)width{
@@ -171,7 +179,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [self sharedView];
     SVProgressHUDExtensionView = view;
 }
-
 
 #pragma mark - Show Methods
 
@@ -414,9 +421,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [CATransaction begin];
     [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
     
-    if(string){
-        self.indefiniteAnimatedView.radius = SVProgressHUDRingRadius;
-        [self.indefiniteAnimatedView sizeToFit];
+	if(string) {
+        if(SVProgressHUDDefaultAnimationType == SVProgressHUDAnimationTypeFlat) {
+            SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView *)self.indefiniteAnimatedView;
+            indefiniteAnimationView.radius = SVProgressHUDRingRadius;
+            [indefiniteAnimationView sizeToFit];
+        }
         
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
         self.indefiniteAnimatedView.center = center;
@@ -424,9 +434,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         if(self.progress != SVProgressHUDUndefinedProgress){
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
         }
-	} else{
-        self.indefiniteAnimatedView.radius = SVProgressHUDRingNoTextRadius;
-        [self.indefiniteAnimatedView sizeToFit];
+	} else {
+        if(SVProgressHUDDefaultAnimationType == SVProgressHUDAnimationTypeFlat) {
+            SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView *)self.indefiniteAnimatedView;
+            indefiniteAnimationView.radius = SVProgressHUDRingNoTextRadius;
+            [indefiniteAnimationView sizeToFit];
+        }
         
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetHeight(self.hudView.bounds)/2);
         self.indefiniteAnimatedView.center = center;
@@ -751,7 +764,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if(progress >= 0){
         self.imageView.image = nil;
         self.imageView.hidden = NO;
+        
         [self.indefiniteAnimatedView removeFromSuperview];
+        if([self.indefiniteAnimatedView respondsToSelector:@selector(stopAnimating)]) {
+            [(id)self.indefiniteAnimatedView stopAnimating];
+        }
         
         self.ringLayer.strokeEnd = progress;
         
@@ -761,7 +778,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     } else{
         self.activityCount++;
         [self cancelRingLayerAnimation];
+        
         [self.hudView addSubview:self.indefiniteAnimatedView];
+        if([self.indefiniteAnimatedView respondsToSelector:@selector(startAnimating)]) {
+            [(id)self.indefiniteAnimatedView startAnimating];
+        }
     }
     
     if(self.maskType != SVProgressHUDMaskTypeNone){
@@ -843,6 +864,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.stringLabel.text = string;
     [self updateHUDFrame];
     [self.indefiniteAnimatedView removeFromSuperview];
+    if([self.indefiniteAnimatedView respondsToSelector:@selector(stopAnimating)]) {
+        [(id)self.indefiniteAnimatedView stopAnimating];
+    }
     
     if(self.maskType != SVProgressHUDMaskTypeNone){
         self.overlayView.userInteractionEnabled = YES;
@@ -925,15 +949,26 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 #pragma mark - Ring progress animation
 
-- (SVIndefiniteAnimatedView*)indefiniteAnimatedView{
+- (UIActivityIndicatorView *)createActivityIndicatorView{
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityIndicatorView.color = self.foregroundColorForStyle;
+    [activityIndicatorView sizeToFit];
+    return activityIndicatorView;
+}
+
+- (SVIndefiniteAnimatedView *)createIndefiniteAnimatedView{
+    SVIndefiniteAnimatedView *indefiniteAnimatedView = [[SVIndefiniteAnimatedView alloc] initWithFrame:CGRectZero];
+    indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
+    indefiniteAnimatedView.radius = self.stringLabel.text ? SVProgressHUDRingRadius : SVProgressHUDRingNoTextRadius;
+    indefiniteAnimatedView.strokeThickness = SVProgressHUDRingThickness;
+    [indefiniteAnimatedView sizeToFit];
+    return indefiniteAnimatedView;
+}
+
+- (UIView *)indefiniteAnimatedView{
     if(_indefiniteAnimatedView == nil){
-        _indefiniteAnimatedView = [[SVIndefiniteAnimatedView alloc] initWithFrame:CGRectZero];
-        _indefiniteAnimatedView.radius = self.stringLabel.text ? SVProgressHUDRingRadius : SVProgressHUDRingNoTextRadius;
-        [_indefiniteAnimatedView sizeToFit];
+        _indefiniteAnimatedView = (SVProgressHUDDefaultAnimationType == SVProgressHUDAnimationTypeFlat) ? [self createIndefiniteAnimatedView] : [self createActivityIndicatorView];
     }
-    _indefiniteAnimatedView.strokeThickness = SVProgressHUDRingThickness;
-    _indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
-    
     return _indefiniteAnimatedView;
 }
 
@@ -982,7 +1017,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (CAShapeLayer*)createRingLayerWithCenter:(CGPoint)center radius:(CGFloat)radius{
-    
     UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(radius, radius) radius:radius startAngle:(CGFloat) -M_PI_2 endAngle:(CGFloat) (M_PI + M_PI_2) clockwise:YES];
     
     CAShapeLayer *slice = [CAShapeLayer layer];

@@ -96,7 +96,6 @@
 				2265DEED14706A8900B3EBF7 /* README.md */,
 				22B9D43716B92E4D00E71652 /* SVProgressHUD.podspec */,
 				080E96DDFE201D6D7F000001 /* Classes */,
-				63ADC4B81364C1360060E45B /* SVProgressHUD */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -112,6 +111,7 @@
 				8D1107310486CEB800E47090 /* SVProgressHUD-Info.plist */,
 				32CA4F630368D1EE00C91783 /* SVProgressHUD_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				63ADC4B81364C1360060E45B /* SVProgressHUD */,
 			);
 			name = "Other Sources";
 			path = ..;
