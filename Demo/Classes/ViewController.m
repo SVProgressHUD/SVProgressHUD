@@ -39,8 +39,7 @@
                                                object:nil];
 }
 
-- (void)handleNotification:(NSNotification *)notification
-{
+- (void)handleNotification:(NSNotification *)notification{
     NSLog(@"Notification recieved: %@", notification.name);
     NSLog(@"Status user info key: %@", notification.userInfo[SVProgressHUDStatusUserInfoKey]);
 }

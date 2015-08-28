@@ -83,6 +83,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)showProgress:(float)progress status:(NSString*)string;
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
 
+- (void)dismissWithDelay:(NSTimeInterval)delay;
+- (void)dismiss;
+
 - (UIActivityIndicatorView *)createActivityIndicatorView;
 - (SVIndefiniteAnimatedView *)createIndefiniteAnimatedView;
 - (UIView *)indefiniteAnimatedView;
@@ -283,10 +286,14 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     }
 }
 
-+ (void)dismiss{
++ (void)dismissWithDelay:(NSTimeInterval)delay{
     if([self isVisible]){
-        [[self sharedView] dismiss];
+        [[self sharedView] dismissWithDelay:delay];
     }
+}
+
++ (void)dismiss{
+    [self dismissWithDelay:0];
 }
 
 
@@ -888,7 +895,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
 }
 
-- (void)dismiss{
+- (void)dismissWithDelay:(NSTimeInterval)delay{
     NSDictionary *userInfo = [self notificationUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                         object:nil
@@ -897,7 +904,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.activityCount = 0;
     __weak SVProgressHUD *weakSelf = self;
     [UIView animateWithDuration:0.15
-                          delay:0
+                          delay:delay
                         options:(UIViewAnimationOptions) (UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction)
                      animations:^{
                          __strong SVProgressHUD *strongSelf = weakSelf;
@@ -947,6 +954,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                              }
                          }
                      }];
+}
+
+- (void)dismiss
+{
+    [self dismissWithDelay:0];
 }
 
 

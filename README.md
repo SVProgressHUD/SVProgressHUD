@@ -78,10 +78,11 @@ If you'd like the HUD to reflect the progress of a task, use one of these:
 
 ### Dismissing the HUD
 
-It can be dismissed right away using:
+The HUD can be dismissed using:
 
 ```objective-c
 + (void)dismiss;
++ (void)dismissWithDelay:(NSTimeInterval)delay;
 ```
 
 If you'd like to stack HUDs, you can balance out every show call using:
