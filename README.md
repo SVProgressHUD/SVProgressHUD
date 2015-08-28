@@ -1,5 +1,11 @@
 # SVProgressHUD
 
+![Pod Version](https://img.shields.io/cocoapods/v/SVProgressHUD.svg?style=flat)
+![Pod License](https://img.shields.io/cocoapods/l/SVProgressHUD.svg?style=flat)
+![Pod Platform](https://img.shields.io/cocoapods/p/SVProgressHUD.svg?style=flat)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
+
 `SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
 
 ![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
