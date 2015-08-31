@@ -38,7 +38,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 @property (nonatomic, strong) UILabel *stringLabel;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIView *indefiniteAnimatedView;
-@property (nonatomic, strong) SVRadialGradientLayer *backgroundGradientLayer;
+@property (nonatomic, strong) CALayer *backgroundLayer;
 
 @property (nonatomic, readwrite) CGFloat progress;
 @property (nonatomic, readwrite) NSUInteger activityCount;
@@ -436,30 +436,37 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (void)updateMask{
-    if(self.backgroundGradientLayer){
-        [self.backgroundGradientLayer removeFromSuperlayer];
-        self.backgroundGradientLayer = nil;
+    if(self.backgroundLayer){
+        [self.backgroundLayer removeFromSuperlayer];
+        self.backgroundLayer = nil;
     }
-    switch (self.maskType){
+    switch (self.defaultMaskType){
         case SVProgressHUDMaskTypeBlack:{
-            self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+            
+            self.backgroundLayer = [CALayer layer];
+            self.backgroundLayer.frame = self.bounds;
+            self.backgroundLayer.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5].CGColor;
+            CGPoint gradientCenter = self.center;
+            gradientCenter.y = (self.bounds.size.height - self.visibleKeyboardHeight) / 2;
+            [self.backgroundLayer setNeedsDisplay];
+            
+            [self.layer insertSublayer:self.backgroundLayer atIndex:0];
             break;
         }
             
         case SVProgressHUDMaskTypeGradient:{
-            self.backgroundColor = [UIColor clearColor];
-            self.backgroundGradientLayer = [SVRadialGradientLayer layer];
-            self.backgroundGradientLayer.frame = self.bounds;
+            SVRadialGradientLayer *layer = [SVRadialGradientLayer layer];
+            self.backgroundLayer = layer;
+            self.backgroundLayer.frame = self.bounds;
             CGPoint gradientCenter = self.center;
             gradientCenter.y = (self.bounds.size.height - self.visibleKeyboardHeight) / 2;
-            self.backgroundGradientLayer.gradientCenter = gradientCenter;
-            [self.backgroundGradientLayer setNeedsDisplay];
+            layer.gradientCenter = gradientCenter;
+            [self.backgroundLayer setNeedsDisplay];
             
-            [self.layer addSublayer:self.backgroundGradientLayer];
+            [self.layer insertSublayer:self.backgroundLayer atIndex:0];
             break;
         }
         default:
-            self.backgroundColor = [UIColor clearColor];
             break;
     }
 }
