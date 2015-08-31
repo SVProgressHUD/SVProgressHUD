@@ -1037,20 +1037,23 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (UIColor *)foregroundColorForStyle{
-    
-    if (self.defaultStyle != SVProgressHUDStyleCustom) {
-        return self.defaultStyle == SVProgressHUDStyleLight ? [UIColor blackColor] : [UIColor whiteColor];
+    if(self.defaultStyle == SVProgressHUDStyleLight){
+        return [UIColor blackColor];
+    } else if(self.defaultStyle == SVProgressHUDStyleDark){
+        return [UIColor whiteColor];
+    } else{
+        return self.foregroundColor;
     }
-    
-    return self.foregroundColor;
 }
 
 - (UIColor *)backgroundColorForStyle{
-    if (self.defaultStyle != SVProgressHUDStyleCustom) {
-        return self.defaultStyle == SVProgressHUDStyleLight ? [UIColor whiteColor] : [UIColor blackColor];
+    if(self.defaultStyle == SVProgressHUDStyleLight){
+        return [UIColor whiteColor];
+    } else if(self.defaultStyle == SVProgressHUDStyleDark){
+        return [UIColor blackColor];
+    } else{
+        return self.backgroundColor;
     }
-    
-    return self.backgroundColor;
 }
 
 - (UIImage*)image:(UIImage*)image withTintColor:(UIColor*)color{
