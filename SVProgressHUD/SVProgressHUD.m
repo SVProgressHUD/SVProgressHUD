@@ -1162,12 +1162,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (void)setBackgroundColor:(UIColor *)color {
     [super setBackgroundColor:[UIColor clearColor]];
-    // Check needed for UIAppearance to work (since UILabel uses setters in init)
-    if (!_isInitializing) _backgroundColor = color;
+    if (!_isInitializing) _backgroundColor = color; // Check needed for UIAppearance to work
 }
 
 - (void)setForegroundColor:(UIColor *)color {
-    // Check needed for UIAppearance to work (since UILabel uses setters in init)
     if (!_isInitializing) _foregroundColor = color;
 }
 
