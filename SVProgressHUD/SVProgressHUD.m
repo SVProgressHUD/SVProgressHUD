@@ -113,39 +113,33 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType{
-    [self sharedView].maskType = maskType;
+    [self sharedView].defaultMaskType = maskType;
 }
 
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type {
-    [self sharedView];
-    SVProgressHUDDefaultAnimationType = type;
+    [self sharedView].defaultAnimationType = type;
     // Reset indefiniteAnimatedView so it gets recreated with the new style
     [self sharedView].indefiniteAnimatedView = nil;
 }
 
 + (void)setRingThickness:(CGFloat)width{
-    [self sharedView];
-    SVProgressHUDRingThickness = width;
+    [self sharedView].ringThickness = width;
 }
 
 + (void)setCornerRadius:(CGFloat)cornerRadius{
-    [self sharedView];
-    SVProgressHUDCornerRadius = cornerRadius;
+    [self sharedView].cornerRadius = cornerRadius;
 }
 
 + (void)setFont:(UIFont*)font{
-    [self sharedView];
-    SVProgressHUDFont = font;
+    [self sharedView].font = font;
 }
 
 + (void)setForegroundColor:(UIColor*)color{
-    [self sharedView];
-    SVProgressHUDForegroundColor = color;
+    [self sharedView].foregroundColor = color;
 }
 
 + (void)setBackgroundColor:(UIColor*)color{
-    [self sharedView];
-    SVProgressHUDBackgroundColor = color;
+    [self sharedView].backgroundColor = color;
 }
 
 + (void)setInfoImage:(UIImage*)image{
@@ -159,7 +153,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)setErrorImage:(UIImage *)image {
     [self sharedView].errorImage = image;
 }
-
 
 + (void)setViewForExtension:(UIView *)view{
     [self sharedView].viewForExtension = view;
@@ -211,8 +204,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Show, then automatically dismiss methods
 
 + (void)showInfoWithStatus:(NSString*)status{
-    [self sharedView];
-    [self showImage:SVProgressHUDInfoImage status:status];
+    [self showImage:[self sharedView].infoImage status:status];
 }
 
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
@@ -222,8 +214,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showSuccessWithStatus:(NSString*)status{
-    [self sharedView];
-    [self showImage:SVProgressHUDSuccessImage status:status];
+    [self showImage:[self sharedView].successImage status:status];
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
@@ -233,8 +224,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showErrorWithStatus:(NSString*)status{
-    [self sharedView];
-    [self showImage:SVProgressHUDErrorImage status:status];
+    [self showImage:[self sharedView].errorImage status:status];
 }
 
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
@@ -301,9 +291,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         self.alpha = 0.0f;
         self.activityCount = 0;
         
-        _maskType = SVProgressHUDMaskTypeNone;
+        _defaultMaskType = SVProgressHUDMaskTypeNone;
         _defaultStyle = SVProgressHUDStyleLight;
-		_animationType = SVProgressHUDAnimationTypeFlat
+        _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
 
         // add accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
@@ -415,7 +405,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
     
 	if(string) {
-        if(SVProgressHUDDefaultAnimationType == SVProgressHUDAnimationTypeFlat) {
+        if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) {
             SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView *)self.indefiniteAnimatedView;
             indefiniteAnimationView.radius = SVProgressHUDRingRadius;
             [indefiniteAnimationView sizeToFit];
@@ -428,7 +418,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             self.backgroundRingLayer.position = self.ringLayer.position = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
         }
 	} else {
-        if(SVProgressHUDDefaultAnimationType == SVProgressHUDAnimationTypeFlat) {
+        if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) {
             SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView *)self.indefiniteAnimatedView;
             indefiniteAnimationView.radius = SVProgressHUDRingNoTextRadius;
             [indefiniteAnimationView sizeToFit];
@@ -488,7 +478,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
         
         // Create blur effect
-        UIBlurEffectStyle blurEffectStyle = self.style == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+        UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
         UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
         blurEffectView.autoresizingMask = self.hudView.autoresizingMask;
@@ -776,7 +766,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
     }
     
-    if(self.maskType != SVProgressHUDMaskTypeNone){
+    if(self.defaultMaskType != SVProgressHUDMaskTypeNone){
         self.overlayView.userInteractionEnabled = YES;
         self.accessibilityLabel = string;
         self.isAccessibilityElement = YES;
@@ -857,7 +847,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         [(id)self.indefiniteAnimatedView stopAnimating];
     }
     
-    if(self.maskType != SVProgressHUDMaskTypeNone){
+    if(self.defaultMaskType != SVProgressHUDMaskTypeNone){
         self.overlayView.userInteractionEnabled = YES;
         self.accessibilityLabel = string;
         self.isAccessibilityElement = YES;
@@ -954,17 +944,15 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVIndefiniteAnimatedView *indefiniteAnimatedView = [[SVIndefiniteAnimatedView alloc] initWithFrame:CGRectZero];
     indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
     indefiniteAnimatedView.radius = self.stringLabel.text ? SVProgressHUDRingRadius : SVProgressHUDRingNoTextRadius;
-    indefiniteAnimatedView.strokeThickness = SVProgressHUDRingThickness;
+    indefiniteAnimatedView.strokeThickness = self.ringThickness;
     [indefiniteAnimatedView sizeToFit];
     return indefiniteAnimatedView;
 }
 
 - (UIView *)indefiniteAnimatedView{
     if(_indefiniteAnimatedView == nil){
-        _indefiniteAnimatedView = (SVProgressHUDDefaultAnimationType == SVProgressHUDAnimationTypeFlat) ? [self createIndefiniteAnimatedView] : [self createActivityIndicatorView];
+        _indefiniteAnimatedView = (self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) ? [self createIndefiniteAnimatedView] : [self createActivityIndicatorView];
     }
-    _indefiniteAnimatedView.strokeThickness = self.ringThickness;
-    _indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
     
     return _indefiniteAnimatedView;
 }
@@ -1044,7 +1032,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (UIColor *)foregroundColorForStyle{
     
     if (self.defaultStyle != SVProgressHUDStyleCustom) {
-        return self.usesLightTheme ? [UIColor blackColor] : [UIColor whiteColor];
+        return self.defaultStyle == SVProgressHUDStyleLight ? [UIColor blackColor] : [UIColor whiteColor];
     }
     
     return self.foregroundColor;
@@ -1052,7 +1040,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (UIColor *)backgroundColorForStyle{
     if (self.defaultStyle != SVProgressHUDStyleCustom) {
-        return self.usesLightTheme ? [UIColor whiteColor] : [UIColor blackColor];
+        return self.defaultStyle == SVProgressHUDStyleLight ? [UIColor whiteColor] : [UIColor blackColor];
     }
     
     return self.backgroundColor;
@@ -1073,7 +1061,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (BOOL)isClear{ // used for iOS 7 and above
-    return (self.maskType == SVProgressHUDMaskTypeClear || self.maskType == SVProgressHUDMaskTypeNone);
+    return (self.defaultMaskType == SVProgressHUDMaskTypeClear || self.defaultMaskType == SVProgressHUDMaskTypeNone);
 }
 
 - (UIControl*)overlayView{
@@ -1178,7 +1166,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType{
-    if (!_isInitializing) _maskType = maskType;
+    if (!_isInitializing) _defaultMaskType = maskType;
+}
+
+-(void)setDefaultAnimationType:(SVProgressHUDAnimationType)animationType {
+    if (!_isInitializing) _defaultAnimationType = animationType;
 }
 
 - (void)setOffsetFromCenter:(UIOffset)offset {

@@ -40,7 +40,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 #pragma mark - Customization
 
 @property (assign, nonatomic) SVProgressHUDStyle defaultStyle UI_APPEARANCE_SELECTOR; // default is SVProgressHUDStyleLight
-@property (assign, nonatomic) SVProgressHUDMaskType maskType UI_APPEARANCE_SELECTOR;  // default is SVProgressHUDMaskTypeNone
+@property (assign, nonatomic) SVProgressHUDMaskType defaultMaskType UI_APPEARANCE_SELECTOR;  // default is SVProgressHUDMaskTypeNone
+@property (assign, nonatomic) SVProgressHUDAnimationType defaultAnimationType UI_APPEARANCE_SELECTOR;  // default is SVProgressHUDAnimationTypeFlat
 @property (assign, nonatomic) CGFloat ringThickness UI_APPEARANCE_SELECTOR;           // default is 2 pt
 @property (assign, nonatomic) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;            // default is 14 pt
 @property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;       // default is 0, 0
