@@ -14,9 +14,7 @@
     return YES;
 }
 
-
 #pragma mark - Notification Methods Sample
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -41,8 +39,7 @@
                                                object:nil];
 }
 
-- (void)handleNotification:(NSNotification *)notification
-{
+- (void)handleNotification:(NSNotification *)notification{
     NSLog(@"Notification recieved: %@", notification.name);
     NSLog(@"Status user info key: %@", notification.userInfo[SVProgressHUDStatusUserInfoKey]);
 }
@@ -83,16 +80,50 @@ static float progress = 0.0f;
 	[SVProgressHUD dismiss];
 }
 
-- (IBAction)dismissInfo{
+- (IBAction)showInfoWithStatus{
     [SVProgressHUD showInfoWithStatus:@"Useful Information."];
 }
 
-- (void)dismissSuccess {
+- (void)showSuccessWithStatus {
 	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
 }
 
-- (void)dismissError {
+- (void)showErrorWithStatus {
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
 }
+
+#pragma mark - Styling
+- (IBAction)changeStyle:(id)sender{
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    if(segmentedControl.selectedSegmentIndex == 0){
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
+    } else {
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    }
+}
+
+- (IBAction)changeAnimationType:(id)sender{
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    if(segmentedControl.selectedSegmentIndex == 0){
+        [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeFlat];
+    } else {
+        [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
+    }
+
+}
+
+- (IBAction)changeMaskType:(id)sender{
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    if(segmentedControl.selectedSegmentIndex == 0){
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    } else if(segmentedControl.selectedSegmentIndex == 1){
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    } else if(segmentedControl.selectedSegmentIndex == 2){
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    } else {
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
+    }
+}
+
 
 @end

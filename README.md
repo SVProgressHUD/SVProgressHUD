@@ -1,5 +1,11 @@
 # SVProgressHUD
 
+![Pod Version](https://img.shields.io/cocoapods/v/SVProgressHUD.svg?style=flat)
+![Pod License](https://img.shields.io/cocoapods/l/SVProgressHUD.svg?style=flat)
+![Pod Platform](https://img.shields.io/cocoapods/p/SVProgressHUD.svg?style=flat)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
+
 `SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
 
 ![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
@@ -72,10 +78,11 @@ If you'd like the HUD to reflect the progress of a task, use one of these:
 
 ### Dismissing the HUD
 
-It can be dismissed right away using:
+The HUD can be dismissed using:
 
 ```objective-c
 + (void)dismiss;
++ (void)dismissWithDelay:(NSTimeInterval)delay;
 ```
 
 If you'd like to stack HUDs, you can balance out every show call using:
@@ -100,14 +107,18 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 `SVProgressHUD` can be customized via the following methods:
 
 ```objective-c
-+ (void)setDefaultStyle:(SVProgressHUDStyle)style;          // default is SVProgressHUDStyleLight
-+ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType; // default is SVProgressHUDMaskTypeNone
-+ (void)setRingThickness:(CGFloat)width;                    // default is 2 pt
-+ (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-+ (void)setInfoImage:(UIImage*)image;                       // default is the bundled info image provided by Freepik
-+ (void)setSuccessImage:(UIImage*)image;                    // default is bundled success image from Freepik
-+ (void)setErrorImage:(UIImage*)image;                      // default is bundled error image from Freepik
-+ (void)setViewForExtension:(UIView*)view;                  // default is nil, only used if #define SV_APP_EXTENSIONS is set
++ (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
++ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
++ (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;   // default is SVProgressHUDAnimationTypeFlat
++ (void)setRingThickness:(CGFloat)width;                            // default is 2 pt
++ (void)setCornerRadius:(CGFloat)cornerRadius;                      // default is 14 pt
++ (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
++ (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
++ (void)setInfoImage:(UIImage*)image;                               // default is the bundled info image provided by Freepik
++ (void)setSuccessImage:(UIImage*)image;                            // default is bundled success image from Freepik
++ (void)setErrorImage:(UIImage*)image;                              // default is bundled error image from Freepik
++ (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
 ```
 
 ## Notifications
@@ -124,7 +135,7 @@ Each notification passes a `userInfo` dictionary holding the HUD's status string
 
 ## App Extensions
 
-When using `SVProgressHUD` in an App Extension, #define SV_APP_EXTENSIONS to avoid using unavailable APIs. Additionally call `setViewForExtension:` from your extensions view controller with `self.view`.
+When using `SVProgressHUD` in an App Extension, `#define SV_APP_EXTENSIONS` to avoid using unavailable APIs. Additionally call `setViewForExtension:` from your extensions view controller with `self.view`.
 
 ## Contributing to this project
 

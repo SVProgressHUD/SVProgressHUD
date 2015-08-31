@@ -14,9 +14,13 @@
 - (IBAction)showWithStatus;
 
 - (IBAction)dismiss;
-- (IBAction)dismissInfo;
-- (IBAction)dismissSuccess;
-- (IBAction)dismissError;
+- (IBAction)showInfoWithStatus;
+- (IBAction)showSuccessWithStatus;
+- (IBAction)showErrorWithStatus;
+
+- (IBAction)changeStyle:(id)sender;
+- (IBAction)changeAnimationType:(id)sender;
+- (IBAction)changeMaskType:(id)sender;
 
 @end
 
