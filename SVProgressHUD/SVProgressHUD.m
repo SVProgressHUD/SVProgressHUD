@@ -1161,7 +1161,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - UIAppearance Setters
 
 - (void)setBackgroundColor:(UIColor *)color {
-    [super setBackgroundColor:[UIColor clearColor]];
     if (!_isInitializing) _backgroundColor = color; // Check needed for UIAppearance to work
 }
 
