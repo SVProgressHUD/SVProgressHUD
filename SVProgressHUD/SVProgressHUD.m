@@ -497,6 +497,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         // Remove background color, else the effect would not work
         self.hudView.backgroundColor = [UIColor clearColor];
         
+        
         // Remove any old instances of UIVisualEffectViews
         for (UIView *subview in self.hudView.subviews){
             if([subview isKindOfClass:[UIVisualEffectView class]]){
@@ -504,21 +505,23 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             }
         }
         
-        // Create blur effect
-        UIBlurEffectStyle blurEffectStyle = self.style == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
-        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        blurEffectView.autoresizingMask = self.hudView.autoresizingMask;
-        blurEffectView.frame = self.hudView.bounds;
-        
-        // Add vibrancy to the blur effect to make it more vivid
-        UIVibrancyEffect *vibrancyEffect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
-        UIVisualEffectView *vibrancyEffectView = [[UIVisualEffectView alloc] initWithEffect:vibrancyEffect];
-        vibrancyEffectView.autoresizingMask = blurEffectView.autoresizingMask;
-        vibrancyEffectView.bounds = blurEffectView.bounds;
-        [blurEffectView.contentView addSubview:vibrancyEffectView];
-        
-        [self.hudView insertSubview:blurEffectView atIndex:0];
+        if(SVProgressHUDBackgroundColor != [UIColor clearColor]){
+            // Create blur effect
+            UIBlurEffectStyle blurEffectStyle = self.style == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+            UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
+            UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+            blurEffectView.autoresizingMask = self.hudView.autoresizingMask;
+            blurEffectView.frame = self.hudView.bounds;
+            
+            // Add vibrancy to the blur effect to make it more vivid
+            UIVibrancyEffect *vibrancyEffect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
+            UIVisualEffectView *vibrancyEffectView = [[UIVisualEffectView alloc] initWithEffect:vibrancyEffect];
+            vibrancyEffectView.autoresizingMask = blurEffectView.autoresizingMask;
+            vibrancyEffectView.bounds = blurEffectView.bounds;
+            [blurEffectView.contentView addSubview:vibrancyEffectView];
+            
+            [self.hudView insertSubview:blurEffectView atIndex:0];
+        }
     }
 #endif
 }
