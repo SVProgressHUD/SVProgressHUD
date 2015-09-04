@@ -79,6 +79,16 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)showImage:(UIImage*)image status:(NSString*)status;
 + (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showImage: and setDefaultMaskType: instead.")));
 
+// Custom duration methods
++ (void)showInfoWithStatus:(NSString *)status duration:(NSTimeInterval)displayInterval;
++ (void)showInfoWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType duration:(NSTimeInterval)displayInterval;
++ (void)showSuccessWithStatus:(NSString *)string duration:(NSTimeInterval)displayInterval;
++ (void)showSuccessWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType duration:(NSTimeInterval)displayInterval;
++ (void)showErrorWithStatus:(NSString *)string duration:(NSTimeInterval)displayInterval;
++ (void)showErrorWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType duration:(NSTimeInterval)displayInterval;
++ (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)displayInterval;
++ (void)showImage:(UIImage *)image status:(NSString *)string maskType:(SVProgressHUDMaskType)maskType duration:(NSTimeInterval)displayInterval;
+
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;
 
