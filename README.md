@@ -121,6 +121,15 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
 ```
 
+### Hint
+
+As standard `SVProgressHUD` offers two preconfigured styles:
+
+* `SVProgressHUDStyleLight`: White background with black spinner and text
+* `SVProgressHUDStyleDark`: Black background with white spinner and text
+
+If you want to use custom colors with `setForegroundColor` and `setBackgroundColor:`  don't forget to set `SVProgressHUDStyleCustom` via `setDefaultStyle:`.
+
 ## Notifications
 
 `SVProgressHUD` posts four notifications via `NSNotificationCenter` in response to being shown/dismissed:
