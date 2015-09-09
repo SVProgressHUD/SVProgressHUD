@@ -192,9 +192,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType{
+    SVProgressHUDMaskType existingMaskType = SVProgressHUDDefaultMaskType;
     [self setDefaultMaskType:maskType];
     [self show];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showWithStatus:(NSString*)status{
@@ -203,9 +204,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
+    SVProgressHUDMaskType existingMaskType = SVProgressHUDDefaultMaskType;
     [self setDefaultMaskType:maskType];
     [self showWithStatus:status];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showProgress:(float)progress{
@@ -213,9 +215,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType{
+    SVProgressHUDMaskType existingMaskType = SVProgressHUDDefaultMaskType;
     [self setDefaultMaskType:maskType];
     [self showProgress:progress];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showProgress:(float)progress status:(NSString*)status{
@@ -223,9 +226,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
+    SVProgressHUDMaskType existingMaskType = SVProgressHUDDefaultMaskType;
     [self setDefaultMaskType:maskType];
     [self showProgress:progress status:status];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    [self setDefaultMaskType:existingMaskType];
 }
 
 #pragma mark - Show, then automatically dismiss methods
@@ -236,9 +240,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
+    SVProgressHUDMaskType existingMaskType = SVProgressHUDDefaultMaskType;
     [self setDefaultMaskType:maskType];
     [self showInfoWithStatus:status];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showSuccessWithStatus:(NSString*)status{
@@ -247,9 +252,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
+    SVProgressHUDMaskType existingMaskType = SVProgressHUDDefaultMaskType;
     [self setDefaultMaskType:maskType];
     [self showSuccessWithStatus:status];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showErrorWithStatus:(NSString*)status{
@@ -258,9 +264,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
+    SVProgressHUDMaskType existingMaskType = SVProgressHUDDefaultMaskType;
     [self setDefaultMaskType:maskType];
     [self showErrorWithStatus:status];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status{
@@ -269,9 +276,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType{
+    SVProgressHUDMaskType existingMaskType = SVProgressHUDDefaultMaskType;
     [self setDefaultMaskType:maskType];
     [self showImage:image status:status];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    [self setDefaultMaskType:existingMaskType];
 }
 
 
