@@ -873,6 +873,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     UIColor *tintColor = self.foregroundColorForStyle;
     if([self.imageView respondsToSelector:@selector(setTintColor:)]){
+        if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
+            image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        }
         self.imageView.tintColor = tintColor;
     } else{
         image = [self image:image withTintColor:tintColor];
