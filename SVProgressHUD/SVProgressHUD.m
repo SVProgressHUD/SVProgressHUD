@@ -1020,8 +1020,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         _backgroundRingLayer.strokeEnd = 1;
         [self.hudView.layer addSublayer:_backgroundRingLayer];
     }
-    _ringLayer.strokeColor = [self.foregroundColorForStyle colorWithAlphaComponent:0.1f].CGColor;
-    _ringLayer.lineWidth = SVProgressHUDRingThickness;
+    _backgroundRingLayer.strokeColor = [self.foregroundColorForStyle colorWithAlphaComponent:0.1f].CGColor;
+    _backgroundRingLayer.lineWidth = SVProgressHUDRingThickness;
     
     return _backgroundRingLayer;
 }
