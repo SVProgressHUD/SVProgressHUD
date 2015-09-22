@@ -8,6 +8,12 @@
 #import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 70000
+
+#define UI_APPEARANCE_SELECTOR
+
+#endif
+
 extern NSString * const SVProgressHUDDidReceiveTouchEventNotification;
 extern NSString * const SVProgressHUDDidTouchDownInsideNotification;
 extern NSString * const SVProgressHUDWillDisappearNotification;
@@ -38,6 +44,21 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 @interface SVProgressHUD : UIView
 
 #pragma mark - Customization
+
+@property (assign, nonatomic) SVProgressHUDStyle defaultStyle UI_APPEARANCE_SELECTOR;                   // default is SVProgressHUDStyleLight
+@property (assign, nonatomic) SVProgressHUDMaskType defaultMaskType UI_APPEARANCE_SELECTOR;             // default is SVProgressHUDMaskTypeNone
+@property (assign, nonatomic) SVProgressHUDAnimationType defaultAnimationType UI_APPEARANCE_SELECTOR;   // default is SVProgressHUDAnimationTypeFlat
+@property (assign, nonatomic) CGFloat ringThickness UI_APPEARANCE_SELECTOR;           // default is 2 pt
+@property (assign, nonatomic) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;            // default is 14 pt
+@property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;       // default is 0, 0
+
+@property (strong, nonatomic) UIFont *font UI_APPEARANCE_SELECTOR;                    // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
+@property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;        // default is [UIColor whiteColor]
+@property (strong, nonatomic) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;        // default is [UIColor blackColor]
+@property (strong, nonatomic) UIImage *infoImage UI_APPEARANCE_SELECTOR;              // default is the bundled info image provided by Freepik
+@property (strong, nonatomic) UIImage *successImage UI_APPEARANCE_SELECTOR;           // default is the bundled success image provided by Freepik
+@property (strong, nonatomic) UIImage *errorImage UI_APPEARANCE_SELECTOR;             // default is the bundled error image provided by Freepik
+@property (strong, nonatomic) UIView *viewForExtension UI_APPEARANCE_SELECTOR;        // default is nil, only used if #define SV_APP_EXTENSIONS is set
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
@@ -87,6 +108,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)dismissWithDelay:(NSTimeInterval)delay; // delayes the dismissal
 
 + (BOOL)isVisible;
+
 
 @end
 
