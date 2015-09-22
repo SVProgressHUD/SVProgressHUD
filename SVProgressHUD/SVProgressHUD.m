@@ -1173,14 +1173,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 #pragma mark - UIAppearance Setters
 
-- (void)setBackgroundColor:(UIColor *)color {
-    if (!_isInitializing) _backgroundColor = color; // Check needed for UIAppearance to work
-}
-
-- (void)setForegroundColor:(UIColor *)color {
-    if (!_isInitializing) _foregroundColor = color;
-}
-
 - (void)setDefaultStyle:(SVProgressHUDStyle)style{
     if (!_isInitializing) _defaultStyle = style;
 }
@@ -1193,20 +1185,24 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if (!_isInitializing) _defaultAnimationType = animationType;
 }
 
-- (void)setOffsetFromCenter:(UIOffset)offset {
-    if (!_isInitializing) _offsetFromCenter = offset;
-}
-
-- (void)setFont:(UIFont *)font {
-    if (!_isInitializing) _font = font;
-}
-
 - (void)setRingThickness:(CGFloat)width {
     if (!_isInitializing) _ringThickness = width;
 }
 
 - (void)setCornerRadius:(CGFloat)cornerRadius {
     if (!_isInitializing) _cornerRadius = cornerRadius;
+}
+
+- (void)setFont:(UIFont *)font {
+    if (!_isInitializing) _font = font;
+}
+
+- (void)setBackgroundColor:(UIColor *)color {
+    if (!_isInitializing) _backgroundColor = color;
+}
+
+- (void)setForegroundColor:(UIColor *)color {
+    if (!_isInitializing) _foregroundColor = color;
 }
 
 - (void)setInfoImage:(UIImage*)image{
@@ -1223,6 +1219,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (void)setViewForExtension:(UIView *)view{
     if (!_isInitializing) _viewForExtension = view;
+}
+
+
+- (void)setOffsetFromCenter:(UIOffset)offset {
+    if (!_isInitializing) _offsetFromCenter = offset;
 }
 
 @end

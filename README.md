@@ -121,6 +121,8 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
 ```
 
+Additionally `SVProgressHUD` supports the `UIAppearance` protocol.
+
 ### Hint
 
 As standard `SVProgressHUD` offers two preconfigured styles:
