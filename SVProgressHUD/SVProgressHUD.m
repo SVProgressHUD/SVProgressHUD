@@ -696,6 +696,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         [self.hudView setNeedsDisplay];
     }
     
+    [self updateMask];
 }
 
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle{
@@ -757,7 +758,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     self.stringLabel.text = string;
     [self updateHUDFrame];
-    [self updateMask];
     
     if(progress >= 0){
         self.imageView.image = nil;
