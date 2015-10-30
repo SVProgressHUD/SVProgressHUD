@@ -158,6 +158,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [self sharedView].viewForExtension = view;
 }
 
++ (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval {
+    [self sharedView].minimumDismissTimeInterval = interval;
+}
+
+
+
 #pragma mark - Show Methods
 
 + (void)show{
@@ -334,6 +340,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
         _ringThickness = 2;
         _cornerRadius = 14;
+        
+        _minimumDismissTimeInterval = 5.0f;
         
         _isInitializing = NO;
     }
@@ -1046,7 +1054,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Getters
 
 - (NSTimeInterval)displayDurationForString:(NSString*)string{
-    return MIN((float)string.length*0.06 + 0.5, 5.0);
+    return MIN((float)string.length * 0.06 + 0.5, self.minimumDismissTimeInterval);
 }
 
 - (UIColor *)foregroundColorForStyle{
@@ -1220,9 +1228,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if (!_isInitializing) _viewForExtension = view;
 }
 
-
 - (void)setOffsetFromCenter:(UIOffset)offset {
     if (!_isInitializing) _offsetFromCenter = offset;
+}
+
+- (void)setMinimumDismissTimeInterval:(NSTimeInterval)minimumDismissTimeInterval {
+    if (!_isInitializing) { _minimumDismissTimeInterval = minimumDismissTimeInterval; }
 }
 
 @end
