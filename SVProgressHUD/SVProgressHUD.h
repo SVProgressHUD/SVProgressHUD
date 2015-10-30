@@ -59,6 +59,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 @property (strong, nonatomic) UIImage *successImage UI_APPEARANCE_SELECTOR;           // default is the bundled success image provided by Freepik
 @property (strong, nonatomic) UIImage *errorImage UI_APPEARANCE_SELECTOR;             // default is the bundled error image provided by Freepik
 @property (strong, nonatomic) UIView *viewForExtension UI_APPEARANCE_SELECTOR;        // default is nil, only used if #define SV_APP_EXTENSIONS is set
+@property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
@@ -72,7 +73,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)setSuccessImage:(UIImage*)image;                            // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(UIImage*)image;                              // default is the bundled error image provided by Freepik
 + (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
-
++ (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0
 
 #pragma mark - Show Methods
 
