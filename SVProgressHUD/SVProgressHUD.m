@@ -481,7 +481,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (void)updateBlurBounds{
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if(NSClassFromString(@"UIBlurEffect")){
+    if(NSClassFromString(@"UIBlurEffect") && self.defaultStyle != SVProgressHUDStyleCustom){
         // Remove background color, else the effect would not work
         self.hudView.backgroundColor = [UIColor clearColor];
         
