@@ -97,7 +97,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     static SVProgressHUD *sharedView;
 #if !defined(SV_APP_EXTENSIONS)
-    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.bounds]; });
+    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[[UIApplication sharedApplication] delegate] window].bounds]; });
 #else
     dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
 #endif
@@ -160,6 +160,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)setViewForExtension:(UIView *)view{
     [self sharedView].viewForExtension = view;
 }
+
++ (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval {
+    [self sharedView].minimumDismissTimeInterval = interval;
+}
+
+
 
 #pragma mark - Show Methods
 
@@ -338,6 +344,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         _ringThickness = 2;
         _cornerRadius = 14;
         
+        _minimumDismissTimeInterval = 5.0f;
+        
         _isInitializing = NO;
     }
 	
@@ -459,8 +467,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             self.backgroundLayer = [CALayer layer];
             self.backgroundLayer.frame = self.bounds;
             self.backgroundLayer.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5].CGColor;
-            CGPoint gradientCenter = self.center;
-            gradientCenter.y = (self.bounds.size.height - self.visibleKeyboardHeight) / 2;
             [self.backgroundLayer setNeedsDisplay];
             
             [self.layer insertSublayer:self.backgroundLayer atIndex:0];
@@ -601,9 +607,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)positionHUD:(NSNotification*)notification{
     CGFloat keyboardHeight = 0.0f;
     double animationDuration = 0.0;
-    
+
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-    self.frame = [UIApplication sharedApplication].keyWindow.bounds;
+    self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
 #elif !defined(SV_APP_EXTENSIONS)
     self.frame = [UIApplication sharedApplication].keyWindow.bounds;
@@ -960,7 +966,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #endif
                                  // uncomment to make sure UIWindow is gone from app.windows
                                  //NSLog(@"%@", [UIApplication sharedApplication].windows);
-                                 //NSLog(@"keyWindow = %@", [UIApplication sharedApplication].keyWindow);
+                                 //NSLog(@"keyWindow = %@", [[[UIApplication sharedApplication] delegate] window]);
                              }
                          }
                      }];
@@ -1067,7 +1073,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Getters
 
 - (NSTimeInterval)displayDurationForString:(NSString*)string{
-    return MIN((float)string.length*0.06 + 0.5, 5.0);
+    return MIN((float)string.length * 0.06 + 0.5, self.minimumDismissTimeInterval);
 }
 
 - (UIColor *)foregroundColorForStyle{
@@ -1111,7 +1117,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (UIControl*)overlayView{
     if(!_overlayView){
 #if !defined(SV_APP_EXTENSIONS)
-        CGRect windowBounds = [UIApplication sharedApplication].keyWindow.bounds;
+        CGRect windowBounds = [[[UIApplication sharedApplication] delegate] window].bounds;
         _overlayView = [[UIControl alloc] initWithFrame:windowBounds];
 #else
         _overlayView = [[UIControl alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -1241,9 +1247,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if (!_isInitializing) _viewForExtension = view;
 }
 
-
 - (void)setOffsetFromCenter:(UIOffset)offset {
     if (!_isInitializing) _offsetFromCenter = offset;
+}
+
+- (void)setMinimumDismissTimeInterval:(NSTimeInterval)minimumDismissTimeInterval {
+    if (!_isInitializing) { _minimumDismissTimeInterval = minimumDismissTimeInterval; }
 }
 
 @end
