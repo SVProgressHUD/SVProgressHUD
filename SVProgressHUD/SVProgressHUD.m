@@ -500,6 +500,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             blurEffectView.autoresizingMask = self.hudView.autoresizingMask;
             blurEffectView.frame = self.hudView.bounds;
             
+            // Use same alpha as in the HUD's background color
+            CGFloat alpha;
+            if([self.hudView.backgroundColor getRed:nil green:nil blue:nil alpha:&alpha]){
+                blurEffectView.alpha = alpha;
+            }
+            
             // Add vibrancy to the blur effect to make it more vivid
             UIVibrancyEffect *vibrancyEffect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
             UIVisualEffectView *vibrancyEffectView = [[UIVisualEffectView alloc] initWithEffect:vibrancyEffect];
