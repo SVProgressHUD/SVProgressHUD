@@ -526,6 +526,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 #if TARGET_OS_IOS
 - (void)updateMotionEffectForOrientation:(UIInterfaceOrientation)orientation{
+    UIInterpolatingMotionEffectType xMotionEffectType = UIInterfaceOrientationIsPortrait(orientation) ? UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis : UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis;
     UIInterpolatingMotionEffectType yMotionEffectType = UIInterfaceOrientationIsPortrait(orientation) ? UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis : UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis;
     [self updateMotionEffectForXMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis yMotionEffectType:yMotionEffectType];
 }
@@ -652,6 +653,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #else
     CGRect statusBarFrame = CGRectZero;
 #endif
+    
 #if TARGET_OS_IOS
     if(!ignoreOrientation && UIInterfaceOrientationIsLandscape(orientation)){
         float temp = CGRectGetWidth(orientationFrame);
@@ -679,15 +681,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGFloat posX = CGRectGetWidth(orientationFrame)/2.0f;
     CGFloat posY = floorf(activeHeight*0.45f);
 
-    CGPoint newCenter;
-    CGFloat rotateAngle;
+    CGFloat rotateAngle = 0.0;
+    CGPoint newCenter = CGPointMake(posX, posY);
     
     // Update posX and posY in regards to orientation
-    if(ignoreOrientation){
-        rotateAngle = 0.0;
-        newCenter = CGPointMake(posX, posY);
-    } else{
 #if TARGET_OS_IOS
+    if(!ignoreOrientation){
         switch (orientation){
             case UIInterfaceOrientationPortraitUpsideDown:
                 rotateAngle = (CGFloat) M_PI;
@@ -706,8 +705,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                 newCenter = CGPointMake(posX, posY);
                 break;
         }
-#endif
     }
+#endif
     
     if(notification){
         // Animate update if notification was present
