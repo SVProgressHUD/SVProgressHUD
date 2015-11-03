@@ -50,7 +50,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)updateHUDFrame;
 - (void)updateMask;
 - (void)updateBlurBounds;
+#if TARGET_OS_IOS
 - (void)updateMotionEffectForOrientation:(UIInterfaceOrientation)orientation;
+#endif
+- (void)updateMotionEffectForXMotionEffectType:(UIInterpolatingMotionEffectType)xMotionEffectType yMotionEffectType:(UIInterpolatingMotionEffectType)yMotionEffectType;
 
 - (void)setStatus:(NSString*)string;
 - (void)setFadeOutTimer:(NSTimer*)newTimer;
@@ -375,10 +378,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             if([string respondsToSelector:@selector(sizeWithAttributes:)]){
                 stringSize = [string sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:self.stringLabel.font.fontName size:self.stringLabel.font.pointSize]}];
             } else{
+#if TARGET_OS_IOS
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated"
                 stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200.0f, 300.0f)];
 #pragma clang diagnostic pop
+#endif
             }
             stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
         }
@@ -519,15 +524,21 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #endif
 }
 
+#if TARGET_OS_IOS
 - (void)updateMotionEffectForOrientation:(UIInterfaceOrientation)orientation{
+    UIInterpolatingMotionEffectType xMotionEffectType = UIInterfaceOrientationIsPortrait(orientation) ? UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis : UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis;
+    UIInterpolatingMotionEffectType yMotionEffectType = UIInterfaceOrientationIsPortrait(orientation) ? UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis : UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis;
+    [self updateMotionEffectForXMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis yMotionEffectType:yMotionEffectType];
+}
+#endif
+
+- (void)updateMotionEffectForXMotionEffectType:(UIInterpolatingMotionEffectType)xMotionEffectType yMotionEffectType:(UIInterpolatingMotionEffectType)yMotionEffectType{
     if([_hudView respondsToSelector:@selector(addMotionEffect:)]){
-        UIInterpolatingMotionEffectType motionEffectType = UIInterfaceOrientationIsPortrait(orientation) ? UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis : UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis;
-        UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:motionEffectType];
+        UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:xMotionEffectType];
         effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
         effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
         
-        motionEffectType = UIInterfaceOrientationIsPortrait(orientation) ? UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis : UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis;
-        UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:motionEffectType];
+        UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:yMotionEffectType];
         effectY.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
         effectY.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
         
@@ -558,10 +569,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Notifications and their handling
 
 - (void)registerNotifications{
+#ifndef TARGET_OS_IOS
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(positionHUD:)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
+#endif
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(positionHUD:)
                                                  name:UIApplicationDidBecomeActiveNotification
@@ -595,10 +608,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)positionHUD:(NSNotification*)notification{
     CGFloat keyboardHeight = 0.0f;
     double animationDuration = 0.0;
-    
-#if !defined(SV_APP_EXTENSIONS)
+
+#if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
+#elif !defined(SV_APP_EXTENSIONS)
+    self.frame = [UIApplication sharedApplication].keyWindow.bounds;
 #else
     self.frame = UIScreen.mainScreen.bounds;
     UIInterfaceOrientation orientation = CGRectGetWidth(self.frame) > CGRectGetHeight(self.frame) ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
@@ -619,11 +634,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         animationDuration = [keyboardInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         
         if(notification.name == UIKeyboardWillShowNotification || notification.name == UIKeyboardDidShowNotification){
+            keyboardHeight = CGRectGetWidth(keyboardFrame);
+#if TARGET_OS_IOS
             if(ignoreOrientation || UIInterfaceOrientationIsPortrait(orientation)){
                 keyboardHeight = CGRectGetHeight(keyboardFrame);
-            } else{
-                keyboardHeight = CGRectGetWidth(keyboardFrame);
             }
+#endif
         }
     } else{
         keyboardHeight = self.visibleKeyboardHeight;
@@ -631,12 +647,14 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     // Get the currently active frame of the display (depends on orientation)
     CGRect orientationFrame = self.bounds;
-#if !defined(SV_APP_EXTENSIONS)
+
+#if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     CGRect statusBarFrame = UIApplication.sharedApplication.statusBarFrame;
 #else
     CGRect statusBarFrame = CGRectZero;
 #endif
     
+#if TARGET_OS_IOS
     if(!ignoreOrientation && UIInterfaceOrientationIsLandscape(orientation)){
         float temp = CGRectGetWidth(orientationFrame);
         orientationFrame.size.width = CGRectGetHeight(orientationFrame);
@@ -649,6 +667,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     // Update the motion effects in regards to orientation
     [self updateMotionEffectForOrientation:orientation];
+#else
+    [self updateMotionEffectForXMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis yMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+#endif
     
     // Calculate available height for display
     CGFloat activeHeight = CGRectGetHeight(orientationFrame);
@@ -660,14 +681,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     CGFloat posX = CGRectGetWidth(orientationFrame)/2.0f;
     CGFloat posY = floorf(activeHeight*0.45f);
 
-    CGPoint newCenter;
-    CGFloat rotateAngle;
+    CGFloat rotateAngle = 0.0;
+    CGPoint newCenter = CGPointMake(posX, posY);
     
     // Update posX and posY in regards to orientation
-    if(ignoreOrientation){
-        rotateAngle = 0.0;
-        newCenter = CGPointMake(posX, posY);
-    } else{
+#if TARGET_OS_IOS
+    if(!ignoreOrientation){
         switch (orientation){
             case UIInterfaceOrientationPortraitUpsideDown:
                 rotateAngle = (CGFloat) M_PI;
@@ -687,6 +706,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                 break;
         }
     }
+#endif
     
     if(notification){
         // Animate update if notification was present
@@ -937,7 +957,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
                                                                                    userInfo:userInfo];
                                  
                                  // Tell the rootViewController to update the StatusBar appearance
-#if !defined(SV_APP_EXTENSIONS)
+#if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
                                  UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
                                  if([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]){
                                      [rootController setNeedsStatusBarAppearanceUpdate];
