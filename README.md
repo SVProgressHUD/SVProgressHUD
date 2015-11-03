@@ -6,7 +6,7 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 
-`SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task.
+`SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task on iOS and tvOS.
 
 ![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
 
@@ -119,9 +119,10 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setSuccessImage:(UIImage*)image;                            // default is bundled success image from Freepik
 + (void)setErrorImage:(UIImage*)image;                              // default is bundled error image from Freepik
 + (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
++ (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
 ```
 
-Additionally `SVProgressHUD` supports the `UIAppearance` protocol.
+Additionally `SVProgressHUD` supports the `UIAppearance` protocol for most of the above methods.
 
 ### Hint
 
