@@ -594,8 +594,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     self.frame = [UIApplication sharedApplication].keyWindow.bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
 #else
-    self.frame = UIScreen.mainScreen.bounds;
     if (self.viewForExtension) self.frame = self.viewForExtension.frame;
+    else self.frame = UIScreen.mainScreen.bounds;
     UIInterfaceOrientation orientation = CGRectGetWidth(self.frame) > CGRectGetHeight(self.frame) ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
 #endif
     
