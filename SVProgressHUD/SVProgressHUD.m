@@ -122,17 +122,19 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [self sharedView].indefiniteAnimatedView = nil;
 }
 
++ (void)setMinimumSize:(CGSize)minimumSize{
+    [self sharedView].minimumSize = minimumSize;
+}
+
 + (void)setRingThickness:(CGFloat)ringThickness{
     [self sharedView].ringThickness = ringThickness;
 }
 
-+ (void)setRingRadius:(CGFloat)radius
-{
++ (void)setRingRadius:(CGFloat)radius{
     [self sharedView].ringRadius = radius;
 }
 
-+ (void)setRingNoTextRadius:(CGFloat)radius
-{
++ (void)setRingNoTextRadius:(CGFloat)radius{
     [self sharedView].ringNoTextRadius = radius;
 }
 
@@ -415,8 +417,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             labelRect = CGRectMake(0.0f, labelRectY, hudWidth, stringHeight);
         }
     }
+    
     // Update values on subviews
-    self.hudView.bounds = CGRectMake(0.0f, 0.0f, hudWidth, hudHeight);
+    self.hudView.bounds = CGRectMake(0.0f, 0.0f, MAX(self.minimumSize.width, hudWidth), MAX(self.minimumSize.height, hudHeight));
+    labelRect.size.width += MAX(0, self.minimumSize.width - hudWidth);
     [self updateBlurBounds];
     
     if(string){
@@ -1216,8 +1220,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if (!_isInitializing) _defaultMaskType = maskType;
 }
 
--(void)setDefaultAnimationType:(SVProgressHUDAnimationType)animationType{
+- (void)setDefaultAnimationType:(SVProgressHUDAnimationType)animationType{
     if (!_isInitializing) _defaultAnimationType = animationType;
+}
+
+- (void)setMinimumSize:(CGSize)minimumSize{
+    if (!_isInitializing) _minimumSize = minimumSize;
 }
 
 - (void)setRingThickness:(CGFloat)ringThickness{
