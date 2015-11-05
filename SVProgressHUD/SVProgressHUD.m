@@ -80,7 +80,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)cancelRingLayerAnimation;
 - (CAShapeLayer*)createRingLayerWithCenter:(CGPoint)center radius:(CGFloat)radius;
 
-- (NSTimeInterval)displayDurationForString:(NSString*)string;
 - (UIColor*)foregroundColorForStyle;
 - (UIColor*)backgroundColorForStyle;
 - (UIImage*)image:(UIImage*)image withTintColor:(UIColor*)color;
@@ -249,7 +248,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status{
-    NSTimeInterval displayInterval = [[self sharedView] displayDurationForString:status];
+    NSTimeInterval displayInterval = [self displayDurationForString:status];
     [[self sharedView] showImage:image status:status duration:displayInterval];
 }
 
@@ -1071,9 +1070,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 
 #pragma mark - Getters
-
-- (NSTimeInterval)displayDurationForString:(NSString*)string{
-    return MIN((float)string.length * 0.06 + 0.5, self.minimumDismissTimeInterval);
++ (NSTimeInterval)displayDurationForString:(NSString*)string{
+    return MIN((float)string.length * 0.06 + 0.5, [self sharedView].minimumDismissTimeInterval);
 }
 
 - (UIColor *)foregroundColorForStyle{

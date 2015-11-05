@@ -110,6 +110,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 
 + (BOOL)isVisible;
 
++ (NSTimeInterval)displayDurationForString:(NSString*)string;
 
 @end
 
