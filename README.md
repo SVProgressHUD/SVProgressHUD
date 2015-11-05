@@ -110,7 +110,10 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;   // default is SVProgressHUDAnimationTypeFlat
++ (void)setMinimumSize:(CGSize)minimumSize;                         // default is CGSizeZero, can be used to avoid resizing for a larger message
 + (void)setRingThickness:(CGFloat)width;                            // default is 2 pt
++ (void)setRingRadius:(CGFloat)radius;                              // default is 18 pt
++ (void)setRingNoTextRadius:(CGFloat)radius;                        // default is 24 pt
 + (void)setCornerRadius:(CGFloat)cornerRadius;                      // default is 14 pt
 + (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
