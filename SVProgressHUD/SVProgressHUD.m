@@ -22,8 +22,6 @@ NSString * const SVProgressHUDDidAppearNotification = @"SVProgressHUDDidAppearNo
 
 NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
 
-static const CGFloat SVProgressHUDRingRadius = 18;
-static const CGFloat SVProgressHUDRingNoTextRadius = 24;
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
@@ -124,8 +122,18 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [self sharedView].indefiniteAnimatedView = nil;
 }
 
-+ (void)setRingThickness:(CGFloat)width{
-    [self sharedView].ringThickness = width;
++ (void)setRingThickness:(CGFloat)ringThickness{
+    [self sharedView].ringThickness = ringThickness;
+}
+
++ (void)setRingRadius:(CGFloat)radius
+{
+    [self sharedView].ringRadius = radius;
+}
+
++ (void)setRingNoTextRadius:(CGFloat)radius
+{
+    [self sharedView].ringNoTextRadius = radius;
 }
 
 + (void)setCornerRadius:(CGFloat)cornerRadius{
@@ -339,6 +347,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
 
         _ringThickness = 2;
+        _ringRadius = 18;
+        _ringNoTextRadius = 24;
+        
         _cornerRadius = 14;
         
         _minimumDismissTimeInterval = 5.0f;
@@ -424,7 +435,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 	if(string) {
         if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) {
             SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView *)self.indefiniteAnimatedView;
-            indefiniteAnimationView.radius = SVProgressHUDRingRadius;
+            indefiniteAnimationView.radius = self.ringRadius;
             [indefiniteAnimationView sizeToFit];
         }
         
@@ -437,7 +448,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 	} else {
         if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) {
             SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView *)self.indefiniteAnimatedView;
-            indefiniteAnimationView.radius = SVProgressHUDRingNoTextRadius;
+            indefiniteAnimationView.radius = self.ringNoTextRadius;
             [indefiniteAnimationView sizeToFit];
         }
         
@@ -989,7 +1000,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (SVIndefiniteAnimatedView *)createIndefiniteAnimatedView{
     SVIndefiniteAnimatedView *indefiniteAnimatedView = [[SVIndefiniteAnimatedView alloc] initWithFrame:CGRectZero];
     indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
-    indefiniteAnimatedView.radius = self.stringLabel.text ? SVProgressHUDRingRadius : SVProgressHUDRingNoTextRadius;
+    indefiniteAnimatedView.radius = self.stringLabel.text ? self.ringRadius : self.ringNoTextRadius;
     indefiniteAnimatedView.strokeThickness = self.ringThickness;
     [indefiniteAnimatedView sizeToFit];
     return indefiniteAnimatedView;
@@ -1006,7 +1017,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (CAShapeLayer*)ringLayer{
     if(!_ringLayer){
         CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
-        _ringLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius];
+        _ringLayer = [self createRingLayerWithCenter:center radius:self.ringRadius];
         [self.hudView.layer addSublayer:_ringLayer];
     }
     _ringLayer.strokeColor = self.foregroundColorForStyle.CGColor;
@@ -1018,7 +1029,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (CAShapeLayer*)backgroundRingLayer{
     if(!_backgroundRingLayer){
         CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
-        _backgroundRingLayer = [self createRingLayerWithCenter:center radius:SVProgressHUDRingRadius];
+        _backgroundRingLayer = [self createRingLayerWithCenter:center radius:self.ringRadius];
         _backgroundRingLayer.strokeEnd = 1;
         [self.hudView.layer addSublayer:_backgroundRingLayer];
     }
@@ -1205,27 +1216,35 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if (!_isInitializing) _defaultMaskType = maskType;
 }
 
--(void)setDefaultAnimationType:(SVProgressHUDAnimationType)animationType {
+-(void)setDefaultAnimationType:(SVProgressHUDAnimationType)animationType{
     if (!_isInitializing) _defaultAnimationType = animationType;
 }
 
-- (void)setRingThickness:(CGFloat)width {
-    if (!_isInitializing) _ringThickness = width;
+- (void)setRingThickness:(CGFloat)ringThickness{
+    if (!_isInitializing) _ringThickness = ringThickness;
 }
 
-- (void)setCornerRadius:(CGFloat)cornerRadius {
+- (void)setRingRadius:(CGFloat)ringRadius{
+    if (!_isInitializing) _ringRadius = ringRadius;
+}
+
+- (void)setRingNoTextRadius:(CGFloat)ringNoTextRadius{
+    if (!_isInitializing) _ringNoTextRadius = ringNoTextRadius;
+}
+
+- (void)setCornerRadius:(CGFloat)cornerRadius{
     if (!_isInitializing) _cornerRadius = cornerRadius;
 }
 
-- (void)setFont:(UIFont *)font {
+- (void)setFont:(UIFont *)font{
     if (!_isInitializing) _font = font;
 }
 
-- (void)setBackgroundColor:(UIColor *)color {
+- (void)setBackgroundColor:(UIColor *)color{
     if (!_isInitializing) _backgroundColor = color;
 }
 
-- (void)setForegroundColor:(UIColor *)color {
+- (void)setForegroundColor:(UIColor *)color{
     if (!_isInitializing) _foregroundColor = color;
 }
 
@@ -1233,11 +1252,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if (!_isInitializing) _infoImage = image;
 }
 
-- (void)setSuccessImage:(UIImage *)image {
+- (void)setSuccessImage:(UIImage *)image{
     if (!_isInitializing) _successImage = image;
 }
 
-- (void)setErrorImage:(UIImage *)image {
+- (void)setErrorImage:(UIImage *)image{
     if (!_isInitializing) _errorImage = image;
 }
 
@@ -1245,12 +1264,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if (!_isInitializing) _viewForExtension = view;
 }
 
-- (void)setOffsetFromCenter:(UIOffset)offset {
+- (void)setOffsetFromCenter:(UIOffset)offset{
     if (!_isInitializing) _offsetFromCenter = offset;
 }
 
-- (void)setMinimumDismissTimeInterval:(NSTimeInterval)minimumDismissTimeInterval {
-    if (!_isInitializing) { _minimumDismissTimeInterval = minimumDismissTimeInterval; }
+- (void)setMinimumDismissTimeInterval:(NSTimeInterval)minimumDismissTimeInterval{
+    if (!_isInitializing) _minimumDismissTimeInterval = minimumDismissTimeInterval;
 }
 
 @end
