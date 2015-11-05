@@ -298,7 +298,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if((self = [super initWithFrame:frame])){
-        
         _isInitializing = YES;
         
         self.userInteractionEnabled = NO;
@@ -347,7 +346,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         
         _isInitializing = NO;
     }
-	
     return self;
 }
 
@@ -614,7 +612,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #elif !defined(SV_APP_EXTENSIONS)
     self.frame = [UIApplication sharedApplication].keyWindow.bounds;
 #else
-    self.frame = UIScreen.mainScreen.bounds;
+    if (self.viewForExtension){
+        self.frame = self.viewForExtension.frame;
+    } else {
+        self.frame = UIScreen.mainScreen.bounds;
+    }
     UIInterfaceOrientation orientation = CGRectGetWidth(self.frame) > CGRectGetHeight(self.frame) ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
 #endif
     

@@ -90,7 +90,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
+		080E96DDFE201D6D7F000001 /* iOS Demo */ = {
 			isa = PBXGroup;
 			children = (
 				28D7ACF60DDB3853001CB0EB /* ViewController.h */,
@@ -100,6 +100,7 @@
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 			);
+			name = "iOS Demo";
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -117,7 +118,7 @@
 			children = (
 				2265DEED14706A8900B3EBF7 /* README.md */,
 				22B9D43716B92E4D00E71652 /* SVProgressHUD.podspec */,
-				080E96DDFE201D6D7F000001 /* Classes */,
+				080E96DDFE201D6D7F000001 /* iOS Demo */,
 				D36EDBCF1BE7E9B000BD0EF1 /* tvOS Demo */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
