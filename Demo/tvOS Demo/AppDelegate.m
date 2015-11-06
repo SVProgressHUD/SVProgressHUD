@@ -1,9 +1,8 @@
 //
 //  AppDelegate.m
-//  tvOS Demo
+//  SVProgressHUD, https://github.com/TransitApp/SVProgressHUD
 //
-//  Created by David Olesch on 11/2/15.
-//
+//  Copyright (c) 2015 David Olesch. All rights reserved.
 //
 
 #import "AppDelegate.h"
