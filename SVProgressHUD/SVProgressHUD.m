@@ -765,17 +765,18 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)showProgress:(float)progress status:(NSString*)string{
     if(!self.overlayView.superview){
 #if !defined(SV_APP_EXTENSIONS)
-        NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
-        for (UIWindow *window in frontToBackWindows){
-            BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
-            BOOL windowIsVisible = !window.hidden && window.alpha > 0;
-            BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
-            
-            if(windowOnMainScreen && windowIsVisible && windowLevelNormal){
-                [window addSubview:self.overlayView];
-                break;
-            }
-        }
+//        NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
+//        for (UIWindow *window in frontToBackWindows){
+//            BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
+//            BOOL windowIsVisible = !window.hidden && window.alpha > 0;
+//            BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
+//            
+//            if(windowOnMainScreen && windowIsVisible && windowLevelNormal){
+//                [window addSubview:self.overlayView];
+//                break;
+//            }
+//        }
+        [[UIApplication sharedApplication].keyWindow addSubview:self.overlayView];
 #else
         if(self.viewForExtension){
             [self.viewForExtension addSubview:self.overlayView];
