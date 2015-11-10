@@ -580,7 +580,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Notifications and their handling
 
 - (void)registerNotifications{
-#ifndef TARGET_OS_IOS
+#if TARGET_OS_IOS
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(positionHUD:)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
