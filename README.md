@@ -14,7 +14,7 @@
 
 ### From CocoaPods
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like `SVProgressHUD` in your projects. Simply add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like `SVProgressHUD` in your projects. First, add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
 
 ```ruby
 pod 'SVProgressHUD'
@@ -27,6 +27,12 @@ pod 'SVProgressHUD', :head
 ```
 
 This pulls from the `master` branch directly. We are usually careful about what we push there and this is the version we use ourselves in all of our projects.
+
+Second, install `SVProgressHUD` into your project:
+
+```ruby
+pod install
+```
 
 ### Carthage
 
