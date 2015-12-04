@@ -1,0 +1,6 @@
+framework module SVProgressHUD {
+  umbrella header "SVProgressHUD-Framework.h"
+
+  export *
+  module * { export * }
+}
