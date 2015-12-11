@@ -1282,7 +1282,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 @end
 
-@implementation SVProgressHUD (InstanceFunction)
+@implementation SVProgressHUD (FE)
 // show a image + status , after 'duration', operate the 'complete' block
 + (void)showImage:(UIImage *)image status:(NSString *)status duration:(NSTimeInterval)duration complete:(dispatch_block_t)complete;
 {
