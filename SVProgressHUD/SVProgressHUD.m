@@ -937,57 +937,70 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     self.activityCount = 0;
     __weak SVProgressHUD *weakSelf = self;
-    [UIView animateWithDuration:duration
-                          delay:delay
-                        options:(UIViewAnimationOptions) (UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction)
-                     animations:^{
-                         __strong SVProgressHUD *strongSelf = weakSelf;
-                         if(strongSelf){
-                             strongSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8f, 0.8f);
-                             if(strongSelf.isClear){ // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
-                                 strongSelf.hudView.alpha = 0.0f;
-                             } else{
-                                 strongSelf.alpha = 0.0f;
-                             }
-                         }
-                     }
-                     completion:^(BOOL finished){
-                         __strong SVProgressHUD *strongSelf = weakSelf;
-                         if(strongSelf){
-                             if(strongSelf.alpha == 0.0f || strongSelf.hudView.alpha == 0.0f){
-                                 strongSelf.alpha = 0.0f;
-                                 strongSelf.hudView.alpha = 0.0f;
-                                 
-                                 [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
-                                 [strongSelf cancelRingLayerAnimation];
-                                 [_hudView removeFromSuperview];
-                                 _hudView = nil;
-                                 
-                                 [_overlayView removeFromSuperview];
-                                 _overlayView = nil;
-                                 
-                                 [_indefiniteAnimatedView removeFromSuperview];
-                                 _indefiniteAnimatedView = nil;
-                                 
-                                 UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-                                 
-                                 [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
-                                                                                     object:nil
-                                                                                   userInfo:userInfo];
-                                 
-                                 // Tell the rootViewController to update the StatusBar appearance
+    void (^animationBlock) (void) = ^{
+        __strong SVProgressHUD *strongSelf = weakSelf;
+        if(strongSelf){
+            strongSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8f, 0.8f);
+            if(strongSelf.isClear){ // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
+                strongSelf.hudView.alpha = 0.0f;
+            } else{
+                strongSelf.alpha = 0.0f;
+            }
+        }
+    };
+    void (^completionBlock) (void) = ^{
+        __strong SVProgressHUD *strongSelf = weakSelf;
+        if(strongSelf){
+            if(strongSelf.alpha == 0.0f || strongSelf.hudView.alpha == 0.0f){
+                strongSelf.alpha = 0.0f;
+                strongSelf.hudView.alpha = 0.0f;
+                
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
+                [strongSelf cancelRingLayerAnimation];
+                [_hudView removeFromSuperview];
+                _hudView = nil;
+                
+                [_overlayView removeFromSuperview];
+                _overlayView = nil;
+                
+                [_indefiniteAnimatedView removeFromSuperview];
+                _indefiniteAnimatedView = nil;
+                
+                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
+                                                                    object:nil
+                                                                  userInfo:userInfo];
+                
+                // Tell the rootViewController to update the StatusBar appearance
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-                                 UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
-                                 if([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]){
-                                     [rootController setNeedsStatusBarAppearanceUpdate];
-                                 }
+                UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
+                if([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]){
+                    [rootController setNeedsStatusBarAppearanceUpdate];
+                }
 #endif
-                                 // uncomment to make sure UIWindow is gone from app.windows
-                                 //NSLog(@"%@", [UIApplication sharedApplication].windows);
-                                 //NSLog(@"keyWindow = %@", [[[UIApplication sharedApplication] delegate] window]);
-                             }
+                // uncomment to make sure UIWindow is gone from app.windows
+                //NSLog(@"%@", [UIApplication sharedApplication].windows);
+                //NSLog(@"keyWindow = %@", [[[UIApplication sharedApplication] delegate] window]);
+            }
+        }
+    };
+    
+    if (duration == 0) {
+        animationBlock();
+        completionBlock();
+    }
+    else {
+        [UIView animateWithDuration:duration
+                              delay:delay
+                            options:(UIViewAnimationOptions) (UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction)
+                         animations:^{
+                             animationBlock();
                          }
-                     }];
+                         completion:^(BOOL finished){
+                             completionBlock();
+                         }];
+    }
 }
 
 - (void)dismiss
