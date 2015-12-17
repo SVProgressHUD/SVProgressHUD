@@ -2,7 +2,7 @@
 //  SVRadialGradientLayer.h
 //  SVProgressHUD, https://github.com/TransitApp/SVProgressHUD
 //
-//  Copyright (c) 2014 Tobias Tiemerding. All rights reserved.
+//  Copyright (c) 2014-2015 Tobias Tiemerding. All rights reserved.
 //
 
 #import <QuartzCore/QuartzCore.h>
