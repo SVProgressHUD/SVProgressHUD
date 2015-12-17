@@ -503,7 +503,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (void)updateBlurBounds{
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if(NSClassFromString(@"UIBlurEffect")){
+    if(NSClassFromString(@"UIBlurEffect") && self.defaultStyle != SVProgressHUDStyleCustom){
         // Remove background color, else the effect would not work
         self.hudView.backgroundColor = [UIColor clearColor];
         
@@ -580,7 +580,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 #pragma mark - Notifications and their handling
 
 - (void)registerNotifications{
-#ifndef TARGET_OS_IOS
+#if TARGET_OS_IOS
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(positionHUD:)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
