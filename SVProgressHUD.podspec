@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
   s.license  = 'MIT'
   s.summary  = 'A clean and lightweight progress HUD for your iOS and tvOS app.'
-  s.homepage = 'http://samvermette.com/199'
+  s.homepage = 'https://github.com/SVProgressHUD/SVProgressHUD'
   s.authors   = { 'Sam Vermette' => 'hello@samvermette.com', 'Tobias Tiemerding' => 'tobias@tiemerding.com' }
   s.source   = { :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git', :tag => s.version.to_s }
 
