@@ -154,6 +154,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [self sharedView].backgroundColor = color;
 }
 
++ (void)setCustomAnimationView:(UIView *)customAnimationView {
+    [self sharedView].customAnimationView = customAnimationView;
+}
+
 + (void)setInfoImage:(UIImage*)image{
     [self sharedView].infoImage = image;
 }
@@ -312,6 +316,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         self.userInteractionEnabled = NO;
         _backgroundColor = [UIColor clearColor];
         _foregroundColor = [UIColor blackColor];
+        _maskColor = [UIColor blackColor];
         self.alpha = 0.0f;
         self.activityCount = 0;
         
@@ -478,6 +483,16 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             self.backgroundLayer = [CALayer layer];
             self.backgroundLayer.frame = self.bounds;
             self.backgroundLayer.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5].CGColor;
+            [self.backgroundLayer setNeedsDisplay];
+            
+            [self.layer insertSublayer:self.backgroundLayer atIndex:0];
+            break;
+        }
+            
+        case SVProgressHUDMaskTypeCustom:{
+            self.backgroundLayer = [CALayer layer];
+            self.backgroundLayer.frame = self.bounds;
+            self.backgroundLayer.backgroundColor = self.maskColor.CGColor;
             [self.backgroundLayer setNeedsDisplay];
             
             [self.layer insertSublayer:self.backgroundLayer atIndex:0];
@@ -1011,7 +1026,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 }
 
 - (UIView *)indefiniteAnimatedView{
-    if(_indefiniteAnimatedView == nil){
+    if(_customAnimationView != nil) {
+        return _customAnimationView;
+    } else if(_indefiniteAnimatedView == nil){
         _indefiniteAnimatedView = (self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) ? [self createIndefiniteAnimatedView] : [self createActivityIndicatorView];
     }
     
@@ -1256,6 +1273,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if (!_isInitializing) _foregroundColor = color;
 }
 
+- (void)setMaskColor:(UIColor *)color{
+    if (!_isInitializing) _maskColor = color;
+}
+
 - (void)setInfoImage:(UIImage*)image{
     if (!_isInitializing) _infoImage = image;
 }
@@ -1279,6 +1300,11 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)setMinimumDismissTimeInterval:(NSTimeInterval)minimumDismissTimeInterval{
     if (!_isInitializing) _minimumDismissTimeInterval = minimumDismissTimeInterval;
 }
+
+- (void)setCustomAnimationView:(UIView *)customAnimationView{
+    if (!_isInitializing) _customAnimationView = customAnimationView;
+}
+
 
 @end
 
