@@ -33,12 +33,14 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
     SVProgressHUDMaskTypeNone = 1,  // default mask type, allow user interactions while HUD is displayed
     SVProgressHUDMaskTypeClear,     // don't allow user interactions
     SVProgressHUDMaskTypeBlack,     // don't allow user interactions and dim the UI in the back of the HUD, as on iOS 7 and above
-    SVProgressHUDMaskTypeGradient   // don't allow user interactions and dim the UI with a a-la UIAlertView background gradient, as on iOS 6
+    SVProgressHUDMaskTypeGradient,  // don't allow user interactions and dim the UI with a a-la UIAlertView background gradient, as on iOS 6
+    SVProgressHUDMaskTypeCustom     // don't allow user interactions and dim the UI in the back of the HUD with mask color.
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
     SVProgressHUDAnimationTypeFlat,     // default animation type, custom flat animation (indefinite animated ring)
-    SVProgressHUDAnimationTypeNative    // iOS native UIActivityIndicatorView
+    SVProgressHUDAnimationTypeNative,    // iOS native UIActivityIndicatorView
+    SVProgressHUDAnimationTypeCustom,   // custom animation type.
 };
 
 @interface SVProgressHUD : UIView
@@ -56,6 +58,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 @property (strong, nonatomic) UIFont *font UI_APPEARANCE_SELECTOR;              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 @property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;  // default is [UIColor whiteColor]
 @property (strong, nonatomic) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;  // default is [UIColor blackColor]
+@property (strong, nonatomic) UIColor *maskColor UI_APPEARANCE_SELECTOR;        // default is [UIColor blackColor]
 @property (strong, nonatomic) UIImage *infoImage UI_APPEARANCE_SELECTOR;        // default is the bundled info image provided by Freepik
 @property (strong, nonatomic) UIImage *successImage UI_APPEARANCE_SELECTOR;     // default is the bundled success image provided by Freepik
 @property (strong, nonatomic) UIImage *errorImage UI_APPEARANCE_SELECTOR;       // default is the bundled error image provided by Freepik
@@ -63,6 +66,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 @property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;        // default is 5.0 seconds
 
 @property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR; // default is 0, 0
+
+@property (assign, nonatomic) UIView *customAnimationView UI_APPEARANCE_SELECTOR; // default is nil
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
@@ -75,11 +80,13 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
++ (void)setMaskColor:(UIColor*)color;                               // default is [UIColor blackColor], only used for SVProgressHUDMaskTypeCustom
 + (void)setInfoImage:(UIImage*)image;                               // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                            // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(UIImage*)image;                              // default is the bundled error image provided by Freepik
 + (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
++ (void)setCustomAnimationView:(UIView *)customAnimationView;       // default is nil
 
 #pragma mark - Show Methods
 
