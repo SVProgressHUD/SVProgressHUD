@@ -330,7 +330,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             _font = [UIFont systemFontOfSize:14.0f];
         }
         
-        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+        NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
         NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
         NSBundle *imageBundle = [NSBundle bundleWithURL:url];
         
