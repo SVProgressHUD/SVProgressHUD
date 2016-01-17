@@ -113,6 +113,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)popActivity; // decrease activity count, if activity count == 0 the HUD is dismissed
 + (void)dismiss;
 + (void)dismissWithDelay:(NSTimeInterval)delay; // delayes the dismissal
++ (void)dismissWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay; // delayes the dismissal and animates with duration
 
 + (BOOL)isVisible;
 
