@@ -9,6 +9,10 @@
 
 ![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
 
+## Demo		
+
+Try `SVProgressHUD` on [Appetize.io](https://appetize.io/app/p8r2cvy8kq74x7q7tjqf5gyatr).
+
 ## Installation
 
 ### From CocoaPods
