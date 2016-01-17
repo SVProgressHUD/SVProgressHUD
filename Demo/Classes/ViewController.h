@@ -2,7 +2,7 @@
 //  ViewController.h
 //  SVProgressHUD, https://github.com/TransitApp/SVProgressHUD
 //
-//  Copyright (c) 2011-2015 Sam Vermette and contributors. All rights reserved.
+//  Copyright (c) 2011-2016 Sam Vermette and contributors. All rights reserved.
 //
 
 
