@@ -10,12 +10,9 @@
 
 @implementation ViewController
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return YES;
-}
 
 #pragma mark - Notification Methods Sample
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -47,36 +44,37 @@
 
 #pragma mark - Show Methods Sample
 
-- (void)show {
+- (void)show{
 	[SVProgressHUD show];
 }
 
-- (void)showWithStatus {
+- (void)showWithStatus{
 	[SVProgressHUD showWithStatus:@"Doing Stuff"];
 }
 
 static float progress = 0.0f;
 
-- (IBAction)showWithProgress:(id)sender {
+- (IBAction)showWithProgress:(id)sender{
     progress = 0.0f;
     [SVProgressHUD showProgress:0 status:@"Loading"];
     [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3f];
 }
 
-- (void)increaseProgress {
+- (void)increaseProgress{
     progress+=0.1f;
     [SVProgressHUD showProgress:progress status:@"Loading"];
 
-    if(progress < 1.0f)
+    if(progress < 1.0f){
         [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3f];
-    else
+    } else{
         [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
+    }
 }
 
 
 #pragma mark - Dismiss Methods Sample
 
-- (void)dismiss {
+- (void)dismiss{
 	[SVProgressHUD dismiss];
 }
 
@@ -84,20 +82,22 @@ static float progress = 0.0f;
     [SVProgressHUD showInfoWithStatus:@"Useful Information."];
 }
 
-- (void)showSuccessWithStatus {
+- (void)showSuccessWithStatus{
 	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
 }
 
-- (void)showErrorWithStatus {
+- (void)showErrorWithStatus{
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
 }
 
+
 #pragma mark - Styling
+
 - (IBAction)changeStyle:(id)sender{
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    } else {
+    } else{
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     }
 }
@@ -106,10 +106,9 @@ static float progress = 0.0f;
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeFlat];
-    } else {
+    } else{
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
     }
-
 }
 
 - (IBAction)changeMaskType:(id)sender{
@@ -120,7 +119,7 @@ static float progress = 0.0f;
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     } else if(segmentedControl.selectedSegmentIndex == 2){
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
-    } else {
+    } else{
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
     }
 }

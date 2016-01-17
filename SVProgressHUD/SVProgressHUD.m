@@ -179,6 +179,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #pragma mark - Show Methods
 
 + (void)show{
+    
     [self showWithStatus:nil];
 }
 
@@ -768,122 +769,125 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #pragma mark - Master show/dismiss methods
 
 - (void)showProgress:(float)progress status:(NSString*)string{
-    if(!self.overlayView.superview){
+    // Perform show always on main thread
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if(!self.overlayView.superview){
 #if !defined(SV_APP_EXTENSIONS)
-        NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
-        for (UIWindow *window in frontToBackWindows){
-            BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
-            BOOL windowIsVisible = !window.hidden && window.alpha > 0;
-            BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
+            NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
+            for (UIWindow *window in frontToBackWindows){
+                BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
+                BOOL windowIsVisible = !window.hidden && window.alpha > 0;
+                BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
+                
+                if(windowOnMainScreen && windowIsVisible && windowLevelNormal){
+                    [window addSubview:self.overlayView];
+                    break;
+                }
+            }
+#else
+            if(self.viewForExtension){
+                [self.viewForExtension addSubview:self.overlayView];
+            }
+#endif
+        } else{
+            // Ensure that overlay will be exactly on top of rootViewController (which may be changed during runtime).
+            [self.overlayView.superview bringSubviewToFront:self.overlayView];
+        }
+        
+        if(!self.superview){
+            [self.overlayView addSubview:self];
+        }
+        
+        if(self.fadeOutTimer){
+            self.activityCount = 0;
+        }
+        self.fadeOutTimer = nil;
+        self.imageView.hidden = YES;
+        self.progress = progress;
+        
+        self.stringLabel.text = string;
+        [self updateHUDFrame];
+        
+        if(progress >= 0){
+            self.imageView.image = nil;
+            self.imageView.hidden = NO;
             
-            if(windowOnMainScreen && windowIsVisible && windowLevelNormal){
-                [window addSubview:self.overlayView];
-                break;
+            [self.indefiniteAnimatedView removeFromSuperview];
+            if([self.indefiniteAnimatedView respondsToSelector:@selector(stopAnimating)]) {
+                [(id)self.indefiniteAnimatedView stopAnimating];
+            }
+            
+            self.ringLayer.strokeEnd = progress;
+            
+            if(progress == 0){
+                self.activityCount++;
+            }
+        } else{
+            self.activityCount++;
+            [self cancelRingLayerAnimation];
+            
+            [self.hudView addSubview:self.indefiniteAnimatedView];
+            if([self.indefiniteAnimatedView respondsToSelector:@selector(startAnimating)]) {
+                [(id)self.indefiniteAnimatedView startAnimating];
             }
         }
-#else
-        if(self.viewForExtension){
-            [self.viewForExtension addSubview:self.overlayView];
-        }
-#endif
-    } else{
-        // Ensure that overlay will be exactly on top of rootViewController (which may be changed during runtime).
-        [self.overlayView.superview bringSubviewToFront:self.overlayView];
-    }
-    
-    if(!self.superview){
-        [self.overlayView addSubview:self];
-    }
-    
-    if(self.fadeOutTimer){
-        self.activityCount = 0;
-    }
-    self.fadeOutTimer = nil;
-    self.imageView.hidden = YES;
-    self.progress = progress;
-    
-    self.stringLabel.text = string;
-    [self updateHUDFrame];
-    
-    if(progress >= 0){
-        self.imageView.image = nil;
-        self.imageView.hidden = NO;
         
-        [self.indefiniteAnimatedView removeFromSuperview];
-        if([self.indefiniteAnimatedView respondsToSelector:@selector(stopAnimating)]) {
-            [(id)self.indefiniteAnimatedView stopAnimating];
+        if(self.defaultMaskType != SVProgressHUDMaskTypeNone){
+            self.overlayView.userInteractionEnabled = YES;
+            self.accessibilityLabel = string;
+            self.isAccessibilityElement = YES;
+        } else{
+            self.overlayView.userInteractionEnabled = NO;
+            self.hudView.accessibilityLabel = string;
+            self.hudView.isAccessibilityElement = YES;
         }
         
-        self.ringLayer.strokeEnd = progress;
+        self.overlayView.hidden = NO;
+        self.overlayView.backgroundColor = [UIColor clearColor];
+        [self positionHUD:nil];
         
-        if(progress == 0){
-            self.activityCount++;
-        }
-    } else{
-        self.activityCount++;
-        [self cancelRingLayerAnimation];
-        
-        [self.hudView addSubview:self.indefiniteAnimatedView];
-        if([self.indefiniteAnimatedView respondsToSelector:@selector(startAnimating)]) {
-            [(id)self.indefiniteAnimatedView startAnimating];
-        }
-    }
-    
-    if(self.defaultMaskType != SVProgressHUDMaskTypeNone){
-        self.overlayView.userInteractionEnabled = YES;
-        self.accessibilityLabel = string;
-        self.isAccessibilityElement = YES;
-    } else{
-        self.overlayView.userInteractionEnabled = NO;
-        self.hudView.accessibilityLabel = string;
-        self.hudView.isAccessibilityElement = YES;
-    }
-    
-    self.overlayView.hidden = NO;
-    self.overlayView.backgroundColor = [UIColor clearColor];
-    [self positionHUD:nil];
-    
-    // Appear
-    if(self.alpha != 1 || self.hudView.alpha != 1){
-        NSDictionary *userInfo = [self notificationUserInfo];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillAppearNotification
-                                                            object:nil
-                                                          userInfo:userInfo];
-        
-        [self registerNotifications];
-        self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
-        
-        if(self.isClear){
-            self.alpha = 1;
-            self.hudView.alpha = 0;
-        }
-        
-        __weak SVProgressHUD *weakSelf = self;
-        [UIView animateWithDuration:SVProgressHUDDefaultAnimationDuration
-                              delay:0
-                            options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
-                         animations:^{
-                             __strong SVProgressHUD *strongSelf = weakSelf;
-                             if(strongSelf){
-                                 strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 1/1.3f, 1/1.3f);
-                                 
-                                 if(strongSelf.isClear){ // handle iOS 7 and 8 UIToolbar which not answers well to hierarchy opacity change
-                                     strongSelf.hudView.alpha = 1;
-                                 } else{
-                                     strongSelf.alpha = 1;
+        // Appear
+        if(self.alpha != 1 || self.hudView.alpha != 1){
+            NSDictionary *userInfo = [self notificationUserInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillAppearNotification
+                                                                object:nil
+                                                              userInfo:userInfo];
+            
+            [self registerNotifications];
+            self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
+            
+            if(self.isClear){
+                self.alpha = 1;
+                self.hudView.alpha = 0;
+            }
+            
+            __weak SVProgressHUD *weakSelf = self;
+            [UIView animateWithDuration:SVProgressHUDDefaultAnimationDuration
+                                  delay:0
+                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
+                             animations:^{
+                                 __strong SVProgressHUD *strongSelf = weakSelf;
+                                 if(strongSelf){
+                                     strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 1/1.3f, 1/1.3f);
+                                     
+                                     if(strongSelf.isClear){ // handle iOS 7 and 8 UIToolbar which not answers well to hierarchy opacity change
+                                         strongSelf.hudView.alpha = 1;
+                                     } else{
+                                         strongSelf.alpha = 1;
+                                     }
                                  }
                              }
-                         }
-                         completion:^(BOOL finished){
-                             [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
-                                                                                 object:nil
-                                                                               userInfo:userInfo];
-                             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-                             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
-                         }];
-        
-        [self setNeedsDisplay];
-    }
+                             completion:^(BOOL finished){
+                                 [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
+                                                                                     object:nil
+                                                                                   userInfo:userInfo];
+                                 UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+                                 UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
+                             }];
+            
+            [self setNeedsDisplay];
+        }
+    }];
 }
 
 - (void)showImage:(UIImage*)image status:(NSString*)string duration:(NSTimeInterval)duration{
@@ -991,8 +995,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                      }];
 }
 
-- (void)dismiss
-{
+- (void)dismiss{
     [self dismissWithDuration:0 delay:0];
 }
 
