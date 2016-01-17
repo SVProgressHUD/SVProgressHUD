@@ -1,6 +1,6 @@
 //
 //  SVIndefiniteAnimatedView.h
-//  SVProgressHUD, https://github.com/TransitApp/SVProgressHUD
+//  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
 //  Copyright (c) 2014-2016 Guillaume Campagna. All rights reserved.
 //

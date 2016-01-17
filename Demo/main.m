@@ -1,6 +1,6 @@
 //
 //  main.m
-//  SVProgressHUD, https://github.com/TransitApp/SVProgressHUD
+//  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
 //  Copyright (c) 2011-2016 Sam Vermette. All rights reserved.
 //
