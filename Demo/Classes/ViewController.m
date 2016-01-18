@@ -12,7 +12,7 @@
 
 
 #pragma mark - Notification Methods Sample
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -34,9 +34,11 @@
                                              selector:@selector(handleNotification:)
                                                  name:SVProgressHUDDidDisappearNotification
                                                object:nil];
+    
+    [SVProgressHUD show];
 }
 
-- (void)handleNotification:(NSNotification *)notification{
+- (void)handleNotification:(NSNotification *)notification {
     NSLog(@"Notification recieved: %@", notification.name);
     NSLog(@"Status user info key: %@", notification.userInfo[SVProgressHUDStatusUserInfoKey]);
 }
@@ -44,29 +46,29 @@
 
 #pragma mark - Show Methods Sample
 
-- (void)show{
+- (void)show {
 	[SVProgressHUD show];
 }
 
-- (void)showWithStatus{
+- (void)showWithStatus {
 	[SVProgressHUD showWithStatus:@"Doing Stuff"];
 }
 
 static float progress = 0.0f;
 
-- (IBAction)showWithProgress:(id)sender{
+- (IBAction)showWithProgress:(id)sender {
     progress = 0.0f;
     [SVProgressHUD showProgress:0 status:@"Loading"];
     [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3f];
 }
 
-- (void)increaseProgress{
-    progress+=0.1f;
+- (void)increaseProgress {
+    progress += 0.1f;
     [SVProgressHUD showProgress:progress status:@"Loading"];
 
     if(progress < 1.0f){
         [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.3f];
-    } else{
+    } else {
         [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
     }
 }
@@ -74,44 +76,44 @@ static float progress = 0.0f;
 
 #pragma mark - Dismiss Methods Sample
 
-- (void)dismiss{
+- (void)dismiss {
 	[SVProgressHUD dismiss];
 }
 
-- (IBAction)showInfoWithStatus{
+- (IBAction)showInfoWithStatus {
     [SVProgressHUD showInfoWithStatus:@"Useful Information."];
 }
 
-- (void)showSuccessWithStatus{
+- (void)showSuccessWithStatus {
 	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
 }
 
-- (void)showErrorWithStatus{
+- (void)showErrorWithStatus {
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
 }
 
 
 #pragma mark - Styling
 
-- (IBAction)changeStyle:(id)sender{
+- (IBAction)changeStyle:(id)sender {
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    } else{
+    } else {
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     }
 }
 
-- (IBAction)changeAnimationType:(id)sender{
+- (IBAction)changeAnimationType:(id)sender {
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeFlat];
-    } else{
+    } else {
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
     }
 }
 
-- (IBAction)changeMaskType:(id)sender{
+- (IBAction)changeMaskType:(id)sender {
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];
@@ -119,7 +121,7 @@ static float progress = 0.0f;
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     } else if(segmentedControl.selectedSegmentIndex == 2){
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
-    } else{
+    } else {
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
     }
 }

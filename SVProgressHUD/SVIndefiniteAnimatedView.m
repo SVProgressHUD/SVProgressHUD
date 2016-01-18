@@ -6,6 +6,7 @@
 //
 
 #import "SVIndefiniteAnimatedView.h"
+#import "SVProgressHUD.h"
 
 #pragma mark SVIndefiniteAnimatedView
 
@@ -58,9 +59,10 @@
         
         CALayer *maskLayer = [CALayer layer];
         
-        NSBundle *bundle = [NSBundle bundleForClass:self.class];
+        NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
         NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
         NSBundle *imageBundle = [NSBundle bundleWithURL:url];
+        
         NSString *path = [imageBundle pathForResource:@"angle-mask" ofType:@"png"];
         
         maskLayer.contents = (__bridge id)[[UIImage imageWithContentsOfFile:path] CGImage];
@@ -103,10 +105,10 @@
 }
 
 - (void)setFrame:(CGRect)frame {
-    if(!CGRectEqualToRect(frame, super.frame)){
+    if(!CGRectEqualToRect(frame, super.frame)) {
         [super setFrame:frame];
         
-        if (self.superview) {
+        if(self.superview) {
             [self layoutAnimatedLayer];
         }
     }
@@ -114,13 +116,13 @@
 }
 
 - (void)setRadius:(CGFloat)radius {
-    if(radius != _radius){
+    if(radius != _radius) {
         _radius = radius;
         
         [_indefiniteAnimatedLayer removeFromSuperlayer];
         _indefiniteAnimatedLayer = nil;
         
-        if (self.superview) {
+        if(self.superview) {
             [self layoutAnimatedLayer];
         }
     }

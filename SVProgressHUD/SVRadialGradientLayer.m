@@ -17,7 +17,7 @@
     CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
     CGColorSpaceRelease(colorSpace);
 
-    float radius = MIN(self.bounds.size.width , self.bounds.size.height) ;
+    float radius = MIN(self.bounds.size.width , self.bounds.size.height);
     CGContextDrawRadialGradient (context, gradient, self.gradientCenter, 0, self.gradientCenter, radius, kCGGradientDrawsAfterEndLocation);
     CGGradientRelease(gradient);
 }
