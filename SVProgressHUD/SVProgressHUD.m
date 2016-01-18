@@ -75,8 +75,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)updateViewHierachy;
 
-- (UIActivityIndicatorView *)createActivityIndicatorView;
-- (SVIndefiniteAnimatedView *)createIndefiniteAnimatedView;
 - (UIView *)indefiniteAnimatedView;
 - (CAShapeLayer*)ringLayer;
 - (CAShapeLayer*)backgroundRingLayer;
@@ -125,8 +123,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type {
     [self sharedView].defaultAnimationType = type;
-    // Reset indefiniteAnimatedView so it gets recreated with the new style
-    [self sharedView].indefiniteAnimatedView = nil;
 }
 
 + (void)setMinimumSize:(CGSize)minimumSize {
@@ -1072,26 +1068,40 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 #pragma mark - Ring progress animation
 
-- (UIActivityIndicatorView *)createActivityIndicatorView {
-    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    activityIndicatorView.color = self.foregroundColorForStyle;
-    [activityIndicatorView sizeToFit];
-    return activityIndicatorView;
-}
-
-- (SVIndefiniteAnimatedView *)createIndefiniteAnimatedView {
-    SVIndefiniteAnimatedView *indefiniteAnimatedView = [[SVIndefiniteAnimatedView alloc] initWithFrame:CGRectZero];
-    indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
-    indefiniteAnimatedView.radius = self.statusLabel.text ? self.ringRadius : self.ringNoTextRadius;
-    indefiniteAnimatedView.strokeThickness = self.ringThickness;
-    [indefiniteAnimatedView sizeToFit];
-    return indefiniteAnimatedView;
-}
-
 - (UIView *)indefiniteAnimatedView {
-    if(_indefiniteAnimatedView == nil) {
-        _indefiniteAnimatedView = (self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) ? [self createIndefiniteAnimatedView] : [self createActivityIndicatorView];
+    // Get the correct spinner for defaultAnimationType
+    if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat){
+        // Check if spinner exists and is an object of different class
+        if(_indefiniteAnimatedView && ![_indefiniteAnimatedView isKindOfClass:[SVIndefiniteAnimatedView class]]){
+            [_indefiniteAnimatedView removeFromSuperview];
+            _indefiniteAnimatedView = nil;
+        }
+        
+        if(!_indefiniteAnimatedView){
+            _indefiniteAnimatedView = [[SVIndefiniteAnimatedView alloc] initWithFrame:CGRectZero];
+        }
+        
+        // Update styling
+        SVIndefiniteAnimatedView *indefiniteAnimatedView = (SVIndefiniteAnimatedView *)_indefiniteAnimatedView;
+        indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
+        indefiniteAnimatedView.radius = self.statusLabel.text ? self.ringRadius : self.ringNoTextRadius;
+        indefiniteAnimatedView.strokeThickness = self.ringThickness;
+    } else {
+        // Check if spinner exists and is an object of different class
+        if(_indefiniteAnimatedView && ![_indefiniteAnimatedView isKindOfClass:[UIActivityIndicatorView class]]){
+            [_indefiniteAnimatedView removeFromSuperview];
+            _indefiniteAnimatedView = nil;
+        }
+        
+        if(!_indefiniteAnimatedView){
+            _indefiniteAnimatedView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        }
+        
+        // Update styling
+        UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *)_indefiniteAnimatedView;
+        activityIndicatorView.color = self.foregroundColorForStyle;
     }
+    [_indefiniteAnimatedView sizeToFit];
     
     return _indefiniteAnimatedView;
 }
@@ -1100,9 +1110,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     if(!_ringLayer) {
         CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
         _ringLayer = [self createRingLayerWithCenter:center radius:self.ringRadius];
+        _ringLayer.strokeColor = self.foregroundColorForStyle.CGColor;
+        _ringLayer.lineWidth = self.ringThickness;
     }
-    _ringLayer.strokeColor = self.foregroundColorForStyle.CGColor;
-    _ringLayer.lineWidth = self.ringThickness;
     
     return _ringLayer;
 }
@@ -1112,9 +1122,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
         _backgroundRingLayer = [self createRingLayerWithCenter:center radius:self.ringRadius];
         _backgroundRingLayer.strokeEnd = 1;
+        _backgroundRingLayer.strokeColor = [self.foregroundColorForStyle colorWithAlphaComponent:0.1f].CGColor;
+        _backgroundRingLayer.lineWidth = self.ringThickness;
     }
-    _backgroundRingLayer.strokeColor = [self.foregroundColorForStyle colorWithAlphaComponent:0.1f].CGColor;
-    _backgroundRingLayer.lineWidth = self.ringThickness;
     
     return _backgroundRingLayer;
 }

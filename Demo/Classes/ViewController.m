@@ -34,8 +34,6 @@
                                              selector:@selector(handleNotification:)
                                                  name:SVProgressHUDDidDisappearNotification
                                                object:nil];
-    
-    [SVProgressHUD show];
 }
 
 - (void)handleNotification:(NSNotification *)notification {
