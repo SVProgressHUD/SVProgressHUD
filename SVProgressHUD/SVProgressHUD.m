@@ -49,11 +49,11 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 - (void)updateHUDFrame;
 - (void)updateMask;
 - (void)updateBlurBounds;
-- (void)updateViewHierachy;
 #if TARGET_OS_IOS
 - (void)updateMotionEffectForOrientation:(UIInterfaceOrientation)orientation;
 #endif
 - (void)updateMotionEffectForXMotionEffectType:(UIInterpolatingMotionEffectType)xMotionEffectType yMotionEffectType:(UIInterpolatingMotionEffectType)yMotionEffectType;
+- (void)updateViewHierachy;
 
 - (void)setStatus:(NSString*)status;
 - (void)setFadeOutTimer:(NSTimer*)timer;
@@ -72,8 +72,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)dismissWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay;
 - (void)dismiss;
-
-- (void)updateViewHierachy;
 
 - (UIView *)indefiniteAnimatedView;
 - (CAShapeLayer*)ringLayer;
