@@ -957,7 +957,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         __weak SVProgressHUD *weakSelf = self;
         [UIView animateWithDuration:SVProgressHUDDefaultAnimationDuration
                               delay:0
-                            options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState)
+                            options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
                          animations:^{
                              __strong SVProgressHUD *strongSelf = weakSelf;
                              if(strongSelf) {
@@ -1005,48 +1005,63 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         
         // Animate appearance
         __weak SVProgressHUD *weakSelf = self;
-        [UIView animateWithDuration:duration
-                              delay:delay
-                            options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState)
-                         animations:^{
-                             __strong SVProgressHUD *strongSelf = weakSelf;
-                             if(strongSelf) {
-                                 strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 0.7f, 0.7f);
-                                 
-                                 if(strongSelf.isClear) { // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
-                                     strongSelf.hudView.alpha = 0.0f;
-                                 } else {
-                                     strongSelf.alpha = 0.0f;
-                                 }
-                             }
-                         } completion:^(BOOL finished) {
-                             __strong SVProgressHUD *strongSelf = weakSelf;
-                             if(strongSelf) {
-                                 if(strongSelf.alpha == 0.0f || strongSelf.hudView.alpha == 0.0f) {
-                                     strongSelf.alpha = 0.0f;
-                                     strongSelf.hudView.alpha = 0.0f;
-                                     
-                                     // Remove observer <=> we do not have to handle orientation changes etc.
-                                     [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
-                                     
-                                     // Post notification to inform user
-                                     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
-                                                                                         object:strongSelf
-                                                                                       userInfo:[strongSelf notificationUserInfo]];
-                                     
-                                     // Tell the rootViewController to update the StatusBar appearance
+        
+        void (^animationsBlock)(void) = ^{
+            __strong SVProgressHUD *strongSelf = weakSelf;
+            if(strongSelf){
+                strongSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8f, 0.8f);
+                
+                if(strongSelf.isClear){ // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
+                    strongSelf.hudView.alpha = 0.0f;
+                } else{
+                    strongSelf.alpha = 0.0f;
+                }
+            }
+        };
+
+        void (^completionBlock)(void) = ^{
+            __strong SVProgressHUD *strongSelf = weakSelf;
+            if(strongSelf) {
+                if(strongSelf.alpha == 0.0f || strongSelf.hudView.alpha == 0.0f) {
+                    strongSelf.alpha = 0.0f;
+                    strongSelf.hudView.alpha = 0.0f;
+                    
+                    // Remove observer <=> we do not have to handle orientation changes etc.
+                    [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
+                    
+                    // Post notification to inform user
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
+                                                                        object:strongSelf
+                                                                      userInfo:[strongSelf notificationUserInfo]];
+                    
+                    // Tell the rootViewController to update the StatusBar appearance
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-                                     UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
-                                     if([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-                                         [rootController setNeedsStatusBarAppearanceUpdate];
-                                     }
+                    UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
+                    if([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+                        [rootController setNeedsStatusBarAppearanceUpdate];
+                    }
 #endif
-                                 }
-                             }
-                             
-                             // Update accesibilty
-                             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-                         }];
+                }
+            }
+            
+            // Update accesibilty
+            UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+        };
+        
+        if (duration > 0) {
+            [UIView animateWithDuration:duration
+                                  delay:delay
+                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)
+                             animations:^{
+                                 animationsBlock();
+                             } completion:^(BOOL finished) {
+                                 completionBlock();
+                             }];
+        } else {
+            animationsBlock();
+            completionBlock();
+        }
+
     }
 }
 
