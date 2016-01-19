@@ -281,21 +281,9 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [[self sharedView] showImage:SVProgressHUDInfoImage status:status duration:displayInterval];
 }
 
-+ (void)showInfoWithStatus:(NSString *)status maskType:(SVProgressHUDMaskType)maskType duration:(NSTimeInterval)displayInterval {
-    [self setDefaultMaskType:maskType];
-    [self showInfoWithStatus:status duration:displayInterval];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
-}
-
 + (void)showSuccessWithStatus:(NSString *)status duration:(NSTimeInterval)displayInterval {
     [self sharedView];
     [[self sharedView] showImage:SVProgressHUDSuccessImage status:status duration:displayInterval];
-}
-
-+ (void)showSuccessWithStatus:(NSString *)status maskType:(SVProgressHUDMaskType)maskType duration:(NSTimeInterval)displayInterval {
-    [self setDefaultMaskType:maskType];
-    [self showSuccessWithStatus:status duration:displayInterval];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
 }
 
 + (void)showErrorWithStatus:(NSString *)status duration:(NSTimeInterval)displayInterval {
@@ -303,20 +291,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [[self sharedView] showImage:SVProgressHUDErrorImage status:status duration:displayInterval];
 }
 
-+ (void)showErrorWithStatus:(NSString *)status maskType:(SVProgressHUDMaskType)maskType duration:(NSTimeInterval)displayInterval {
-    [self setDefaultMaskType:maskType];
-    [self showErrorWithStatus:status duration:displayInterval];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
-}
-
 + (void)showImage:(UIImage *)image status:(NSString *)status duration:(NSTimeInterval)displayInterval {
     [[self sharedView] showImage:image status:status duration:displayInterval];
-}
-
-+ (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType duration:(NSTimeInterval)displayInterval {
-    [self setDefaultMaskType:maskType];
-    [self showImage:image status:status duration:displayInterval];
-    [self setDefaultMaskType:SVProgressHUDMaskTypeNone];
 }
 
 #pragma mark - Dismiss Methods
