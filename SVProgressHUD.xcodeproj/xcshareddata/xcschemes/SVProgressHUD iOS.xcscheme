@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4A9D7DD71AB345980039B273"
                BuildableName = "SVProgressHUD.framework"
-               BlueprintName = "SVProgressHUD-Framework"
+               BlueprintName = "SVProgressHUD iOS"
                ReferencedContainer = "container:SVProgressHUD.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -58,7 +58,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A9D7DD71AB345980039B273"
             BuildableName = "SVProgressHUD.framework"
-            BlueprintName = "SVProgressHUD-Framework"
+            BlueprintName = "SVProgressHUD iOS"
             ReferencedContainer = "container:SVProgressHUD.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -80,7 +80,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A9D7DD71AB345980039B273"
             BuildableName = "SVProgressHUD.framework"
-            BlueprintName = "SVProgressHUD-Framework"
+            BlueprintName = "SVProgressHUD iOS"
             ReferencedContainer = "container:SVProgressHUD.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -98,7 +98,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A9D7DD71AB345980039B273"
             BuildableName = "SVProgressHUD.framework"
-            BlueprintName = "SVProgressHUD-Framework"
+            BlueprintName = "SVProgressHUD iOS"
             ReferencedContainer = "container:SVProgressHUD.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
