@@ -1020,6 +1020,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                     strongSelf.alpha = 0.0f;
                     strongSelf.hudView.alpha = 0.0f;
                     
+                    // Clean up view hierachy (overlays)
+                    [_overlayView removeFromSuperview];
+                    [self removeFromSuperview];
+                    
                     // Remove observer <=> we do not have to handle orientation changes etc.
                     [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
                     
@@ -1060,7 +1064,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 - (void)dismiss {
-    [self dismissWithDuration:0 delay:0];
+    [self dismissWithDuration:SVProgressHUDDefaultAnimationDuration delay:0];
 }
 
 
