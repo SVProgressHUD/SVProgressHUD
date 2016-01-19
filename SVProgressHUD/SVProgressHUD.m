@@ -1028,7 +1028,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                     [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
                     
                     // Post notification to inform user
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
                                                                         object:strongSelf
                                                                       userInfo:[strongSelf notificationUserInfo]];
                     
