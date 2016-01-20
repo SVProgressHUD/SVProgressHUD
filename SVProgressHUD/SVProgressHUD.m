@@ -227,7 +227,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #pragma mark - Show, then automatically dismiss methods
 
 + (void)showInfoWithStatus:(NSString*)status {
-    [self showImage:[self sharedView].infoImage status:status];
+    [self showImage:nil/*[self sharedView].infoImage*/ status:status];
 }
 
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -284,7 +284,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 + (void)dismiss {
-    [self dismissWithDelay:0];
+    [self dismissWithDelay:0.0];
 }
 
 + (void)dismissWithDelay:(NSTimeInterval)delay {
@@ -350,13 +350,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             _errorImage = errorImage;
         }
 
-        _ringThickness = 2;
-        _ringRadius = 18;
-        _ringNoTextRadius = 24;
+        _ringThickness = 2.0f;
+        _ringRadius = 18.0f;
+        _ringNoTextRadius = 24.0f;
         
-        _cornerRadius = 14;
+        _cornerRadius = 14.0f;
         
-        _minimumDismissTimeInterval = 5.0f;
+        _minimumDismissTimeInterval = 5.0;
         
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
@@ -378,8 +378,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     CGRect labelRect = CGRectZero;
     
     // Check if an image or progress ring is displayed
-    BOOL imageUsed = (self.imageView.image) || !(self.imageView.hidden);
-    BOOL progressUsed = !imageUsed;
+    BOOL imageUsed = (self.imageView.image) && !(self.imageView.hidden);
+    BOOL progressUsed = self.imageView.hidden;
     
     // Calculate size of string and update HUD size
     NSString *string = self.statusLabel.text;
@@ -498,7 +498,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             self.backgroundLayer = layer;
             self.backgroundLayer.frame = self.bounds;
             CGPoint gradientCenter = self.center;
-            gradientCenter.y = (self.bounds.size.height - self.visibleKeyboardHeight) / 2;
+            gradientCenter.y = (self.bounds.size.height - self.visibleKeyboardHeight)/2;
             layer.gradientCenter = gradientCenter;
             [self.backgroundLayer setNeedsDisplay];
             
@@ -565,7 +565,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         UIMotionEffectGroup *effectGroup = [[UIMotionEffectGroup alloc] init];
         effectGroup.motionEffects = @[effectX, effectY];
         
-        // Update motion effects
+        // Clear old motion effect, then add new motion effects
         self.hudView.motionEffects = @[];
         [self.hudView addMotionEffect:effectGroup];
     }
@@ -600,9 +600,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         [self.overlayView.superview bringSubviewToFront:self.overlayView];
     }
     
-    // Add the HUD itself to the overlay if necessary
-    if(!self.superview) {
+    
+    // Add self to the overlay view
+    if(!self.superview){
         [self.overlayView addSubview:self];
+    }
+    if(!self.hudView.superview) {
+        [self addSubview:self.hudView];
     }
 }
 
@@ -843,8 +847,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                 }
                 
                 // Add ring to HUD and set progress
-                [strongSelf.hudView.layer addSublayer:_ringLayer];
-                [strongSelf.hudView.layer addSublayer:_backgroundRingLayer];
+                [strongSelf.hudView.layer addSublayer:strongSelf.ringLayer];
+                [strongSelf.hudView.layer addSublayer:strongSelf.backgroundRingLayer];
                 strongSelf.ringLayer.strokeEnd = progress;
                 
                 // Updat the activity count
@@ -929,11 +933,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     }
     
     // Show overlay
-    self.overlayView.hidden = NO;
     self.overlayView.backgroundColor = [UIColor clearColor];
     
     // Show if not already visible (depending on alpha)
-    if(self.alpha == 0 || self.hudView.alpha == 0) {
+    if(self.alpha != 1.0f || self.hudView.alpha != 1.0f) {
         // Post notification to inform user
         [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillAppearNotification
                                                             object:self
@@ -942,12 +945,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         // Zoom HUD a little to make a nice appear, pop up animation
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
         
-        // Animate appearance
+        // Set initial values to handle iOS 7 and 8 UIToolbar which not answers well to hierarchy opacity change
         if(self.isClear) {
-            self.alpha = 1;
-            self.hudView.alpha = 0;
+            self.alpha = 1.0f;
+            self.hudView.alpha = 0.0f;
         }
         
+        // Animate appearance
         __weak SVProgressHUD *weakSelf = self;
         [UIView animateWithDuration:SVProgressHUDDefaultAnimationDuration
                               delay:0
@@ -959,9 +963,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                                  strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 1/1.3f, 1/1.3f);
                                  
                                  if(strongSelf.isClear) { // handle iOS 7 and 8 UIToolbar which not answers well to hierarchy opacity change
-                                     strongSelf.hudView.alpha = 1;
+                                     strongSelf.hudView.alpha = 1.0f;
                                  } else {
-                                     strongSelf.alpha = 1;
+                                     strongSelf.alpha = 1.0f;
                                  }
                              }
                          } completion:^(BOOL finished) {
@@ -988,7 +992,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)dismissWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay {
     // Dismiss if visible (depending on alpha)
-    if(self.alpha != 0 || self.hudView.alpha != 0){
+    if(self.alpha != 0.0f || self.hudView.alpha != 0.0f){
         // Post notification to inform user
         [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
                                                             object:nil
@@ -1016,30 +1020,27 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         void (^completionBlock)(void) = ^{
             __strong SVProgressHUD *strongSelf = weakSelf;
             if(strongSelf) {
-                if(strongSelf.alpha == 0.0f || strongSelf.hudView.alpha == 0.0f) {
-                    strongSelf.alpha = 0.0f;
-                    strongSelf.hudView.alpha = 0.0f;
-                    
-                    // Clean up view hierachy (overlays)
-                    [_overlayView removeFromSuperview];
-                    [self removeFromSuperview];
-                    
-                    // Remove observer <=> we do not have to handle orientation changes etc.
-                    [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
-                    
-                    // Post notification to inform user
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
-                                                                        object:strongSelf
-                                                                      userInfo:[strongSelf notificationUserInfo]];
-                    
-                    // Tell the rootViewController to update the StatusBar appearance
+                // Clean up view hierachy (overlays)
+                [self.overlayView removeFromSuperview];
+                [self.hudView removeFromSuperview];
+                [self removeFromSuperview];
+                
+                
+                // Remove observer <=> we do not have to handle orientation changes etc.
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
+                
+                // Post notification to inform user
+                [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
+                                                                    object:strongSelf
+                                                                  userInfo:[strongSelf notificationUserInfo]];
+                
+                // Tell the rootViewController to update the StatusBar appearance
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-                    UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
-                    if([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-                        [rootController setNeedsStatusBarAppearanceUpdate];
-                    }
-#endif
+                UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
+                if([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+                    [rootController setNeedsStatusBarAppearanceUpdate];
                 }
+#endif
             }
             
             // Update accesibilty
@@ -1237,9 +1238,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     }
     _hudView.backgroundColor = self.backgroundColorForStyle;
     
-    if(!_hudView.superview) {
-        [self addSubview:_hudView];
-    }
     return _hudView;
 }
 
@@ -1252,12 +1250,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         _statusLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
         _statusLabel.numberOfLines = 0;
     }
-    _statusLabel.textColor = self.foregroundColorForStyle;
-    _statusLabel.font = self.font;
-    
     if(!_statusLabel.superview) {
         [self.hudView addSubview:_statusLabel];
     }
+    
+    _statusLabel.textColor = self.foregroundColorForStyle;
+    _statusLabel.font = self.font;
+
     return _statusLabel;
 }
 
