@@ -553,7 +553,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #endif
 
 - (void)updateMotionEffectForXMotionEffectType:(UIInterpolatingMotionEffectType)xMotionEffectType yMotionEffectType:(UIInterpolatingMotionEffectType)yMotionEffectType {
-    if([_hudView respondsToSelector:@selector(addMotionEffect:)]) {
+    if([self.hudView respondsToSelector:@selector(addMotionEffect:)]) {
         UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:xMotionEffectType];
         effectX.minimumRelativeValue = @(-SVProgressHUDParallaxDepthPoints);
         effectX.maximumRelativeValue = @(SVProgressHUDParallaxDepthPoints);
@@ -843,9 +843,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             // Choose the "right" indicator depending on the progress
             if(progress >= 0) {
                 // Cancel the indefiniteAnimatedView, then show the ringLayer
-                if([strongSelf.indefiniteAnimatedView respondsToSelector:@selector(stopAnimating)]) {
-                    [(id)strongSelf.indefiniteAnimatedView stopAnimating];
-                }
+                [strongSelf cancelIndefiniteAnimatedViewAnimation];
                 
                 // Add ring to HUD and set progress
                 [strongSelf.hudView.layer addSublayer:strongSelf.ringLayer];
@@ -1112,7 +1110,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (CAShapeLayer*)ringLayer {
     if(!_ringLayer) {
-        CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
+        CGPoint center = CGPointMake(CGRectGetWidth(self.hudView.frame)/2, CGRectGetHeight(self.hudView.frame)/2);
         _ringLayer = [self createRingLayerWithCenter:center radius:self.ringRadius];
         _ringLayer.strokeColor = self.foregroundColorForStyle.CGColor;
         _ringLayer.lineWidth = self.ringThickness;
@@ -1123,7 +1121,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (CAShapeLayer*)backgroundRingLayer {
     if(!_backgroundRingLayer) {
-        CGPoint center = CGPointMake(CGRectGetWidth(_hudView.frame)/2, CGRectGetHeight(_hudView.frame)/2);
+        CGPoint center = CGPointMake(CGRectGetWidth(self.hudView.frame)/2, CGRectGetHeight(self.hudView.frame)/2);
         _backgroundRingLayer = [self createRingLayerWithCenter:center radius:self.ringRadius];
         _backgroundRingLayer.strokeEnd = 1;
         _backgroundRingLayer.strokeColor = [self.foregroundColorForStyle colorWithAlphaComponent:0.1f].CGColor;
@@ -1148,20 +1146,25 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 - (void)cancelRingLayerAnimation {
+    // Stop animation
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     [_hudView.layer removeAllAnimations];
-    
     _ringLayer.strokeEnd = 0.0f;
-    
     [CATransaction commit];
+    
+    // Remove from view
+    [self.ringLayer removeFromSuperlayer];
+    [self.backgroundRingLayer removeFromSuperlayer];
 }
 
 - (void)cancelIndefiniteAnimatedViewAnimation {
-    [self.indefiniteAnimatedView removeFromSuperview];
+    // Stop animation
     if([self.indefiniteAnimatedView respondsToSelector:@selector(stopAnimating)]) {
         [(id)self.indefiniteAnimatedView stopAnimating];
     }
+    // Remove from view
+    [self.indefiniteAnimatedView removeFromSuperview];
 }
 
 
