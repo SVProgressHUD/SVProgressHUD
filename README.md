@@ -23,10 +23,10 @@ Try `SVProgressHUD` on [Appetize.io](https://appetize.io/app/p8r2cvy8kq74x7q7tjq
 pod 'SVProgressHUD'
 ```
 
-If you want to use the latest features of `SVProgressHUD` add `:head`:
+If you want to use the latest features of `SVProgressHUD` use normal external source dependencies.
 
 ```ruby
-pod 'SVProgressHUD', :head
+pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 ```
 
 This pulls from the `master` branch directly. We are usually careful about what we push there and this is the version we use ourselves in all of our projects.
