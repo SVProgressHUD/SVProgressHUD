@@ -19,6 +19,7 @@
 		65F0220015C857EF0030BBEF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F021FF15C857EF0030BBEF /* Foundation.framework */; };
 		65F0220515C857EF0030BBEF /* SVProgressHUD.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65F0220415C857EF0030BBEF /* SVProgressHUD.h */; };
 		65F0220715C857EF0030BBEF /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0220615C857EF0030BBEF /* SVProgressHUD.m */; };
+		A7E0963C1C11F8E10038220B /* SVProgressHUD-Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = A7E0963B1C11F8E10038220B /* SVProgressHUD-Framework.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +48,8 @@
 		65F0220415C857EF0030BBEF /* SVProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		65F0220615C857EF0030BBEF /* SVProgressHUD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		65F0220D15C858060030BBEF /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		A7E0963B1C11F8E10038220B /* SVProgressHUD-Framework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Framework.h"; sourceTree = SOURCE_ROOT; };
+		A7E0963F1C1205E50038220B /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +74,7 @@
 		4A9D7DD91AB345990039B273 /* SVProgressHUD-Framework */ = {
 			isa = PBXGroup;
 			children = (
+				A7E0963B1C11F8E10038220B /* SVProgressHUD-Framework.h */,
 				4A9D7DDA1AB345990039B273 /* Supporting Files */,
 			);
 			path = "SVProgressHUD-Framework";
@@ -79,6 +83,7 @@
 		4A9D7DDA1AB345990039B273 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A7E0963F1C1205E50038220B /* module.modulemap */,
 				4A9D7DDB1AB345990039B273 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -142,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A9D7DF31AB345E10039B273 /* SVProgressHUD.h in Headers */,
+				A7E0963C1C11F8E10038220B /* SVProgressHUD-Framework.h in Headers */,
 				4A9D7DF41AB345E80039B273 /* SVIndefiniteAnimatedView.h in Headers */,
 				3CB14F9C1AFBCB57003C2641 /* SVRadialGradientLayer.h in Headers */,
 			);
@@ -286,6 +292,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "SVProgressHUD-Framework/module.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = SVProgressHUD;
@@ -328,6 +335,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "SVProgressHUD-Framework/module.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = SVProgressHUD;
 				SKIP_INSTALL = YES;
