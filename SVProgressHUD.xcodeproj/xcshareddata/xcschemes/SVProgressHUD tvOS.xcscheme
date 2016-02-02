@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "82CB7D871C4E76F600B1B14F"
-               BuildableName = "SVProgressHUD tvOS.framework"
+               BuildableName = "SVProgressHUD.framework"
                BlueprintName = "SVProgressHUD tvOS"
                ReferencedContainer = "container:SVProgressHUD.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "82CB7D871C4E76F600B1B14F"
-            BuildableName = "SVProgressHUD tvOS.framework"
+            BuildableName = "SVProgressHUD.framework"
             BlueprintName = "SVProgressHUD tvOS"
             ReferencedContainer = "container:SVProgressHUD.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "82CB7D871C4E76F600B1B14F"
-            BuildableName = "SVProgressHUD tvOS.framework"
+            BuildableName = "SVProgressHUD.framework"
             BlueprintName = "SVProgressHUD tvOS"
             ReferencedContainer = "container:SVProgressHUD.xcodeproj">
          </BuildableReference>
