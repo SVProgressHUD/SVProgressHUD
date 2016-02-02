@@ -611,6 +611,7 @@
 				82CB7D8F1C4E76F600B1B14F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
