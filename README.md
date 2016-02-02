@@ -190,4 +190,4 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ## Credits
 
-`SVProgressHUD` is brought to you by [Sam Vermette](http://samvermette.com), [Tobias Tiemerding](http://tiemerding.com) and [contributors to the project](https://github.com/SVProgressHUD/SVProgressHUD/contributors). If you're using `SVProgressHUD` in your project, attribution would be very appreciated. T
+`SVProgressHUD` is brought to you by [Sam Vermette](http://samvermette.com), [Tobias Tiemerding](http://tiemerding.com) and [contributors to the project](https://github.com/SVProgressHUD/SVProgressHUD/contributors). If you're using `SVProgressHUD` in your project, attribution would be very appreciated.
