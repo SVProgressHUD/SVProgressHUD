@@ -175,6 +175,18 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].minimumDismissTimeInterval = interval;
 }
 
++ (void)setDimBackgroundColor:(UIColor *)color {
+    [self sharedView].dimBackgroundColor = color;
+}
+
++ (void)setFadeInAnimationSpeed:(NSTimeInterval)speed {
+    [self sharedView].fadeInAnimationSpeed = speed;
+}
+
++ (void)setFadeOutAnimationSpeed:(NSTimeInterval)speed {
+    [self sharedView].fadeOutAnimationSpeed = speed;
+}
+
 
 #pragma mark - Show Methods
 
@@ -288,7 +300,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 + (void)dismissWithDelay:(NSTimeInterval)delay {
-    [SVProgressHUD dismissWithDuration:SVProgressHUDDefaultAnimationDuration delay:delay];
+    if([self isVisible]) {
+        [[self sharedView] dismissWithDelay:delay];
+    }
 }
 
 + (void)dismissWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay {
@@ -357,6 +371,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         _cornerRadius = 14.0f;
         
         _minimumDismissTimeInterval = 5.0;
+
+        _dimBackgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+        _fadeInAnimationSpeed = SVProgressHUDDefaultAnimationDuration;
+        _fadeOutAnimationSpeed = SVProgressHUDDefaultAnimationDuration;
         
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
@@ -486,7 +504,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             
             self.backgroundLayer = [CALayer layer];
             self.backgroundLayer.frame = self.bounds;
-            self.backgroundLayer.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5].CGColor;
+            self.backgroundLayer.backgroundColor = self.dimBackgroundColor.CGColor;
             [self.backgroundLayer setNeedsDisplay];
             
             [self.layer insertSublayer:self.backgroundLayer atIndex:0];
@@ -951,7 +969,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         
         // Animate appearance
         __weak SVProgressHUD *weakSelf = self;
-        [UIView animateWithDuration:SVProgressHUDDefaultAnimationDuration
+        [UIView animateWithDuration:self.fadeInAnimationSpeed
                               delay:0
                             options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
                          animations:^{
@@ -986,6 +1004,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         // Inform iOS to redraw the view hierachy
         [self setNeedsDisplay];
     }
+}
+
+- (void)dismissWithDelay:(NSTimeInterval)delay {
+    [self dismissWithDuration:self.fadeOutAnimationSpeed delay:delay];
 }
 
 - (void)dismissWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay {
@@ -1063,7 +1085,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 - (void)dismiss {
-    [self dismissWithDuration:SVProgressHUDDefaultAnimationDuration delay:0];
+    [self dismissWithDuration:self.fadeOutAnimationSpeed delay:0];
 }
 
 
