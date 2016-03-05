@@ -155,6 +155,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].backgroundColor = color;
 }
 
++ (void)setBackgroundLayerColor:(UIColor *)color {
+    [self sharedView].backgroundLayerColor = color;
+}
+
 + (void)setInfoImage:(UIImage*)image {
     [self sharedView].infoImage = image;
 }
@@ -173,10 +177,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval {
     [self sharedView].minimumDismissTimeInterval = interval;
-}
-
-+ (void)setDimBackgroundColor:(UIColor *)color {
-    [self sharedView].dimBackgroundColor = color;
 }
 
 + (void)setFadeInAnimationSpeed:(NSTimeInterval)speed {
@@ -332,6 +332,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         self.userInteractionEnabled = NO;
         _backgroundColor = [UIColor clearColor];
         _foregroundColor = [UIColor blackColor];
+        _backgroundLayerColor = [UIColor colorWithWhite:0 alpha:0.5];
         self.alpha = 0.0f;
         self.activityCount = 0;
         
@@ -372,7 +373,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         
         _minimumDismissTimeInterval = 5.0;
 
-        _dimBackgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         _fadeInAnimationSpeed = SVProgressHUDDefaultAnimationDuration;
         _fadeOutAnimationSpeed = SVProgressHUDDefaultAnimationDuration;
         
@@ -504,7 +504,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             
             self.backgroundLayer = [CALayer layer];
             self.backgroundLayer.frame = self.bounds;
-            self.backgroundLayer.backgroundColor = self.dimBackgroundColor.CGColor;
+            self.backgroundLayer.backgroundColor = self.backgroundLayerColor.CGColor;
             [self.backgroundLayer setNeedsDisplay];
             
             [self.layer insertSublayer:self.backgroundLayer atIndex:0];
