@@ -292,9 +292,11 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 + (void)dismissWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay {
-    if([self isVisible]) {
-        [[self sharedView] dismissWithDuration:duration delay:delay];
-    }
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if([SVProgressHUD isVisible]) {
+            [[SVProgressHUD sharedView] dismissWithDuration:duration delay:delay];
+        }
+    }];
 }
 
 
