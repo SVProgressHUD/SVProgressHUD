@@ -582,7 +582,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             BOOL windowIsVisible = !window.hidden && window.alpha > 0;
             BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
             
-            if(windowOnMainScreen && windowIsVisible && windowLevelNormal) {
+            if(windowOnMainScreen && windowIsVisible && windowLevelNormal && window.keyWindow) {
                 [window addSubview:self.overlayView];
                 break;
             }
