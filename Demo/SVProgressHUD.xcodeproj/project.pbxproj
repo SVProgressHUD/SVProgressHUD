@@ -190,9 +190,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* SVProgressHUD */ = {
+		1D6058900D05DD3D006BFB54 /* iOS Demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "SVProgressHUD" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iOS Demo" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -202,7 +202,7 @@
 			);
 			dependencies = (
 			);
-			name = SVProgressHUD;
+			name = "iOS Demo";
 			productName = SVProgressHUD;
 			productReference = 1D6058910D05DD3D006BFB54 /* SVProgressHUD.app */;
 			productType = "com.apple.product-type.application";
@@ -252,7 +252,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* SVProgressHUD */,
+				1D6058900D05DD3D006BFB54 /* iOS Demo */,
 				D36EDBCD1BE7E9B000BD0EF1 /* tvOS Demo */,
 			);
 		};
@@ -491,7 +491,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "SVProgressHUD" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iOS Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,

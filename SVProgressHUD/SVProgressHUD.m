@@ -1170,7 +1170,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #pragma mark - Utilities
 
 + (BOOL)isVisible {
-    return ([self sharedView].alpha == 1);
+    return ([self sharedView].alpha > 0);
 }
 
 
