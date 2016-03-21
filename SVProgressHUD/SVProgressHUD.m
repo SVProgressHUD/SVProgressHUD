@@ -179,12 +179,12 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].minimumDismissTimeInterval = interval;
 }
 
-+ (void)setFadeInAnimationSpeed:(NSTimeInterval)speed {
-    [self sharedView].fadeInAnimationSpeed = speed;
++ (void)setFadeInAnimationDuration:(NSTimeInterval)duration {
+    [self sharedView].fadeInAnimationDuration = duration;
 }
 
-+ (void)setFadeOutAnimationSpeed:(NSTimeInterval)speed {
-    [self sharedView].fadeOutAnimationSpeed = speed;
++ (void)setFadeOutAnimationDuration:(NSTimeInterval)duration {
+    [self sharedView].fadeOutAnimationDuration = duration;
 }
 
 
@@ -374,8 +374,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         
         _minimumDismissTimeInterval = 5.0;
 
-        _fadeInAnimationSpeed = SVProgressHUDDefaultAnimationDuration;
-        _fadeOutAnimationSpeed = SVProgressHUDDefaultAnimationDuration;
+        _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
+        _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
@@ -969,7 +969,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         
         // Animate appearance
         __weak SVProgressHUD *weakSelf = self;
-        [UIView animateWithDuration:self.fadeInAnimationSpeed
+        [UIView animateWithDuration:self.fadeInAnimationDuration
                               delay:0
                             options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
                          animations:^{
@@ -1003,7 +1003,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 - (void)dismissWithDelay:(NSTimeInterval)delay {
-    [self dismissWithDuration:self.fadeOutAnimationSpeed delay:delay];
+    [self dismissWithDuration:self.fadeOutAnimationDuration delay:delay];
 }
 
 - (void)dismissWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay {
@@ -1077,7 +1077,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 - (void)dismiss {
-    [self dismissWithDuration:self.fadeOutAnimationSpeed delay:0];
+    [self dismissWithDuration:self.fadeOutAnimationDuration delay:0];
 }
 
 
@@ -1385,6 +1385,14 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)setMinimumDismissTimeInterval:(NSTimeInterval)minimumDismissTimeInterval {
     if (!_isInitializing) _minimumDismissTimeInterval = minimumDismissTimeInterval;
+}
+
+- (void)setFadeInAnimationDuration:(NSTimeInterval)duration {
+    if (!_isInitializing) _fadeInAnimationDuration = duration;
+}
+
+- (void)setFadeOutAnimationDuration:(NSTimeInterval)duration  {
+    if (!_isInitializing) _fadeOutAnimationDuration = duration;
 }
 
 @end

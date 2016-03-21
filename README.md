@@ -147,6 +147,8 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setErrorImage:(UIImage*)image;                              // default is bundled error image from Freepik
 + (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
++ (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
++ (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 ```
 
 Additionally `SVProgressHUD` supports the `UIAppearance` protocol for most of the above methods.

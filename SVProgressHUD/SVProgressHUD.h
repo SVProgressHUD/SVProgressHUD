@@ -66,8 +66,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 
 @property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;     // default is 0, 0
 
-@property (assign, nonatomic) NSTimeInterval fadeInAnimationSpeed;  // default is 0.15
-@property (assign, nonatomic) NSTimeInterval fadeOutAnimationSpeed; // default is 0.15
+@property (assign, nonatomic) NSTimeInterval fadeInAnimationDuration;  // default is 0.15
+@property (assign, nonatomic) NSTimeInterval fadeOutAnimationDuration; // default is 0.15
 
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
@@ -87,8 +87,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)setErrorImage:(UIImage*)image;                              // default is the bundled error image provided by Freepik
 + (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
-+ (void)setFadeInAnimationSpeed:(NSTimeInterval)speed;              // default is 0.15
-+ (void)setFadeOutAnimationSpeed:(NSTimeInterval)speed;             // default is 0.15
++ (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
++ (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 
 #pragma mark - Show Methods
 
