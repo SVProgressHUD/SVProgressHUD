@@ -943,11 +943,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         // Zoom HUD a little to make a nice appear, pop up animation
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
         
-        // Set initial values to handle iOS 7 and 8 UIToolbar which not answers well to hierarchy opacity change
-        if(self.isClear) {
-            self.alpha = 1.0f;
-            self.hudView.alpha = 0.0f;
-        }
+        // Set initial values to handle iOS 7 (and above) UIToolbar which not answers well to hierarchy opacity change
+        self.alpha = 0.0f;
+        self.hudView.alpha = 0.0f;
         
         // Animate appearance
         __weak SVProgressHUD *weakSelf = self;
@@ -959,12 +957,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                              if(strongSelf) {
                                  // Shrink to finish pop up animation
                                  strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 1/1.3f, 1/1.3f);
-                                 
-                                 if(strongSelf.isClear) { // handle iOS 7 and 8 UIToolbar which not answers well to hierarchy opacity change
-                                     strongSelf.hudView.alpha = 1.0f;
-                                 } else {
-                                     strongSelf.alpha = 1.0f;
-                                 }
+                                 strongSelf.alpha = 1.0f;
+                                 strongSelf.hudView.alpha = 1.0f;
                              }
                          } completion:^(BOOL finished) {
                              __strong SVProgressHUD *strongSelf = weakSelf;
@@ -1006,12 +1000,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             __strong SVProgressHUD *strongSelf = weakSelf;
             if(strongSelf){
                 strongSelf.hudView.transform = CGAffineTransformScale(self.hudView.transform, 0.8f, 0.8f);
-                
-                if(strongSelf.isClear){ // handle iOS 7 UIToolbar not answer well to hierarchy opacity change
-                    strongSelf.hudView.alpha = 0.0f;
-                } else{
-                    strongSelf.alpha = 0.0f;
-                }
+                strongSelf.alpha = 0.0f;
+                strongSelf.hudView.alpha = 0.0f;
             }
         };
 
@@ -1019,9 +1009,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             __strong SVProgressHUD *strongSelf = weakSelf;
             if(strongSelf) {
                 // Clean up view hierachy (overlays)
-                [self.overlayView removeFromSuperview];
+                [strongSelf.overlayView removeFromSuperview];
                 [self.hudView removeFromSuperview];
-                [self removeFromSuperview];
+                [strongSelf removeFromSuperview];
                 
                 
                 // Remove observer <=> we do not have to handle orientation changes etc.
