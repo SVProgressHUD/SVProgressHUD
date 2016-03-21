@@ -486,7 +486,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             
             self.backgroundLayer = [CALayer layer];
             self.backgroundLayer.frame = self.bounds;
-            self.backgroundLayer.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5].CGColor;
+            self.backgroundLayer.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4].CGColor;
             [self.backgroundLayer setNeedsDisplay];
             
             [self.layer insertSublayer:self.backgroundLayer atIndex:0];
