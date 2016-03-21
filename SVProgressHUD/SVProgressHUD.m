@@ -1010,7 +1010,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             if(strongSelf) {
                 // Clean up view hierachy (overlays)
                 [strongSelf.overlayView removeFromSuperview];
-                [self.hudView removeFromSuperview];
+                [strongSelf.hudView removeFromSuperview];
                 [strongSelf removeFromSuperview];
                 
                 
