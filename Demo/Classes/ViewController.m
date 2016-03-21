@@ -119,8 +119,11 @@ static float progress = 0.0f;
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     } else if(segmentedControl.selectedSegmentIndex == 2){
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
-    } else {
+    } else if(segmentedControl.selectedSegmentIndex == 3){
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
+    } else {
+        [SVProgressHUD setBackgroundLayerColor:[[UIColor redColor] colorWithAlphaComponent:0.4]];
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeCustom];
     }
 }
 
