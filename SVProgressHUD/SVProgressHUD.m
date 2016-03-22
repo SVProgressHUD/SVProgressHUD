@@ -19,6 +19,7 @@ NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDis
 NSString * const SVProgressHUDDidDisappearNotification = @"SVProgressHUDDidDisappearNotification";
 NSString * const SVProgressHUDWillAppearNotification = @"SVProgressHUDWillAppearNotification";
 NSString * const SVProgressHUDDidAppearNotification = @"SVProgressHUDDidAppearNotification";
+NSString * const SVProgressHUDUpdateViewNotification = @"SVProgressHUDUpdateViewNotification";
 
 NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
 
@@ -654,6 +655,12 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
 #endif
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(positionHUD:)
+                                                 name:SVProgressHUDUpdateViewNotification
+                                               object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(positionHUD:)
                                                  name:UIApplicationDidBecomeActiveNotification

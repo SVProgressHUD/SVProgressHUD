@@ -20,8 +20,10 @@ extern NSString * const SVProgressHUDWillDisappearNotification;
 extern NSString * const SVProgressHUDDidDisappearNotification;
 extern NSString * const SVProgressHUDWillAppearNotification;
 extern NSString * const SVProgressHUDDidAppearNotification;
+extern NSString * const SVProgressHUDUpdateViewNotification;
 
 extern NSString * const SVProgressHUDStatusUserInfoKey;
+
 
 typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
     SVProgressHUDStyleLight,        // default style, white HUD with black text, HUD background will be blurred on iOS 8 and above
