@@ -3,6 +3,7 @@
 * Fixed: Redraw resource images as the look blurry on 2x/3x. #562
 * Fixed: Problem where displayDurationForString can return duration shoter than minimumDismissTimeInterval #574
 * Fixed: iOS7+ alert black dimming view has an alpha of 0.4, not 0.5 #570
+* Fixed: Bugfix for hidden HUD if defaultMaskStyle is changed during runtime
 
 ## Version 2.0-beta8
 * Fixed: Progress HUD intersects with default spinner #551
