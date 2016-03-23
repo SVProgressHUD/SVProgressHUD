@@ -1,4 +1,7 @@
-## Version 2.0-beta9 (soon)
+## Version 2.0.1 (soon)
+* Fixed: Build issues for tvOS, as UIKeyboard notifications are gone #576
+
+## Version 2.0
 * Fixed: `:head` not available anymore in Cocoapods #552
 * Fixed: Redraw resource images as the look blurry on 2x/3x. #562
 * Fixed: Problem where displayDurationForString can return duration shoter than minimumDismissTimeInterval #574
