@@ -1034,6 +1034,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             __strong SVProgressHUD *strongSelf = weakSelf;
             if(strongSelf) {
                 // Clean up view hierachy (overlays)
+                strongSelf.ringLayer.strokeEnd = 0.0f;
                 [strongSelf.overlayView removeFromSuperview];
                 [strongSelf.hudView removeFromSuperview];
                 [strongSelf removeFromSuperview];
