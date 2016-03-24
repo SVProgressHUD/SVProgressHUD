@@ -300,15 +300,19 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 + (void)dismissWithDelay:(NSTimeInterval)delay {
-    if([self isVisible]) {
-        [[self sharedView] dismissWithDelay:delay];
-    }
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if([self isVisible]) {
+            [[self sharedView] dismissWithDelay:delay];
+        }
+    }];
 }
 
 + (void)dismissWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay {
-    if([self isVisible]) {
-        [[self sharedView] dismissWithDuration:duration delay:delay];
-    }
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if([SVProgressHUD isVisible]) {
+            [[SVProgressHUD sharedView] dismissWithDuration:duration delay:delay];
+        }
+    }];
 }
 
 
@@ -1034,6 +1038,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             __strong SVProgressHUD *strongSelf = weakSelf;
             if(strongSelf) {
                 // Clean up view hierachy (overlays)
+                strongSelf.ringLayer.strokeEnd = 0.0f;
                 [strongSelf.overlayView removeFromSuperview];
                 [strongSelf.hudView removeFromSuperview];
                 [strongSelf removeFromSuperview];
