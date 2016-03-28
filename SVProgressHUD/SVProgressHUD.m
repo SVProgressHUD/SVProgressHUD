@@ -93,6 +93,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 + (SVProgressHUD*)sharedView {
+
+    NSLog(@"only test");
     static dispatch_once_t once;
     
     static SVProgressHUD *sharedView;
