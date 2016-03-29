@@ -33,8 +33,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
     SVProgressHUDMaskTypeNone = 1,  // default mask type, allow user interactions while HUD is displayed
     SVProgressHUDMaskTypeClear,     // don't allow user interactions
     SVProgressHUDMaskTypeBlack,     // don't allow user interactions and dim the UI in the back of the HUD, as on iOS 7 and above
-    SVProgressHUDMaskTypeGradient,   // don't allow user interactions and dim the UI with a a-la UIAlertView background gradient, as on iOS 6
-    SVProgressHUDMaskTypeCustom    // don't allow user interactions and dim the UI in the back of the HUD with a custom color
+    SVProgressHUDMaskTypeGradient,  // don't allow user interactions and dim the UI with a a-la UIAlertView background gradient, as on iOS 6
+    SVProgressHUDMaskTypeCustom     // don't allow user interactions and dim the UI in the back of the HUD with a custom color
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
@@ -100,7 +100,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)showProgress:(float)progress;
 + (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showProgress: and setDefaultMaskType: instead.")));
 + (void)showProgress:(float)progress status:(NSString*)status;
-+ (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showProgress: and setDefaultMaskType: instead.")));
++ (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showProgress:status: and setDefaultMaskType: instead.")));
 
 + (void)setStatus:(NSString*)status; // change the HUD loading status while it's showing
 
@@ -114,7 +114,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 
 // shows a image + status, use 28x28 white PNGs
 + (void)showImage:(UIImage*)image status:(NSString*)status;
-+ (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showImage: and setDefaultMaskType: instead.")));
++ (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showImage:status: and setDefaultMaskType: instead.")));
 
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;
@@ -122,7 +122,6 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)popActivity; // decrease activity count, if activity count == 0 the HUD is dismissed
 + (void)dismiss;
 + (void)dismissWithDelay:(NSTimeInterval)delay;
-+ (void)dismissWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay;
 
 + (BOOL)isVisible;
 
