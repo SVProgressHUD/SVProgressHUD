@@ -132,9 +132,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 + (void)setRingRadius:(CGFloat)radius {
-    if(radius != [self sharedView].ringRadius) {
-        
-    }
     [self sharedView].ringRadius = radius;
 }
 
