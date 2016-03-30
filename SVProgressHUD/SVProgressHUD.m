@@ -75,8 +75,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 - (void)dismissWithDelay:(NSTimeInterval)delay;
 
 - (UIView*)indefiniteAnimatedView;
-- (UIView*)ringView;
-- (UIView*)backgroundRingView;
 
 - (void)cancelRingLayerAnimation;
 - (void)cancelIndefiniteAnimatedViewAnimation;
