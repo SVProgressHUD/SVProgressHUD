@@ -81,7 +81,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
-+ (void)setBackgroundLayerColor:(UIColor *)color;                   // default is [UIColor colorWithWhite:0 alpha:0.5], only used for SVProgressHUDMaskTypeBlack
++ (void)setBackgroundLayerColor:(UIColor*)color;                    // default is [UIColor colorWithWhite:0 alpha:0.5], only used for SVProgressHUDMaskTypeBlack
 + (void)setInfoImage:(UIImage*)image;                               // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                            // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(UIImage*)image;                              // default is the bundled error image provided by Freepik

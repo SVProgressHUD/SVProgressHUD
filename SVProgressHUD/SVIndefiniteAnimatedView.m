@@ -8,8 +8,6 @@
 #import "SVIndefiniteAnimatedView.h"
 #import "SVProgressHUD.h"
 
-#pragma mark SVIndefiniteAnimatedView
-
 @interface SVIndefiniteAnimatedView ()
 
 @property (nonatomic, strong) CAShapeLayer *indefiniteAnimatedLayer;
@@ -18,7 +16,7 @@
 
 @implementation SVIndefiniteAnimatedView
 
-- (void)willMoveToSuperview:(UIView *)newSuperview {
+- (void)willMoveToSuperview:(UIView*)newSuperview {
     if (newSuperview) {
         [self layoutAnimatedLayer];
     } else {
@@ -39,17 +37,11 @@
 - (CAShapeLayer*)indefiniteAnimatedLayer {
     if(!_indefiniteAnimatedLayer) {
         CGPoint arcCenter = CGPointMake(self.radius+self.strokeThickness/2+5, self.radius+self.strokeThickness/2+5);
-        CGRect rect = CGRectMake(0.0f, 0.0f, arcCenter.x*2, arcCenter.y*2);
-        
-        UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:arcCenter
-                                                                    radius:self.radius
-                                                                startAngle:(CGFloat) (M_PI*3/2)
-                                                                  endAngle:(CGFloat) (M_PI/2+M_PI*5)
-                                                                 clockwise:YES];
+        UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:arcCenter radius:self.radius startAngle:(CGFloat) (M_PI*3/2) endAngle:(CGFloat) (M_PI/2+M_PI*5) clockwise:YES];
         
         _indefiniteAnimatedLayer = [CAShapeLayer layer];
         _indefiniteAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
-        _indefiniteAnimatedLayer.frame = rect;
+        _indefiniteAnimatedLayer.frame = CGRectMake(0.0f, 0.0f, arcCenter.x*2, arcCenter.y*2);
         _indefiniteAnimatedLayer.fillColor = [UIColor clearColor].CGColor;
         _indefiniteAnimatedLayer.strokeColor = self.strokeColor.CGColor;
         _indefiniteAnimatedLayer.lineWidth = self.strokeThickness;
@@ -128,7 +120,7 @@
     }
 }
 
-- (void)setStrokeColor:(UIColor *)strokeColor {
+- (void)setStrokeColor:(UIColor*)strokeColor {
     _strokeColor = strokeColor;
     _indefiniteAnimatedLayer.strokeColor = strokeColor.CGColor;
 }
