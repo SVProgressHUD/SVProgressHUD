@@ -1191,7 +1191,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #pragma mark - Getters
 
 + (NSTimeInterval)displayDurationForString:(NSString*)string {
-    return MAX((float)string.length * 0.06 + 0.5, [self sharedView].minimumDismissTimeInterval);
+    return MIN((float)string.length * 0.06 + 0.5, [self sharedView].minimumDismissTimeInterval);
 }
 
 - (UIColor*)foregroundColorForStyle {
