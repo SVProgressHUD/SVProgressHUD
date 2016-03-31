@@ -21,6 +21,7 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* ViewController.m */; };
 		3C32D9211CAC66CA009CDAB0 /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C32D9201CAC66CA009CDAB0 /* SVProgressAnimatedView.m */; };
+		3C32D9231CAD056D009CDAB0 /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C32D9201CAC66CA009CDAB0 /* SVProgressAnimatedView.m */; };
 		3CD078EA1A3B809500290D80 /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD078E91A3B809500290D80 /* SVRadialGradientLayer.m */; };
 		3FF0384716633A330070E901 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF0384616633A330070E901 /* QuartzCore.framework */; };
 		63ADC4BC1364C1360060E45B /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 63ADC4BA1364C1360060E45B /* SVProgressHUD.m */; };
@@ -308,6 +309,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C32D9231CAD056D009CDAB0 /* SVProgressAnimatedView.m in Sources */,
 				D396A65D1BE7EAD400E6E1BF /* ViewController.m in Sources */,
 				D36EDBD51BE7E9B000BD0EF1 /* AppDelegate.m in Sources */,
 				D396A65F1BE7EB4B00E6E1BF /* SVProgressHUD.m in Sources */,

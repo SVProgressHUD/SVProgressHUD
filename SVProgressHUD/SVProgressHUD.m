@@ -75,8 +75,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 - (void)dismissWithDelay:(NSTimeInterval)delay;
 
 - (UIView*)indefiniteAnimatedView;
-- (UIView*)ringView;
-- (UIView*)backgroundRingView;
+- (SVProgressAnimatedView*)ringView;
+- (SVProgressAnimatedView*)backgroundRingView;
 
 - (void)cancelRingLayerAnimation;
 - (void)cancelIndefiniteAnimatedViewAnimation;
@@ -1129,7 +1129,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     return _indefiniteAnimatedView;
 }
 
-- (UIView*)ringView {
+- (SVProgressAnimatedView*)ringView {
     if(!_ringView) {
         _ringView = [[SVProgressAnimatedView alloc] initWithFrame:CGRectZero];
     }
@@ -1142,7 +1142,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     return _ringView;
 }
 
-- (UIView*)backgroundRingView {
+- (SVProgressAnimatedView*)backgroundRingView {
     if(!_backgroundRingView) {
         _backgroundRingView = [[SVProgressAnimatedView alloc] initWithFrame:CGRectZero];
         _backgroundRingView.strokeEnd = 1.0f;
