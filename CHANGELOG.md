@@ -1,3 +1,9 @@
+## Version 2.0.3
+* Fixed: Carthage support #592, #590
+
+## Version 2.0.2
+* Fixed: Fixes tvOS demos, Changed return type #586, #587
+* 
 ## Version 2.0.1
 * Fixed: Build issues for tvOS, as UIKeyboard notifications are gone #576
 * Fixed: HUD does not hide if ismiss is called directly after show #555
