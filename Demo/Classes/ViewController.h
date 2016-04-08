@@ -5,8 +5,9 @@
 //  Copyright (c) 2011-2016 Sam Vermette and contributors. All rights reserved.
 //
 
-
 #import <UIKit/UIKit.h>
+
+//#define SV_APP_EXTENSIONS
 
 @interface ViewController : UIViewController
 
@@ -23,4 +24,3 @@
 - (IBAction)changeMaskType:(id)sender;
 
 @end
-

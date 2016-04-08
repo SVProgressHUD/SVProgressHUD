@@ -14,11 +14,18 @@
 #import "SVProgressAnimatedView.h"
 #import "SVRadialGradientLayer.h"
 
+#pragma mark - Notification
+// DidReceiveTouchEvent
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
+// DidTouchDownInside
 NSString * const SVProgressHUDDidTouchDownInsideNotification = @"SVProgressHUDDidTouchDownInsideNotification";
+// WillDisappear
 NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
+// DidDisappear
 NSString * const SVProgressHUDDidDisappearNotification = @"SVProgressHUDDidDisappearNotification";
+// WillAppear
 NSString * const SVProgressHUDWillAppearNotification = @"SVProgressHUDWillAppearNotification";
+// DidAppear
 NSString * const SVProgressHUDDidAppearNotification = @"SVProgressHUDDidAppearNotification";
 
 NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoKey";
@@ -44,7 +51,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 @property (nonatomic, readwrite) CGFloat progress;
 @property (nonatomic, readwrite) NSUInteger activityCount;
-
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
 - (void)updateHUDFrame;
@@ -87,7 +93,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 @end
 
-
 @implementation SVProgressHUD {
     BOOL _isInitializing;
 }
@@ -104,92 +109,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     return sharedView;
 }
 
-
-#pragma mark - Setters
-
-+ (void)setStatus:(NSString*)status {
-    [[self sharedView] setStatus:status];
-}
-
-+ (void)setDefaultStyle:(SVProgressHUDStyle)style {
-    [self sharedView].defaultStyle = style;
-}
-
-+ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType {
-    [self sharedView].defaultMaskType = maskType;
-}
-
-+ (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type {
-    [self sharedView].defaultAnimationType = type;
-}
-
-+ (void)setMinimumSize:(CGSize)minimumSize {
-    [self sharedView].minimumSize = minimumSize;
-}
-
-+ (void)setRingThickness:(CGFloat)ringThickness {
-    [self sharedView].ringThickness = ringThickness;
-}
-
-+ (void)setRingRadius:(CGFloat)radius {
-    [self sharedView].ringRadius = radius;
-}
-
-+ (void)setRingNoTextRadius:(CGFloat)radius {
-    [self sharedView].ringNoTextRadius = radius;
-}
-
-+ (void)setCornerRadius:(CGFloat)cornerRadius {
-    [self sharedView].cornerRadius = cornerRadius;
-}
-
-+ (void)setFont:(UIFont*)font {
-    [self sharedView].font = font;
-}
-
-+ (void)setForegroundColor:(UIColor*)color {
-    [self sharedView].foregroundColor = color;
-}
-
-+ (void)setBackgroundColor:(UIColor*)color {
-    [self sharedView].backgroundColor = color;
-}
-
-+ (void)setBackgroundLayerColor:(UIColor*)color {
-    [self sharedView].backgroundLayerColor = color;
-}
-
-+ (void)setInfoImage:(UIImage*)image {
-    [self sharedView].infoImage = image;
-}
-
-+ (void)setSuccessImage:(UIImage*)image {
-    [self sharedView].successImage = image;
-}
-
-+ (void)setErrorImage:(UIImage*)image {
-    [self sharedView].errorImage = image;
-}
-
-+ (void)setViewForExtension:(UIView*)view {
-    [self sharedView].viewForExtension = view;
-}
-
-+ (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval {
-    [self sharedView].minimumDismissTimeInterval = interval;
-}
-
-+ (void)setFadeInAnimationDuration:(NSTimeInterval)duration {
-    [self sharedView].fadeInAnimationDuration = duration;
-}
-
-+ (void)setFadeOutAnimationDuration:(NSTimeInterval)duration {
-    [self sharedView].fadeOutAnimationDuration = duration;
-}
-
-
 #pragma mark - Show Methods
-
 + (void)show {
     [self showWithStatus:nil];
 }
@@ -235,9 +155,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self setDefaultMaskType:existingMaskType];
 }
 
-
 #pragma mark - Show, then automatically dismiss methods
-
 + (void)showInfoWithStatus:(NSString*)status {
     [self showImage:[self sharedView].infoImage status:status];
 }
@@ -283,9 +201,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self setDefaultMaskType:existingMaskType];
 }
 
-
 #pragma mark - Dismiss Methods
-
 + (void)popActivity {
     if([self sharedView].activityCount > 0) {
         [self sharedView].activityCount--;
@@ -303,9 +219,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [[self sharedView] dismissWithDelay:delay];
 }
 
-
 #pragma mark - Offset
-
 + (void)setOffsetFromCenter:(UIOffset)offset {
     [self sharedView].offsetFromCenter = offset;
 }
@@ -314,9 +228,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self setOffsetFromCenter:UIOffsetZero];
 }
 
-
 #pragma mark - Instance Methods
-
 - (instancetype)initWithFrame:(CGRect)frame {
     if((self = [super initWithFrame:frame])) {
         _isInitializing = YES;
@@ -636,9 +548,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     }
 }
 
-
 #pragma mark - Notifications and their handling
-
 - (void)registerNotifications {
 #if TARGET_OS_IOS
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -810,9 +720,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     self.hudView.center = CGPointMake(newCenter.x + self.offsetFromCenter.horizontal, newCenter.y + self.offsetFromCenter.vertical);
 }
 
-
 #pragma mark - Event handling
-
 - (void)overlayViewDidReceiveTouchEvent:(id)sender forEvent:(UIEvent*)event {
     [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchEventNotification
                                                         object:self
@@ -828,9 +736,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     }
 }
 
-
 #pragma mark - Master show/dismiss methods
-
 - (void)showProgress:(float)progress status:(NSString*)status {
     __weak SVProgressHUD *weakSelf = self;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -1088,9 +994,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     }];
 }
 
-
 #pragma mark - Ring progress animation
-
 - (UIView*)indefiniteAnimatedView {
     // Get the correct spinner for defaultAnimationType
     if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat){
@@ -1180,16 +1084,12 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self.indefiniteAnimatedView removeFromSuperview];
 }
 
-
 #pragma mark - Utilities
-
 + (BOOL)isVisible {
     return ([self sharedView].alpha > 0);
 }
 
-
 #pragma mark - Getters
-
 + (NSTimeInterval)displayDurationForString:(NSString*)string {
     return MAX((float)string.length * 0.06 + 0.5, [self sharedView].minimumDismissTimeInterval);
 }
@@ -1212,24 +1112,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     } else {
         return self.backgroundColor;
     }
-}
-
-- (UIImage*)image:(UIImage*)image withTintColor:(UIColor*)color {
-    CGRect rect = CGRectMake(0.0f, 0.0f, image.size.width, image.size.height);
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, image.scale);
-    CGContextRef c = UIGraphicsGetCurrentContext();
-    [image drawInRect:rect];
-    CGContextSetFillColorWithColor(c, [color CGColor]);
-    CGContextSetBlendMode(c, kCGBlendModeSourceAtop);
-    CGContextFillRect(c, rect);
-    UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return tintedImage;
-}
-
-- (BOOL)isClear { // used for iOS 7 and above
-    return (self.defaultMaskType == SVProgressHUDMaskTypeClear || self.defaultMaskType == SVProgressHUDMaskTypeNone);
 }
 
 - (UIControl*)overlayView {
@@ -1316,9 +1198,88 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     return 0;
 }
 
+#pragma mark - Setters
++ (void)setStatus:(NSString*)status {
+    [[self sharedView] setStatus:status];
+}
+
++ (void)setDefaultStyle:(SVProgressHUDStyle)style {
+    [self sharedView].defaultStyle = style;
+}
+
++ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType {
+    [self sharedView].defaultMaskType = maskType;
+}
+
++ (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type {
+    [self sharedView].defaultAnimationType = type;
+}
+
++ (void)setMinimumSize:(CGSize)minimumSize {
+    [self sharedView].minimumSize = minimumSize;
+}
+
++ (void)setRingThickness:(CGFloat)ringThickness {
+    [self sharedView].ringThickness = ringThickness;
+}
+
++ (void)setRingRadius:(CGFloat)radius {
+    [self sharedView].ringRadius = radius;
+}
+
++ (void)setRingNoTextRadius:(CGFloat)radius {
+    [self sharedView].ringNoTextRadius = radius;
+}
+
++ (void)setCornerRadius:(CGFloat)cornerRadius {
+    [self sharedView].cornerRadius = cornerRadius;
+}
+
++ (void)setFont:(UIFont*)font {
+    [self sharedView].font = font;
+}
+
++ (void)setForegroundColor:(UIColor*)color {
+    [self sharedView].foregroundColor = color;
+}
+
++ (void)setBackgroundColor:(UIColor*)color {
+    [self sharedView].backgroundColor = color;
+}
+
++ (void)setBackgroundLayerColor:(UIColor*)color {
+    [self sharedView].backgroundLayerColor = color;
+}
+
++ (void)setInfoImage:(UIImage*)image {
+    [self sharedView].infoImage = image;
+}
+
++ (void)setSuccessImage:(UIImage*)image {
+    [self sharedView].successImage = image;
+}
+
++ (void)setErrorImage:(UIImage*)image {
+    [self sharedView].errorImage = image;
+}
+
++ (void)setViewForExtension:(UIView*)view {
+    [self sharedView].viewForExtension = view;
+}
+
++ (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval {
+    [self sharedView].minimumDismissTimeInterval = interval;
+}
+
++ (void)setFadeInAnimationDuration:(NSTimeInterval)duration {
+    [self sharedView].fadeInAnimationDuration = duration;
+}
+
++ (void)setFadeOutAnimationDuration:(NSTimeInterval)duration {
+    [self sharedView].fadeOutAnimationDuration = duration;
+}
 
 #pragma mark - UIAppearance Setters
-
 - (void)setDefaultStyle:(SVProgressHUDStyle)style {
     if (!_isInitializing) _defaultStyle = style;
 }
@@ -1399,5 +1360,23 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     if (!_isInitializing) _fadeOutAnimationDuration = duration;
 }
 
-@end
+#pragma mark - private methods
+- (UIImage*)image:(UIImage*)image withTintColor:(UIColor*)color {
+    CGRect rect = CGRectMake(0.0f, 0.0f, image.size.width, image.size.height);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, image.scale);
+    CGContextRef c = UIGraphicsGetCurrentContext();
+    [image drawInRect:rect];
+    CGContextSetFillColorWithColor(c, [color CGColor]);
+    CGContextSetBlendMode(c, kCGBlendModeSourceAtop);
+    CGContextFillRect(c, rect);
+    UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return tintedImage;
+}
 
+- (BOOL)isClear { // used for iOS 7 and above
+    return (self.defaultMaskType == SVProgressHUDMaskTypeClear || self.defaultMaskType == SVProgressHUDMaskTypeNone);
+}
+
+@end

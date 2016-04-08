@@ -46,27 +46,51 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 
 #pragma mark - Customization
 
-@property (assign, nonatomic) SVProgressHUDStyle defaultStyle UI_APPEARANCE_SELECTOR;                   // default is SVProgressHUDStyleLight
-@property (assign, nonatomic) SVProgressHUDMaskType defaultMaskType UI_APPEARANCE_SELECTOR;             // default is SVProgressHUDMaskTypeNone
-@property (assign, nonatomic) SVProgressHUDAnimationType defaultAnimationType UI_APPEARANCE_SELECTOR;   // default is SVProgressHUDAnimationTypeFlat
-@property (assign, nonatomic) CGSize minimumSize UI_APPEARANCE_SELECTOR;            // default is CGSizeZero, can be used to avoid resizing for a larger message
-@property (assign, nonatomic) CGFloat ringThickness UI_APPEARANCE_SELECTOR;         // default is 2 pt
-@property (assign, nonatomic) CGFloat ringRadius UI_APPEARANCE_SELECTOR;            // default is 18 pt
-@property (assign, nonatomic) CGFloat ringNoTextRadius UI_APPEARANCE_SELECTOR;      // default is 24 pt
-@property (assign, nonatomic) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;          // default is 14 pt
-@property (strong, nonatomic) UIFont *font UI_APPEARANCE_SELECTOR;                  // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-@property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;      // default is [UIColor whiteColor]
-@property (strong, nonatomic) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;      // default is [UIColor blackColor]
-@property (strong, nonatomic) UIColor *backgroundLayerColor UI_APPEARANCE_SELECTOR; // default is [UIColor colorWithWhite:0 alpha:0.4]
-@property (strong, nonatomic) UIImage *infoImage UI_APPEARANCE_SELECTOR;            // default is the bundled info image provided by Freepik
-@property (strong, nonatomic) UIImage *successImage UI_APPEARANCE_SELECTOR;         // default is the bundled success image provided by Freepik
-@property (strong, nonatomic) UIImage *errorImage UI_APPEARANCE_SELECTOR;           // default is the bundled error image provided by Freepik
-@property (strong, nonatomic) UIView *viewForExtension UI_APPEARANCE_SELECTOR;      // default is nil, only used if #define SV_APP_EXTENSIONS is set
-@property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;            // default is 5.0 seconds
+// 属性后带UI_APPEARANCE_SELECTOR标志表示可以统一设置控件的全局样式
 
+/** HUD样式 */
+@property (assign, nonatomic) SVProgressHUDStyle defaultStyle UI_APPEARANCE_SELECTOR;                   // default is SVProgressHUDStyleLight
+/** Mask样式 */
+@property (assign, nonatomic) SVProgressHUDMaskType defaultMaskType UI_APPEARANCE_SELECTOR;             // default is SVProgressHUDMaskTypeNone
+/** HUD等待动画样式 */
+@property (assign, nonatomic) SVProgressHUDAnimationType defaultAnimationType UI_APPEARANCE_SELECTOR;   // default is SVProgressHUDAnimationTypeFlat
+/** HUD的最小尺寸 */
+@property (assign, nonatomic) CGSize minimumSize UI_APPEARANCE_SELECTOR;            // default is CGSizeZero, can be used to avoid resizing for a larger message
+/** HUD上的圆环的厚度 */
+@property (assign, nonatomic) CGFloat ringThickness UI_APPEARANCE_SELECTOR;         // default is 2 pt
+/** HUD上的圆环含文字的半径 */
+@property (assign, nonatomic) CGFloat ringRadius UI_APPEARANCE_SELECTOR;            // default is 18 pt
+/** HUD上的圆环不含文字的半径 */
+@property (assign, nonatomic) CGFloat ringNoTextRadius UI_APPEARANCE_SELECTOR;      // default is 24 pt
+/** HUD的圆角半径 */
+@property (assign, nonatomic) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;          // default is 14 pt
+/** HUD上提示文字的字体 */
+@property (strong, nonatomic) UIFont *font UI_APPEARANCE_SELECTOR;                  // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
+/** HUD的背景颜色，前提是SVProgressHUDStyle为SVProgressHUDStyleCustom */
+@property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;      // default is [UIColor whiteColor]
+/** HUD上的文字和圆环的颜色，前提是SVProgressHUDStyle为SVProgressHUDStyleCustom */
+@property (strong, nonatomic) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;      // default is [UIColor blackColor]
+/** Mask的背景颜色，前提是SVProgressHUDMaskType为SVProgressHUDMaskTypeCustom */
+@property (strong, nonatomic) UIColor *backgroundLayerColor UI_APPEARANCE_SELECTOR; // default is [UIColor colorWithWhite:0 alpha:0.4]
+/** 提示消息为info类型时自定义的图片 */
+@property (strong, nonatomic) UIImage *infoImage UI_APPEARANCE_SELECTOR;            // default is the bundled info image provided by Freepik
+/** 提示消息为success类型时自定义的图片 */
+@property (strong, nonatomic) UIImage *successImage UI_APPEARANCE_SELECTOR;         // default is the bundled success image provided by Freepik
+/** 提示消息为error类型时自定义的图片 */
+@property (strong, nonatomic) UIImage *errorImage UI_APPEARANCE_SELECTOR;           // default is the bundled error image provided by Freepik
+
+// Application Extension开发有兴趣自己可以去了解下
+/** 当在【应用程序扩展(Application Extension)】中使用SVProgressHUD时，要定义宏常量#define SV_APP_EXTENSIONS，目的是为了避免使用【不可用】的API，需要从你的扩展视图控制器中通过self.view调用setViewForExtension: 设置一下即可 */
+@property (strong, nonatomic) UIView *viewForExtension UI_APPEARANCE_SELECTOR;      // default is nil, only used if #define SV_APP_EXTENSIONS is set
+
+/** HUD显示的最短时间，单位：s */
+@property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;            // default is 5.0 seconds
+/** HUD显示位置相对于中心位置的偏移量 */
 @property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;     // default is 0, 0
 
+/** 淡入动画持续时间 */
 @property (assign, nonatomic) NSTimeInterval fadeInAnimationDuration;  // default is 0.15
+/** 淡出动画持续时间 */
 @property (assign, nonatomic) NSTimeInterval fadeOutAnimationDuration; // default is 0.15
 
 
@@ -125,6 +149,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 
 + (BOOL)isVisible;
 
+/** 根据文字长短来设置HUD的停留时间，这个设计很用心了 */
 + (NSTimeInterval)displayDurationForString:(NSString*)string;
 
 @end
