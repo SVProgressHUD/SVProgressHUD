@@ -159,13 +159,13 @@
 		63ADC4B81364C1360060E45B /* SVProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
+				22D13AB61365FEAC0025FCC9 /* SVProgressHUD.bundle */,
+				63ADC4B91364C1360060E45B /* SVProgressHUD.h */,
+				63ADC4BA1364C1360060E45B /* SVProgressHUD.m */,
 				B07118271A3264C900C8A614 /* SVIndefiniteAnimatedView.h */,
 				B07118281A3264C900C8A614 /* SVIndefiniteAnimatedView.m */,
 				3C32D91F1CAC66CA009CDAB0 /* SVProgressAnimatedView.h */,
 				3C32D9201CAC66CA009CDAB0 /* SVProgressAnimatedView.m */,
-				22D13AB61365FEAC0025FCC9 /* SVProgressHUD.bundle */,
-				63ADC4B91364C1360060E45B /* SVProgressHUD.h */,
-				63ADC4BA1364C1360060E45B /* SVProgressHUD.m */,
 				3CD078E81A3B809500290D80 /* SVRadialGradientLayer.h */,
 				3CD078E91A3B809500290D80 /* SVRadialGradientLayer.m */,
 			);

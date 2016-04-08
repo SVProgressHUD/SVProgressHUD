@@ -10,6 +10,20 @@
 
 @implementation ViewController
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+//    [SVProgressHUD setCornerRadius:1.f];
+//    [SVProgressHUD setFont:[UIFont systemFontOfSize:6.f]];
+//    [SVProgressHUD setOffsetFromCenter:UIOffsetMake(100, 100)];
+//    [SVProgressHUD setMinimumSize:CGSizeMake(200, 200)];
+    
+//    UIView *extView = [[UIView alloc] init];
+//    extView.frame = CGRectMake(0, 0, 100, 100);
+//    extView.backgroundColor = [UIColor greenColor];
+//    [SVProgressHUD setViewForExtension:extView];
+}
 
 #pragma mark - Notification Methods Sample
 - (void)viewWillAppear:(BOOL)animated {
@@ -97,8 +111,14 @@ static float progress = 0.0f;
     UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    } else {
+    }
+    else if (segmentedControl.selectedSegmentIndex == 1) {
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    }
+    else {
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
+        [SVProgressHUD setBackgroundColor:[UIColor orangeColor]];
+        [SVProgressHUD setForegroundColor:[UIColor redColor]];
     }
 }
 
@@ -122,10 +142,9 @@ static float progress = 0.0f;
     } else if(segmentedControl.selectedSegmentIndex == 3){
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
     } else {
-        [SVProgressHUD setBackgroundLayerColor:[[UIColor redColor] colorWithAlphaComponent:0.4]];
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeCustom];
+        [SVProgressHUD setBackgroundLayerColor:[[UIColor blueColor] colorWithAlphaComponent:0.4]];
     }
 }
-
 
 @end
