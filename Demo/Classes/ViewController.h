@@ -10,6 +10,8 @@
 
 @interface ViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITextField *imageViewSizeTextField;
+
 - (IBAction)show;
 - (IBAction)showWithStatus;
 
@@ -21,6 +23,7 @@
 - (IBAction)changeStyle:(id)sender;
 - (IBAction)changeAnimationType:(id)sender;
 - (IBAction)changeMaskType:(id)sender;
+- (IBAction)changeImageViewSize:(id)sender;
 
 @end
 
