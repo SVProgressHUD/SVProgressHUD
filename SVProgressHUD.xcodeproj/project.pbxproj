@@ -270,8 +270,8 @@
 			projectRoot = "";
 			targets = (
 				4A9D7DD71AB345980039B273 /* SVProgressHUD iOS */,
-				65F021FB15C857EF0030BBEF /* SVProgressHUD */,
 				82CB7D871C4E76F600B1B14F /* SVProgressHUD tvOS */,
+				65F021FB15C857EF0030BBEF /* SVProgressHUD */,
 			);
 		};
 /* End PBXProject section */
