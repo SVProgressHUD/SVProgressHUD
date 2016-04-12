@@ -187,6 +187,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].fadeOutAnimationDuration = duration;
 }
 
++ (void)setMaxWindowLevel:(CGFloat)windowLevel {
+    [self sharedView].maxWindowLevel = windowLevel;
+}
+
 
 #pragma mark - Show Methods
 
@@ -593,8 +597,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
             BOOL windowIsVisible = !window.hidden && window.alpha > 0;
             BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
+            BOOL windowLevelFlag = self.maxWindowLevel != 0 ? (window.windowLevel <= self.maxWindowLevel) : windowLevelNormal;
             
-            if(windowOnMainScreen && windowIsVisible && windowLevelNormal) {
+            if(windowOnMainScreen && windowIsVisible && windowLevelFlag) {
                 [window addSubview:self.overlayView];
                 break;
             }
@@ -681,7 +686,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     double animationDuration = 0.0;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-    self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
+    self.frame = [UIApplication sharedApplication].keyWindow.bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
 #elif !defined(SV_APP_EXTENSIONS)
     self.frame = [UIApplication sharedApplication].keyWindow.bounds;
@@ -1397,6 +1402,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)setFadeOutAnimationDuration:(NSTimeInterval)duration  {
     if (!_isInitializing) _fadeOutAnimationDuration = duration;
+}
+
+- (void)setMaxWindowLevel:(CGFloat)windowLevel {
+    if (!_isInitializing) _maxWindowLevel = windowLevel;
 }
 
 @end
