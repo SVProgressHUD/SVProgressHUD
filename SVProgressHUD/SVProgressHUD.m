@@ -187,6 +187,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].fadeOutAnimationDuration = duration;
 }
 
++ (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel {
+    [self sharedView].maxSupportedWindowLevel = windowLevel;
+}
 
 #pragma mark - Show Methods
 
@@ -368,6 +371,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
         _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
+        
+        _maxSupportedWindowLevel = UIWindowLevelNormal;
         
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
@@ -592,9 +597,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         for (UIWindow *window in frontToBackWindows) {
             BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
             BOOL windowIsVisible = !window.hidden && window.alpha > 0;
-            BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
+            BOOL windowLevelSupported = (window.windowLevel >= UIWindowLevelNormal && window.windowLevel <= self.maxSupportedWindowLevel);
             
-            if(windowOnMainScreen && windowIsVisible && windowLevelNormal) {
+            if(windowOnMainScreen && windowIsVisible && windowLevelSupported) {
                 [window addSubview:self.overlayView];
                 break;
             }
@@ -1397,6 +1402,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)setFadeOutAnimationDuration:(NSTimeInterval)duration  {
     if (!_isInitializing) _fadeOutAnimationDuration = duration;
+}
+
+- (void)setMaxSupportedWindowLevel:(UIWindowLevel)maxSupportedWindowLevel {
+    if (!_isInitializing) _maxSupportedWindowLevel = maxSupportedWindowLevel;
 }
 
 @end
