@@ -369,6 +369,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         
+        _windowLevel = UIWindowLevelNormal;
+        
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
         self.accessibilityLabel = @"SVProgressHUD";
@@ -592,7 +594,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         for (UIWindow *window in frontToBackWindows) {
             BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
             BOOL windowIsVisible = !window.hidden && window.alpha > 0;
-            BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
+            BOOL windowLevelNormal = window.windowLevel >= _windowLevel;
             
             if(windowOnMainScreen && windowIsVisible && windowLevelNormal) {
                 [window addSubview:self.overlayView];
