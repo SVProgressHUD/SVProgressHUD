@@ -72,7 +72,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 - (void)showStatus:(NSString*)status;
 
 - (void)dismiss;
-- (void)dismissWithDelay:(NSTimeInterval)delay;
+- (void)dismissWithDelay:(NSTimeInterval)delay completion:(SVProgressHUDDismissCompletion)completion;
 
 - (UIView*)indefiniteAnimatedView;
 - (SVProgressAnimatedView*)ringView;
@@ -296,13 +296,20 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 + (void)dismiss {
-    [self dismissWithDelay:0.0];
+    [self dismissWithDelay:0.0 completion:nil];
 }
 
 + (void)dismissWithDelay:(NSTimeInterval)delay {
-    [[self sharedView] dismissWithDelay:delay];
+    [self dismissWithDelay:delay completion:nil];
 }
 
++ (void)dismissWithCompletion:(SVProgressHUDDismissCompletion)completion {
+    [self dismissWithDelay:0.0 completion:completion];
+}
+
++ (void)dismissWithDelay:(NSTimeInterval)delay completion:(SVProgressHUDDismissCompletion)completion {
+    [[self sharedView] dismissWithDelay:delay completion:completion];
+}
 
 #pragma mark - Offset
 
@@ -1011,10 +1018,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 - (void)dismiss {
-    [self dismissWithDelay:0];
+    [self dismissWithDelay:0.0 completion:nil];
 }
 
-- (void)dismissWithDelay:(NSTimeInterval)delay {
+- (void)dismissWithDelay:(NSTimeInterval)delay completion:(SVProgressHUDDismissCompletion)completion {
     __weak SVProgressHUD *weakSelf = self;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         __strong SVProgressHUD *strongSelf = weakSelf;
@@ -1064,6 +1071,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #endif
                     // Update accesibilty
                     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+                    
+                    if (completion) {
+                        completion();
+                    }
                 };
                 
                 if (strongSelf.fadeOutAnimationDuration > 0) {
@@ -1084,6 +1095,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                 // Inform iOS to redraw the view hierachy
                 [strongSelf setNeedsDisplay];
             }
+        } else if (completion) {
+            completion();
         }
     }];
 }
