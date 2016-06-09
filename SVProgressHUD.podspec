@@ -13,5 +13,5 @@ Pod::Spec.new do |s|
 
   s.source_files = 'SVProgressHUD/*.{h,m}'
   s.framework    = 'QuartzCore'
-  s.resources = 'SVProgressHUD.xcassets'
+  s.resources = "SVProgressHUD/*.{xcassets}"
 end
