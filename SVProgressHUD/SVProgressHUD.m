@@ -171,6 +171,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].errorImage = image;
 }
 
++ (void)setCenterImage:(UIImage*)image {
+    [self sharedView].centerImage = image;
+}
+
 + (void)setViewForExtension:(UIView*)view {
     [self sharedView].viewForExtension = view;
 }
@@ -846,9 +850,18 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             // Update / Check view hierachy to ensure the HUD is visible
             [strongSelf updateViewHierachy];
             
-            // Reset imageView and fadeout timer if an image is currently displayed
-            strongSelf.imageView.hidden = YES;
-            strongSelf.imageView.image = nil;
+            if(self.centerImage && self.defaultAnimationType == SVProgressHUDAnimationTypeFlat)
+            {
+                // make imageView visiable and set image if center image is set and animation type is Flat
+                strongSelf.imageView.hidden = NO;
+                strongSelf.imageView.image = self.centerImage;
+            }
+            else
+            {
+                // Reset imageView and fadeout timer if an image is currently displayed and no center image is set
+                strongSelf.imageView.hidden = YES;
+                strongSelf.imageView.image = nil;
+            }
             
             if(strongSelf.fadeOutTimer) {
                 strongSelf.activityCount = 0;
@@ -1390,6 +1403,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)setErrorImage:(UIImage*)image {
     if (!_isInitializing) _errorImage = image;
+}
+
+- (void)setCenterImage:(UIImage*)image {
+    if (!_isInitializing) _centerImage = image;
 }
 
 - (void)setViewForExtension:(UIView*)view {
