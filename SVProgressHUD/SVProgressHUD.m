@@ -1085,6 +1085,12 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                     // Clean up view hierachy (overlays)
                     [strongSelf.overlayView removeFromSuperview];
                     [strongSelf.hudView removeFromSuperview];
+                    // remove custom view
+                    [strongSelf.hudView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        if ([obj conformsToProtocol:@protocol(SVCustomView)]) {
+                            [obj removeFromSuperview];
+                        }
+                    }];
                     [strongSelf removeFromSuperview];
                     
                     // Reset progress and cancel any running animation
