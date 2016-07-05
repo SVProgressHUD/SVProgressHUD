@@ -47,6 +47,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
+@property (nonatomic, copy) SVProgressHUDShowCompletion showCompletionBlock;
+
 - (void)updateHUDFrame;
 - (void)updateMask;
 - (void)updateBlurBounds;
@@ -239,50 +241,91 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #pragma mark - Show, then automatically dismiss methods
 
 + (void)showInfoWithStatus:(NSString*)status {
-    [self showImage:[self sharedView].infoImage status:status];
+    [self showInfoWithStatus:status completeBlock:nil];
+}
+
++ (void)showInfoWithStatus:(NSString*)status completeBlock:(SVProgressHUDShowCompletion)showCompletion {
+    [self showImage:[self sharedView].infoImage status:status completeBlock:showCompletion];
 }
 
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
+    [self showInfoWithStatus:status maskType:maskType completeBlock:nil];
+}
+
++ (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completeBlock:(SVProgressHUDShowCompletion)showCompletion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self showInfoWithStatus:status];
+    [self showInfoWithStatus:status completeBlock:showCompletion];
     [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showSuccessWithStatus:(NSString*)status {
-    [self showImage:[self sharedView].successImage status:status];
+    [self showSuccessWithStatus:status completeBlock:nil];
+}
+
++ (void)showSuccessWithStatus:(NSString*)status completeBlock:(SVProgressHUDShowCompletion)showCompletion {
+    [self showImage:[self sharedView].successImage status:status completeBlock:showCompletion];
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
+    [self showSuccessWithStatus:status maskType:maskType completeBlock:nil];
+}
+
++ (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completeBlock:(SVProgressHUDShowCompletion)showCompletion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self showSuccessWithStatus:status];
+    [self showSuccessWithStatus:status completeBlock:showCompletion];
     [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
-    [self showImage:[self sharedView].errorImage status:status];
+    [self showErrorWithStatus:status completeBlock:nil];
+}
+
++ (void)showErrorWithStatus:(NSString*)status completeBlock:(SVProgressHUDShowCompletion)showCompletion {
+    [self showImage:[self sharedView].errorImage status:status completeBlock:showCompletion];
 }
 
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
+    [self showErrorWithStatus:status maskType:maskType completeBlock:nil];
+}
+
++ (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completeBlock:(SVProgressHUDShowCompletion)showCompletion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self showErrorWithStatus:status];
+    [self showErrorWithStatus:status completeBlock:showCompletion];
     [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status {
+    [self showImage:image status:status completeBlock:nil];
+}
+
++ (void)showImage:(UIImage*)image status:(NSString*)status completeBlock:(SVProgressHUDShowCompletion)showCompletion {
+    [[self sharedView] resetShowCompletion:showCompletion];
+    
     NSTimeInterval displayInterval = [self displayDurationForString:status];
     [[self sharedView] showImage:image status:status duration:displayInterval];
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
+    [self showImage:image status:status maskType:maskType completeBlock:nil];
+}
+
++ (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completeBlock:(SVProgressHUDShowCompletion)showCompletion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self showImage:image status:status];
+    [self showImage:image status:status completeBlock:showCompletion];
     [self setDefaultMaskType:existingMaskType];
 }
 
+- (void)resetShowCompletion:(SVProgressHUDShowCompletion)showCompletion {
+    if (self.showCompletionBlock) {
+        self.showCompletionBlock(NO);
+        self.showCompletionBlock = nil;
+    }
+    self.showCompletionBlock = showCompletion;
+}
 
 #pragma mark - Dismiss Methods
 
@@ -354,7 +397,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         UIImage* infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
         UIImage* successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
         UIImage* errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
-
+        
         if ([[UIImage class] instancesRespondToSelector:@selector(imageWithRenderingMode:)]) {
             _infoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             _successImage = [successImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -364,7 +407,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             _successImage = successImage;
             _errorImage = errorImage;
         }
-
+        
         _ringThickness = 2.0f;
         _ringRadius = 18.0f;
         _ringNoTextRadius = 24.0f;
@@ -372,7 +415,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         _cornerRadius = 14.0f;
         
         _minimumDismissTimeInterval = 5.0;
-
+        
         _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         
@@ -423,7 +466,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             }
             stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
         }
-
+        
         CGFloat stringWidth = stringRect.size.width;
         CGFloat stringHeight = ceilf(CGRectGetHeight(stringRect));
         
@@ -455,15 +498,15 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     } else {
        	self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2);
     }
-
-	self.statusLabel.hidden = NO;
-	self.statusLabel.frame = labelRect;
+    
+    self.statusLabel.hidden = NO;
+    self.statusLabel.frame = labelRect;
     
     // Animate value update
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
-	if(string) {
+    if(string) {
         if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) {
             SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView*)self.indefiniteAnimatedView;
             indefiniteAnimationView.radius = self.ringRadius;
@@ -476,7 +519,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         if(self.progress != SVProgressHUDUndefinedProgress) {
             self.backgroundRingView.center = self.ringView.center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
         }
-	} else {
+    } else {
         if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) {
             SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView*)self.indefiniteAnimatedView;
             indefiniteAnimationView.radius = self.ringNoTextRadius;
@@ -686,7 +729,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 - (void)positionHUD:(NSNotification*)notification {
     CGFloat keyboardHeight = 0.0f;
     double animationDuration = 0.0;
-
+    
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
@@ -718,7 +761,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         
         if(notification.name == UIKeyboardWillShowNotification || notification.name == UIKeyboardDidShowNotification) {
             keyboardHeight = CGRectGetWidth(keyboardFrame);
-
+            
             if(ignoreOrientation || UIInterfaceOrientationIsPortrait(orientation)) {
                 keyboardHeight = CGRectGetHeight(keyboardFrame);
             }
@@ -730,7 +773,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     
     // Get the currently active frame of the display (depends on orientation)
     CGRect orientationFrame = self.bounds;
-
+    
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     CGRect statusBarFrame = UIApplication.sharedApplication.statusBarFrame;
 #else
@@ -763,7 +806,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     
     CGFloat posX = CGRectGetWidth(orientationFrame)/2.0f;
     CGFloat posY = floorf(activeHeight*0.45f);
-
+    
     CGFloat rotateAngle = 0.0;
     CGPoint newCenter = CGPointMake(posX, posY);
     
@@ -839,6 +882,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #pragma mark - Master show/dismiss methods
 
 - (void)showProgress:(float)progress status:(NSString*)status {
+    
+    // Reset showCompletion: those methods are not automatically dismiss.
+    [self resetShowCompletion:nil];
+    
     __weak SVProgressHUD *weakSelf = self;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         __strong SVProgressHUD *strongSelf = weakSelf;
@@ -1075,6 +1122,12 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                     if (completion) {
                         completion();
                     }
+                    
+                    // automatically dismiss operation completion
+                    if (self.showCompletionBlock) {
+                        self.showCompletionBlock(YES);
+                        self.showCompletionBlock = nil;
+                    }
                 };
                 
                 if (strongSelf.fadeOutAnimationDuration > 0) {
@@ -1290,7 +1343,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     // Update styling
     _statusLabel.textColor = self.foregroundColorForStyle;
     _statusLabel.font = self.font;
-
+    
     return _statusLabel;
 }
 
