@@ -39,7 +39,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
     SVProgressHUDAnimationTypeFlat,     // default animation type, custom flat animation (indefinite animated ring)
-    SVProgressHUDAnimationTypeNative    // iOS native UIActivityIndicatorView
+    SVProgressHUDAnimationTypeNative,    // iOS native UIActivityIndicatorView
+    SVProgressHUDAnimationTypeCustom  // using custom image view
 };
 
 typedef void (^SVProgressHUDDismissCompletion)(void);
@@ -66,6 +67,8 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (strong, nonatomic) UIView *viewForExtension UI_APPEARANCE_SELECTOR;      // default is nil, only used if #define SV_APP_EXTENSIONS is set
 @property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;            // default is 5.0 seconds
 
+@property (strong, nonatomic) UIImageView *loadingImageView;                        // would be used for SVProgressHUDAnimationTypeCustom
+
 @property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;     // default is 0, 0
 
 @property (assign, nonatomic) NSTimeInterval fadeInAnimationDuration;  // default is 0.15
@@ -91,6 +94,8 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
+
++ (void)setLoadingImageView:(UIImageView*) loadingImageView;        // default is nil
 
 #pragma mark - Show Methods
 

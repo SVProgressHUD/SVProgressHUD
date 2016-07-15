@@ -20,6 +20,7 @@
 		2899E5220DE3E06400AC0155 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* ViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* ViewController.m */; };
+		2CDE23921D389AEE0082EE5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CDE23911D389AEE0082EE5F /* Assets.xcassets */; };
 		3C32D9211CAC66CA009CDAB0 /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C32D9201CAC66CA009CDAB0 /* SVProgressAnimatedView.m */; };
 		3C32D9231CAD056D009CDAB0 /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C32D9201CAC66CA009CDAB0 /* SVProgressAnimatedView.m */; };
 		3CD078EA1A3B809500290D80 /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD078E91A3B809500290D80 /* SVRadialGradientLayer.m */; };
@@ -53,6 +54,7 @@
 		28D7ACF60DDB3853001CB0EB /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		28D7ACF70DDB3853001CB0EB /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2CDE23911D389AEE0082EE5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* SVProgressHUD_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD_Prefix.pch; sourceTree = "<group>"; };
 		3C32D91F1CAC66CA009CDAB0 /* SVProgressAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressAnimatedView.h; sourceTree = "<group>"; };
 		3C32D9201CAC66CA009CDAB0 /* SVProgressAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressAnimatedView.m; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				2CDE23911D389AEE0082EE5F /* Assets.xcassets */,
 				22A748951630AD6A004893A8 /* Default-568h@2x.png */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				22EBCD18134128130074B281 /* MainWindow-iPad.xib */,
@@ -275,6 +278,7 @@
 				22D13AB71365FEAC0025FCC9 /* SVProgressHUD.bundle in Resources */,
 				2265DEEE14706A8900B3EBF7 /* README.md in Resources */,
 				22A748961630AD6A004893A8 /* Default-568h@2x.png in Resources */,
+				2CDE23921D389AEE0082EE5F /* Assets.xcassets in Resources */,
 				22B9D43816B92E4D00E71652 /* SVProgressHUD.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
