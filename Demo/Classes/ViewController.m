@@ -97,8 +97,11 @@ static float progress = 0.0f;
     UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    } else {
+    }else if (segmentedControl.selectedSegmentIndex == 1) {
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    }
+    else{
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
     }
 }
 
@@ -110,7 +113,6 @@ static float progress = 0.0f;
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
     }
     else {
-        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
         imageView.animationImages = [NSArray arrayWithObjects:
                                      [UIImage imageNamed:@"ico_loading00"],
@@ -125,11 +127,12 @@ static float progress = 0.0f;
                                      [UIImage imageNamed:@"ico_loading09"],
                                      [UIImage imageNamed:@"ico_loading10"],
                                      [UIImage imageNamed:@"ico_loading11"], nil];
-        imageView.animationDuration = 1.0f;
+        imageView.animationDuration = 1.5f;
         imageView.animationRepeatCount = 0;
         [imageView startAnimating];
         [SVProgressHUD setLoadingImageView:imageView];
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeCustom];
+        [SVProgressHUD setMinimumSize:CGSizeMake(150, 150)];
     }
 }
 

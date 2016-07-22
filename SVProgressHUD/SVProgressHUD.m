@@ -473,8 +473,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             indefiniteAnimationView.radius = self.ringRadius;
             [indefiniteAnimationView sizeToFit];
         }
-        
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
+        if (self.defaultAnimationType == SVProgressHUDAnimationTypeCustom){
+            center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2-CGRectGetHeight(self.statusLabel.bounds)/2);
+            CGRect frame = self.statusLabel.frame;
+            frame.origin.y = center.y + CGRectGetHeight(self.loadingImageView.bounds)/2 + 5;
+            self.statusLabel.frame = frame;
+        }
         self.indefiniteAnimatedView.center = center;
         
         if(self.progress != SVProgressHUDUndefinedProgress) {
