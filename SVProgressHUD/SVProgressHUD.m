@@ -402,6 +402,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     // Check if an image or progress ring is displayed
     BOOL imageUsed = (self.imageView.image) && !(self.imageView.hidden);
     BOOL progressUsed = self.imageView.hidden;
+    BOOL isProgressRingUsed = self.progress >= 0;
+    
+    if (self.defaultAnimationType == SVProgressHUDAnimationTypeCustom && !imageUsed && !isProgressRingUsed){
+        hudWidth = CGRectGetWidth(self.loadingImageView.bounds) + 10;
+        hudHeight = CGRectGetHeight(self.loadingImageView.bounds) + 10;
+        stringAndContentHeightBuffer = CGRectGetHeight(self.loadingImageView.bounds) + 30;
+    }
     
     // Calculate size of string and update HUD size
     NSString *string = self.statusLabel.text;
@@ -474,7 +481,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             [indefiniteAnimationView sizeToFit];
         }
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
-        if (self.defaultAnimationType == SVProgressHUDAnimationTypeCustom){
+        if (self.defaultAnimationType == SVProgressHUDAnimationTypeCustom && !imageUsed &&  !isProgressRingUsed){
             center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2-CGRectGetHeight(self.statusLabel.bounds)/2);
             CGRect frame = self.statusLabel.frame;
             frame.origin.y = center.y + CGRectGetHeight(self.loadingImageView.bounds)/2 + 5;

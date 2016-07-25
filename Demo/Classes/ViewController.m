@@ -132,7 +132,6 @@ static float progress = 0.0f;
         [imageView startAnimating];
         [SVProgressHUD setLoadingImageView:imageView];
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeCustom];
-        [SVProgressHUD setMinimumSize:CGSizeMake(150, 150)];
     }
 }
 
