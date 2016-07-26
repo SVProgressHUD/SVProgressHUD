@@ -44,6 +44,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 
 typedef void (^SVProgressHUDDismissCompletion)(void);
 
+typedef void(^SVProgressHUDShowCompletion)(BOOL showCompleted);
+
 @interface SVProgressHUD : UIView
 
 #pragma mark - Customization
@@ -108,15 +110,24 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 // stops the activity indicator, shows a glyph + status, and dismisses the HUD a little bit later
 + (void)showInfoWithStatus:(NSString*)status;
++ (void)showInfoWithStatus:(NSString*)status completeBlock:(SVProgressHUDShowCompletion)showCompletion;
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showInfoWithStatus: and setDefaultMaskType: instead.")));
++ (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completeBlock:(SVProgressHUDShowCompletion)showCompletion __attribute__((deprecated("Use showInfoWithStatus: and setDefaultMaskType: instead.")));
 + (void)showSuccessWithStatus:(NSString*)status;
++ (void)showSuccessWithStatus:(NSString*)status completeBlock:(SVProgressHUDShowCompletion)showCompletion;
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showSuccessWithStatus: and setDefaultMaskType: instead.")));
++ (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completeBlock:(SVProgressHUDShowCompletion)showCompletion
+__attribute__((deprecated("Use showSuccessWithStatus: and setDefaultMaskType: instead.")));
 + (void)showErrorWithStatus:(NSString*)status;
++ (void)showErrorWithStatus:(NSString*)status completeBlock:(SVProgressHUDShowCompletion)showCompletion;
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showErrorWithStatus: and setDefaultMaskType: instead.")));
++ (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completeBlock:(SVProgressHUDShowCompletion)showCompletion __attribute__((deprecated("Use showErrorWithStatus: and setDefaultMaskType: instead.")));
 
 // shows a image + status, use 28x28 white PNGs
 + (void)showImage:(UIImage*)image status:(NSString*)status;
++ (void)showImage:(UIImage*)image status:(NSString*)status completeBlock:(SVProgressHUDShowCompletion)showCompletion;
 + (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showImage:status: and setDefaultMaskType: instead.")));
++ (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completeBlock:(SVProgressHUDShowCompletion)showCompletion __attribute__((deprecated("Use showImage:status: and setDefaultMaskType: instead.")));
 
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;
