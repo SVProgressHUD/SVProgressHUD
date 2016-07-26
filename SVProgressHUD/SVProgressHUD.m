@@ -1077,7 +1077,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                     }
                 };
                 
-                if (strongSelf.fadeOutAnimationDuration > 0) {
+                if (strongSelf.fadeOutAnimationDuration > 0 && !delay) {
                     // Animate appearance
                     [UIView animateWithDuration:strongSelf.fadeOutAnimationDuration
                                           delay:delay
