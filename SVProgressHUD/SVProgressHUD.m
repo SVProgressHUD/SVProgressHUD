@@ -1219,9 +1219,17 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (UIColor*)backgroundColorForStyle {
     if(self.defaultStyle == SVProgressHUDStyleLight) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+        return [UIColor clearColor];
+#else
         return [UIColor whiteColor];
+#endif
     } else if(self.defaultStyle == SVProgressHUDStyleDark) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+        return [UIColor clearColor];
+#else
         return [UIColor blackColor];
+#endif
     } else {
         return self.backgroundColor;
     }
