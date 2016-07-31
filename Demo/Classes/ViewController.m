@@ -97,8 +97,11 @@ static float progress = 0.0f;
     UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    } else {
+    }else if (segmentedControl.selectedSegmentIndex == 1) {
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    }
+    else{
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
     }
 }
 
@@ -106,8 +109,29 @@ static float progress = 0.0f;
     UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeFlat];
-    } else {
+    } else if(segmentedControl.selectedSegmentIndex == 1){
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
+    }
+    else {
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
+        imageView.animationImages = [NSArray arrayWithObjects:
+                                     [UIImage imageNamed:@"ico_loading00"],
+                                     [UIImage imageNamed:@"ico_loading01"],
+                                     [UIImage imageNamed:@"ico_loading02"],
+                                     [UIImage imageNamed:@"ico_loading03"],
+                                     [UIImage imageNamed:@"ico_loading04"],
+                                     [UIImage imageNamed:@"ico_loading05"],
+                                     [UIImage imageNamed:@"ico_loading06"],
+                                     [UIImage imageNamed:@"ico_loading07"],
+                                     [UIImage imageNamed:@"ico_loading08"],
+                                     [UIImage imageNamed:@"ico_loading09"],
+                                     [UIImage imageNamed:@"ico_loading10"],
+                                     [UIImage imageNamed:@"ico_loading11"], nil];
+        imageView.animationDuration = 1.5f;
+        imageView.animationRepeatCount = 0;
+        [imageView startAnimating];
+        [SVProgressHUD setLoadingImageView:imageView];
+        [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeCustom];
     }
 }
 

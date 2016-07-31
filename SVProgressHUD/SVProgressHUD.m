@@ -187,6 +187,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].fadeOutAnimationDuration = duration;
 }
 
++ (void)setLoadingImageView:(UIImageView*) loadingImageView {
+    [self sharedView].loadingImageView = loadingImageView;
+}
+
 
 #pragma mark - Show Methods
 
@@ -399,6 +403,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     // Check if an image or progress ring is displayed
     BOOL imageUsed = (self.imageView.image) && !(self.imageView.hidden);
     BOOL progressUsed = self.imageView.hidden;
+    BOOL isProgressRingUsed = self.progress >= 0;
+    
+    if (self.defaultAnimationType == SVProgressHUDAnimationTypeCustom && !imageUsed && !isProgressRingUsed){
+        hudWidth = CGRectGetWidth(self.loadingImageView.bounds) + 10;
+        hudHeight = CGRectGetHeight(self.loadingImageView.bounds) + 10;
+        stringAndContentHeightBuffer = CGRectGetHeight(self.loadingImageView.bounds) + 30;
+    }
     
     // Calculate size of string and update HUD size
     NSString *string = self.statusLabel.text;
@@ -470,8 +481,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             indefiniteAnimationView.radius = self.ringRadius;
             [indefiniteAnimationView sizeToFit];
         }
-        
         CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
+        if (self.defaultAnimationType == SVProgressHUDAnimationTypeCustom && !imageUsed &&  !isProgressRingUsed){
+            center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2-CGRectGetHeight(self.statusLabel.bounds)/2);
+            CGRect frame = self.statusLabel.frame;
+            frame.origin.y = center.y + CGRectGetHeight(self.loadingImageView.bounds)/2 + 5;
+            self.statusLabel.frame = frame;
+        }
         self.indefiniteAnimatedView.center = center;
         
         if(self.progress != SVProgressHUDUndefinedProgress) {
@@ -1117,7 +1133,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
         indefiniteAnimatedView.strokeThickness = self.ringThickness;
         indefiniteAnimatedView.radius = self.statusLabel.text ? self.ringRadius : self.ringNoTextRadius;
-    } else {
+    } else if (self.defaultAnimationType == SVProgressHUDAnimationTypeNative){
         // Check if spinner exists and is an object of different class
         if(_indefiniteAnimatedView && ![_indefiniteAnimatedView isKindOfClass:[UIActivityIndicatorView class]]){
             [_indefiniteAnimatedView removeFromSuperview];
@@ -1131,6 +1147,15 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         // Update styling
         UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView*)_indefiniteAnimatedView;
         activityIndicatorView.color = self.foregroundColorForStyle;
+    }
+    else{
+        if(_indefiniteAnimatedView && ![_indefiniteAnimatedView isKindOfClass:[UIImageView class]]){
+            [_indefiniteAnimatedView removeFromSuperview];
+            _indefiniteAnimatedView = nil;
+        }
+        if(!_indefiniteAnimatedView){
+            _indefiniteAnimatedView = self.loadingImageView;
+        }
     }
     [_indefiniteAnimatedView sizeToFit];
     
@@ -1412,6 +1437,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)setFadeOutAnimationDuration:(NSTimeInterval)duration  {
     if (!_isInitializing) _fadeOutAnimationDuration = duration;
+}
+
+- (void)setLoadingImageView:(UIImageView*) loadingImageView {
+    if (!_isInitializing) _loadingImageView = loadingImageView;
 }
 
 @end
