@@ -54,7 +54,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 - (void)updateMotionEffectForOrientation:(UIInterfaceOrientation)orientation;
 #endif
 - (void)updateMotionEffectForXMotionEffectType:(UIInterpolatingMotionEffectType)xMotionEffectType yMotionEffectType:(UIInterpolatingMotionEffectType)yMotionEffectType;
-- (void)updateViewHierachy;
+- (void)updateViewHierarchy;
 
 - (void)setStatus:(NSString*)status;
 - (void)setFadeOutTimer:(NSTimer*)timer;
@@ -593,7 +593,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     }
 }
 
-- (void)updateViewHierachy {
+- (void)updateViewHierarchy {
     // Add the overlay (e.g. black, gradient) to the application window if necessary
     if(!self.overlayView.superview) {
 #if !defined(SV_APP_EXTENSIONS)
@@ -846,8 +846,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         __strong SVProgressHUD *strongSelf = weakSelf;
         if(strongSelf){
-            // Update / Check view hierachy to ensure the HUD is visible
-            [strongSelf updateViewHierachy];
+            // Update / Check view hierarchy to ensure the HUD is visible
+            [strongSelf updateViewHierarchy];
             
             // Reset imageView and fadeout timer if an image is currently displayed
             strongSelf.imageView.hidden = YES;
@@ -901,8 +901,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         __strong SVProgressHUD *strongSelf = weakSelf;
         if(strongSelf){
-            // Update / Check view hierachy to ensure the HUD is visible
-            [strongSelf updateViewHierachy];
+            // Update / Check view hierarchy to ensure the HUD is visible
+            [strongSelf updateViewHierarchy];
             
             // Reset progress and cancel any running animation
             strongSelf.progress = SVProgressHUDUndefinedProgress;
@@ -942,7 +942,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self updateHUDFrame];
     [self positionHUD:nil];
     
-    // Update accesibilty as well as user interaction
+    // Update accessibility as well as user interaction
     if(self.defaultMaskType != SVProgressHUDMaskTypeNone) {
         self.overlayView.userInteractionEnabled = YES;
         self.accessibilityLabel = status;
@@ -995,7 +995,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                                                                   userInfo:[strongSelf notificationUserInfo]];
             }
             
-            // Update accesibilty
+            // Update accessibility
             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, status);
         };
@@ -1004,7 +1004,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             // Animate appearance
             [UIView animateWithDuration:self.fadeInAnimationDuration
                                   delay:0
-                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
+                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut)
                              animations:^{
                                  animationsBlock();
                              } completion:^(BOOL finished) {
@@ -1015,7 +1015,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             completionBlock();
         }
         
-        // Inform iOS to redraw the view hierachy
+        // Inform iOS to redraw the view hierarchy
         [self setNeedsDisplay];
     }
 }
@@ -1034,7 +1034,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                                                                 object:nil
                                                               userInfo:[strongSelf notificationUserInfo]];
             
-            // Reset activitiy count
+            // Reset activity count
             strongSelf.activityCount = 0;
             
             // Define blocks
@@ -1045,7 +1045,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             };
             
             __block void (^completionBlock)(void) = ^{
-                // Clean up view hierachy (overlays)
+                // Clean up view hierarchy (overlays)
                 [strongSelf.overlayView removeFromSuperview];
                 [strongSelf.hudView removeFromSuperview];
                 [strongSelf removeFromSuperview];
@@ -1070,7 +1070,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                     [rootController setNeedsStatusBarAppearanceUpdate];
                 }
 #endif
-                // Update accesibilty
+                // Update accessibility
                 UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
                 
                 if (completion) {
@@ -1082,7 +1082,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                 // Animate appearance
                 [UIView animateWithDuration:strongSelf.fadeOutAnimationDuration
                                       delay:delay
-                                    options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)
+                                    options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn)
                                  animations:^{
                                      animationsBlock();
                                  } completion:^(BOOL finished) {
@@ -1093,7 +1093,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                 completionBlock();
             }
             
-            // Inform iOS to redraw the view hierachy
+            // Inform iOS to redraw the view hierarchy
             [strongSelf setNeedsDisplay];
         } else if (completion) {
             completion();
