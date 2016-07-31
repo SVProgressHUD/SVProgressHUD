@@ -90,7 +90,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
-+ (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;
++ (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
 
 #pragma mark - Show Methods
 
