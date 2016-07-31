@@ -149,6 +149,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
++ (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
 ```
 
 Additionally `SVProgressHUD` supports the `UIAppearance` protocol for most of the above methods.
