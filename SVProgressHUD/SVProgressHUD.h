@@ -42,6 +42,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
     SVProgressHUDAnimationTypeNative    // iOS native UIActivityIndicatorView
 };
 
+typedef void (^SVProgressHUDShowCompletion)(void);
 typedef void (^SVProgressHUDDismissCompletion)(void);
 
 @interface SVProgressHUD : UIView
@@ -123,8 +124,8 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 + (void)popActivity; // decrease activity count, if activity count == 0 the HUD is dismissed
 + (void)dismiss;
-+ (void)dismissWithDelay:(NSTimeInterval)delay;
 + (void)dismissWithCompletion:(SVProgressHUDDismissCompletion)completion;
++ (void)dismissWithDelay:(NSTimeInterval)delay;
 + (void)dismissWithDelay:(NSTimeInterval)delay completion:(SVProgressHUDDismissCompletion)completion;
 
 + (BOOL)isVisible;
