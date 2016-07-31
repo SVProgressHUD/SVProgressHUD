@@ -1004,7 +1004,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             // Animate appearance
             [UIView animateWithDuration:self.fadeInAnimationDuration
                                   delay:0
-                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut)
+                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn)
                              animations:^{
                                  animationsBlock();
                              } completion:^(BOOL finished) {
@@ -1039,7 +1039,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             
             // Define blocks
             __block void (^animationsBlock)(void) = ^{
-                strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 0.8f, 0.8f);
+                strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 1/1.3f, 1/1.3f);
                 strongSelf.alpha = 0.0f;
                 strongSelf.hudView.alpha = 0.0f;
             };
