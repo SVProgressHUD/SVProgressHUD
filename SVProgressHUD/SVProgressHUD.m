@@ -187,6 +187,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].fadeOutAnimationDuration = duration;
 }
 
++ (void)setDefaultSize:(CGSize)size {
+    [self sharedView].defaultSize = size;
+}
 
 #pragma mark - Show Methods
 
@@ -377,6 +380,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         
+        _defaultSize = CGSizeMake(100, 100);
+        
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
         self.accessibilityLabel = @"SVProgressHUD";
@@ -390,8 +395,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 - (void)updateHUDFrame {
     // For the beginning use default values, these
     // might get update if string is too large etc.
-    CGFloat hudWidth = 100.0f;
-    CGFloat hudHeight = 100.0f;
+    CGFloat hudWidth = _defaultSize.width;
+    CGFloat hudHeight = _defaultSize.height;
     CGFloat stringHeightBuffer = 20.0f;
     CGFloat stringAndContentHeightBuffer = 80.0f;
     CGRect labelRect = CGRectZero;
