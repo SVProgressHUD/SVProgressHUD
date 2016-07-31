@@ -71,6 +71,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 @property (assign, nonatomic) NSTimeInterval fadeInAnimationDuration;  // default is 0.15
 @property (assign, nonatomic) NSTimeInterval fadeOutAnimationDuration; // default is 0.15
+@property (assign, nonatomic) CGFloat maxWindowLevel; // default is UIWindowLevelNormal
 
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
@@ -92,6 +93,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
++ (void)setMaxWindowLevel:(CGFloat)windowLevel;                     // default is UIWindowLevelNormal
 
 #pragma mark - Show Methods
 
