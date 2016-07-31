@@ -1,3 +1,8 @@
+## Upcoming
+* New: Allow to set max allowed window level #607
+* New: Add completion block to dismiss methods
+* Fixed: Live blurring due to wrong background color #517 / #624
+
 ## Version 2.0.3
 * Fixed: Carthage support #592, #590
 
