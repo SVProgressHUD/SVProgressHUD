@@ -1066,7 +1066,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
                 };
                 
-                if (strongSelf.fadeOutAnimationDuration > 0 && !delay) {
+                if (strongSelf.fadeOutAnimationDuration > 0 && delay) {
                     // Animate appearance
                     [UIView animateWithDuration:strongSelf.fadeOutAnimationDuration
                                           delay:delay
