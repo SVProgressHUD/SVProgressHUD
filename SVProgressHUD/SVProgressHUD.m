@@ -986,13 +986,18 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         __block void (^completionBlock)(void) = ^{
             __strong SVProgressHUD *strongSelf = weakSelf;
             if(strongSelf) {
-                /// Register observer <=> we now have to handle orientation changes etc.
-                [strongSelf registerNotifications];
-                
-                // Post notification to inform user
-                [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
-                                                                    object:strongSelf
-                                                                  userInfo:[strongSelf notificationUserInfo]];
+                // Check if we really achieved to show the HUD (<=> alpha values are applied)
+                // and the change of these values has not been cancelled in between
+                // e.g. due to a dismissmal
+                if(strongSelf.alpha == 1.0f && strongSelf.hudView.alpha == 1.0f){
+                    // Register observer <=> we now have to handle orientation changes etc.
+                    [strongSelf registerNotifications];
+                    
+                    // Post notification to inform user
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
+                                                                        object:strongSelf
+                                                                      userInfo:[strongSelf notificationUserInfo]];
+                }
             }
             
             // Update accessibility
@@ -1004,7 +1009,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             // Animate appearance
             [UIView animateWithDuration:self.fadeInAnimationDuration
                                   delay:0
-                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn)
+                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
                              animations:^{
                                  animationsBlock();
                              } completion:^(BOOL finished) {
@@ -1045,36 +1050,42 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             };
             
             __block void (^completionBlock)(void) = ^{
-                // Clean up view hierarchy (overlays)
-                [strongSelf.overlayView removeFromSuperview];
-                [strongSelf.hudView removeFromSuperview];
-                [strongSelf removeFromSuperview];
-                
-                // Reset progress and cancel any running animation
-                strongSelf.progress = SVProgressHUDUndefinedProgress;
-                [strongSelf cancelRingLayerAnimation];
-                [strongSelf cancelIndefiniteAnimatedViewAnimation];
-                
-                // Remove observer <=> we do not have to handle orientation changes etc.
-                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
-                
-                // Post notification to inform user
-                [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
-                                                                    object:strongSelf
-                                                                  userInfo:[strongSelf notificationUserInfo]];
-                
-                // Tell the rootViewController to update the StatusBar appearance
+                // Check if we really achieved to dismiss the HUD (<=> alpha values are applied)
+                // and the change of these values has not been cancelled in between
+                // e.g. due to a new show
+                if(strongSelf.alpha == 0.0f && strongSelf.hudView.alpha == 0.0f){
+                    // Clean up view hierarchy (overlays)
+                    [strongSelf.overlayView removeFromSuperview];
+                    [strongSelf.hudView removeFromSuperview];
+                    [strongSelf removeFromSuperview];
+                    
+                    // Reset progress and cancel any running animation
+                    strongSelf.progress = SVProgressHUDUndefinedProgress;
+                    [strongSelf cancelRingLayerAnimation];
+                    [strongSelf cancelIndefiniteAnimatedViewAnimation];
+                    
+                    // Remove observer <=> we do not have to handle orientation changes etc.
+                    [[NSNotificationCenter defaultCenter] removeObserver:strongSelf];
+                    
+                    // Post notification to inform user
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidDisappearNotification
+                                                                        object:strongSelf
+                                                                      userInfo:[strongSelf notificationUserInfo]];
+                    
+                    // Tell the rootViewController to update the StatusBar appearance
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-                UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
-                if([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-                    [rootController setNeedsStatusBarAppearanceUpdate];
-                }
+                    UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
+                    if([rootController respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+                        [rootController setNeedsStatusBarAppearanceUpdate];
+                    }
 #endif
-                // Update accessibility
-                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-                
-                if (completion) {
-                    completion();
+                    // Update accessibility
+                    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+                    
+                    // Run an (optional) completionHandler
+                    if (completion) {
+                        completion();
+                    }
                 }
             };
             
@@ -1082,7 +1093,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                 // Animate appearance
                 [UIView animateWithDuration:strongSelf.fadeOutAnimationDuration
                                       delay:delay
-                                    options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn)
+                                    options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)
                                  animations:^{
                                      animationsBlock();
                                  } completion:^(BOOL finished) {
@@ -1096,6 +1107,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             // Inform iOS to redraw the view hierarchy
             [strongSelf setNeedsDisplay];
         } else if (completion) {
+            // Run an (optional) completionHandler
             completion();
         }
     }];
