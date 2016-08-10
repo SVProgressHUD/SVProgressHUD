@@ -871,11 +871,6 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                 [strongSelf.hudView addSubview:strongSelf.ringView];
                 [strongSelf.hudView addSubview:strongSelf.backgroundRingView];
                 strongSelf.ringView.strokeEnd = progress;
-                
-                // Update the activity count
-                if(progress == 0) {
-                    strongSelf.activityCount++;
-                }
             } else {
                 // Cancel the ringLayer animation, then show the indefiniteAnimatedView
                 [strongSelf cancelRingLayerAnimation];
@@ -885,10 +880,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                 if([strongSelf.indefiniteAnimatedView respondsToSelector:@selector(startAnimating)]) {
                     [(id)strongSelf.indefiniteAnimatedView startAnimating];
                 }
-                
-                // Update the activity count
-                strongSelf.activityCount++;
             }
+            
+            // Update the activity count
+            strongSelf.activityCount++;
             
             // Show
             [strongSelf showStatus:status];
