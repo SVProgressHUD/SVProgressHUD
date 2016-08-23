@@ -1089,20 +1089,23 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                 }
             };
             
-            if (strongSelf.fadeOutAnimationDuration > 0) {
-                // Animate appearance
-                [UIView animateWithDuration:strongSelf.fadeOutAnimationDuration
-                                      delay:delay
-                                    options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)
-                                 animations:^{
-                                     animationsBlock();
-                                 } completion:^(BOOL finished) {
-                                     completionBlock();
-                                 }];
-            } else {
-                animationsBlock();
-                completionBlock();
-            }
+            dispatch_time_t dipatchTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
+            dispatch_after(dipatchTime, dispatch_get_main_queue(), ^{
+                if (strongSelf.fadeOutAnimationDuration > 0) {
+                    // Animate appearance
+                    [UIView animateWithDuration:strongSelf.fadeOutAnimationDuration
+                                          delay:0
+                                        options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)
+                                     animations:^{
+                                         animationsBlock();
+                                     } completion:^(BOOL finished) {
+                                         completionBlock();
+                                     }];
+                } else {
+                    animationsBlock();
+                    completionBlock();
+                }
+            });
             
             // Inform iOS to redraw the view hierarchy
             [strongSelf setNeedsDisplay];
