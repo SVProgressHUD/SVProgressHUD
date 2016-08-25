@@ -47,6 +47,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
+@property (nonatomic,strong) UIImageView * customImageView;
+
 - (void)updateHUDFrame;
 - (void)updateMask;
 - (void)updateBlurBounds;
@@ -956,13 +958,18 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             } else {
                 tintedImage = [strongSelf image:image withTintColor:tintColor];
             }
-            //            strongSelf.imageView.image = tintedImage;
-            //            strongSelf.imageView.hidden = NO;
-            UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, widthHeight, widthHeight)];
-            imageView.image = tintedImage;
-            imageView.hidden = NO;
-            imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2);
-            [self.hudView addSubview:imageView];
+            strongSelf.imageView.image = tintedImage;
+            strongSelf.imageView.hidden = NO;
+            
+            if (!self.customImageView) {
+                self.customImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, widthHeight, widthHeight)];
+                self.customImageView.image = tintedImage;
+                self.customImageView.hidden = NO;
+                self.customImageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2);
+            }
+            if (!self.customImageView.superview) {
+                [self.hudView addSubview:self.customImageView];
+            }
             
             // Update text
             strongSelf.statusLabel.text = status;
