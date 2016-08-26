@@ -958,8 +958,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             } else {
                 tintedImage = [strongSelf image:image withTintColor:tintColor];
             }
-            strongSelf.imageView.image = tintedImage;
-            strongSelf.imageView.hidden = NO;
+//            strongSelf.imageView.image = tintedImage;
+//            strongSelf.imageView.hidden = NO;
             
             if (!self.customImageView) {
                 self.customImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, widthHeight, widthHeight)];
