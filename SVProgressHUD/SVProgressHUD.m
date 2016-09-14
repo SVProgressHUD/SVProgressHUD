@@ -47,6 +47,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 
+@property (nonatomic, strong) UINotificationFeedbackGenerator *hapticGenerator;
+
 - (void)updateHUDFrame;
 - (void)updateMask;
 - (void)updateBlurBounds;
@@ -191,6 +193,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].maxSupportedWindowLevel = windowLevel;
 }
 
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled {
+	[self sharedView].hapticsEnabled = hapticsEnabled;
+}
+
 #pragma mark - Show Methods
 
 + (void)show {
@@ -254,6 +260,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 + (void)showSuccessWithStatus:(NSString*)status {
     [self showImage:[self sharedView].successImage status:status];
+	
+	[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -261,10 +269,14 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self setDefaultMaskType:maskType];
     [self showSuccessWithStatus:status];
     [self setDefaultMaskType:existingMaskType];
+	
+	[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
     [self showImage:[self sharedView].errorImage status:status];
+	
+	[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
 }
 
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -272,6 +284,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self setDefaultMaskType:maskType];
     [self showErrorWithStatus:status];
     [self setDefaultMaskType:existingMaskType];
+	
+	[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status {
@@ -381,6 +395,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         
         _maxSupportedWindowLevel = UIWindowLevelNormal;
+		
+		_hapticsEnabled = NO;
         
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
@@ -892,6 +908,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             
             // Show
             [strongSelf showStatus:status];
+			
+			// Tell the Haptics Generator to prepare for feedback, which may come soon
+			[strongSelf.hapticGenerator prepare];
         }
     }];
 }
@@ -1346,6 +1365,23 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     }
 #endif
     return 0;
+}
+
+- (UINotificationFeedbackGenerator *)hapticGenerator {
+	// This only works on iOS 10, so return nil on any other OS
+	if(![UINotificationFeedbackGenerator class]){
+		return nil;
+	}
+	
+	// Only return if haptics are enabled
+	if(!self.hapticsEnabled) {
+		return nil;
+	}
+	
+	if(!_hapticGenerator) {
+		_hapticGenerator = [[UINotificationFeedbackGenerator alloc] init];
+	}
+	return _hapticGenerator;
 }
 
 
