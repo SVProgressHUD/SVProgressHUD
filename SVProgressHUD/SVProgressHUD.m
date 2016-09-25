@@ -701,7 +701,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     } else {
         self.frame = UIScreen.mainScreen.bounds;
     }
+#if TARGET_OS_IOS
     UIInterfaceOrientation orientation = CGRectGetWidth(self.frame) > CGRectGetHeight(self.frame) ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
+#endif
 #endif
     
     // no transforms applied to window in iOS 8, but only if compiled with iOS 8 sdk as base sdk, otherwise system supports old rotation logic.
