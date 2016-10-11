@@ -261,7 +261,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 + (void)showSuccessWithStatus:(NSString*)status {
     [self showImage:[self sharedView].successImage status:status];
 	
-	[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+	});
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -270,13 +272,17 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self showSuccessWithStatus:status];
     [self setDefaultMaskType:existingMaskType];
 	
-	[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+	});
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
     [self showImage:[self sharedView].errorImage status:status];
 	
-	[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+	});
 }
 
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -285,7 +291,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self showErrorWithStatus:status];
     [self setDefaultMaskType:existingMaskType];
 	
-	[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+	});
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status {
