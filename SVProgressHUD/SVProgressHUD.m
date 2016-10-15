@@ -344,6 +344,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         _defaultMaskType = SVProgressHUDMaskTypeNone;
         _defaultStyle = SVProgressHUDStyleLight;
         _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
+        _minimumSize = CGSizeMake(100.0f, 100.0f);
         
         if ([UIFont respondsToSelector:@selector(preferredFontForTextStyle:)]) {
             _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
@@ -395,11 +396,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 - (void)updateHUDFrame {
     // For the beginning use default values, these
     // might get update if string is too large etc.
-    CGFloat hudWidth = 100.0f;
-    CGFloat hudHeight = 100.0f;
-    CGFloat stringHeightBuffer = 20.0f;
-    CGFloat stringAndContentHeightBuffer = 80.0f;
+    CGFloat hudWidth;
+    CGFloat hudHeight;
     CGRect labelRect = CGRectZero;
+    
+    CGFloat verticalSpacing = 12.0f; // |-12-content-(8-label-)12-|
+    CGFloat horizontalSpacing = 12.0f; // |-12-content-12-|
+    CGFloat progressLabelSpacing = 8.0f; // content-8-label; progess = spinner or image
     
     // Check if an image or progress ring is displayed
     BOOL imageUsed = (self.imageView.image) && !(self.imageView.hidden);
@@ -409,12 +412,11 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     NSString *string = self.statusLabel.text;
     if(string) {
         CGSize constraintSize = CGSizeMake(200.0f, 300.0f);
-        CGRect stringRect;
         if([string respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
-            stringRect = [string boundingRectWithSize:constraintSize
-                                              options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
-                                           attributes:@{NSFontAttributeName: self.statusLabel.font}
-                                              context:NULL];
+            labelRect = [string boundingRectWithSize:constraintSize
+                                             options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin)
+                                          attributes:@{NSFontAttributeName: self.statusLabel.font}
+                                             context:NULL];
         } else {
             CGSize stringSize;
             if([string respondsToSelector:@selector(sizeWithAttributes:)]) {
@@ -427,75 +429,55 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #pragma clang diagnostic pop
 #endif
             }
-            stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
+            labelRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
         }
-
-        CGFloat stringWidth = stringRect.size.width;
-        CGFloat stringHeight = ceilf(CGRectGetHeight(stringRect));
+        labelRect.size.width = MAX(self.minimumSize.width, horizontalSpacing + CGRectGetWidth(labelRect) + horizontalSpacing);
+        
+        CGFloat labelHeight = ceilf(CGRectGetHeight(labelRect));
+        CGFloat labelWidth = ceilf(CGRectGetWidth(labelRect));
         
         if(imageUsed || progressUsed) {
-            hudHeight = stringAndContentHeightBuffer + stringHeight;
+            CGFloat contentHeight = (imageUsed ? CGRectGetHeight(self.imageView.frame) : CGRectGetHeight(self.indefiniteAnimatedView.frame));
+            hudHeight = verticalSpacing + contentHeight + progressLabelSpacing + labelHeight + verticalSpacing;
         } else {
-            hudHeight = stringHeightBuffer + stringHeight;
+            hudHeight = verticalSpacing + labelHeight + verticalSpacing;
         }
-        if(stringWidth > hudWidth) {
-            hudWidth = ceilf(stringWidth/2)*2;
-        }
-        CGFloat labelRectY = (imageUsed || progressUsed) ? 68.0f : 9.0f;
-        if(hudHeight > 100.0f) {
-            labelRect = CGRectMake(12.0f, labelRectY, hudWidth, stringHeight);
-            hudWidth += 24.0f;
-        } else {
-            hudWidth += 24.0f;
-            labelRect = CGRectMake(0.0f, labelRectY, hudWidth, stringHeight);
-        }
+        hudWidth = labelWidth;
     }
     
     // Update values on subviews
     self.hudView.bounds = CGRectMake(0.0f, 0.0f, MAX(self.minimumSize.width, hudWidth), MAX(self.minimumSize.height, hudHeight));
-    labelRect.size.width += MAX(0, self.minimumSize.width - hudWidth);
     [self updateBlurBounds];
-    
-    if(string) {
-        self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36.0f);
-    } else {
-       	self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2);
-    }
-
-	self.statusLabel.hidden = NO;
-	self.statusLabel.frame = labelRect;
     
     // Animate value update
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
-	if(string) {
-        if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) {
-            SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView*)self.indefiniteAnimatedView;
-            indefiniteAnimationView.radius = self.ringRadius;
-            [indefiniteAnimationView sizeToFit];
-        }
+    // Spinner and image view
+    CGFloat centerY;
+    if(string){
+        CGFloat contentHeight = (imageUsed ? CGRectGetHeight(self.imageView.frame) : CGRectGetHeight(self.indefiniteAnimatedView.frame));
+        CGFloat labelHeight = ceilf(CGRectGetHeight(labelRect));
+        CGFloat yOffset = MAX(verticalSpacing, (self.minimumSize.height - contentHeight - progressLabelSpacing - labelHeight) / 2.0f);
         
-        CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
-        self.indefiniteAnimatedView.center = center;
-        
-        if(self.progress != SVProgressHUDUndefinedProgress) {
-            self.backgroundRingView.center = self.ringView.center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), 36.0f);
-        }
-	} else {
-        if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat) {
-            SVIndefiniteAnimatedView *indefiniteAnimationView = (SVIndefiniteAnimatedView*)self.indefiniteAnimatedView;
-            indefiniteAnimationView.radius = self.ringNoTextRadius;
-            [indefiniteAnimationView sizeToFit];
-        }
-        
-        CGPoint center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetHeight(self.hudView.bounds)/2);
-        self.indefiniteAnimatedView.center = center;
-        
-        if(self.progress != SVProgressHUDUndefinedProgress) {
-            self.backgroundRingView.center = self.ringView.center = CGPointMake((CGRectGetWidth(self.hudView.bounds)/2), CGRectGetHeight(self.hudView.bounds)/2);
-        }
+        centerY = yOffset + contentHeight / 2.0f;
+    } else {
+        centerY = CGRectGetHeight(self.hudView.bounds) / 2.0f;
     }
+    self.indefiniteAnimatedView.center = CGPointMake((CGRectGetWidth(self.hudView.bounds) / 2.0f), centerY);
+    if(self.progress != SVProgressHUDUndefinedProgress) {
+        self.backgroundRingView.center = self.ringView.center = CGPointMake((CGRectGetWidth(self.hudView.bounds) / 2.0f), centerY);
+    }
+    self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds) / 2.0f, centerY);
+
+    // Label
+    if(imageUsed || progressUsed){
+        labelRect.origin.y = (imageUsed ? CGRectGetMaxY(self.imageView.frame) : CGRectGetMaxY(self.indefiniteAnimatedView.frame)) + progressLabelSpacing;
+    } else {
+        labelRect.origin.y = verticalSpacing;
+    }
+    self.statusLabel.frame = labelRect;
+    self.statusLabel.hidden = !string;
     
     [CATransaction commit];
 }
@@ -693,15 +675,17 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
-#elif !defined(SV_APP_EXTENSIONS)
-    self.frame = [UIApplication sharedApplication].keyWindow.bounds;
+#elif !defined(SV_APP_EXTENSIONS) && !TARGET_OS_IOS
+    self.frame= [UIApplication sharedApplication].keyWindow.bounds;
 #else
     if (self.viewForExtension) {
         self.frame = self.viewForExtension.frame;
     } else {
         self.frame = UIScreen.mainScreen.bounds;
     }
+#if TARGET_OS_IOS
     UIInterfaceOrientation orientation = CGRectGetWidth(self.frame) > CGRectGetHeight(self.frame) ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
+#endif
 #endif
     
     // no transforms applied to window in iOS 8, but only if compiled with iOS 8 sdk as base sdk, otherwise system supports old rotation logic.
@@ -799,7 +783,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         __weak SVProgressHUD *weakSelf = self;
         [UIView animateWithDuration:animationDuration
                               delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction
+                            options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState)
                          animations:^{
                              __strong SVProgressHUD *strongSelf = weakSelf;
                              if(strongSelf) {
@@ -867,10 +851,17 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
                 // Cancel the indefiniteAnimatedView, then show the ringLayer
                 [strongSelf cancelIndefiniteAnimatedViewAnimation];
                 
-                // Add ring to HUD and set progress
-                [strongSelf.hudView addSubview:strongSelf.ringView];
-                [strongSelf.hudView addSubview:strongSelf.backgroundRingView];
+                // Add ring to HUD
+                if(!strongSelf.ringView.superview)
+                    [strongSelf.hudView addSubview:strongSelf.ringView];
+                if(!strongSelf.backgroundRingView.superview)
+                    [strongSelf.hudView addSubview:strongSelf.backgroundRingView];
+                
+                // Set progress animated
+                [CATransaction begin];
+                [CATransaction setDisableActions:YES];
                 strongSelf.ringView.strokeEnd = progress;
+                [CATransaction commit];
                 
                 // Update the activity count
                 if(progress == 0) {
@@ -988,7 +979,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             if(strongSelf) {
                 // Check if we really achieved to show the HUD (<=> alpha values are applied)
                 // and the change of these values has not been cancelled in between
-                // e.g. due to a dismissmal
+                // e.g. due to a dismissal
                 if(strongSelf.alpha == 1.0f && strongSelf.hudView.alpha == 1.0f){
                     // Register observer <=> we now have to handle orientation changes etc.
                     [strongSelf registerNotifications];

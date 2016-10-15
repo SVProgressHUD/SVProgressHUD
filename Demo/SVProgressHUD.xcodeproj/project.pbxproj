@@ -97,6 +97,7 @@
 		080E96DDFE201D6D7F000001 /* iOS Demo */ = {
 			isa = PBXGroup;
 			children = (
+				63ADC4B81364C1360060E45B /* SVProgressHUD */,
 				28D7ACF60DDB3853001CB0EB /* ViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* ViewController.m */,
 				2899E5210DE3E06400AC0155 /* ViewController.xib */,
@@ -139,7 +140,6 @@
 				8D1107310486CEB800E47090 /* SVProgressHUD-Info.plist */,
 				32CA4F630368D1EE00C91783 /* SVProgressHUD_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				63ADC4B81364C1360060E45B /* SVProgressHUD */,
 			);
 			name = "Other Sources";
 			path = ..;
@@ -170,7 +170,7 @@
 				3CD078E91A3B809500290D80 /* SVRadialGradientLayer.m */,
 			);
 			name = SVProgressHUD;
-			path = ../SVProgressHUD;
+			path = ../../SVProgressHUD;
 			sourceTree = "<group>";
 		};
 		D36EDBCF1BE7E9B000BD0EF1 /* tvOS Demo */ = {
