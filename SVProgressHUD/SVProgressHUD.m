@@ -544,6 +544,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             
             [self.hudView insertSubview:blurEffectView atIndex:0];
         }
+    } else{
+        // Remove any old instances of UIVisualEffectViews, when the HUDStyle changed from other to custom
+        for (UIView *subview in self.hudView.subviews) {
+            if([subview isKindOfClass:[UIVisualEffectView class]]) {
+                [subview removeFromSuperview];
+            }
+        }
     }
 #endif
 }
