@@ -102,6 +102,12 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 #pragma mark - Show Methods
 
 + (void)show;
+/**
+ Displays a progress HUD in a view.
+ 
+ @param view The UIVIew to display the HUD within.
+ */
++ (void)showProgressHUDInView:(UIView*)view;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use show and setDefaultMaskType: instead.")));
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showWithStatus: and setDefaultMaskType: instead.")));
