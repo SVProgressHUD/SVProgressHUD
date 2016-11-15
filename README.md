@@ -4,6 +4,7 @@
 ![Pod License](https://img.shields.io/cocoapods/l/SVProgressHUD.svg?style=flat)
 ![Pod Platform](https://img.shields.io/cocoapods/p/SVProgressHUD.svg?style=flat)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+![MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
 `SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task on iOS and tvOS.
 
