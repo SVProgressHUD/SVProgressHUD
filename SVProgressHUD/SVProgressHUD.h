@@ -57,6 +57,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (assign, nonatomic) CGFloat ringRadius UI_APPEARANCE_SELECTOR;            // default is 18 pt
 @property (assign, nonatomic) CGFloat ringNoTextRadius UI_APPEARANCE_SELECTOR;      // default is 24 pt
 @property (assign, nonatomic) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;          // default is 14 pt
+@property (assign, nonatomic) CGSize imageViewSize UI_APPEARANCE_SELECTOR;          // default is 28 x 28
 @property (strong, nonatomic) UIFont *font UI_APPEARANCE_SELECTOR;                  // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 @property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;      // default is [UIColor whiteColor]
 @property (strong, nonatomic) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;      // default is [UIColor blackColor]
@@ -82,6 +83,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setRingRadius:(CGFloat)radius;                              // default is 18 pt
 + (void)setRingNoTextRadius:(CGFloat)radius;                        // default is 24 pt
 + (void)setCornerRadius:(CGFloat)cornerRadius;                      // default is 14 pt
++ (void)setImageViewSize:(CGSize)imageViewSize;                     // default is 28 x 28
 + (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom

@@ -143,6 +143,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].cornerRadius = cornerRadius;
 }
 
++ (void)setImageViewSize:(CGSize)imageViewSize {
+    [self sharedView].imageViewSize = imageViewSize;
+}
+
 + (void)setFont:(UIFont*)font {
     [self sharedView].font = font;
 }
@@ -375,6 +379,8 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         _ringNoTextRadius = 24.0f;
         
         _cornerRadius = 14.0f;
+
+        _imageViewSize = CGSizeMake(28.0f, 28.0f);
         
         _minimumDismissTimeInterval = 5.0;
 
@@ -1312,8 +1318,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 - (UIImageView*)imageView {
+    if(_imageView && !CGSizeEqualToSize(_imageView.bounds.size, _imageViewSize)) {
+        [_imageView removeFromSuperview];
+        _imageView = nil;
+    }
+
     if(!_imageView) {
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 28.0f, 28.0f)];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _imageViewSize.width, _imageViewSize.height)];
     }
     if(!_imageView.superview) {
         [self.hudView addSubview:_imageView];
@@ -1375,6 +1386,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)setRingNoTextRadius:(CGFloat)ringNoTextRadius {
     if (!_isInitializing) _ringNoTextRadius = ringNoTextRadius;
+}
+
+- (void)setImageViewSize:(CGSize)imageViewSize {
+    if (!_isInitializing) _imageViewSize = imageViewSize;
 }
 
 - (void)setCornerRadius:(CGFloat)cornerRadius {

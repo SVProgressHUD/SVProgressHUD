@@ -35,6 +35,8 @@
                                              selector:@selector(handleNotification:)
                                                  name:SVProgressHUDDidDisappearNotification
                                                object:nil];
+
+    [self updateImageViewSizeTextField:CGSizeMake(28.0, 28.0)];
 }
 
 - (void)handleNotification:(NSNotification *)notification {
@@ -128,5 +130,16 @@ static float progress = 0.0f;
     }
 }
 
+- (IBAction)changeImageViewSize:(id)sender {
+    UIStepper *stepper = sender;
+    CGFloat value = (CGFloat)stepper.value;
+    CGSize size = CGSizeMake(value, value);
+    [SVProgressHUD setImageViewSize:size];
+    [self updateImageViewSizeTextField:size];
+}
+
+- (void)updateImageViewSizeTextField:(CGSize)size {
+    self.imageViewSizeTextField.text = NSStringFromCGSize(size);
+}
 
 @end
