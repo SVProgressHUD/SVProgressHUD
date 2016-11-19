@@ -93,6 +93,14 @@ static float progress = 0.0f;
 
 
 #pragma mark - Styling
+- (IBAction)changeCenterImage:(id)sender {
+    UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
+    if(segmentedControl.selectedSegmentIndex == 0){
+        [SVProgressHUD setCenterImage:[UIImage imageNamed:@"center"]];
+    } else {
+        [SVProgressHUD setCenterImage:nil];
+    }
+}
 
 - (IBAction)changeStyle:(id)sender {
     UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
