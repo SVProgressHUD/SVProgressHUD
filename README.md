@@ -1,8 +1,8 @@
 # SVProgressHUD
 
 ![Pod Version](https://img.shields.io/cocoapods/v/SVProgressHUD.svg?style=flat)
-![Pod License](https://img.shields.io/cocoapods/l/SVProgressHUD.svg?style=flat)
 ![Pod Platform](https://img.shields.io/cocoapods/p/SVProgressHUD.svg?style=flat)
+![Pod License](https://img.shields.io/cocoapods/l/SVProgressHUD.svg?style=flat)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 `SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task on iOS and tvOS.
@@ -153,7 +153,7 @@ As standard `SVProgressHUD` offers two preconfigured styles:
 * `SVProgressHUDStyleLight`: White background with black spinner and text
 * `SVProgressHUDStyleDark`: Black background with white spinner and text
 
-If you want to use custom colors with `setForegroundColor` and `setBackgroundColor:` don't forget to set `SVProgressHUDStyleCustom` via `setDefaultStyle:`.
+If you want to use custom colors use `setForegroundColor` and `setBackgroundColor:`.
 
 ## Notifications
 
