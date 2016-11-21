@@ -67,7 +67,10 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (strong, nonatomic) UIView *viewForExtension UI_APPEARANCE_SELECTOR;      // default is nil, only used if #define SV_APP_EXTENSIONS is set
 @property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;            // default is 5.0 seconds
 
+@property (assign, nonatomic) BOOL tapToFinishAutoDismiss UI_APPEARANCE_SELECTOR;  // default is NO
+
 @property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;     // default is 0, 0
+
 
 @property (assign, nonatomic) NSTimeInterval fadeInAnimationDuration;  // default is 0.15
 @property (assign, nonatomic) NSTimeInterval fadeOutAnimationDuration; // default is 0.15
@@ -94,6 +97,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
++ (void)setTapToFinishFadeOutTimer:(BOOL)tapToFinishFadeOutTimer;   // default is NO
 
 #pragma mark - Show Methods
 
