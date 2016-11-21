@@ -54,6 +54,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 - (void)updateMotionEffectForOrientation:(UIInterfaceOrientation)orientation;
 #endif
 - (void)updateMotionEffectForXMotionEffectType:(UIInterpolatingMotionEffectType)xMotionEffectType yMotionEffectType:(UIInterpolatingMotionEffectType)yMotionEffectType;
+- (void)updateViewHierarchyForContainerView;
 - (void)updateViewHierarchy;
 
 - (void)setStatus:(NSString*)status;
@@ -121,6 +122,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type {
     [self sharedView].defaultAnimationType = type;
+}
+
++ (void)setContainerView:(UIView *)containerView {
+    [self sharedView].containerView = containerView;
 }
 
 + (void)setMinimumSize:(CGSize)minimumSize {
@@ -582,6 +587,18 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     }
 }
 
+- (void)updateViewHierarchyForContainerView {
+    [_containerView addSubview:self.overlayView];
+    
+    // Add self to the overlay view
+    if(!self.superview){
+        [self.overlayView addSubview:self];
+    }
+    if(!self.hudView.superview) {
+        [self addSubview:self.hudView];
+    }
+}
+
 - (void)updateViewHierarchy {
     // Add the overlay (e.g. black, gradient) to the application window if necessary
     if(!self.overlayView.superview) {
@@ -808,7 +825,11 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle {
     self.hudView.transform = CGAffineTransformMakeRotation(angle);
-    self.hudView.center = CGPointMake(newCenter.x + self.offsetFromCenter.horizontal, newCenter.y + self.offsetFromCenter.vertical);
+    if (self.containerView){
+        self.hudView.center = self.containerView.center;
+    } else {
+        self.hudView.center = CGPointMake(newCenter.x + self.offsetFromCenter.horizontal, newCenter.y + self.offsetFromCenter.vertical);
+    }
 }
 
 
@@ -838,7 +859,13 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         __strong SVProgressHUD *strongSelf = weakSelf;
         if(strongSelf){
             // Update / Check view hierarchy to ensure the HUD is visible
-            [strongSelf updateViewHierarchy];
+            
+            // If UIView container is specified then load HUD in container otherwise use default window level
+            if (self.containerView != nil) {
+                [strongSelf updateViewHierarchyForContainerView];
+            } else {
+                [strongSelf updateViewHierarchy];
+            }
             
             // Reset imageView and fadeout timer if an image is currently displayed
             strongSelf.imageView.hidden = YES;
@@ -1359,6 +1386,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 - (void)setDefaultAnimationType:(SVProgressHUDAnimationType)animationType {
     if (!_isInitializing) _defaultAnimationType = animationType;
+}
+
+- (void)setContainerView:(UIView *)containerView {
+    if (!_isInitializing) _containerView = containerView;
 }
 
 - (void)setMinimumSize:(CGSize)minimumSize {

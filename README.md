@@ -124,6 +124,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;   // default is SVProgressHUDAnimationTypeFlat
++ (void)setContainerView:(UIView*)containerView;                    // default is window level
 + (void)setMinimumSize:(CGSize)minimumSize;                         // default is CGSizeZero, can be used to avoid resizing for a larger message
 + (void)setRingThickness:(CGFloat)width;                            // default is 2 pt
 + (void)setRingRadius:(CGFloat)radius;                              // default is 18 pt

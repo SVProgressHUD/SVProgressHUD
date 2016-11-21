@@ -1,7 +1,11 @@
-## Upcoming
+## Version 2.0.4
 * New: Allow to set max allowed window level #607
 * New: Add completion block to dismiss methods
 * Fixed: Live blurring due to wrong background color #517 / #624
+* Fixed: Remove any old instances of UIVisualEffectViews, when the HUDStyle… #667
+* Fixed: Ring not centered in HUD #635
+* Fixed: SVProgressHUD failing to build on tvos #672 / #673
+* Update to Xcode 8 recommended settings
 
 ## Version 2.0.3
 * Fixed: Carthage support #592, #590
