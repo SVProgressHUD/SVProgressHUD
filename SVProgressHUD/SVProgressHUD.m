@@ -154,12 +154,12 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 + (void)setForegroundColor:(UIColor*)color {
     [self sharedView].foregroundColor = color;
-    [self setDefaultStyle:(SVProgressHUDStyle)SVProgressHUDStyleCustom];
+    [self sharedView].defaultStyle = SVProgressHUDStyleCustom;
 }
 
 + (void)setBackgroundColor:(UIColor*)color {
     [self sharedView].backgroundColor = color;
-    [self setDefaultStyle:(SVProgressHUDStyle)SVProgressHUDStyleCustom];
+    [self sharedView].defaultStyle = SVProgressHUDStyleCustom;
 }
 
 + (void)setBackgroundLayerColor:(UIColor*)color {
