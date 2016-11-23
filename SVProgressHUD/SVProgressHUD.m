@@ -499,6 +499,12 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
             [self.layer insertSublayer:self.backgroundLayer atIndex:0];
             break;
         }
+
+        case SVProgressHUDMaskTypeClear: {
+            [[UIColor clearColor] set];
+            CGContextFillRect(context, self.bounds);
+            break;
+        }
             
         case SVProgressHUDMaskTypeGradient:{
             SVRadialGradientLayer *layer = [SVRadialGradientLayer layer];
