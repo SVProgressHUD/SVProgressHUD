@@ -29,7 +29,7 @@ If you want to use the latest features of `SVProgressHUD` use normal external so
 pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 ```
 
-This pulls from the `master` branch directly. We are usually careful about what we push there and this is the version we use ourselves in all of our projects.
+This pulls from the `master` branch directly.
 
 Second, install `SVProgressHUD` into your project:
 
@@ -153,7 +153,7 @@ As standard `SVProgressHUD` offers two preconfigured styles:
 * `SVProgressHUDStyleLight`: White background with black spinner and text
 * `SVProgressHUDStyleDark`: Black background with white spinner and text
 
-If you want to use custom colors use `setForegroundColor` and `setBackgroundColor:`.
+If you want to use custom colors use `setForegroundColor` and `setBackgroundColor:`. These implicity set the HUD's style to `SVProgressHUDStyleCustom`.
 
 ## Notifications
 

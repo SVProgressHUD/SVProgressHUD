@@ -35,18 +35,27 @@
                                              selector:@selector(handleNotification:)
                                                  name:SVProgressHUDDidDisappearNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleNotification:)
+                                                 name:SVProgressHUDDidReceiveTouchEventNotification
+                                               object:nil];
 }
 
 - (void)handleNotification:(NSNotification *)notification {
     NSLog(@"Notification received: %@", notification.name);
     NSLog(@"Status user info key: %@", notification.userInfo[SVProgressHUDStatusUserInfoKey]);
+    
+    if([notification.name isEqualToString:SVProgressHUDDidReceiveTouchEventNotification]){
+        [SVProgressHUD dismiss];
+    }
 }
 
 
 #pragma mark - Show Methods Sample
 
 - (void)show {
-	[SVProgressHUD show];
+    [SVProgressHUD show];
 }
 
 - (void)showWithStatus {
