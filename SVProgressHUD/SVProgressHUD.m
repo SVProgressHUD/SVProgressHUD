@@ -353,7 +353,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
         _defaultMaskType = SVProgressHUDMaskTypeNone;
         _defaultStyle = SVProgressHUDStyleLight;
         _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
-        _minimumSize = CGSizeMake(100.0f, 100.0f);
+        _minimumSize = CGSizeZero;
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         
         NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
