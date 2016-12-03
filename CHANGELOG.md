@@ -2,6 +2,7 @@
 * New: Implicitly set default style to custom when setting colors #692
 * New: Add HUD to UIView instead of UIWindow #685
 * Fixed: UIVisualEffectViews transition error #680
+* Fixed: Minimum size #697, #674, #359
 
 ## Version 2.0.4
 * New: Allow to set max allowed window level #607

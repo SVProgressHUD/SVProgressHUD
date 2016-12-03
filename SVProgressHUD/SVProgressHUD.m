@@ -662,16 +662,12 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
     
     if(notification) {
         // Animate update if notification was present
-        __weak SVProgressHUD *weakSelf = self;
         [UIView animateWithDuration:animationDuration
                               delay:0
                             options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState)
                          animations:^{
-                             __strong SVProgressHUD *strongSelf = weakSelf;
-                             if(strongSelf) {
-                                 [strongSelf moveToPoint:newCenter rotateAngle:rotateAngle];
-                                 [strongSelf.hudView setNeedsDisplay];
-                             }
+                             [self moveToPoint:newCenter rotateAngle:rotateAngle];
+                             [self.hudView setNeedsDisplay];
                          } completion:NULL];
     } else {
         [self moveToPoint:newCenter rotateAngle:rotateAngle];
@@ -853,50 +849,42 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
         
         // Define blocks
-        __weak SVProgressHUD *weakSelf = self;
-        
         __block void (^animationsBlock)(void) = ^{
-            __strong SVProgressHUD *strongSelf = weakSelf;
-            if(strongSelf) {
-                // Shrink HUD to finish pop up animation
-                strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 1/1.3f, 1/1.3f);
-        
+            // Shrink HUD to finish pop up animation
+            self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3f, 1/1.3f);
+    
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-                // Fade in effect
-                UIBlurEffectStyle blurEffectStyle = strongSelf.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
-                UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
-                
-                strongSelf.hudView.effect = blurEffect;
-                strongSelf.hudVibrancyView.effect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
-                
-                // Update alpha
-                strongSelf.hudView.contentView.alpha = 1.0f;
+            // Fade in effect
+            UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
+            UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
+            
+            self.hudView.effect = blurEffect;
+            self.hudVibrancyView.effect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
+            
+            // Update alpha
+            self.hudView.contentView.alpha = 1.0f;
 #else
-                strongSelf.hudView.alpha = 1.0f;
+            self.hudView.alpha = 1.0f;
 #endif
-                strongSelf.backgroundView.alpha = 1.0f;
-            }
+            self.backgroundView.alpha = 1.0f;
         };
         
         __block void (^completionBlock)(void) = ^{
-            __strong SVProgressHUD *strongSelf = weakSelf;
-            if(strongSelf) {
-                // Check if we really achieved to show the HUD (<=> alpha values are applied)
-                // and the change of these values has not been cancelled in between e.g. due to a dismissal
-                // Checking one alpha value is sufficient as they are all the same
+            // Check if we really achieved to show the HUD (<=> alpha values are applied)
+            // and the change of these values has not been cancelled in between e.g. due to a dismissal
+            // Checking one alpha value is sufficient as they are all the same
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-                if(self.hudView.contentView.alpha == 1.0f){
+            if(self.hudView.contentView.alpha == 1.0f){
 #else
-                if(self.hudView.alpha == 1.0f){
+            if(self.hudView.alpha == 1.0f){
 #endif
-                    // Register observer <=> we now have to handle orientation changes etc.
-                    [strongSelf registerNotifications];
-                    
-                    // Post notification to inform user
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
-                                                                        object:strongSelf
-                                                                      userInfo:[strongSelf notificationUserInfo]];
-                }
+                // Register observer <=> we now have to handle orientation changes etc.
+                [self registerNotifications];
+                
+                // Post notification to inform user
+                [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
+                                                                    object:self
+                                                                  userInfo:[self notificationUserInfo]];
             }
             
             // Update accessibility
