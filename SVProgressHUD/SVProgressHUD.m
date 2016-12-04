@@ -26,6 +26,10 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10.0f;
 static const CGFloat SVProgressHUDUndefinedProgress = -1;
 static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
+static const CGFloat SVProgressHUDVerticalSpacing = 12.0f; // |-12-content-(8-label-)12-|
+static const CGFloat SVProgressHUDHorizontalSpacing = 12.0f; // |-12-content-12-|
+static const CGFloat SVProgressHUDLabelSpacing = 8.0f; // content-8-label; progess = spinner or image
+
 
 @interface SVProgressHUD ()
 
@@ -102,6 +106,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
 #endif
     return sharedView;
 }
+
 
 #pragma mark - Setters
 
@@ -194,6 +199,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel {
     [self sharedView].maxSupportedWindowLevel = windowLevel;
 }
+
 
 #pragma mark - Show Methods
 
@@ -392,40 +398,43 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
 }
 
 - (void)updateHUDFrame {
-    // For the beginning use default values, these
-    // might get update if string is too large etc.
-    CGFloat hudWidth = 0.0f;
-    CGFloat hudHeight = 0.0f;
-    CGRect labelRect = CGRectZero;
-    
-    CGFloat verticalSpacing = 12.0f; // |-12-content-(8-label-)12-|
-    CGFloat horizontalSpacing = 12.0f; // |-12-content-12-|
-    CGFloat progressLabelSpacing = 8.0f; // content-8-label; progess = spinner or image
-    
     // Check if an image or progress ring is displayed
     BOOL imageUsed = (self.imageView.image) && !(self.imageView.hidden);
     BOOL progressUsed = self.imageView.hidden;
     
-    // Calculate size of string and update HUD size
-    NSString *string = self.statusLabel.text;
-    if(string) {
-        labelRect = [string boundingRectWithSize:CGSizeMake(200.0f, 300.0f)
+    // Calculate size of string
+    CGRect labelRect = CGRectZero;
+    CGFloat labelHeight = 0.0f;
+    CGFloat labelWidth = 0.0f;
+    
+    if(self.statusLabel.text) {
+        labelRect = [self.statusLabel.text boundingRectWithSize:CGSizeZero
                                          options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin)
                                       attributes:@{NSFontAttributeName: self.statusLabel.font}
                                          context:NULL];
-        
-        labelRect.size.width = MAX(self.minimumSize.width, horizontalSpacing + CGRectGetWidth(labelRect) + horizontalSpacing);
-        
-        CGFloat labelHeight = ceilf(CGRectGetHeight(labelRect));
-        CGFloat labelWidth = ceilf(CGRectGetWidth(labelRect));
-        
-        if(imageUsed || progressUsed) {
-            CGFloat contentHeight = (imageUsed ? CGRectGetHeight(self.imageView.frame) : CGRectGetHeight(self.indefiniteAnimatedView.frame));
-            hudHeight = verticalSpacing + contentHeight + progressLabelSpacing + labelHeight + verticalSpacing;
-        } else {
-            hudHeight = verticalSpacing + labelHeight + verticalSpacing;
-        }
-        hudWidth = labelWidth;
+        labelHeight = ceilf(CGRectGetHeight(labelRect));
+        labelWidth = ceilf(CGRectGetWidth(labelRect));
+    }
+    
+    // Calculate hud size based on content
+    // For the beginning use default values, these
+    // might get update if string is too large etc.
+    CGFloat hudWidth = 0.0f;
+    CGFloat hudHeight = 0.0f;
+    
+    CGFloat contentWidth = 0.0f;
+    CGFloat contentHeight = 0.0f;
+    
+    if(imageUsed || progressUsed) {
+        contentWidth = CGRectGetWidth(imageUsed ? self.imageView.frame : self.indefiniteAnimatedView.frame);
+        contentHeight = CGRectGetHeight(imageUsed ? self.imageView.frame : self.indefiniteAnimatedView.frame);
+    }
+    
+    hudWidth = SVProgressHUDHorizontalSpacing + MAX(labelWidth, contentWidth) + SVProgressHUDHorizontalSpacing;
+    hudHeight = SVProgressHUDVerticalSpacing + labelHeight + SVProgressHUDVerticalSpacing;
+    
+    if(imageUsed || progressUsed) {
+        hudHeight += contentHeight + SVProgressHUDLabelSpacing;
     }
     
     // Update values on subviews
@@ -440,29 +449,27 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
     
     // Spinner and image view
     CGFloat centerY;
-    if(string){
-        CGFloat contentHeight = (imageUsed ? CGRectGetHeight(self.imageView.frame) : CGRectGetHeight(self.indefiniteAnimatedView.frame));
-        CGFloat labelHeight = ceilf(CGRectGetHeight(labelRect));
-        CGFloat yOffset = MAX(verticalSpacing, (self.minimumSize.height - contentHeight - progressLabelSpacing - labelHeight) / 2.0f);
-        
+    if(self.statusLabel.text) {
+        CGFloat yOffset = MAX(SVProgressHUDVerticalSpacing, (self.minimumSize.height - contentHeight - SVProgressHUDLabelSpacing - labelHeight) / 2.0f);
         centerY = yOffset + contentHeight / 2.0f;
     } else {
-        centerY = CGRectGetHeight(self.hudView.bounds) / 2.0f;
+        centerY = CGRectGetMidY(self.hudView.bounds);
     }
-    self.indefiniteAnimatedView.center = CGPointMake((CGRectGetWidth(self.hudView.bounds) / 2.0f), centerY);
+    self.indefiniteAnimatedView.center = CGPointMake(CGRectGetMidX(self.hudView.bounds), centerY);
     if(self.progress != SVProgressHUDUndefinedProgress) {
-        self.backgroundRingView.center = self.ringView.center = CGPointMake((CGRectGetWidth(self.hudView.bounds) / 2.0f), centerY);
+        self.backgroundRingView.center = self.ringView.center = CGPointMake(CGRectGetMidX(self.hudView.bounds), centerY);
     }
-    self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds) / 2.0f, centerY);
+    self.imageView.center = CGPointMake(CGRectGetMidX(self.hudView.bounds), centerY);
 
     // Label
-    if(imageUsed || progressUsed){
-        labelRect.origin.y = (imageUsed ? CGRectGetMaxY(self.imageView.frame) : CGRectGetMaxY(self.indefiniteAnimatedView.frame)) + progressLabelSpacing;
+    if(imageUsed || progressUsed) {
+        centerY = CGRectGetMaxY(imageUsed ? self.imageView.frame : self.indefiniteAnimatedView.frame) + SVProgressHUDLabelSpacing + labelHeight / 2.0f;
     } else {
-        labelRect.origin.y = verticalSpacing;
+        centerY = CGRectGetMidY(self.hudView.bounds);
     }
     self.statusLabel.frame = labelRect;
-    self.statusLabel.hidden = !string;
+    self.statusLabel.center = CGPointMake(CGRectGetMidX(self.hudView.bounds), centerY);
+    self.statusLabel.hidden = !self.statusLabel.text;
     
     [CATransaction commit];
 }
@@ -515,7 +522,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
     }
     
     // Add self to the overlay view
-    if(!self.superview){
+    if(!self.superview) {
         [self.controlView addSubview:self];
     }
 }
@@ -654,7 +661,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
     }
     activeHeight -= keyboardHeight;
     
-    CGFloat posX = CGRectGetWidth(orientationFrame)/2.0f;
+    CGFloat posX = CGRectGetMidX(orientationFrame);
     CGFloat posY = floorf(activeHeight*0.45f);
 
     CGFloat rotateAngle = 0.0;
@@ -668,7 +675,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
                          animations:^{
                              [self moveToPoint:newCenter rotateAngle:rotateAngle];
                              [self.hudView setNeedsDisplay];
-                         } completion:NULL];
+                         } completion:nil];
     } else {
         [self moveToPoint:newCenter rotateAngle:rotateAngle];
     }
@@ -1310,6 +1317,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
 }
 
 - (UIWindow *)frontWindow {
+#if !defined(SV_APP_EXTENSIONS)
     NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
     for (UIWindow *window in frontToBackWindows) {
         BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
@@ -1320,6 +1328,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
             return window;
         }
     }
+#endif
     return nil;
 }
 
