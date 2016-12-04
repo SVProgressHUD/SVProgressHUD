@@ -188,6 +188,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f; // content-8-label; proge
     [self sharedView].minimumDismissTimeInterval = interval;
 }
 
++ (void)setMaximumDismissTimeInterval:(NSTimeInterval)interval {
+    [self sharedView].maximumDismissTimeInterval = interval;
+}
+
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration {
     [self sharedView].fadeInAnimationDuration = duration;
 }
@@ -381,6 +385,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f; // content-8-label; proge
         _cornerRadius = 14.0f;
         
         _minimumDismissTimeInterval = 5.0;
+        _maximumDismissTimeInterval = CGFLOAT_MAX;
 
         _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
@@ -1123,7 +1128,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f; // content-8-label; proge
 #pragma mark - Getters
 
 + (NSTimeInterval)displayDurationForString:(NSString*)string {
-    return MAX((float)string.length * 0.06 + 0.5, [self sharedView].minimumDismissTimeInterval);
+    CGFloat minimum = MAX((CGFloat)string.length * 0.06 + 0.5, [self sharedView].minimumDismissTimeInterval);
+    return MIN(minimum, [self sharedView].maximumDismissTimeInterval);
 }
 
 - (UIColor*)foregroundColorForStyle {
