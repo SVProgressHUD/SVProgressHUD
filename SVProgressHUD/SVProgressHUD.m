@@ -26,9 +26,9 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10.0f;
 static const CGFloat SVProgressHUDUndefinedProgress = -1;
 static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
-static const CGFloat SVProgressHUDVerticalSpacing = 12.0f; // |-12-content-(8-label-)12-|
-static const CGFloat SVProgressHUDHorizontalSpacing = 12.0f; // |-12-content-12-|
-static const CGFloat SVProgressHUDLabelSpacing = 8.0f; // content-8-label; progess = spinner or image
+static const CGFloat SVProgressHUDVerticalSpacing = 12.0f;
+static const CGFloat SVProgressHUDHorizontalSpacing = 12.0f;
+static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 
 @interface SVProgressHUD ()
@@ -435,11 +435,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f; // content-8-label; proge
         contentHeight = CGRectGetHeight(imageUsed ? self.imageView.frame : self.indefiniteAnimatedView.frame);
     }
     
+    // |-spacing-content-spacing-|
     hudWidth = SVProgressHUDHorizontalSpacing + MAX(labelWidth, contentWidth) + SVProgressHUDHorizontalSpacing;
-    hudHeight = SVProgressHUDVerticalSpacing + labelHeight + SVProgressHUDVerticalSpacing;
     
-    if(imageUsed || progressUsed) {
-        hudHeight += contentHeight + SVProgressHUDLabelSpacing;
+    // |-spacing-content-(labelSpacing-label-)spacing-|
+    hudHeight = SVProgressHUDVerticalSpacing + labelHeight + contentHeight + SVProgressHUDVerticalSpacing;
+    if(self.statusLabel.text && (imageUsed || progressUsed)){
+        // Add spacing if both content and label are used
+        hudHeight += SVProgressHUDLabelSpacing;
     }
     
     // Update values on subviews
@@ -662,7 +665,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f; // content-8-label; proge
     // Calculate available height for display
     CGFloat activeHeight = CGRectGetHeight(orientationFrame);
     if(keyboardHeight > 0) {
-        activeHeight += CGRectGetHeight(statusBarFrame)*2;
+        activeHeight += CGRectGetHeight(statusBarFrame) * 2;
     }
     activeHeight -= keyboardHeight;
     
