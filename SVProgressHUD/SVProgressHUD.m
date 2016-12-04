@@ -1127,13 +1127,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f; // content-8-label; proge
 #pragma mark - Getters
 
 + (NSTimeInterval)displayDurationForString:(NSString*)string {
-    return MIN(
-               MAX(
-                   (float)string.length * 0.06 + 0.5,
-                   [self sharedView].minimumDismissTimeInterval
-               ),
-               [self sharedView].maximumDismissTimeInterval
-    );
+    CGFloat minimum = MAX((CGFloat)string.length * 0.06 + 0.5, [self sharedView].minimumDismissTimeInterval);
+    return MIN(minimum, [self sharedView].maximumDismissTimeInterval);
 }
 
 - (UIColor*)foregroundColorForStyle {
