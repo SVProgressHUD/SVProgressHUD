@@ -21,3 +21,8 @@ build/
 # Backup files
 *~.nib
 / graphics/
+Demo/.idea/.name
+Demo/.idea/Demo.iml
+Demo/.idea/modules.xml
+Demo/.idea/workspace.xml
+Demo/.idea/xcode.xml

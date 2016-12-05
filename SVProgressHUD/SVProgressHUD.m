@@ -33,7 +33,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 @interface SVProgressHUD ()
 
-@property (nonatomic, strong, readonly) NSTimer *fadeOutTimer;
+@property (nonatomic, strong) NSTimer *fadeOutTimer;
 
 @property (nonatomic, strong) UIControl *controlView;
 @property (nonatomic, strong) UIView *backgroundView;
@@ -424,8 +424,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     // Calculate hud size based on content
     // For the beginning use default values, these
     // might get update if string is too large etc.
-    CGFloat hudWidth = 0.0f;
-    CGFloat hudHeight = 0.0f;
+    CGFloat hudWidth;
+    CGFloat hudHeight;
     
     CGFloat contentWidth = 0.0f;
     CGFloat contentHeight = 0.0f;
@@ -542,7 +542,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)setFadeOutTimer:(NSTimer*)timer {
     if(_fadeOutTimer) {
-        [_fadeOutTimer invalidate], _fadeOutTimer = nil;
+        [_fadeOutTimer invalidate];
+        _fadeOutTimer = nil;
     }
     if(timer) {
         _fadeOutTimer = timer;
@@ -911,7 +912,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             // Animate appearance
             [UIView animateWithDuration:self.fadeInAnimationDuration
                                   delay:0
-                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
+                                options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)
                              animations:^{
                                  animationsBlock();
                              } completion:^(BOOL finished) {
@@ -1002,21 +1003,29 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                     }
                 }
             };
-            
-            if (strongSelf.fadeOutAnimationDuration > 0) {
-                // Animate appearance
-                [UIView animateWithDuration:strongSelf.fadeOutAnimationDuration
-                                      delay:delay
-                                    options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)
-                                 animations:^{
-                                     animationsBlock();
-                                 } completion:^(BOOL finished) {
-                                     completionBlock();
-                                 }];
-            } else {
-                animationsBlock();
-                completionBlock();
-            }
+                
+            // UIViewAnimationOptionBeginFromCurrentState AND a delay doesn't always work as expected
+            // When UIViewAnimationOptionBeginFromCurrentState ist set, animateWithDuration: evaluates the current
+            // values to check if an animation is necessary. The evaluation happens at function call time and not
+            // after the delay => the animation is sometimes skipped. Therefore we delay using dispatch_after.
+                
+            dispatch_time_t dipatchTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
+            dispatch_after(dipatchTime, dispatch_get_main_queue(), ^{
+                if (strongSelf.fadeOutAnimationDuration > 0) {
+                    // Animate appearance
+                    [UIView animateWithDuration:strongSelf.fadeOutAnimationDuration
+                                          delay:0
+                                        options:(UIViewAnimationOptions) (UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
+                                     animations:^{
+                                         animationsBlock();
+                                     } completion:^(BOOL finished) {
+                                         completionBlock();
+                                     }];
+                } else {
+                    animationsBlock();
+                    completionBlock();
+                }
+            });
             
             // Inform iOS to redraw the view hierarchy
             [strongSelf setNeedsDisplay];
@@ -1219,8 +1228,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     return _backgroundView;
 }
-
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+- (UIVisualEffectView*)hudView {
+#else
 - (UIView*)hudView {
+#endif
     if(!_hudView) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
         _hudView = [UIVisualEffectView new];
@@ -1246,7 +1258,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-- (UIView*)hudVibrancyView {
+- (UIVisualEffectView*)hudVibrancyView {
     if(!_hudVibrancyView){
         _hudVibrancyView = [UIVisualEffectView new];
         
