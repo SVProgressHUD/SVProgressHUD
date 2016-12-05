@@ -1,5 +1,5 @@
 ## Version 2.1.1
-* Fixed: dismissWithDelay #647, #649, #594, #591, 662
+* Fixed: dismissWithDelay #647, #649, #594, #591, #662
 
 ## Version 2.1
 * New: Implicitly set default style to custom when setting colors #692
