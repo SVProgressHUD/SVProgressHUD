@@ -1,7 +1,20 @@
-## Upcoming
+## Version 2.1.1
+* Fixed: dismissWithDelay #647, #649, #594, #591, #662
+
+## Version 2.1
+* New: Implicitly set default style to custom when setting colors #692
+* New: Add HUD to UIView instead of UIWindow #685
+* Fixed: UIVisualEffectViews transition error #680
+* Fixed: Minimum size #697, #674, #359
+
+## Version 2.0.4
 * New: Allow to set max allowed window level #607
 * New: Add completion block to dismiss methods
 * Fixed: Live blurring due to wrong background color #517 / #624
+* Fixed: Remove any old instances of UIVisualEffectViews, when the HUDStyle… #667
+* Fixed: Ring not centered in HUD #635
+* Fixed: SVProgressHUD failing to build on tvos #672 / #673
+* Update to Xcode 8 recommended settings
 
 ## Version 2.0.3
 * Fixed: Carthage support #592, #590
