@@ -207,7 +207,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 + (void)setHapticsEnabled:(BOOL)hapticsEnabled {
-	[self sharedView].hapticsEnabled = hapticsEnabled;
+    [self sharedView].hapticsEnabled = hapticsEnabled;
 }
 
 #pragma mark - Show Methods
@@ -261,10 +261,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)showInfoWithStatus:(NSString*)status {
     [self showImage:[self sharedView].infoImage status:status];
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
-	});
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
+    });
 }
 
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -276,10 +276,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)showSuccessWithStatus:(NSString*)status {
     [self showImage:[self sharedView].successImage status:status];
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
-	});
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+    });
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -287,18 +287,18 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:maskType];
     [self showSuccessWithStatus:status];
     [self setDefaultMaskType:existingMaskType];
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
-	});
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+    });
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
     [self showImage:[self sharedView].errorImage status:status];
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
-	});
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+    });
 }
 
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -306,10 +306,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:maskType];
     [self showErrorWithStatus:status];
     [self setDefaultMaskType:existingMaskType];
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
-	});
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+    });
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status {
@@ -416,8 +416,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         
         _maxSupportedWindowLevel = UIWindowLevelNormal;
-		
-		_hapticsEnabled = NO;
+        
+        _hapticsEnabled = NO;
         
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
@@ -819,9 +819,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             // Show
             [strongSelf showStatus:status];
-			
-			// Tell the Haptics Generator to prepare for feedback, which may come soon
-			[strongSelf.hapticGenerator prepare];
+            
+            // Tell the Haptics Generator to prepare for feedback, which may come soon
+            [strongSelf.hapticGenerator prepare];
         }
     }];
 }
