@@ -261,6 +261,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)showInfoWithStatus:(NSString*)status {
     [self showImage:[self sharedView].infoImage status:status];
+	
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
+	});
 }
 
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
