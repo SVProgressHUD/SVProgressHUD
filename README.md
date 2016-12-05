@@ -157,9 +157,9 @@ As standard `SVProgressHUD` offers two preconfigured styles:
 
 If you want to use custom colors use `setForegroundColor` and `setBackgroundColor:`. These implicity set the HUD's style to `SVProgressHUDStyleCustom`.
 
-## iPhone 7 Haptics
+## Haptic Feedback
 
-For users with newer devices, `SVProgressHUD` can automatically trigger haptic feedback depending on which HUD is being displayed. The feedback maps as follows:
+For users with newer devices (starting with the iPhone 7), `SVProgressHUD` can automatically trigger haptic feedback depending on which HUD is being displayed. The feedback maps as follows:
 
     showSuccessWithStatus: <-> UINotificationFeedbackTypeSuccess
     showInfoWithStatus: <-> UINotificationFeedbackTypeWarning
