@@ -54,6 +54,16 @@ Run `carthage update` to build the framework and drag the built `SVProgressHUD.f
 * Take care that `SVProgressHUD.bundle` is added to `Targets->Build Phases->Copy Bundle Resources`.
 * Add the **QuartzCore** framework to your project.
 
+## Swift
+
+Even though `SVProgressHUD` is written in Objective-C, it can be used in Swift with no hassle. If you use [CocoaPods](http://cocoapods.org) add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
+
+```ruby
+use_frameworks!
+```
+
+If you added `SVProgressHUD` manually, just add a [bridging header](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) file to your project with the `SVProgressHUD` header included. 
+
 ## Usage
 
 (see sample Xcode project in `/Demo`)
