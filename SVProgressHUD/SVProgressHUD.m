@@ -168,6 +168,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].backgroundLayerColor = color;
 }
 
++ (void)setCustomAnimationView:(UIView *)customAnimationView {
+    [self sharedView].customAnimationView = customAnimationView;
+}
+
 + (void)setInfoImage:(UIImage*)image {
     [self sharedView].infoImage = image;
 }
@@ -358,6 +362,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _backgroundColor = [UIColor clearColor];
         _foregroundColor = [UIColor blackColor];
         _backgroundLayerColor = [UIColor colorWithWhite:0 alpha:0.4];
+        _maskColor = [UIColor blackColor];
         
         // Set default values
         _defaultMaskType = SVProgressHUDMaskTypeNone;
@@ -1041,7 +1046,17 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (UIView*)indefiniteAnimatedView {
     // Get the correct spinner for defaultAnimationType
-    if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat){
+    if(self.defaultAnimationType == SVProgressHUDAnimationTypeCustom){
+        // Check if spinner exists and is an object of different class
+        if(_indefiniteAnimatedView && ![_indefiniteAnimatedView isKindOfClass:[_customAnimationView class]]){
+            [_indefiniteAnimatedView removeFromSuperview];
+            _indefiniteAnimatedView = nil;
+        }
+        
+        if(!_indefiniteAnimatedView && _customAnimationView){
+            _indefiniteAnimatedView = _customAnimationView;
+        }
+    } else if(self.defaultAnimationType == SVProgressHUDAnimationTypeFlat){
         // Check if spinner exists and is an object of different class
         if(_indefiniteAnimatedView && ![_indefiniteAnimatedView isKindOfClass:[SVIndefiniteAnimatedView class]]){
             [_indefiniteAnimatedView removeFromSuperview];
@@ -1194,6 +1209,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     // Update styling
     switch (self.defaultMaskType) {
         case SVProgressHUDMaskTypeCustom:
+            if(_backgroundRadialGradientLayer && _backgroundRadialGradientLayer.superlayer){
+                [_backgroundRadialGradientLayer removeFromSuperlayer];
+            }
+            _backgroundView.backgroundColor = self.defaultMaskType == SVProgressHUDMaskTypeCustom ? self.maskColor : [UIColor colorWithWhite:0 alpha:0.4];
+            break;
         case SVProgressHUDMaskTypeBlack:{
             if(_backgroundRadialGradientLayer && _backgroundRadialGradientLayer.superlayer){
                 [_backgroundRadialGradientLayer removeFromSuperlayer];
@@ -1407,6 +1427,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     if (!_isInitializing) _backgroundLayerColor = color;
 }
 
+- (void)setMaskColor:(UIColor *)color{
+    if (!_isInitializing) _maskColor = color;
+}
+
 - (void)setInfoImage:(UIImage*)image {
     if (!_isInitializing) _infoImage = image;
 }
@@ -1443,4 +1467,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     if (!_isInitializing) _maxSupportedWindowLevel = maxSupportedWindowLevel;
 }
 
+- (void)setCustomAnimationView:(UIView *)customAnimationView{
+    if (!_isInitializing) _customAnimationView = customAnimationView;
+}
 @end
