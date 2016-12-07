@@ -413,10 +413,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     CGFloat labelWidth = 0.0f;
     
     if(self.statusLabel.text) {
-        labelRect = [self.statusLabel.text boundingRectWithSize:CGSizeZero
-                                         options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin)
-                                      attributes:@{NSFontAttributeName: self.statusLabel.font}
-                                         context:NULL];
+        CGSize constraintSize = CGSizeMake(200.0f, 300.0f);
+        labelRect = [self.statusLabel.text boundingRectWithSize:constraintSize
+                                                        options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin)
+                                                     attributes:@{NSFontAttributeName: self.statusLabel.font}
+                                                        context:NULL];
         labelHeight = ceilf(CGRectGetHeight(labelRect));
         labelWidth = ceilf(CGRectGetWidth(labelRect));
     }
@@ -959,7 +960,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #else
                 strongSelf.hudView.alpha = 0.0f;
 #endif
-                strongSelf.backgroundView.alpha = 0.0f;
+                //strongSelf.backgroundView.alpha = 0.0f;
             };
             
             __block void (^completionBlock)(void) = ^{
