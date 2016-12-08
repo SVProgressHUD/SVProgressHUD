@@ -1,3 +1,7 @@
+## Version 2.1.2
+* Fixed: Status message goes offscreen #699
+* Fixed: HUD customization behaving unexpectedly #700
+
 ## Version 2.1.1
 * Fixed: dismissWithDelay #647, #649, #594, #591, #662
 
