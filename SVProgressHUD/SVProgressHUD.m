@@ -787,15 +787,15 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 if([strongSelf.indefiniteAnimatedView respondsToSelector:@selector(startAnimating)]) {
                     [(id)strongSelf.indefiniteAnimatedView startAnimating];
                 }
-                
-                // Update the activity count
-                strongSelf.activityCount++;
             }
             
             // Show
             [strongSelf showStatus:status];
         }
     }];
+    
+    // Update the activity count
+    weakSelf.activityCount++;
 }
 
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration {
