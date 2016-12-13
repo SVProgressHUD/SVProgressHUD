@@ -878,7 +878,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
                 
                 self.hudView.effect = blurEffect;
-                self.hudVibrancyView.effect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
             } else {
                 self.hudView.alpha = 1.0f;
             }
@@ -959,8 +958,19 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
                 if(self.defaultStyle != SVProgressHUDStyleCustom){
                     // Fade out effect == remove, and update alpha
-                    strongSelf.hudView.effect = nil;
-                    strongSelf.hudVibrancyView.effect = nil;
+                    if([[[UIDevice currentDevice] systemVersion] floatValue] <= 8.5f)
+                    {
+                        UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
+                        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
+                        
+                        strongSelf.hudView.effect = blurEffect;
+                        strongSelf.hudVibrancyView.effect = blurEffect;
+                    }
+                    else
+                    {
+                        strongSelf.hudView.effect = nil;
+                        strongSelf.hudVibrancyView.effect = nil;
+                    }
                 } else {
                     strongSelf.hudView.alpha = 0.0f;
                 }
