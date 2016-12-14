@@ -9,6 +9,9 @@
 #error SVProgressHUD is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
 #endif
 
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+
+
 #import "SVProgressHUD.h"
 #import "SVIndefiniteAnimatedView.h"
 #import "SVProgressAnimatedView.h"
@@ -958,7 +961,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
                 if(self.defaultStyle != SVProgressHUDStyleCustom){
                     // Fade out effect == remove, and update alpha
-                    if([[[UIDevice currentDevice] systemVersion] floatValue] <= 8.5f)
+                    if(SYSTEM_VERSION_LESS_THAN(@"9.0"))
                     {
                         UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
                         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
