@@ -63,7 +63,6 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (strong, nonatomic) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;      // default is [UIColor whiteColor]
 @property (strong, nonatomic) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;      // default is [UIColor blackColor]
 @property (strong, nonatomic) UIColor *backgroundLayerColor UI_APPEARANCE_SELECTOR; // default is [UIColor colorWithWhite:0 alpha:0.4]
-@property (strong, nonatomic) UIColor *maskColor UI_APPEARANCE_SELECTOR;            // default is [UIColor blackColor]
 @property (strong, nonatomic) UIImage *infoImage UI_APPEARANCE_SELECTOR;            // default is the bundled info image provided by Freepik
 @property (strong, nonatomic) UIImage *successImage UI_APPEARANCE_SELECTOR;         // default is the bundled success image provided by Freepik
 @property (strong, nonatomic) UIImage *errorImage UI_APPEARANCE_SELECTOR;           // default is the bundled error image provided by Freepik
@@ -93,7 +92,6 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundLayerColor:(UIColor*)color;                    // default is [UIColor colorWithWhite:0 alpha:0.5], only used for SVProgressHUDMaskTypeBlack
-+ (void)setMaskColor:(UIColor*)color;                               // default is [UIColor blackColor], only used for SVProgressHUDMaskTypeCustom
 + (void)setInfoImage:(UIImage*)image;                               // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                            // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(UIImage*)image;                              // default is the bundled error image provided by Freepik
