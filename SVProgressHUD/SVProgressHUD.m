@@ -9,7 +9,9 @@
 #error SVProgressHUD is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
 #endif
 
-#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#ifndef kCFCoreFoundationVersionNumber_iOS_9_0
+#define kCFCoreFoundationVersionNumber_iOS_9_0 1240.1
+#endif
 
 
 #import "SVProgressHUD.h"
@@ -869,13 +871,21 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         // Zoom HUD a little to make a nice appear / pop up animation
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
         
+        // Activate blur on view before animation on older iOS versions,
+        // as we can not animate this property and use alpha values instead
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+        bool greateriOS9 = kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_9_0;
+        if (self.defaultStyle != SVProgressHUDStyleCustom && !greateriOS9) {
+            [self addBlur];
+        }
+#endif
         // Define blocks
         __block void (^animationsBlock)(void) = ^{
             // Shrink HUD to finish pop up animation
             self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3f, 1/1.3f);
             
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-            if(self.defaultStyle != SVProgressHUDStyleCustom){
+            if(self.defaultStyle != SVProgressHUDStyleCustom && greateriOS9){
                 // Fade in effect
                 UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
                 UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
@@ -959,20 +969,22 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 1/1.3f, 1/1.3f);
                 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-                if(self.defaultStyle != SVProgressHUDStyleCustom){
+                bool greateriOS9 = kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_9_0;
+
+                if(self.defaultStyle != SVProgressHUDStyleCustom && greateriOS9){
                     // Fade out effect == remove, and update alpha
-                    if(SYSTEM_VERSION_LESS_THAN(@"9.0"))
+                    if(greateriOS9)
+                    {
+                        strongSelf.hudView.effect = nil;
+                        strongSelf.hudVibrancyView.effect = nil;
+                    }
+                    else
                     {
                         UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
                         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
                         
                         strongSelf.hudView.effect = blurEffect;
                         strongSelf.hudVibrancyView.effect = blurEffect;
-                    }
-                    else
-                    {
-                        strongSelf.hudView.effect = nil;
-                        strongSelf.hudVibrancyView.effect = nil;
                     }
                 } else {
                     strongSelf.hudView.alpha = 0.0f;
@@ -1362,7 +1374,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
     return 0;
 }
-
+    
+#pragma mark - Helper
+    
 - (UIWindow *)frontWindow {
 #if !defined(SV_APP_EXTENSIONS)
     NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
@@ -1381,6 +1395,15 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 #pragma mark - UIAppearance Setters
 
+- (void)addBlur
+{
+    UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
+        
+    self.hudView.effect = blurEffect;
+    self.hudView.alpha = 0.0f;
+}
+    
 - (void)setDefaultStyle:(SVProgressHUDStyle)style {
     if (!_isInitializing) _defaultStyle = style;
 }
