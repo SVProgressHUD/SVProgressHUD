@@ -887,11 +887,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
             if(self.defaultStyle != SVProgressHUDStyleCustom && greateriOS9){
                 // Fade in blur effect
-                UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
-                UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
-                
-                self.hudView.effect = blurEffect;
-                self.hudVibrancyView.effect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
+                [self addBlur];
             } else {
                 // This gives a warning on iOS 8, however it works, see #703
                 self.hudView.alpha = 1.0f;
@@ -1160,7 +1156,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (BOOL)isVisible {
     // Checking one alpha value is sufficient as they are all the same
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
     return ([self sharedView].hudView.contentView.alpha > 0.0f);
+#else
+    return [self sharedView].hudView.alpha > 0.0f;
+#endif
 }
 
 
@@ -1219,6 +1219,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 -(UIView *)backgroundView {
     if(!_backgroundView){
         _backgroundView = [UIView new];
+        _backgroundView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     }
     if(!_backgroundView.superview){
         [self insertSubview:_backgroundView belowSubview:self.hudView];
