@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
-//  Copyright (c) 2016 David Olesch. All rights reserved.
+//  Copyright (c) 2017 David Olesch. All rights reserved.
 //
 
 #import "AppDelegate.h"

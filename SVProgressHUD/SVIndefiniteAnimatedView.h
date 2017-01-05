@@ -2,7 +2,7 @@
 //  SVIndefiniteAnimatedView.h
 //  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
-//  Copyright (c) 2014-2016 Guillaume Campagna. All rights reserved.
+//  Copyright (c) 2014-2017 Guillaume Campagna. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

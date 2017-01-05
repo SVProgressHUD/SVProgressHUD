@@ -2,7 +2,7 @@
 //  SVProgressAnimatedView.h
 //  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
-//  Copyright (c) 2016 Tobias Tiemerding. All rights reserved.
+//  Copyright (c) 2017 Tobias Tiemerding. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

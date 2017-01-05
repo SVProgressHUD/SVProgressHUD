@@ -1,3 +1,7 @@
+## Version 2.1.3
+* Fixed: Background resize #709
+* Update year to 2017
+
 ## Version 2.1.2
 * Fixed: Status message goes offscreen #699
 * Fixed: HUD customization behaving unexpectedly #700
