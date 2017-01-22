@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name     = 'SVProgressHUD'
   s.version  = '2.1.2'
-  s.ios.deployment_target = '7.0'
+  s.ios.deployment_target = '8.0'
   s.tvos.deployment_target = '9.0'
   s.license  =  { :type => 'MIT', :file => 'LICENSE.txt' }
   s.summary  = 'A clean and lightweight progress HUD for your iOS and tvOS app.'
