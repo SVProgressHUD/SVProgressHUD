@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 + (void)setBackgroundColor:(UIColor*)color;                 // default is [UIColor whiteColor]
 + (void)setForegroundColor:(UIColor*)color;                 // default is [UIColor blackColor]
++ (void)setBorderColor:(UIColor*)color;                     // default is [UIColor clearColor]
++ (void)setBorderWidth:(CGFloat)width;                     // default is 0.0
 + (void)setCornerRadius:(CGFloat)cornerRadius;              // default is 14 pt
 + (void)setRingThickness:(CGFloat)width;                    // default is 4 pt
 + (void)setFont:(UIFont*)font;                              // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]

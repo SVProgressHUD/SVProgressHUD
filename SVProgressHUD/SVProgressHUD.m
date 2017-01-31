@@ -25,6 +25,8 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 
 static UIColor *SVProgressHUDBackgroundColor;
 static UIColor *SVProgressHUDForegroundColor;
+static UIColor *SVProgressHUDBorderColor;
+static CGFloat SVProgressHUDBorderWidth;
 static CGFloat SVProgressHUDCornerRadius;
 static CGFloat SVProgressHUDRingThickness;
 static UIFont *SVProgressHUDFont;
@@ -99,6 +101,16 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 + (void)setForegroundColor:(UIColor *)color {
     [self sharedView];
     SVProgressHUDForegroundColor = color;
+}
+
++ (void)setBorderColor:(UIColor*)color{
+    [self sharedView].hudView.layer.borderColor = color.CGColor;
+    SVProgressHUDBorderColor = color;
+}
+
++ (void)setBorderWidth:(CGFloat)width{
+    [self sharedView].hudView.layer.borderWidth = width;
+    SVProgressHUDBorderWidth = width;
 }
 
 + (void)setCornerRadius:(CGFloat)cornerRadius {
@@ -266,6 +278,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         SVProgressHUDBackgroundColor = [UIColor whiteColor];
         SVProgressHUDForegroundColor = [UIColor blackColor];
         SVProgressHUDCornerRadius = 14;
+        SVProgressHUDBorderColor = [UIColor clearColor];
+        SVProgressHUDBorderWidth = 0.0;
         if ([UIFont respondsToSelector:@selector(preferredFontForTextStyle:)]) {
             SVProgressHUDFont = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         } else {
@@ -914,6 +928,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if(!_hudView) {
         _hudView = [[UIView alloc] initWithFrame:CGRectZero];
         _hudView.backgroundColor = SVProgressHUDBackgroundColor;
+        _hudView.layer.borderWidth = SVProgressHUDBorderWidth;
+        _hudView.layer.borderColor = SVProgressHUDBorderColor.CGColor;
         _hudView.layer.cornerRadius = SVProgressHUDCornerRadius;
         _hudView.layer.masksToBounds = YES;
 
