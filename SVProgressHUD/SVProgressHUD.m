@@ -160,11 +160,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 + (void)setBorderColor:(UIColor*)color {
-    [self sharedView].layer.borderColor = color.CGColor;
+    [self sharedView].hudView.layer.borderColor = color.CGColor;
 }
 
 + (void)setBorderWidth:(CGFloat)width {
-    [self sharedView].layer.borderWidth = width;
+    [self sharedView].hudView.layer.borderWidth = width;
 }
 
 + (void)setForegroundColor:(UIColor*)color {
