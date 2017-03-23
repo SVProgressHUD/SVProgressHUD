@@ -100,6 +100,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 + (SVProgressHUD*)sharedView {
+
+    NSLog(@"only test");
     static dispatch_once_t once;
     
     static SVProgressHUD *sharedView;
