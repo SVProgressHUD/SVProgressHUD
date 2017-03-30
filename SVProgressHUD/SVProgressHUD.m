@@ -371,8 +371,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _backgroundLayerColor = [UIColor colorWithWhite:0 alpha:0.4];
         
         // Set default values
-        _defaultMaskType = SVProgressHUDMaskTypeNone;
-        _defaultStyle = SVProgressHUDStyleLight;
+        _defaultMaskType = SVProgressHUDMaskTypeClear;
+        _defaultStyle = SVProgressHUDStyleDark;
         _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
         _minimumSize = CGSizeZero;
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
@@ -384,18 +384,20 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         UIImage* infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
         UIImage* successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
         UIImage* errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
-
+        UIImage* logoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"logo" ofType:@"png"]];
+        
         _infoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _successImage = [successImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _errorImage = [errorImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
+        _imageLogo = [logoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        
         _ringThickness = 2.0f;
         _ringRadius = 18.0f;
         _ringNoTextRadius = 24.0f;
         
         _cornerRadius = 14.0f;
         
-        _minimumDismissTimeInterval = 5.0;
+        _minimumDismissTimeInterval = 1.0;
         _maximumDismissTimeInterval = CGFLOAT_MAX;
 
         _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
