@@ -61,6 +61,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, readonly) UIWindow *frontWindow;
 
+@property (nonatomic, strong) UIImage *imageLogo; //custom show center Logo
+
 - (void)updateHUDFrame;
 
 #if TARGET_OS_IOS
@@ -183,6 +185,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)setErrorImage:(UIImage*)image {
     [self sharedView].errorImage = image;
+}
+
++(void)setLogoImage:(UIImage *)image {
+    [self sharedView].imageLogo = image;
 }
 
 + (void)setViewForExtension:(UIView*)view {
@@ -1080,6 +1086,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
         indefiniteAnimatedView.strokeThickness = self.ringThickness;
         indefiniteAnimatedView.radius = self.statusLabel.text ? self.ringRadius : self.ringNoTextRadius;
+        indefiniteAnimatedView.imageLogo = self.imageLogo;
     } else {
         // Check if spinner exists and is an object of different class
         if(_indefiniteAnimatedView && ![_indefiniteAnimatedView isKindOfClass:[UIActivityIndicatorView class]]){
