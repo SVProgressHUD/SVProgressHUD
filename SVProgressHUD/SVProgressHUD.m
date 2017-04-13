@@ -1244,6 +1244,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             }
         }
         default:
+            _backgroundView.backgroundColor = [UIColor clearColor];
             break;
     }
     
