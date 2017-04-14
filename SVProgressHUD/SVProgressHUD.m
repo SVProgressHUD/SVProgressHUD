@@ -374,7 +374,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _defaultMaskType = SVProgressHUDMaskTypeClear;
         _defaultStyle = SVProgressHUDStyleDark;
         _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
-        _minimumSize = CGSizeZero;
+        _minimumSize = CGSizeMake(100, 100);
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         
         NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
