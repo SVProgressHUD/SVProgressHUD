@@ -93,13 +93,18 @@ static float progress = 0.0f;
 }
 
 - (void)showSuccessWithStatus {
-	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
+    [SVProgressHUD showSuccessWithStatus:@"Great Success!"];
 }
 
 - (void)showErrorWithStatus {
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
 }
 
+- (IBAction)showErrorWithStatusWithCompletion:(id)sender {
+    [SVProgressHUD showErrorWithStatus:@"Failed with Error" completion:^{
+        NSLog(@"Failed with Error: has been shown to complete");
+    }];
+}
 
 #pragma mark - Styling
 

@@ -61,6 +61,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, readonly) UIWindow *frontWindow;
 
+@property (nonatomic, copy) SVProgressHUDShowCompletion completionBlock;
+
 - (void)updateHUDFrame;
 
 #if TARGET_OS_IOS
@@ -213,97 +215,168 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #pragma mark - Show Methods
 
 + (void)show {
-    [self showWithStatus:nil];
+    [self showWithCompletion:nil];
+}
+
++ (void)showWithCompletion:(SVProgressHUDShowCompletion)completion {
+    [self showWithStatus:nil completion:completion];
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
+    [self showWithMaskType:maskType completion:nil];
+}
+
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType completion:(SVProgressHUDShowCompletion)completion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self show];
+    [self showWithCompletion:completion];
     [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showWithStatus:(NSString*)status {
-    [self showProgress:SVProgressHUDUndefinedProgress status:status];
+    [self showWithStatus:status completion:nil];
+}
+
++ (void)showWithStatus:(NSString*)status completion:(SVProgressHUDShowCompletion)completion {
+    [self showProgress:SVProgressHUDUndefinedProgress status:status completion:completion];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
+    [self showWithStatus:status maskType:maskType completion:nil];
+}
+
++ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completion:(SVProgressHUDShowCompletion)completion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self showWithStatus:status];
+    [self showWithStatus:status completion:completion];
     [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showProgress:(float)progress {
-    [self showProgress:progress status:nil];
+    [self showProgress:progress completion:nil];
+}
+
++ (void)showProgress:(float)progress completion:(SVProgressHUDShowCompletion)completion {
+    [self showProgress:progress status:nil completion:completion];
 }
 
 + (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType {
+    [self showProgress:progress maskType:maskType completion:nil];
+}
+
++ (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType completion:(SVProgressHUDShowCompletion)completion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self showProgress:progress];
+    [self showProgress:progress completion:completion];
     [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showProgress:(float)progress status:(NSString*)status {
+    [self showProgress:progress status:status completion:nil];
+}
+
++ (void)showProgress:(float)progress status:(NSString*)status completion:(SVProgressHUDShowCompletion)completion {
+    if ([self sharedView].completionBlock) {
+        [self sharedView].completionBlock();
+    }
+    [self sharedView].completionBlock = completion;
     [[self sharedView] showProgress:progress status:status];
 }
 
 + (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self showProgress:progress status:status];
-    [self setDefaultMaskType:existingMaskType];
+    [self showProgress:progress status:status maskType:maskType completion:nil];
 }
 
++ (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completion:(SVProgressHUDShowCompletion)completion {
+    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
+    [self setDefaultMaskType:maskType];
+    [self showProgress:progress status:status completion:completion];
+    [self setDefaultMaskType:existingMaskType];
+}
 
 #pragma mark - Show, then automatically dismiss methods
 
 + (void)showInfoWithStatus:(NSString*)status {
-    [self showImage:[self sharedView].infoImage status:status];
+    [self showInfoWithStatus:status completion:nil];
+}
+
++ (void)showInfoWithStatus:(NSString*)status completion:(SVProgressHUDShowCompletion)completion {
+    [self showImage:[self sharedView].infoImage status:status completion:completion];
 }
 
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
+    [self showInfoWithStatus:status maskType:maskType completion:nil];
+}
+
++ (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completion:(SVProgressHUDShowCompletion)completion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self showInfoWithStatus:status];
+    [self showInfoWithStatus:status completion:completion];
     [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showSuccessWithStatus:(NSString*)status {
-    [self showImage:[self sharedView].successImage status:status];
+    [self showSuccessWithStatus:status completion:nil];
+}
+
++ (void)showSuccessWithStatus:(NSString*)status completion:(SVProgressHUDShowCompletion)completion {
+    [self showImage:[self sharedView].successImage status:status completion:completion];
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
+    [self showSuccessWithStatus:status maskType:maskType completion:nil];
+}
+
++ (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completion:(SVProgressHUDShowCompletion)completion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self showSuccessWithStatus:status];
+    [self showSuccessWithStatus:status completion:completion];
     [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
-    [self showImage:[self sharedView].errorImage status:status];
+    [self showErrorWithStatus:status completion:nil];
+}
+
++ (void)showErrorWithStatus:(NSString*)status completion:(SVProgressHUDShowCompletion)completion {
+    [self showImage:[self sharedView].errorImage status:status completion:completion];
 }
 
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
+    [self showErrorWithStatus:status maskType:maskType completion:nil];
+}
+
++ (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completion:(SVProgressHUDShowCompletion)completion {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
-    [self showErrorWithStatus:status];
+    [self showErrorWithStatus:status completion:completion];
     [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status {
+    [self showImage:image status:status completion:nil];
+}
+
++ (void)showImage:(UIImage*)image status:(NSString*)status completion:(SVProgressHUDShowCompletion)completion {
+    if ([self sharedView].completionBlock) {
+        [self sharedView].completionBlock();
+    }
+    [self sharedView].completionBlock = completion;
+    
     NSTimeInterval displayInterval = [self displayDurationForString:status];
     [[self sharedView] showImage:image status:status duration:displayInterval];
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self showImage:image status:status];
-    [self setDefaultMaskType:existingMaskType];
+    [self showImage:image status:status maskType:maskType completion:nil];
 }
 
++ (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType completion:(SVProgressHUDShowCompletion)completion {
+    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
+    [self setDefaultMaskType:maskType];
+    [self showImage:image status:status completion:completion];
+    [self setDefaultMaskType:existingMaskType];
+}
 
 #pragma mark - Dismiss Methods
 
@@ -329,6 +402,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 + (void)dismissWithDelay:(NSTimeInterval)delay completion:(SVProgressHUDDismissCompletion)completion {
+    if ([self sharedView].completionBlock) {
+        [self sharedView].completionBlock();
+        [self sharedView].completionBlock = nil;
+    }
     [[self sharedView] dismissWithDelay:delay completion:completion];
 }
 
@@ -1024,6 +1101,13 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                     if (completion) {
                         completion();
                     }
+                    
+                    // Run a (optional) show completionHandler
+                    if (self.completionBlock) {
+                        self.completionBlock();
+                        self.completionBlock = nil;
+                    }
+                    
                 }
             };
                 
