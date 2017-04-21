@@ -393,7 +393,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         _cornerRadius = 14.0f;
 		
-		_imageViewSize = CGSizeMake(28, 28);
+        _imageViewSize = CGSizeMake(28, 28);
         
         _minimumDismissTimeInterval = 5.0;
         _maximumDismissTimeInterval = CGFLOAT_MAX;
