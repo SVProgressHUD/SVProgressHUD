@@ -153,6 +153,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled;						// default is NO
 ```
 
 Additionally `SVProgressHUD` supports the `UIAppearance` protocol for most of the above methods.
@@ -165,6 +166,18 @@ As standard `SVProgressHUD` offers two preconfigured styles:
 * `SVProgressHUDStyleDark`: Black background with white spinner and text
 
 If you want to use custom colors use `setForegroundColor` and `setBackgroundColor:`. These implicity set the HUD's style to `SVProgressHUDStyleCustom`.
+
+## Haptic Feedback
+
+For users with newer devices (starting with the iPhone 7), `SVProgressHUD` can automatically trigger haptic feedback depending on which HUD is being displayed. The feedback maps as follows:
+
+* `showSuccessWithStatus:` <-> `UINotificationFeedbackTypeSuccess`
+* `showInfoWithStatus:` <-> `UINotificationFeedbackTypeWarning`
+* `showErrorWithStatus:` <-> `UINotificationFeedbackTypeError`
+
+To enable this functionality, use `setHapticsEnabled:`.
+
+Users with devices prior to iPhone 7 will have no change in functionality.
 
 ## Notifications
 
