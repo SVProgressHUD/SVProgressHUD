@@ -61,6 +61,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, readonly) UIWindow *frontWindow;
 
+#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+@property (nonatomic, strong) UINotificationFeedbackGenerator *hapticGenerator;
+#endif
+
 - (void)updateHUDFrame;
 
 #if TARGET_OS_IOS
@@ -209,6 +213,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].maxSupportedWindowLevel = windowLevel;
 }
 
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled {
+    [self sharedView].hapticsEnabled = hapticsEnabled;
+}
 
 #pragma mark - Show Methods
 
@@ -261,6 +268,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)showInfoWithStatus:(NSString*)status {
     [self showImage:[self sharedView].infoImage status:status];
+    
+#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
+    });
+#endif
 }
 
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -272,6 +285,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)showSuccessWithStatus:(NSString*)status {
     [self showImage:[self sharedView].successImage status:status];
+
+#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+    });
+#endif
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -279,10 +298,22 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:maskType];
     [self showSuccessWithStatus:status];
     [self setDefaultMaskType:existingMaskType];
+    
+#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+    });
+#endif
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
     [self showImage:[self sharedView].errorImage status:status];
+    
+#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+    });
+#endif
 }
 
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -290,6 +321,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:maskType];
     [self showErrorWithStatus:status];
     [self setDefaultMaskType:existingMaskType];
+    
+#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+    });
+#endif
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status {
@@ -396,6 +433,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         
         _maxSupportedWindowLevel = UIWindowLevelNormal;
+        
+        _hapticsEnabled = NO;
         
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
@@ -798,6 +837,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             // Show
             [strongSelf showStatus:status];
+            
+            // Tell the Haptics Generator to prepare for feedback, which may come soon
+#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+            [strongSelf.hapticGenerator prepare];
+#endif
         }
     }];
 }
@@ -1396,6 +1440,20 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     self.hudView.effect = blurEffect;
     self.hudVibrancyView.effect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
 }
+
+#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+- (UINotificationFeedbackGenerator *)hapticGenerator {
+	// Only return if haptics are enabled
+	if(!self.hapticsEnabled) {
+		return nil;
+	}
+	
+	if(!_hapticGenerator) {
+		_hapticGenerator = [[UINotificationFeedbackGenerator alloc] init];
+	}
+	return _hapticGenerator;
+}
+#endif
 
     
 #pragma mark - UIAppearance Setters
