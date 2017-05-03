@@ -47,7 +47,7 @@
     if (!_imageLayer) {
         _imageLayer = [CALayer layer];
         CGPoint arcCenter = CGPointMake(self.radius+self.strokeThickness/2+5, self.radius+self.strokeThickness/2+5);
-        _imageLayer.contents = (__bridge id)[self.imageLogo CGImage];
+        _imageLayer.contents = (__bridge id)[self.logoImage CGImage];
         _imageLayer.frame = CGRectMake(0, 0,arcCenter.x*2, arcCenter.y*2);
     }
     return _imageLayer;
