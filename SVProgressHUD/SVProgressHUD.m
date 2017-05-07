@@ -1286,6 +1286,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             if(!_backgroundRadialGradientLayer.superlayer){
                 [_backgroundView.layer insertSublayer:_backgroundRadialGradientLayer atIndex:0];
             }
+            break;
         }
         default:
             _backgroundView.backgroundColor = [UIColor clearColor];
