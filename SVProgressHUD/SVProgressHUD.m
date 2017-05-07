@@ -1270,29 +1270,27 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
     
     // Update styling
-    switch (self.defaultMaskType) {
-        case SVProgressHUDMaskTypeCustom:
-        case SVProgressHUDMaskTypeBlack:{
-            if(_backgroundRadialGradientLayer && _backgroundRadialGradientLayer.superlayer){
-                [_backgroundRadialGradientLayer removeFromSuperlayer];
-            }
-            _backgroundView.backgroundColor = self.defaultMaskType == SVProgressHUDMaskTypeCustom ? self.backgroundLayerColor : [UIColor colorWithWhite:0 alpha:0.4];
-            break;
+    if(self.defaultMaskType == SVProgressHUDMaskTypeGradient){
+        if(!_backgroundRadialGradientLayer){
+            _backgroundRadialGradientLayer = [SVRadialGradientLayer layer];
         }
-        case SVProgressHUDMaskTypeGradient:{
-            if(!_backgroundRadialGradientLayer){
-                _backgroundRadialGradientLayer = [SVRadialGradientLayer layer];
-            }
-            if(!_backgroundRadialGradientLayer.superlayer){
-                [_backgroundView.layer insertSublayer:_backgroundRadialGradientLayer atIndex:0];
-            }
-            break;
+        if(!_backgroundRadialGradientLayer.superlayer){
+            [_backgroundView.layer insertSublayer:_backgroundRadialGradientLayer atIndex:0];
         }
-        default:
+        _backgroundView.backgroundColor = [UIColor clearColor];
+    } else {
+        if(_backgroundRadialGradientLayer && _backgroundRadialGradientLayer.superlayer){
+            [_backgroundRadialGradientLayer removeFromSuperlayer];
+        }
+        if(self.defaultMaskType == SVProgressHUDMaskTypeBlack){
+            _backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
+        } else if(self.defaultMaskType == SVProgressHUDMaskTypeCustom){
+            _backgroundView.backgroundColor =  self.backgroundLayerColor;
+        } else {
             _backgroundView.backgroundColor = [UIColor clearColor];
-            break;
+        }
     }
-    
+
     // Update frame
     if(_backgroundView){
         _backgroundView.frame = self.bounds;
@@ -1304,6 +1302,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         CGPoint gradientCenter = self.center;
         gradientCenter.y = (self.bounds.size.height - self.visibleKeyboardHeight)/2;
         _backgroundRadialGradientLayer.gradientCenter = gradientCenter;
+        [_backgroundRadialGradientLayer setNeedsDisplay];
     }
     
     return _backgroundView;

@@ -31,10 +31,10 @@ typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
     SVProgressHUDMaskTypeNone = 1,  // default mask type, allow user interactions while HUD is displayed
-    SVProgressHUDMaskTypeClear,     // don't allow user interactions
-    SVProgressHUDMaskTypeBlack,     // don't allow user interactions and dim the UI in the back of the HUD, as on iOS 7 and above
-    SVProgressHUDMaskTypeGradient,  // don't allow user interactions and dim the UI with a a-la UIAlertView background gradient, as on iOS 6
-    SVProgressHUDMaskTypeCustom     // don't allow user interactions and dim the UI in the back of the HUD with a custom color
+    SVProgressHUDMaskTypeClear,     // don't allow user interactions with background objects
+    SVProgressHUDMaskTypeBlack,     // don't allow user interactions with background objects and dim the UI in the back of the HUD, as on iOS 7 and above
+    SVProgressHUDMaskTypeGradient,  // don't allow user interactions with background objects and dim the UI with a a-la UIAlertView background gradient, as on iOS 6
+    SVProgressHUDMaskTypeCustom     // don't allow user interactions with background objects and dim the UI in the back of the HUD with a custom color
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
