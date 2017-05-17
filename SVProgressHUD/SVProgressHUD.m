@@ -1302,7 +1302,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         CGPoint gradientCenter = self.center;
         gradientCenter.y = (self.bounds.size.height - self.visibleKeyboardHeight)/2;
         _backgroundRadialGradientLayer.gradientCenter = gradientCenter;
-
         [_backgroundRadialGradientLayer setNeedsDisplay];
     }
     
