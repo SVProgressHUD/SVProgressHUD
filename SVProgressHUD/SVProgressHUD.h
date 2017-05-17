@@ -31,10 +31,10 @@ typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
     SVProgressHUDMaskTypeNone = 1,  // default mask type, allow user interactions while HUD is displayed
-    SVProgressHUDMaskTypeClear,     // don't allow user interactions
-    SVProgressHUDMaskTypeBlack,     // don't allow user interactions and dim the UI in the back of the HUD, as on iOS 7 and above
-    SVProgressHUDMaskTypeGradient,  // don't allow user interactions and dim the UI with a a-la UIAlertView background gradient, as on iOS 6
-    SVProgressHUDMaskTypeCustom     // don't allow user interactions and dim the UI in the back of the HUD with a custom color
+    SVProgressHUDMaskTypeClear,     // don't allow user interactions with background objects
+    SVProgressHUDMaskTypeBlack,     // don't allow user interactions with background objects and dim the UI in the back of the HUD, as on iOS 7 and above
+    SVProgressHUDMaskTypeGradient,  // don't allow user interactions with background objects and dim the UI with a a-la UIAlertView background gradient, as on iOS 6
+    SVProgressHUDMaskTypeCustom     // don't allow user interactions with background objects and dim the UI in the back of the HUD with a custom color
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
@@ -67,7 +67,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (strong, nonatomic) UIImage *errorImage UI_APPEARANCE_SELECTOR;           // default is the bundled error image provided by Freepik
 @property (strong, nonatomic) UIView *viewForExtension UI_APPEARANCE_SELECTOR;      // default is nil, only used if #define SV_APP_EXTENSIONS is set
 @property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;            // default is 5.0 seconds
-@property (assign, nonatomic) NSTimeInterval maximumDismissTimeInterval;            // default is infinite
+@property (assign, nonatomic) NSTimeInterval maximumDismissTimeInterval;            // default is CGFLOAT_MAX
 
 @property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR;     // default is 0, 0
 
@@ -75,6 +75,8 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (assign, nonatomic) NSTimeInterval fadeOutAnimationDuration UI_APPEARANCE_SELECTOR; // default is 0.15
 
 @property (assign, nonatomic) UIWindowLevel maxSupportedWindowLevel; // default is UIWindowLevelNormal
+
+@property (assign, nonatomic) BOOL hapticsEnabled;	// default is NO
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
@@ -98,6 +100,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled;						// default is NO
 
 #pragma mark - Show Methods
 
