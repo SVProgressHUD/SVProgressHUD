@@ -423,9 +423,11 @@
 		65F0220B15C857EF0030BBEF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/SVProgressHUD.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SVProgressHUD/SVProgressHUD-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -435,9 +437,11 @@
 		65F0220C15C857EF0030BBEF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/SVProgressHUD.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SVProgressHUD/SVProgressHUD-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
