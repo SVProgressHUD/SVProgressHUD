@@ -177,6 +177,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].backgroundLayerColor = color;
 }
 
++ (void)setImageViewSize:(CGSize)size {
+	[self sharedView].imageViewSize = size;
+}
+
 + (void)setInfoImage:(UIImage*)image {
     [self sharedView].infoImage = image;
 }
@@ -425,6 +429,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _ringNoTextRadius = 24.0f;
         
         _cornerRadius = 14.0f;
+		
+        _imageViewSize = CGSizeMake(28, 28);
         
         _minimumDismissTimeInterval = 5.0;
         _maximumDismissTimeInterval = CGFLOAT_MAX;
@@ -1384,7 +1390,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (UIImageView*)imageView {
     if(!_imageView) {
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 28.0f, 28.0f)];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _imageViewSize.width, _imageViewSize.height)];
     }
     if(!_imageView.superview) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
