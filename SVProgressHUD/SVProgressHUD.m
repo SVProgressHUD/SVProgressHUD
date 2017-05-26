@@ -438,7 +438,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
-        self.accessibilityLabel = @"SVProgressHUD";
         self.isAccessibilityElement = YES;
         
         _isInitializing = NO;
@@ -890,11 +889,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     // Update accessibility as well as user interaction
     if(self.defaultMaskType != SVProgressHUDMaskTypeNone) {
-        self.controlView.userInteractionEnabled = YES;
         self.accessibilityLabel = status;
         self.isAccessibilityElement = YES;
     } else {
-        self.controlView.userInteractionEnabled = NO;
         self.hudView.accessibilityLabel = status;
         self.hudView.isAccessibilityElement = YES;
     }
@@ -920,8 +917,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         bool greateriOS9 = kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_9_0;
         if (self.defaultStyle != SVProgressHUDStyleCustom && !greateriOS9) {
             [self addBlur];
+            
+            // Update alpha
+            self.hudView.contentView.alpha = 1.0f;
         }
 #endif
+        
         
         // Define blocks
         __block void (^animationsBlock)(void) = ^{
@@ -932,15 +933,16 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             if(self.defaultStyle != SVProgressHUDStyleCustom && greateriOS9){
                 // Fade in blur effect
                 [self addBlur];
+                
+                // Update alpha
+                self.hudView.contentView.alpha = 1.0f;
             } else {
                 // This gives a warning on iOS 8, however it works, see #703
                 self.hudView.alpha = 1.0f;
             }
-            
-            // Update alpha
-            self.hudView.contentView.alpha = 1.0f;
 #else
             self.hudView.alpha = 1.0f;
+            self.hudView.contentView.alpha = 1.0f;
 #endif
             self.backgroundView.alpha = 1.0f;
         };
@@ -1016,14 +1018,16 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                     // Fade out blur effect == remove, and update alpha
                     strongSelf.hudView.effect = nil;
                     strongSelf.hudVibrancyView.effect = nil;
+                    
+                    // Update alpha
+                    strongSelf.hudView.contentView.alpha = 0.0f;
                 } else {
                     // This gives a warning on iOS 8, however it works, see #703
                     strongSelf.hudView.alpha = 0.0f;
                 }
-
-                strongSelf.hudView.contentView.alpha = 0.0f;
 #else
                 strongSelf.hudView.alpha = 0.0f;
+                strongSelf.hudView.contentView.alpha = 0.0f;
 #endif
                 strongSelf.backgroundView.alpha = 0.0f;
             };
@@ -1033,6 +1037,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 // and the change of these values has not been cancelled in between e.g. due to a new show
                 // Checking one alpha value is sufficient as they are all the same
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+                bool greateriOS9 = kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_9_0;
+                if(self.defaultStyle != SVProgressHUDStyleCustom && !greateriOS9){
+                    strongSelf.hudView.contentView.alpha = 0.0f;
+                }
+            
                 if(strongSelf.hudView.contentView.alpha == 0.0f){
 #else
                 if(strongSelf.hudView.alpha == 0.0f){
@@ -1246,6 +1255,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _controlView = [UIControl new];
         _controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _controlView.backgroundColor = [UIColor clearColor];
+        _controlView.userInteractionEnabled = YES;
         [_controlView addTarget:self action:@selector(controlViewDidReceiveTouchEvent:forEvent:) forControlEvents:UIControlEventTouchDown];
     }
     
@@ -1434,6 +1444,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
 - (void)addBlur
 {
+    // Add blur effects
     UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
     
