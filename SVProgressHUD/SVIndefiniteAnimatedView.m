@@ -11,6 +11,7 @@
 @interface SVIndefiniteAnimatedView ()
 
 @property (nonatomic, strong) CAShapeLayer *indefiniteAnimatedLayer;
+@property (nonatomic, strong) CALayer *imageLayer;
 
 @end
 
@@ -21,7 +22,9 @@
         [self layoutAnimatedLayer];
     } else {
         [_indefiniteAnimatedLayer removeFromSuperlayer];
+        [_imageLayer removeFromSuperlayer];
         _indefiniteAnimatedLayer = nil;
+        _imageLayer = nil;
     }
 }
 
@@ -29,9 +32,25 @@
     CALayer *layer = self.indefiniteAnimatedLayer;
     [self.layer addSublayer:layer];
     
+    CALayer *imageLayer = self.imageLayer;
+    [self.layer addSublayer:imageLayer];
+    
+    
     CGFloat widthDiff = CGRectGetWidth(self.bounds) - CGRectGetWidth(layer.bounds);
     CGFloat heightDiff = CGRectGetHeight(self.bounds) - CGRectGetHeight(layer.bounds);
     layer.position = CGPointMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(layer.bounds) / 2 - widthDiff / 2, CGRectGetHeight(self.bounds) - CGRectGetHeight(layer.bounds) / 2 - heightDiff / 2);
+    
+    imageLayer.position = CGPointMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(imageLayer.bounds) / 2 - widthDiff / 2, CGRectGetHeight(self.bounds) - CGRectGetHeight(imageLayer.bounds) / 2 - heightDiff / 2);
+}
+
+-(CALayer *)imageLayer {
+    if (!_imageLayer) {
+        _imageLayer = [CALayer layer];
+        CGPoint arcCenter = CGPointMake(self.radius+self.strokeThickness/2+5, self.radius+self.strokeThickness/2+5);
+        _imageLayer.contents = (__bridge id)[self.logoImage CGImage];
+        _imageLayer.frame = CGRectMake(0, 0,arcCenter.x*2, arcCenter.y*2);
+    }
+    return _imageLayer;
 }
 
 - (CAShapeLayer*)indefiniteAnimatedLayer {

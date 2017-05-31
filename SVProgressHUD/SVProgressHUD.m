@@ -61,6 +61,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, readonly) UIWindow *frontWindow;
 
+@property (nonatomic, strong) UIImage *logoImage; //custom show center Logo
+
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
 @property (nonatomic, strong) UINotificationFeedbackGenerator *hapticGenerator;
 #endif
@@ -187,6 +189,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)setErrorImage:(UIImage*)image {
     [self sharedView].errorImage = image;
+}
+
++(void)setLogoImage:(UIImage *)image {
+    [self sharedView].logoImage = image;
 }
 
 + (void)setViewForExtension:(UIView*)view {
@@ -402,10 +408,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _backgroundLayerColor = [UIColor colorWithWhite:0 alpha:0.4];
         
         // Set default values
-        _defaultMaskType = SVProgressHUDMaskTypeNone;
-        _defaultStyle = SVProgressHUDStyleLight;
+        _defaultMaskType = SVProgressHUDMaskTypeClear;
+        _defaultStyle = SVProgressHUDStyleDark;
         _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
-        _minimumSize = CGSizeZero;
+        _minimumSize = CGSizeMake(100, 100);
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         
         NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
@@ -415,18 +421,20 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         UIImage* infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
         UIImage* successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
         UIImage* errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
-
+        UIImage* logoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"logo" ofType:@"png"]];
+        
         _infoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _successImage = [successImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _errorImage = [errorImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
+        _logoImage = [logoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        
         _ringThickness = 2.0f;
         _ringRadius = 18.0f;
         _ringNoTextRadius = 24.0f;
         
         _cornerRadius = 14.0f;
         
-        _minimumDismissTimeInterval = 5.0;
+        _minimumDismissTimeInterval = 1.0;
         _maximumDismissTimeInterval = CGFLOAT_MAX;
 
         _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
@@ -1122,6 +1130,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
         indefiniteAnimatedView.strokeThickness = self.ringThickness;
         indefiniteAnimatedView.radius = self.statusLabel.text ? self.ringRadius : self.ringNoTextRadius;
+        indefiniteAnimatedView.logoImage = self.logoImage;
     } else {
         // Check if spinner exists and is an object of different class
         if(_indefiniteAnimatedView && ![_indefiniteAnimatedView isKindOfClass:[UIActivityIndicatorView class]]){
