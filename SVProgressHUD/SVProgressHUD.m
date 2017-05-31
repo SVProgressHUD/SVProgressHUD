@@ -1061,8 +1061,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                     UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
                     [rootController setNeedsStatusBarAppearanceUpdate];
 #endif
-                    // Update accessibility
-                    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
                     
                     // Run an (optional) completionHandler
                     if (completion) {
