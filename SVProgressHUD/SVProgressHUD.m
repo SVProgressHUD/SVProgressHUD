@@ -409,12 +409,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         
         NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
-        NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
-        NSBundle *imageBundle = [NSBundle bundleWithURL:url];
         
-        UIImage* infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
-        UIImage* successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
-        UIImage* errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
+        UIImage* infoImage = [UIImage imageNamed:@"info" inBundle:bundle compatibleWithTraitCollection:nil];
+        UIImage* successImage = [UIImage imageNamed:@"success" inBundle:bundle compatibleWithTraitCollection:nil];
+        UIImage* errorImage = [UIImage imageNamed:@"error" inBundle:bundle compatibleWithTraitCollection:nil];
 
         _infoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _successImage = [successImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
