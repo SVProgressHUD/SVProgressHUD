@@ -1399,11 +1399,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
     
     for (__strong UIView *possibleKeyboard in [keyboardWindow subviews]) {
-        if([possibleKeyboard isKindOfClass:NSClassFromString(@"UIPeripheralHostView")] || [possibleKeyboard isKindOfClass:NSClassFromString(@"UIKeyboard")]) {
+        if([NSStringFromClass([possibleKeyboard class]) isEqualToString:@"UIPeripheralHostView"] || [NSStringFromClass([possibleKeyboard class]) isEqualToString:@"UIKeyboard"]) {
             return CGRectGetHeight(possibleKeyboard.bounds);
-        } else if([possibleKeyboard isKindOfClass:NSClassFromString(@"UIInputSetContainerView")]) {
+        } else if([NSStringFromClass([possibleKeyboard class]) isEqualToString:@"UIInputSetContainerView"]) {
             for (__strong UIView *possibleKeyboardSubview in [possibleKeyboard subviews]) {
-                if([possibleKeyboardSubview isKindOfClass:NSClassFromString(@"UIInputSetHostView")]) {
+                if([NSStringFromClass([possibleKeyboard class]) isEqualToString:@"UIInputSetHostView"]) {
                     return CGRectGetHeight(possibleKeyboardSubview.bounds);
                 }
             }
