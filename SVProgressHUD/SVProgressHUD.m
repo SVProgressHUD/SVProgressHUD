@@ -86,7 +86,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)showProgress:(float)progress status:(NSString*)status;
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
+- (void)showCustomView:(UIView *)view status:(NSString *)status duration:(NSTimeInterval)duration;
 - (void)showStatus:(NSString*)status;
+
+- (void)resetProgressAndCancelAnyAnimation;
 
 - (void)dismiss;
 - (void)dismissWithDelay:(NSTimeInterval)delay completion:(SVProgressHUDDismissCompletion)completion;
@@ -341,6 +344,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:existingMaskType];
 }
 
++ (void)showCustomView:(UIView <SVCustomView> *)view {
+    NSTimeInterval displayInterval = [self displayDurationForString:[view status]];
+    [[self sharedView] showCustomView:view status:[view status] duration:displayInterval];
+}
 
 #pragma mark - Dismiss Methods
 
@@ -846,6 +853,33 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }];
 }
 
+- (void)showCustomView:(UIView *)view status:(NSString *)status duration:(NSTimeInterval)duration {
+    __weak SVProgressHUD *weakSelf = self;
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        __strong SVProgressHUD *strongSelf = weakSelf;
+        if(strongSelf){
+            // Update / Check view hierachy to ensure the HUD is visible
+            [strongSelf updateViewHierachy];
+            
+            // Reset progress and cancel any running animation
+            [strongSelf resetProgressAndCancelAnyAnimation];
+            
+            [strongSelf.hudView addSubview:view];
+            
+            CGSize size = strongSelf.minimumSize;
+            [strongSelf setMinimumSize:view.frame.size];
+            
+            [strongSelf showStatus:status];
+            
+            [strongSelf setMinimumSize:size];
+            
+            strongSelf.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:strongSelf selector:@selector(dismiss) userInfo:nil repeats:NO];
+            
+            [[NSRunLoop mainRunLoop] addTimer:strongSelf.fadeOutTimer forMode:NSRunLoopCommonModes];
+        }
+    }];
+}
+
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration {
     __weak SVProgressHUD *weakSelf = self;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -855,9 +889,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             [strongSelf updateViewHierarchy];
             
             // Reset progress and cancel any running animation
-            strongSelf.progress = SVProgressHUDUndefinedProgress;
-            [strongSelf cancelRingLayerAnimation];
-            [strongSelf cancelIndefiniteAnimatedViewAnimation];
+            [strongSelf resetProgressAndCancelAnyAnimation];
             
             // Update imageView
             UIColor *tintColor = strongSelf.foregroundColorForStyle;
@@ -986,6 +1018,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         // Inform iOS to redraw the view hierarchy
         [self setNeedsDisplay];
     }
+}
+
+- (void)resetProgressAndCancelAnyAnimation {
+    self.progress = SVProgressHUDUndefinedProgress;
+    [self cancelRingLayerAnimation];
+    [self cancelIndefiniteAnimatedViewAnimation];
 }
 
 - (void)dismiss {
