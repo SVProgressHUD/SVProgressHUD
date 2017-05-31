@@ -65,6 +65,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, strong) UINotificationFeedbackGenerator *hapticGenerator;
 #endif
 
+@property (nonatomic,strong) UIImageView * customImageView;
+
 - (void)updateHUDFrame;
 
 #if TARGET_OS_IOS
@@ -341,6 +343,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:existingMaskType];
 }
 
++ (void)showImage:(UIImage*)image status:(NSString*)status frame:(CGFloat)widthHeight
+{
+    NSTimeInterval displayInterval = [self displayDurationForString:status];
+    [[self sharedView] showImage:image status:status frame:widthHeight duration:displayInterval];
+}
 
 #pragma mark - Dismiss Methods
 
@@ -882,6 +889,58 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         }
     }];
 }
+
+- (void)showImage:(UIImage*)image status:(NSString*)status frame:(CGFloat)widthHeight duration:(NSTimeInterval)duration {
+    __weak SVProgressHUD *weakSelf = self;
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        __strong SVProgressHUD *strongSelf = weakSelf;
+        if(strongSelf){
+            // Update / Check view hierachy to ensure the HUD is visible
+            [strongSelf updateViewHierachy];
+            
+            // Reset progress and cancel any running animation
+            strongSelf.progress = SVProgressHUDUndefinedProgress;
+            [strongSelf cancelRingLayerAnimation];
+            [strongSelf cancelIndefiniteAnimatedViewAnimation];
+            
+            // Update imageView
+            UIColor *tintColor = strongSelf.foregroundColorForStyle;
+            UIImage *tintedImage = image;
+            if([strongSelf.imageView respondsToSelector:@selector(setTintColor:)]) {
+                if (tintedImage.renderingMode != UIImageRenderingModeAlwaysTemplate) {
+                    tintedImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                }
+                strongSelf.imageView.tintColor = tintColor;
+            } else {
+                tintedImage = [strongSelf image:image withTintColor:tintColor];
+            }
+//            strongSelf.imageView.image = tintedImage;
+//            strongSelf.imageView.hidden = NO;
+            
+            if (!self.customImageView) {
+                self.customImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, widthHeight, widthHeight)];
+                self.customImageView.image = tintedImage;
+                self.customImageView.hidden = NO;
+                self.customImageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2);
+            }
+            if (!self.customImageView.superview) {
+                [self.hudView addSubview:self.customImageView];
+            }
+            
+            // Update text
+            strongSelf.statusLabel.text = status;
+            
+            // Show
+            [strongSelf showStatus:status];
+            
+            // An image will dismissed automatically. Therefore we start a timer
+            // which then will call dismiss after the predefined duration
+            strongSelf.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:strongSelf selector:@selector(dismiss) userInfo:nil repeats:NO];
+            [[NSRunLoop mainRunLoop] addTimer:strongSelf.fadeOutTimer forMode:NSRunLoopCommonModes];
+        }
+    }];
+}
+
 
 - (void)showStatus:(NSString*)status {
     // Update the HUDs frame to the new content and position HUD
