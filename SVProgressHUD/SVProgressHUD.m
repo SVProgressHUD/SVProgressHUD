@@ -1373,6 +1373,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (UIImageView*)imageView {
     if(!_imageView) {
         _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 28.0f, 28.0f)];
+        _imageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     if(!_imageView.superview) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
