@@ -135,7 +135,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].defaultAnimationType = type;
 }
 
-+ (void)setContainerView:(UIView *)containerView {
++ (void)setContainerView:(UIView*)containerView {
     [self sharedView].containerView = containerView;
 }
 
@@ -157,6 +157,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)setCornerRadius:(CGFloat)cornerRadius {
     [self sharedView].cornerRadius = cornerRadius;
+}
+
++ (void)setBorderColor:(nonnull UIColor*)color {
+    [self sharedView].hudView.layer.borderColor = color.CGColor;
+}
+
++ (void)setBorderWidth:(CGFloat)width {
+    [self sharedView].hudView.layer.borderWidth = width;
 }
 
 + (void)setFont:(UIFont*)font {
@@ -566,14 +574,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if !defined(SV_APP_EXTENSIONS)
             [self.frontWindow addSubview:self.controlView];
 #else
-            // If SVProgressHUD ist used inside an app extension add it to the given view
+            // If SVProgressHUD is used inside an app extension add it to the given view
             if(self.viewForExtension) {
                 [self.viewForExtension addSubview:self.controlView];
             }
 #endif
         }
     } else {
-        // The HUD is already on screen, but maybot not in front. Therefore
+        // The HUD is already on screen, but maybe not in front. Therefore
         // ensure that overlay will be on top of rootViewController (which may
         // be changed during runtime).
         [self.controlView.superview bringSubviewToFront:self.controlView];
@@ -660,7 +668,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
 #endif
     
-    // no transforms applied to window in iOS 8, but only if compiled with iOS 8 sdk as base sdk, otherwise system supports old rotation logic.
+    // No transforms applied to window in iOS 8, but only if compiled with iOS 8 SDK as base SDK, otherwise system supports old rotation logic.
     BOOL ignoreOrientation = NO;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
     if([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)]) {
@@ -669,7 +677,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
     
 #if TARGET_OS_IOS
-    // Get keyboardHeight in regards to current state
+    // Get keyboardHeight in regard to current state
     if(notification) {
         NSDictionary* keyboardInfo = [notification userInfo];
         CGRect keyboardFrame = [keyboardInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
@@ -707,7 +715,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         statusBarFrame.size.height = temp;
     }
     
-    // Update the motion effects in regards to orientation
+    // Update the motion effects in regard to orientation
     [self updateMotionEffectForOrientation:orientation];
 #else
     [self updateMotionEffectForXMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis yMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
@@ -880,7 +888,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             // Show
             [strongSelf showStatus:status];
             
-            // An image will dismissed automatically. Therefore we start a timer
+            // An image will be dismissed automatically. Therefore, we start a timer
             // which then will call dismiss after the predefined duration
             strongSelf.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:strongSelf selector:@selector(dismiss) userInfo:nil repeats:NO];
             [[NSRunLoop mainRunLoop] addTimer:strongSelf.fadeOutTimer forMode:NSRunLoopCommonModes];
@@ -918,7 +926,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
         
         // Activate blur on view before animation on older iOS versions,
-        // as we can not animate this property and use alpha values instead
+        // as we cannot animate this property and use alpha values instead
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
         bool greateriOS9 = kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_9_0;
         if (self.defaultStyle != SVProgressHUDStyleCustom && !greateriOS9) {
@@ -1087,7 +1095,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             };
                 
             // UIViewAnimationOptionBeginFromCurrentState AND a delay doesn't always work as expected
-            // When UIViewAnimationOptionBeginFromCurrentState ist set, animateWithDuration: evaluates the current
+            // When UIViewAnimationOptionBeginFromCurrentState is set, animateWithDuration: evaluates the current
             // values to check if an animation is necessary. The evaluation happens at function call time and not
             // after the delay => the animation is sometimes skipped. Therefore we delay using dispatch_after.
                 
@@ -1414,20 +1422,24 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (CGFloat)visibleKeyboardHeight {
 #if !defined(SV_APP_EXTENSIONS)
     UIWindow *keyboardWindow = nil;
-    for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
-        if(![[testWindow class] isEqual:[UIWindow class]]) {
+    for (UIWindow *testWindow in UIApplication.sharedApplication.windows) {
+        if(![testWindow.class isEqual:UIWindow.class]) {
             keyboardWindow = testWindow;
             break;
         }
     }
     
-    for (__strong UIView *possibleKeyboard in [keyboardWindow subviews]) {
-        if([possibleKeyboard isKindOfClass:NSClassFromString(@"UIPeripheralHostView")] || [possibleKeyboard isKindOfClass:NSClassFromString(@"UIKeyboard")]) {
-            return CGRectGetHeight(possibleKeyboard.bounds);
-        } else if([possibleKeyboard isKindOfClass:NSClassFromString(@"UIInputSetContainerView")]) {
-            for (__strong UIView *possibleKeyboardSubview in [possibleKeyboard subviews]) {
-                if([possibleKeyboardSubview isKindOfClass:NSClassFromString(@"UIInputSetHostView")]) {
-                    return CGRectGetHeight(possibleKeyboardSubview.bounds);
+    for (__strong UIView *possibleKeyboard in keyboardWindow.subviews) {
+        NSString *viewName = NSStringFromClass(possibleKeyboard.class);
+        if([viewName hasPrefix:@"UI"]){
+            if([viewName hasSuffix:@"PeripheralHostView"] || [viewName hasSuffix:@"Keyboard"]){
+                return CGRectGetHeight(possibleKeyboard.bounds);
+            } else if ([viewName hasSuffix:@"InputSetContainerView"]){
+                for (__strong UIView *possibleKeyboardSubview in possibleKeyboard.subviews) {
+                    viewName = NSStringFromClass(possibleKeyboardSubview.class);
+                    if([viewName hasPrefix:@"UI"] && [viewName hasSuffix:@"InputSetHostView"]) {
+                        return CGRectGetHeight(possibleKeyboardSubview.bounds);
+                    }
                 }
             }
         }

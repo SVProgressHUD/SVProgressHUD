@@ -140,6 +140,8 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setRingRadius:(CGFloat)radius;                              // default is 18 pt
 + (void)setRingNoTextRadius:(CGFloat)radius;                        // default is 24 pt
 + (void)setCornerRadius:(CGFloat)cornerRadius;                      // default is 14 pt
++ (void)setBorderColor:(nonnull UIColor*)color;                     // default is nil
++ (void)setBorderWidth:(CGFloat)width;                              // default is 0
 + (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
