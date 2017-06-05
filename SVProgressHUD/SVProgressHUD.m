@@ -1565,6 +1565,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (void)setMinimumDismissTimeInterval:(NSTimeInterval)minimumDismissTimeInterval {
     if (!_isInitializing) _minimumDismissTimeInterval = minimumDismissTimeInterval;
 }
+    
+- (void)setMaximumDismissTimeInterval:(NSTimeInterval)maximumDismissTimeInterval {
+    if (!_isInitializing) _maximumDismissTimeInterval = maximumDismissTimeInterval;
+}
 
 - (void)setFadeInAnimationDuration:(NSTimeInterval)duration {
     if (!_isInitializing) _fadeInAnimationDuration = duration;
