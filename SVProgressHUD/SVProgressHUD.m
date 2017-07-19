@@ -907,7 +907,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         self.accessibilityLabel = status;
         self.isAccessibilityElement = YES;
     } else {
-        self.controlView.userInteractionEnabled = YES;
+        self.controlView.userInteractionEnabled = NO;
         self.hudView.accessibilityLabel = status;
         self.hudView.isAccessibilityElement = YES;
     }
