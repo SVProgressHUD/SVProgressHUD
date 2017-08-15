@@ -85,9 +85,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (void)controlViewDidReceiveTouchEvent:(id)sender forEvent:(UIEvent*)event;
 
 - (void)showProgress:(float)progress status:(NSString*)status;
+- (void)showProgress:(float)progress status:(NSString *)status inView:(UIView*)view;
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
+- (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration inView: (UIView*)view;
 - (void)showStatus:(NSString*)status;
-
 - (void)dismiss;
 - (void)dismissWithDelay:(NSTimeInterval)delay completion:(SVProgressHUDDismissCompletion)completion;
 
@@ -115,6 +116,15 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     return sharedView;
 }
 
++ (SVProgressHUD*)progressHUDInView:(nonnull UIView*)view {
+    static dispatch_once_t once;
+    
+    static SVProgressHUD *sharedView;
+
+    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:view.bounds]; });
+   
+    return sharedView;
+}
 
 #pragma mark - Setters
 
@@ -235,6 +245,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showWithStatus:nil];
 }
 
++ (void)showInView:(nonnull UIView *)view {
+    [self showWithStatus:nil inView:view];
+}
+
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
@@ -244,6 +258,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)showWithStatus:(NSString*)status {
     [self showProgress:SVProgressHUDUndefinedProgress status:status];
+}
+
++ (void)showWithStatus:(nullable NSString *)status inView:(nonnull UIView *)view {
+    [self showProgress:SVProgressHUDUndefinedProgress status:status inView:view];
 }
 
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -257,6 +275,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showProgress:progress status:nil];
 }
 
++ (void)showProgress:(float)progress inView:(UIView *)view {
+    [self showProgress:progress status:nil inView:view];
+}
+
 + (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
@@ -266,6 +288,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)showProgress:(float)progress status:(NSString*)status {
     [[self sharedView] showProgress:progress status:status];
+}
+
++ (void)showProgress:(float)progress status:(nullable NSString*)status inView:(nonnull UIView*)view {
+    [[self sharedView] showProgress:progress status:status inView:view];
 }
 
 + (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -288,6 +314,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
 }
 
++ (void)showInfoWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view {
+    [self showImage:[self sharedView].infoImage status:status inView:view];
+}
+
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
@@ -303,6 +333,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
     });
 #endif
+}
+
++ (void)showSuccessWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view {
+    [self showImage:[self sharedView].successImage status:status inView:view];
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -328,6 +362,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
 }
 
++ (void)showErrorWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view {
+    [self showImage:[self sharedView].errorImage status:status inView:view];
+}
+
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
@@ -344,6 +382,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 + (void)showImage:(UIImage*)image status:(NSString*)status {
     NSTimeInterval displayInterval = [self displayDurationForString:status];
     [[self sharedView] showImage:image status:status duration:displayInterval];
+}
+
++ (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status inView:(nonnull UIView*)view {
+    NSTimeInterval displayInterval = [self displayDurationForString:status];
+    [[self sharedView] showImage:image status:status duration:displayInterval inView:view];
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -565,6 +608,34 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self.hudView addMotionEffect:effectGroup];
 }
 
+- (void)updateViewHierarchyFromView: (UIView*)view {
+    // Add the overlay (e.g. black, gradient) to the application window if necessary
+    if(!self.controlView.superview) {
+#if !defined(SV_APP_EXTENSIONS)
+        [view addSubview:self.controlView];
+#else
+        // If SVProgressHUD ist used inside an app extension add it to the given view
+        if(self.viewForExtension) {
+            [self.viewForExtension addSubview:self.controlView];
+        }
+#endif
+    } else {
+        // The HUD is already on screen, but maybot not in front. Therefore
+        // ensure that overlay will be on top of rootViewController (which may
+        // be changed during runtime).
+        [self.controlView.superview bringSubviewToFront:self.controlView];
+    }
+    
+    
+    // Add self to the overlay view
+    if(!self.superview){
+        [self.controlView addSubview:self];
+    }
+    if(!self.hudView.superview) {
+        [self addSubview:self.hudView];
+    }
+}
+
 - (void)updateViewHierarchy {
     // Add the overlay to the application window if necessary
     if(!self.controlView.superview) {
@@ -775,7 +846,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
 }
 
-
 #pragma mark - Master show/dismiss methods
 
 - (void)showProgress:(float)progress status:(NSString*)status {
@@ -859,6 +929,69 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }];
 }
 
+- (void)showProgress:(float)progress status:(NSString *)status inView: (UIView *)view {
+    __weak SVProgressHUD *weakSelf = self;
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        __strong SVProgressHUD *strongSelf = weakSelf;
+        if(strongSelf){
+            // Update / Check view hierarchy to ensure the HUD is visible
+            [strongSelf updateViewHierarchyFromView:view];
+            
+            // Reset imageView and fadeout timer if an image is currently displayed
+            strongSelf.imageView.hidden = YES;
+            strongSelf.imageView.image = nil;
+            
+            if(strongSelf.fadeOutTimer) {
+                strongSelf.activityCount = 0;
+            }
+            strongSelf.fadeOutTimer = nil;
+            
+            // Update text and set progress to the given value
+            strongSelf.statusLabel.text = status;
+            strongSelf.progress = progress;
+            
+            // Choose the "right" indicator depending on the progress
+            if(progress >= 0) {
+                // Cancel the indefiniteAnimatedView, then show the ringLayer
+                [strongSelf cancelIndefiniteAnimatedViewAnimation];
+                
+                // Add ring to HUD
+                if(!strongSelf.ringView.superview)
+                    [strongSelf.hudView addSubview:strongSelf.ringView];
+                if(!strongSelf.backgroundRingView.superview)
+                    [strongSelf.hudView addSubview:strongSelf.backgroundRingView];
+                
+                // Set progress animated
+                [CATransaction begin];
+                [CATransaction setDisableActions:YES];
+                strongSelf.ringView.strokeEnd = progress;
+                [CATransaction commit];
+                
+                // Update the activity count
+                if(progress == 0) {
+                    strongSelf.activityCount++;
+                }
+            } else {
+                // Cancel the ringLayer animation, then show the indefiniteAnimatedView
+                [strongSelf cancelRingLayerAnimation];
+                
+                // Add indefiniteAnimatedView to HUD
+                [strongSelf.hudView.contentView addSubview:strongSelf.indefiniteAnimatedView];
+                if([strongSelf.indefiniteAnimatedView respondsToSelector:@selector(startAnimating)]) {
+                    [(id)strongSelf.indefiniteAnimatedView startAnimating];
+                }
+                
+                // Update the activity count
+                strongSelf.activityCount++;
+            }
+            
+            // Show
+            [strongSelf showStatus:status];
+        }
+    }];
+    
+}
+
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration {
     __weak SVProgressHUD *weakSelf = self;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -889,6 +1022,43 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             [strongSelf showStatus:status];
             
             // An image will be dismissed automatically. Therefore, we start a timer
+            // which then will call dismiss after the predefined duration
+            strongSelf.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:strongSelf selector:@selector(dismiss) userInfo:nil repeats:NO];
+            [[NSRunLoop mainRunLoop] addTimer:strongSelf.fadeOutTimer forMode:NSRunLoopCommonModes];
+        }
+    }];
+}
+
+- (void)showImage:(UIImage *)image status:(NSString *)status duration:(NSTimeInterval)duration inView:(UIView *)view {
+    __weak SVProgressHUD *weakSelf = self;
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        __strong SVProgressHUD *strongSelf = weakSelf;
+        if(strongSelf){
+            // Update / Check view hierarchy to ensure the HUD is visible
+            [strongSelf updateViewHierarchyFromView:view];
+
+            // Reset progress and cancel any running animation
+            strongSelf.progress = SVProgressHUDUndefinedProgress;
+            [strongSelf cancelRingLayerAnimation];
+            [strongSelf cancelIndefiniteAnimatedViewAnimation];
+
+            // Update imageView
+            UIColor *tintColor = strongSelf.foregroundColorForStyle;
+            UIImage *tintedImage = image;
+            if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
+                tintedImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            }
+            strongSelf.imageView.tintColor = tintColor;
+            strongSelf.imageView.image = tintedImage;
+            strongSelf.imageView.hidden = NO;
+
+            // Update text
+            strongSelf.statusLabel.text = status;
+
+            // Show
+            [strongSelf showStatus:status];
+
+            // An image will dismissed automatically. Therefore we start a timer
             // which then will call dismiss after the predefined duration
             strongSelf.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:strongSelf selector:@selector(dismiss) userInfo:nil repeats:NO];
             [[NSRunLoop mainRunLoop] addTimer:strongSelf.fadeOutTimer forMode:NSRunLoopCommonModes];
@@ -1096,7 +1266,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             // When UIViewAnimationOptionBeginFromCurrentState is set, animateWithDuration: evaluates the current
             // values to check if an animation is necessary. The evaluation happens at function call time and not
             // after the delay => the animation is sometimes skipped. Therefore we delay using dispatch_after.
-                
+
             dispatch_time_t dipatchTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
             dispatch_after(dipatchTime, dispatch_get_main_queue(), ^{
                 if (strongSelf.fadeOutAnimationDuration > 0) {

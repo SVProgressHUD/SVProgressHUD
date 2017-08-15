@@ -37,7 +37,7 @@ Second, install `SVProgressHUD` into your project:
 pod install
 ```
 
-### Carthage 
+### Carthage
 
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate `SVProgressHUD` into your Xcode project using Carthage, specify it in your `Cartfile`:
 
@@ -62,7 +62,7 @@ Even though `SVProgressHUD` is written in Objective-C, it can be used in Swift w
 use_frameworks!
 ```
 
-If you added `SVProgressHUD` manually, just add a [bridging header](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) file to your project with the `SVProgressHUD` header included. 
+If you added `SVProgressHUD` manually, just add a [bridging header](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) file to your project with the `SVProgressHUD` header included.
 
 ## Usage
 
@@ -126,6 +126,16 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)showImage:(UIImage*)image status:(NSString*)string;
 ```
 
+If you would like to specify the `UIView` to display the HUD within, use any of the following:
+
+```objective-c
++ (void)showInView:(nonnull UIView*)view
++ (void)showProgress:(float)progress status:(nullable NSString*)status inView:(nonnull UIView*)view;
++ (void)showWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
++ (void)showSuccessWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
++ (void)showErrorWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
++ (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status inView:(nonnull UIView*)view;
+```
 ## Customization
 
 `SVProgressHUD` can be customized via the following methods:
@@ -209,7 +219,7 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas)
 
 ## License
 
-`SVProgressHUD` is distributed under the terms and conditions of the [MIT license](https://github.com/SVProgressHUD/SVProgressHUD/blob/master/LICENSE.txt). The success, error and info icons are made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
+`SVProgressHUD` is distributed under the terms and conditions of the [MIT license](https://github.com/SVProgressHUD/SVProgressHUD/blob/master/LICENSE.txt). The success, error and info icons are made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/).
 
 ## Credits
 

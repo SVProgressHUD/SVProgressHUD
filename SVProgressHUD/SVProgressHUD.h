@@ -109,27 +109,40 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 #pragma mark - Show Methods
 
 + (void)show;
+/**
+ Displays a progress HUD in a view.
+ 
+ @param view The UIVIew to display the HUD within.
+ */
++ (void)showInView:(nonnull UIView*)view;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use show and setDefaultMaskType: instead.")));
 + (void)showWithStatus:(nullable NSString*)status;
++ (void)showWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
 + (void)showWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showWithStatus: and setDefaultMaskType: instead.")));
 
 + (void)showProgress:(float)progress;
++ (void)showProgress:(float)progress inView:(nonnull UIView*)view;
 + (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showProgress: and setDefaultMaskType: instead.")));
 + (void)showProgress:(float)progress status:(nullable NSString*)status;
++ (void)showProgress:(float)progress status:(nullable NSString*)status inView:(nonnull UIView*)view;
 + (void)showProgress:(float)progress status:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showProgress:status: and setDefaultMaskType: instead.")));
 
 + (void)setStatus:(nullable NSString*)status; // change the HUD loading status while it's showing
 
 // stops the activity indicator, shows a glyph + status, and dismisses the HUD a little bit later
 + (void)showInfoWithStatus:(nullable NSString*)status;
++ (void)showInfoWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
 + (void)showInfoWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showInfoWithStatus: and setDefaultMaskType: instead.")));
 + (void)showSuccessWithStatus:(nullable NSString*)status;
++ (void)showSuccessWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
 + (void)showSuccessWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showSuccessWithStatus: and setDefaultMaskType: instead.")));
 + (void)showErrorWithStatus:(nullable NSString*)status;
++ (void)showErrorWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
 + (void)showErrorWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showErrorWithStatus: and setDefaultMaskType: instead.")));
 
 // shows a image + status, use white PNGs with the imageViewSize (default is 28x28 pt)
 + (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status;
++ (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status inView:(nonnull UIView*)view;
 + (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showImage:status: and setDefaultMaskType: instead.")));
 
 + (void)setOffsetFromCenter:(UIOffset)offset;
