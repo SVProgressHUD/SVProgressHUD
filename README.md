@@ -37,7 +37,7 @@ Second, install `SVProgressHUD` into your project:
 pod install
 ```
 
-### Carthage 
+### Carthage
 
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate `SVProgressHUD` into your Xcode project using Carthage, specify it in your `Cartfile`:
 
@@ -62,7 +62,7 @@ Even though `SVProgressHUD` is written in Objective-C, it can be used in Swift w
 use_frameworks!
 ```
 
-If you added `SVProgressHUD` manually, just add a [bridging header](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) file to your project with the `SVProgressHUD` header included. 
+If you added `SVProgressHUD` manually, just add a [bridging header](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) file to your project with the `SVProgressHUD` header included.
 
 ## Usage
 
@@ -126,6 +126,16 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)showImage:(UIImage*)image status:(NSString*)string;
 ```
 
+If you would like to specify the `UIView` to display the HUD within, use any of the following:
+
+```objective-c
++ (void)showInView:(nonnull UIView*)view
++ (void)showProgress:(float)progress status:(nullable NSString*)status inView:(nonnull UIView*)view;
++ (void)showWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
++ (void)showSuccessWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
++ (void)showErrorWithStatus:(nullable NSString*)status inView:(nonnull UIView*)view;
++ (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status inView:(nonnull UIView*)view;
+```
 ## Customization
 
 `SVProgressHUD` can be customized via the following methods:
@@ -140,19 +150,23 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setRingRadius:(CGFloat)radius;                              // default is 18 pt
 + (void)setRingNoTextRadius:(CGFloat)radius;                        // default is 24 pt
 + (void)setCornerRadius:(CGFloat)cornerRadius;                      // default is 14 pt
++ (void)setBorderColor:(nonnull UIColor*)color;                     // default is nil
++ (void)setBorderWidth:(CGFloat)width;                              // default is 0
 + (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundLayerColor:(UIColor*)color;                    // default is [UIColor colorWithWhite:0 alpha:0.4], only used for SVProgressHUDMaskTypeCustom
++ (void)setImageViewSize:(CGSize)size;                              // default is 28x28 pt
 + (void)setInfoImage:(UIImage*)image;                               // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                            // default is bundled success image from Freepik
 + (void)setErrorImage:(UIImage*)image;                              // default is bundled error image from Freepik
 + (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
-+ (void)setMaximumDismissTimeInterval:(NSTimeInterval)interval;     // default is infinite
++ (void)setMaximumDismissTimeInterval:(NSTimeInterval)interval;     // default is CGFLOAT_MAX
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled;						// default is NO
 ```
 
 Additionally `SVProgressHUD` supports the `UIAppearance` protocol for most of the above methods.
@@ -165,6 +179,18 @@ As standard `SVProgressHUD` offers two preconfigured styles:
 * `SVProgressHUDStyleDark`: Black background with white spinner and text
 
 If you want to use custom colors use `setForegroundColor` and `setBackgroundColor:`. These implicity set the HUD's style to `SVProgressHUDStyleCustom`.
+
+## Haptic Feedback
+
+For users with newer devices (starting with the iPhone 7), `SVProgressHUD` can automatically trigger haptic feedback depending on which HUD is being displayed. The feedback maps as follows:
+
+* `showSuccessWithStatus:` <-> `UINotificationFeedbackTypeSuccess`
+* `showInfoWithStatus:` <-> `UINotificationFeedbackTypeWarning`
+* `showErrorWithStatus:` <-> `UINotificationFeedbackTypeError`
+
+To enable this functionality, use `setHapticsEnabled:`.
+
+Users with devices prior to iPhone 7 will have no change in functionality.
 
 ## Notifications
 
@@ -193,7 +219,7 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas)
 
 ## License
 
-`SVProgressHUD` is distributed under the terms and conditions of the [MIT license](https://github.com/SVProgressHUD/SVProgressHUD/blob/master/LICENSE.txt). The success, error and info icons are made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
+`SVProgressHUD` is distributed under the terms and conditions of the [MIT license](https://github.com/SVProgressHUD/SVProgressHUD/blob/master/LICENSE.txt). The success, error and info icons are made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/).
 
 ## Credits
 
