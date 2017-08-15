@@ -953,6 +953,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             } else {
                 // This gives a warning on iOS 8, however it works, see #703
                 self.hudView.alpha = 1.0f;
+                self.hudView.contentView.alpha = 1.0f;
             }
 #else
             self.hudView.alpha = 1.0f;
