@@ -143,6 +143,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setSuccessImage:(UIImage*)image;                            // default is bundled success image from Freepik
 + (void)setErrorImage:(UIImage*)image;                              // default is bundled error image from Freepik
 + (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
++ (void)setGraceTimeInterval:(NSTimeInterval)interval;              // default is 0 seconds
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
 + (void)setMaximumDismissTimeInterval:(NSTimeInterval)interval;     // default is CGFLOAT_MAX
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds

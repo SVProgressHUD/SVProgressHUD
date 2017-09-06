@@ -5,7 +5,6 @@
 //  Copyright (c) 2011-2017 Sam Vermette and contributors. All rights reserved.
 //
 
-
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController

@@ -67,6 +67,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (strong, nonatomic, nonnull) UIImage *successImage UI_APPEARANCE_SELECTOR;        // default is the bundled success image provided by Freepik
 @property (strong, nonatomic, nonnull) UIImage *errorImage UI_APPEARANCE_SELECTOR;          // default is the bundled error image provided by Freepik
 @property (strong, nonatomic, nonnull) UIView *viewForExtension UI_APPEARANCE_SELECTOR;     // default is nil, only used if #define SV_APP_EXTENSIONS is set
+@property (assign, nonatomic) NSTimeInterval graceTimeInterval;                             // default is 0 seconds
 @property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;                    // default is 5.0 seconds
 @property (assign, nonatomic) NSTimeInterval maximumDismissTimeInterval;                    // default is CGFLOAT_MAX
 
@@ -99,6 +100,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setSuccessImage:(nonnull UIImage*)image;                    // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(nonnull UIImage*)image;                      // default is the bundled error image provided by Freepik
 + (void)setViewForExtension:(nonnull UIView*)view;                  // default is nil, only used if #define SV_APP_EXTENSIONS is set
++ (void)setGraceTimeInterval:(NSTimeInterval)interval;              // default is 0 seconds
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
 + (void)setMaximumDismissTimeInterval:(NSTimeInterval)interval;     // default is infinite
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds

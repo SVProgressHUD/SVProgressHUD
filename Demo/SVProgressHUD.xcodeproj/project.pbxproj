@@ -15,11 +15,10 @@
 		22A748961630AD6A004893A8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22A748951630AD6A004893A8 /* Default-568h@2x.png */; };
 		22B9D43816B92E4D00E71652 /* SVProgressHUD.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 22B9D43716B92E4D00E71652 /* SVProgressHUD.podspec */; };
 		22D13AB71365FEAC0025FCC9 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22D13AB61365FEAC0025FCC9 /* SVProgressHUD.bundle */; };
-		22EBCD19134128130074B281 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EBCD18134128130074B281 /* MainWindow-iPad.xib */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
-		2899E5220DE3E06400AC0155 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* ViewController.xib */; };
-		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* ViewController.m */; };
+		3C0DE6921F6096230062BA4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C0DE68E1F6096230062BA4A /* LaunchScreen.storyboard */; };
+		3C0DE6931F6096230062BA4A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C0DE6901F6096230062BA4A /* Main.storyboard */; };
 		3C32D9211CAC66CA009CDAB0 /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C32D9201CAC66CA009CDAB0 /* SVProgressAnimatedView.m */; };
 		3C32D9231CAD056D009CDAB0 /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C32D9201CAC66CA009CDAB0 /* SVProgressAnimatedView.m */; };
 		3CD078EA1A3B809500290D80 /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD078E91A3B809500290D80 /* SVRadialGradientLayer.m */; };
@@ -46,14 +45,13 @@
 		22A748951630AD6A004893A8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		22B9D43716B92E4D00E71652 /* SVProgressHUD.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SVProgressHUD.podspec; path = ../SVProgressHUD.podspec; sourceTree = "<group>"; };
 		22D13AB61365FEAC0025FCC9 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
-		22EBCD18134128130074B281 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		2899E5210DE3E06400AC0155 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ViewController.xib; path = ../ViewController.xib; sourceTree = "<group>"; };
-		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		28D7ACF60DDB3853001CB0EB /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		28D7ACF70DDB3853001CB0EB /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* SVProgressHUD_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD_Prefix.pch; sourceTree = "<group>"; };
+		3C0DE68F1F6096230062BA4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
+		3C0DE6911F6096230062BA4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = SOURCE_ROOT; };
 		3C32D91F1CAC66CA009CDAB0 /* SVProgressAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressAnimatedView.h; sourceTree = "<group>"; };
 		3C32D9201CAC66CA009CDAB0 /* SVProgressAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressAnimatedView.m; sourceTree = "<group>"; };
 		3CD078E81A3B809500290D80 /* SVRadialGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRadialGradientLayer.h; sourceTree = "<group>"; };
@@ -100,7 +98,8 @@
 				63ADC4B81364C1360060E45B /* SVProgressHUD */,
 				28D7ACF60DDB3853001CB0EB /* ViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* ViewController.m */,
-				2899E5210DE3E06400AC0155 /* ViewController.xib */,
+				3C0DE68E1F6096230062BA4A /* LaunchScreen.storyboard */,
+				3C0DE6901F6096230062BA4A /* Main.storyboard */,
 				1D3623240D0F684500981E51 /* AppDelegate.h */,
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -135,8 +134,6 @@
 			isa = PBXGroup;
 			children = (
 				22A748951630AD6A004893A8 /* Default-568h@2x.png */,
-				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
-				22EBCD18134128130074B281 /* MainWindow-iPad.xib */,
 				8D1107310486CEB800E47090 /* SVProgressHUD-Info.plist */,
 				32CA4F630368D1EE00C91783 /* SVProgressHUD_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
@@ -236,7 +233,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				TargetAttributes = {
 					D36EDBCD1BE7E9B000BD0EF1 = {
 						CreatedOnToolsVersion = 7.1;
@@ -269,11 +266,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
-				2899E5220DE3E06400AC0155 /* ViewController.xib in Resources */,
-				22EBCD19134128130074B281 /* MainWindow-iPad.xib in Resources */,
+				3C0DE6921F6096230062BA4A /* LaunchScreen.storyboard in Resources */,
 				22D13AB71365FEAC0025FCC9 /* SVProgressHUD.bundle in Resources */,
 				2265DEEE14706A8900B3EBF7 /* README.md in Resources */,
+				3C0DE6931F6096230062BA4A /* Main.storyboard in Resources */,
 				22A748961630AD6A004893A8 /* Default-568h@2x.png in Resources */,
 				22B9D43816B92E4D00E71652 /* SVProgressHUD.podspec in Resources */,
 			);
@@ -322,6 +318,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		3C0DE68E1F6096230062BA4A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3C0DE68F1F6096230062BA4A /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		3C0DE6901F6096230062BA4A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3C0DE6911F6096230062BA4A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		D36EDBD91BE7E9B100BD0EF1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -386,30 +398,8 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -418,29 +408,8 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 			};
