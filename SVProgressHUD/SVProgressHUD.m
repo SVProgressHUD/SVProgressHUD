@@ -14,6 +14,10 @@
 #import "SVProgressAnimatedView.h"
 #import "SVRadialGradientLayer.h"
 
+#ifndef kCFCoreFoundationVersionNumber_iOS_8_0
+#define kCFCoreFoundationVersionNumber_iOS_8_0 1129.15
+#endif
+
 #ifndef kCFCoreFoundationVersionNumber_iOS_9_0
 #define kCFCoreFoundationVersionNumber_iOS_9_0 1240.1
 #endif
@@ -44,7 +48,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, strong) SVRadialGradientLayer *backgroundRadialGradientLayer;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
 @property (nonatomic, strong) UIVisualEffectView *hudView;
-@property (nonatomic, strong) UIVisualEffectView *hudVibrancyView;
 #else
 @property (nonatomic, strong) UIView *hudView;
 #endif
@@ -505,9 +508,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     // Update values on subviews
     self.hudView.bounds = CGRectMake(0.0f, 0.0f, MAX(self.minimumSize.width, hudWidth), MAX(self.minimumSize.height, hudHeight));
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    self.hudVibrancyView.bounds = self.hudView.bounds;
-#endif
     
     // Animate value update
     [CATransaction begin];
@@ -807,14 +807,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 // Add ring to HUD
                 if(!strongSelf.ringView.superview){
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-                    [strongSelf.hudVibrancyView.contentView addSubview:strongSelf.ringView];
+                    [strongSelf.hudView.contentView addSubview:strongSelf.ringView];
 #else
                     [strongSelf.hudView addSubview:strongSelf.ringView];
 #endif
                 }
                 if(!strongSelf.backgroundRingView.superview){
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-                    [strongSelf.hudVibrancyView.contentView addSubview:strongSelf.backgroundRingView];
+                    [strongSelf.hudView.contentView addSubview:strongSelf.backgroundRingView];
 #else
                     [strongSelf.hudView addSubview:strongSelf.backgroundRingView];
 #endif
@@ -836,9 +836,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 
                 // Add indefiniteAnimatedView to HUD
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-                [strongSelf.hudVibrancyView.contentView addSubview:strongSelf.indefiniteAnimatedView];
+                [strongSelf.hudView.contentView addSubview:strongSelf.indefiniteAnimatedView];
 #else
-                [strongSelf.hudView  addSubview:strongSelf.indefiniteAnimatedView];
+                [strongSelf.hudView addSubview:strongSelf.indefiniteAnimatedView];
 #endif
                 if([strongSelf.indefiniteAnimatedView respondsToSelector:@selector(startAnimating)]) {
                     [(id)strongSelf.indefiniteAnimatedView startAnimating];
@@ -874,12 +874,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             // Update imageView
             UIColor *tintColor = strongSelf.foregroundColorForStyle;
-            UIImage *tintedImage = image;
-            if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
-                tintedImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            }
             strongSelf.imageView.tintColor = tintColor;
-            strongSelf.imageView.image = tintedImage;
+            strongSelf.imageView.image = image;
             strongSelf.imageView.hidden = NO;
             
             // Update text
@@ -936,8 +932,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             self.hudView.contentView.alpha = 1.0f;
         }
 #endif
-        
-        
+      
         // Define blocks
         __block void (^animationsBlock)(void) = ^{
             // Shrink HUD to finish pop up animation
@@ -945,7 +940,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
             if(self.defaultStyle != SVProgressHUDStyleCustom && greateriOS9){
-                // Fade in blur effect
+                // Add blur
                 [self addBlur];
                 
                 // Update alpha
@@ -953,6 +948,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             } else {
                 // This gives a warning on iOS 8, however it works, see #703
                 self.hudView.alpha = 1.0f;
+                self.hudView.contentView.alpha = 1.0f;
             }
 #else
             self.hudView.alpha = 1.0f;
@@ -1031,13 +1027,13 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 if(self.defaultStyle != SVProgressHUDStyleCustom && greateriOS9){
                     // Fade out blur effect == remove, and update alpha
                     strongSelf.hudView.effect = nil;
-                    strongSelf.hudVibrancyView.effect = nil;
                     
                     // Update alpha
                     strongSelf.hudView.contentView.alpha = 0.0f;
                 } else {
                     // This gives a warning on iOS 8, however it works, see #703
                     strongSelf.hudView.alpha = 0.0f;
+                    strongSelf.hudView.contentView.alpha = 0.0f;
                 }
 #else
                 strongSelf.hudView.alpha = 0.0f;
@@ -1247,11 +1243,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 - (UIColor*)backgroundColorForStyle {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    // On iOS 8 and SVProgressHUDStyleLight / SVProgressHUDStyleDark the
-    // the background color is set via a UIVisualEffectsView
-    return self.defaultStyle == SVProgressHUDStyleCustom ? self.backgroundColor : [UIColor clearColor];
-#else
     if(self.defaultStyle == SVProgressHUDStyleLight) {
         return [UIColor whiteColor];
     } else if(self.defaultStyle == SVProgressHUDStyleDark) {
@@ -1259,7 +1250,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     } else {
         return self.backgroundColor;
     }
-#endif
 }
 
 - (UIControl*)controlView {
@@ -1307,7 +1297,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         if(self.defaultMaskType == SVProgressHUDMaskTypeBlack){
             _backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
         } else if(self.defaultMaskType == SVProgressHUDMaskTypeCustom){
-            _backgroundView.backgroundColor =  self.backgroundLayerColor;
+            _backgroundView.backgroundColor = self.backgroundLayerColor;
         } else {
             _backgroundView.backgroundColor = [UIColor clearColor];
         }
@@ -1349,26 +1339,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     // Update styling
     _hudView.layer.cornerRadius = self.cornerRadius;
-    _hudView.backgroundColor = self.backgroundColorForStyle;
     
     return _hudView;
 }
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-- (UIVisualEffectView*)hudVibrancyView {
-    if(!_hudVibrancyView){
-        _hudVibrancyView = [UIVisualEffectView new];
-        
-        _hudView.layer.masksToBounds = YES;
-        _hudVibrancyView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-    }
-    if(!_hudVibrancyView.superview){
-        [self.hudView.contentView addSubview:_hudVibrancyView];
-    }
-    
-    return _hudVibrancyView;
-}
-#endif
 
 - (UILabel*)statusLabel {
     if(!_statusLabel) {
@@ -1381,7 +1354,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
     if(!_statusLabel.superview) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-      [self.hudVibrancyView.contentView addSubview:_statusLabel];
+      [self.hudView.contentView addSubview:_statusLabel];
 #else
       [self.hudView addSubview:_statusLabel];
 #endif
@@ -1405,7 +1378,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
     if(!_imageView.superview) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-        [self.hudVibrancyView.contentView addSubview:_imageView];
+        [self.hudView.contentView addSubview:_imageView];
 #else
         [self.hudView addSubview:_imageView];
 #endif
@@ -1466,11 +1439,15 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (void)addBlur
 {
     // Add blur effects
-    UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleExtraLight;
+    UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
-    
     self.hudView.effect = blurEffect;
-    self.hudVibrancyView.effect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
+    
+    // We omit UIVibrancy effect and use a suitable background color as an alternative.
+    // This will make everyting more readable. See the following for details:
+    // https://www.omnigroup.com/developer/how-to-make-text-in-a-uivisualeffectview-readable-on-any-background
+    
+    self.hudView.backgroundColor = [self.backgroundColorForStyle colorWithAlphaComponent:0.6f];
 }
 
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
@@ -1570,7 +1547,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     if (!_isInitializing) _fadeInAnimationDuration = duration;
 }
 
-- (void)setFadeOutAnimationDuration:(NSTimeInterval)duration  {
+- (void)setFadeOutAnimationDuration:(NSTimeInterval)duration {
     if (!_isInitializing) _fadeOutAnimationDuration = duration;
 }
 
