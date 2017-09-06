@@ -59,7 +59,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, strong) SVProgressAnimatedView *backgroundRingView;
 
 @property (nonatomic, readwrite) CGFloat progress;
-@property (nonatomic, readwrite) NSUInteger activityCount;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, readonly) UIWindow *frontWindow;
@@ -67,38 +66,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
 @property (nonatomic, strong) UINotificationFeedbackGenerator *hapticGenerator;
 #endif
-
-- (void)updateHUDFrame;
-
-#if TARGET_OS_IOS
-- (void)updateMotionEffectForOrientation:(UIInterfaceOrientation)orientation;
-#endif
-- (void)updateMotionEffectForXMotionEffectType:(UIInterpolatingMotionEffectType)xMotionEffectType yMotionEffectType:(UIInterpolatingMotionEffectType)yMotionEffectType;
-- (void)updateViewHierarchy;
-
-- (void)setStatus:(NSString*)status;
-- (void)setFadeOutTimer:(NSTimer*)timer;
-
-- (void)registerNotifications;
-- (NSDictionary*)notificationUserInfo;
-
-- (void)positionHUD:(NSNotification*)notification;
-- (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle;
-
-- (void)controlViewDidReceiveTouchEvent:(id)sender forEvent:(UIEvent*)event;
-
-- (void)showProgress:(float)progress status:(NSString*)status;
-- (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration;
-- (void)showStatus:(NSString*)status;
-
-- (void)dismiss;
-- (void)dismissWithDelay:(NSTimeInterval)delay completion:(SVProgressHUDDismissCompletion)completion;
-
-- (void)cancelRingLayerAnimation;
-- (void)cancelIndefiniteAnimatedViewAnimation;
-
-- (UIColor*)foregroundColorForStyle;
-- (UIColor*)backgroundColorForStyle;
 
 @end
 
@@ -127,7 +94,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style {
     [self sharedView].defaultStyle = style;
-    [self sharedView].hudView.alpha = style != SVProgressHUDStyleCustom ? 1.0f : 0.0f;
 }
 
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType {
@@ -359,15 +325,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 #pragma mark - Dismiss Methods
 
-+ (void)popActivity {
-    if([self sharedView].activityCount > 0) {
-        [self sharedView].activityCount--;
-    }
-    if([self sharedView].activityCount == 0) {
-        [[self sharedView] dismiss];
-    }
-}
-
 + (void)dismiss {
     [self dismissWithDelay:0.0 completion:nil];
 }
@@ -403,16 +360,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _isInitializing = YES;
         
         self.userInteractionEnabled = NO;
-        self.activityCount = 0;
         
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-        self.hudView.contentView.alpha = 0.0f;
-#else
-        self.hudView.alpha = 0.0f;
-#endif
         self.backgroundView.alpha = 0.0f;
         
-        _backgroundColor = [UIColor clearColor];
+        _backgroundColor = [UIColor whiteColor];
         _foregroundColor = [UIColor blackColor];
         _backgroundLayerColor = [UIColor colorWithWhite:0 alpha:0.4];
         
@@ -535,7 +486,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
     self.statusLabel.frame = labelRect;
     self.statusLabel.center = CGPointMake(CGRectGetMidX(self.hudView.bounds), centerY);
-    self.statusLabel.hidden = !self.statusLabel.text;
     
     [CATransaction commit];
 }
@@ -790,12 +740,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             strongSelf.imageView.hidden = YES;
             strongSelf.imageView.image = nil;
             
-            if(strongSelf.fadeOutTimer) {
-                strongSelf.activityCount = 0;
-            }
+            // Stop fade out
             strongSelf.fadeOutTimer = nil;
             
             // Update text and set progress to the given value
+            strongSelf.statusLabel.hidden = status.length == 0;
             strongSelf.statusLabel.text = status;
             strongSelf.progress = progress;
             
@@ -825,11 +774,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 [CATransaction setDisableActions:YES];
                 strongSelf.ringView.strokeEnd = progress;
                 [CATransaction commit];
-                
-                // Update the activity count
-                if(progress == 0) {
-                    strongSelf.activityCount++;
-                }
             } else {
                 // Cancel the ringLayer animation, then show the indefiniteAnimatedView
                 [strongSelf cancelRingLayerAnimation];
@@ -843,13 +787,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 if([strongSelf.indefiniteAnimatedView respondsToSelector:@selector(startAnimating)]) {
                     [(id)strongSelf.indefiniteAnimatedView startAnimating];
                 }
-                
-                // Update the activity count
-                strongSelf.activityCount++;
             }
             
             // Show
-            [strongSelf showStatus:status];
+            [strongSelf fadeInWithStatus:status];
             
             // Tell the Haptics Generator to prepare for feedback, which may come soon
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
@@ -873,16 +814,16 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             [strongSelf cancelIndefiniteAnimatedViewAnimation];
             
             // Update imageView
-            UIColor *tintColor = strongSelf.foregroundColorForStyle;
-            strongSelf.imageView.tintColor = tintColor;
+            strongSelf.imageView.tintColor = strongSelf.foregroundColorForStyle;
             strongSelf.imageView.image = image;
             strongSelf.imageView.hidden = NO;
             
             // Update text
+            strongSelf.statusLabel.hidden = status.length == 0;
             strongSelf.statusLabel.text = status;
             
             // Show
-            [strongSelf showStatus:status];
+            [strongSelf fadeInWithStatus:status];
             
             // An image will be dismissed automatically. Therefore, we start a timer
             // which then will call dismiss after the predefined duration
@@ -892,80 +833,44 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }];
 }
 
-- (void)showStatus:(NSString*)status {
+- (void)fadeInWithStatus:(NSString*)status {
     // Update the HUDs frame to the new content and position HUD
     [self updateHUDFrame];
     [self positionHUD:nil];
     
     // Update accessibility as well as user interaction
     if(self.defaultMaskType != SVProgressHUDMaskTypeNone) {
-        self.accessibilityLabel = status;
+        self.controlView.userInteractionEnabled = YES;
+        self.accessibilityLabel = status ?: NSLocalizedString(@"Loading", nil);
         self.isAccessibilityElement = YES;
     } else {
-        self.hudView.accessibilityLabel = status;
+        self.controlView.userInteractionEnabled = NO;
+        self.hudView.accessibilityLabel = status ?: NSLocalizedString(@"Loading", nil);
         self.hudView.isAccessibilityElement = YES;
     }
     
     // Show if not already visible
-    // Checking one alpha value is sufficient as they are all the same
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if(self.hudView.contentView.alpha != 1.0f){
-#else
-    if(self.hudView.alpha != 1.0f){
-#endif
+    if(self.backgroundView.alpha != 1.0) {
         // Post notification to inform user
         [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillAppearNotification
                                                             object:self
                                                           userInfo:[self notificationUserInfo]];
         
-        // Zoom HUD a little to make a nice appear / pop up animation
-        self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3, 1.3);
+        // Shrink HUD to to make a nice appear / pop up animation
+        self.hudView.transform = self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.5f, 1/1.5f);
         
-        // Activate blur on view before animation on older iOS versions,
-        // as we cannot animate this property and use alpha values instead
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-        bool greateriOS9 = kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_9_0;
-        if (self.defaultStyle != SVProgressHUDStyleCustom && !greateriOS9) {
-            [self addBlur];
-            
-            // Update alpha
-            self.hudView.contentView.alpha = 1.0f;
-        }
-#endif
-      
-        // Define blocks
         __block void (^animationsBlock)(void) = ^{
-            // Shrink HUD to finish pop up animation
-            self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.3f, 1/1.3f);
+            // Zoom HUD a little to make a nice appear / pop up animation
+            self.hudView.transform = CGAffineTransformIdentity;
             
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-            if(self.defaultStyle != SVProgressHUDStyleCustom && greateriOS9){
-                // Add blur
-                [self addBlur];
-                
-                // Update alpha
-                self.hudView.contentView.alpha = 1.0f;
-            } else {
-                // This gives a warning on iOS 8, however it works, see #703
-                self.hudView.alpha = 1.0f;
-                self.hudView.contentView.alpha = 1.0f;
-            }
-#else
-            self.hudView.alpha = 1.0f;
-            self.hudView.contentView.alpha = 1.0f;
-#endif
-            self.backgroundView.alpha = 1.0f;
+            // Fade in all effects (colors, blur, etc.)
+            [self fadeInEffects];
         };
         
         __block void (^completionBlock)(void) = ^{
-            // Check if we really achieved to show the HUD (<=> alpha values are applied)
+            // Check if we really achieved to show the HUD (<=> alpha)
             // and the change of these values has not been cancelled in between e.g. due to a dismissal
-            // Checking one alpha value is sufficient as they are all the same
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-            if(self.hudView.contentView.alpha == 1.0f){
-#else
-            if(self.hudView.alpha == 1.0f){
-#endif
+            if(self.backgroundView.alpha == 1.0f){
                 // Register observer <=> we now have to handle orientation changes etc.
                 [self registerNotifications];
                 
@@ -973,13 +878,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidAppearNotification
                                                                     object:self
                                                                   userInfo:[self notificationUserInfo]];
+                
+                // Update accessibility
+                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+                UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, status);
             }
-            
-            // Update accessibility
-            UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, status);
         };
         
+        // Animate appearance
         if (self.fadeInAnimationDuration > 0) {
             // Animate appearance
             [UIView animateWithDuration:self.fadeInAnimationDuration
@@ -1014,48 +920,18 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                                                                 object:nil
                                                               userInfo:[strongSelf notificationUserInfo]];
             
-            // Reset activity count
-            strongSelf.activityCount = 0;
-            
-            // Define blocks
             __block void (^animationsBlock)(void) = ^{
                 // Shrink HUD a little to make a nice disappear animation
                 strongSelf.hudView.transform = CGAffineTransformScale(strongSelf.hudView.transform, 1/1.3f, 1/1.3f);
                 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-                bool greateriOS9 = kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_9_0;
-                if(self.defaultStyle != SVProgressHUDStyleCustom && greateriOS9){
-                    // Fade out blur effect == remove, and update alpha
-                    strongSelf.hudView.effect = nil;
-                    
-                    // Update alpha
-                    strongSelf.hudView.contentView.alpha = 0.0f;
-                } else {
-                    // This gives a warning on iOS 8, however it works, see #703
-                    strongSelf.hudView.alpha = 0.0f;
-                    strongSelf.hudView.contentView.alpha = 0.0f;
-                }
-#else
-                strongSelf.hudView.alpha = 0.0f;
-                strongSelf.hudView.contentView.alpha = 0.0f;
-#endif
-                strongSelf.backgroundView.alpha = 0.0f;
+                // Fade out all effects (colors, blur, etc.)
+                [strongSelf fadeOutEffects];
             };
             
             __block void (^completionBlock)(void) = ^{
                 // Check if we really achieved to dismiss the HUD (<=> alpha values are applied)
                 // and the change of these values has not been cancelled in between e.g. due to a new show
-                // Checking one alpha value is sufficient as they are all the same
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-                bool greateriOS9 = kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_9_0;
-                if(self.defaultStyle != SVProgressHUDStyleCustom && !greateriOS9){
-                    strongSelf.hudView.contentView.alpha = 0.0f;
-                }
-            
-                if(strongSelf.hudView.contentView.alpha == 0.0f){
-#else
-                if(strongSelf.hudView.alpha == 0.0f){
-#endif
+                if(self.backgroundView.alpha == 0.0f){
                     // Clean up view hierarchy (overlays)
                     [strongSelf.controlView removeFromSuperview];
                     [strongSelf.backgroundView removeFromSuperview];
@@ -1087,12 +963,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                     }
                 }
             };
-                
+            
             // UIViewAnimationOptionBeginFromCurrentState AND a delay doesn't always work as expected
             // When UIViewAnimationOptionBeginFromCurrentState is set, animateWithDuration: evaluates the current
             // values to check if an animation is necessary. The evaluation happens at function call time and not
             // after the delay => the animation is sometimes skipped. Therefore we delay using dispatch_after.
-                
+            
             dispatch_time_t dipatchTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
             dispatch_after(dipatchTime, dispatch_get_main_queue(), ^{
                 if (strongSelf.fadeOutAnimationDuration > 0) {
@@ -1113,9 +989,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             // Inform iOS to redraw the view hierarchy
             [strongSelf setNeedsDisplay];
-        } else if (completion) {
-            // Run an (optional) completionHandler
-            completion();
         }
     }];
 }
@@ -1436,18 +1309,60 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     return nil;
 }
     
-- (void)addBlur
+- (void)fadeInEffects {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if(self.defaultStyle != SVProgressHUDStyleCustom) {
+        // Add blur effect
+        UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
+        self.hudView.effect = blurEffect;
+        
+        // We omit UIVibrancy effect and use a suitable background color as an alternative.
+        // This will make everyting more readable. See the following for details:
+        // https://www.omnigroup.com/developer/how-to-make-text-in-a-uivisualeffectview-readable-on-any-background
+        
+        self.hudView.backgroundColor = [self.backgroundColorForStyle colorWithAlphaComponent:0.6f];
+    } else {
+        self.hudView.backgroundColor =  self.backgroundColorForStyle;
+    }
+#else
+    self.hudView.backgroundColor =  self.backgroundColorForStyle;
+#endif
+
+    // Fade in views
+    self.backgroundView.alpha = 1.0f;
+    
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    for(UIView *subview in self.hudView.contentView.subviews) {
+#else
+    for(UIView *subview in self.hudView.subviews) {
+#endif
+        subview.alpha = 1.0f;
+    }
+}
+
+- (void)fadeOutEffects
 {
-    // Add blur effects
-    UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
-    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
-    self.hudView.effect = blurEffect;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if(self.defaultStyle != SVProgressHUDStyleCustom) {
+        // Remove blur effect
+        self.hudView.effect = nil;
+    }
+#endif
     
-    // We omit UIVibrancy effect and use a suitable background color as an alternative.
-    // This will make everyting more readable. See the following for details:
-    // https://www.omnigroup.com/developer/how-to-make-text-in-a-uivisualeffectview-readable-on-any-background
+    // Remove background color
+    self.hudView.backgroundColor = [UIColor clearColor];
     
-    self.hudView.backgroundColor = [self.backgroundColorForStyle colorWithAlphaComponent:0.6f];
+    // Fade out views
+    self.backgroundView.alpha = 0.0f;
+    
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    for(UIView *subview in self.hudView.contentView.subviews) {
+#else
+    for(UIView *subview in self.hudView.subviews) {
+#endif
+        subview.alpha = 0.0f;
+    }
 }
 
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000

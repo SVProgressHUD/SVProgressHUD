@@ -135,7 +135,6 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;
 
-+ (void)popActivity; // decrease activity count, if activity count == 0 the HUD is dismissed
 + (void)dismiss;
 + (void)dismissWithCompletion:(nullable SVProgressHUDDismissCompletion)completion;
 + (void)dismissWithDelay:(NSTimeInterval)delay;
