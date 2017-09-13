@@ -97,7 +97,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].defaultAnimationType = type;
 }
 
-+ (void)setContainerView:(UIView*)containerView {
++ (void)setContainerView:(nullable UIView*)containerView {
     [self sharedView].containerView = containerView;
 }
 

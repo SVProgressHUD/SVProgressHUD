@@ -83,7 +83,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;   // default is SVProgressHUDAnimationTypeFlat
-+ (void)setContainerView:(nonnull UIView*)containerView;            // default is window level
++ (void)setContainerView:(nullable UIView*)containerView;           // default is window level
 + (void)setMinimumSize:(CGSize)minimumSize;                         // default is CGSizeZero, can be used to avoid resizing for a larger message
 + (void)setRingThickness:(CGFloat)ringThickness;                    // default is 2 pt
 + (void)setRingRadius:(CGFloat)radius;                              // default is 18 pt
