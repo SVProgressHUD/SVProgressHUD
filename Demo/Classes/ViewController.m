@@ -8,6 +8,13 @@
 #import "ViewController.h"
 #import "SVProgressHUD.h"
 
+@interface ViewController()
+
+@property (nonatomic, readwrite) NSUInteger activityCount;
+@property (weak, nonatomic) IBOutlet UIButton *popActivityButton;
+
+@end
+
 @implementation ViewController
 
 
@@ -15,6 +22,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    self.activityCount = 0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleNotification:)
@@ -56,10 +65,16 @@
 
 - (void)show {
     [SVProgressHUD show];
+    
+    self.activityCount++;
+    [self updateActivityCounterInfo];
 }
 
 - (void)showWithStatus {
 	[SVProgressHUD showWithStatus:@"Doing Stuff"];
+    
+    self.activityCount++;
+    [self updateActivityCounterInfo];
 }
 
 static float progress = 0.0f;
@@ -68,6 +83,9 @@ static float progress = 0.0f;
     progress = 0.0f;
     [SVProgressHUD showProgress:0 status:@"Loading"];
     [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.1f];
+    
+    self.activityCount++;
+    [self updateActivityCounterInfo];
 }
 
 - (void)increaseProgress {
@@ -77,7 +95,11 @@ static float progress = 0.0f;
     if(progress < 1.0f){
         [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.1f];
     } else {
-        [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
+        if (self.activityCount > 1) {
+            [self performSelector:@selector(popActivity) withObject:nil afterDelay:0.4f];
+        } else {
+            [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
+        }
     }
 }
 
@@ -86,18 +108,39 @@ static float progress = 0.0f;
 
 - (void)dismiss {
 	[SVProgressHUD dismiss];
+ 
+    self.activityCount = 0;
+    [self updateActivityCounterInfo];
+}
+
+- (IBAction)popActivity {
+    [SVProgressHUD popActivity];
+    
+    if (self.activityCount != 0) {
+        self.activityCount--;
+        [self updateActivityCounterInfo];
+    }
 }
 
 - (IBAction)showInfoWithStatus {
     [SVProgressHUD showInfoWithStatus:@"Useful Information."];
+
+    self.activityCount++;
+    [self updateActivityCounterInfo];
 }
 
 - (void)showSuccessWithStatus {
 	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
+ 
+    self.activityCount++;
+    [self updateActivityCounterInfo];
 }
 
 - (void)showErrorWithStatus {
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
+
+    self.activityCount++;
+    [self updateActivityCounterInfo];
 }
 
 
@@ -137,5 +180,9 @@ static float progress = 0.0f;
     }
 }
 
+#pragma mark - Helper
+- (void)updateActivityCounterInfo {
+    [self.popActivityButton setTitle:[NSString stringWithFormat:@"popActivity - %lu", (unsigned long)self.activityCount] forState:UIControlStateNormal];
+}
 
 @end

@@ -13,6 +13,7 @@
 - (IBAction)showWithStatus;
 
 - (IBAction)dismiss;
+- (IBAction)popActivity;
 - (IBAction)showInfoWithStatus;
 - (IBAction)showSuccessWithStatus;
 - (IBAction)showErrorWithStatus;
