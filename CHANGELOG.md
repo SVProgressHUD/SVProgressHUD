@@ -1,3 +1,6 @@
+## 2.2.2
+* Rollback of popActivity #824
+
 ## Version 2.2
 * Update project to AutoLayout (finally)
 * Added grace time #556
