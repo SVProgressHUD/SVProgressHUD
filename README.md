@@ -109,6 +109,14 @@ The HUD can be dismissed using:
 + (void)dismissWithDelay:(NSTimeInterval)delay;
 ```
 
+If you'd like to stack HUDs, you can balance out every show call using:
+
+```
++ (void)popActivity;
+```
+
+The HUD will get dismissed once the popActivity calls will match the number of show calls.
+
 Or show a confirmation glyph before before getting dismissed a little bit later. The display time depends on `minimumDismissTimeInterval` and the length of the given string.
 
 ```objective-c

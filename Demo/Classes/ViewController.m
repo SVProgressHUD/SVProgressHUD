@@ -8,10 +8,22 @@
 #import "ViewController.h"
 #import "SVProgressHUD.h"
 
+@interface ViewController()
+
+@property (nonatomic, readwrite) NSUInteger activityCount;
+@property (weak, nonatomic) IBOutlet UIButton *popActivityButton;
+
+@end
+
 @implementation ViewController
 
 
-#pragma mark - Notification Methods Sample
+#pragma mark - ViewController lifecycle
+
+- (void)viewDidLoad{
+    [super viewDidLoad];
+    self.activityCount = 0;
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -40,14 +52,19 @@
                                              selector:@selector(handleNotification:)
                                                  name:SVProgressHUDDidReceiveTouchEventNotification
                                                object:nil];
+    
+    [self addObserver:self forKeyPath:@"activityCount" options:NSKeyValueObservingOptionNew context:nil];
 }
+
+
+#pragma mark - Notification handling
 
 - (void)handleNotification:(NSNotification *)notification {
     NSLog(@"Notification received: %@", notification.name);
     NSLog(@"Status user info key: %@", notification.userInfo[SVProgressHUDStatusUserInfoKey]);
     
     if([notification.name isEqualToString:SVProgressHUDDidReceiveTouchEventNotification]){
-        [SVProgressHUD dismiss];
+        [self dismiss];
     }
 }
 
@@ -56,10 +73,12 @@
 
 - (void)show {
     [SVProgressHUD show];
+    self.activityCount++;
 }
 
 - (void)showWithStatus {
 	[SVProgressHUD showWithStatus:@"Doing Stuff"];
+    self.activityCount++;
 }
 
 static float progress = 0.0f;
@@ -68,6 +87,7 @@ static float progress = 0.0f;
     progress = 0.0f;
     [SVProgressHUD showProgress:0 status:@"Loading"];
     [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.1f];
+    self.activityCount++;
 }
 
 - (void)increaseProgress {
@@ -77,7 +97,11 @@ static float progress = 0.0f;
     if(progress < 1.0f){
         [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.1f];
     } else {
-        [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
+        if (self.activityCount > 1) {
+            [self performSelector:@selector(popActivity) withObject:nil afterDelay:0.4f];
+        } else {
+            [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
+        }
     }
 }
 
@@ -86,18 +110,30 @@ static float progress = 0.0f;
 
 - (void)dismiss {
 	[SVProgressHUD dismiss];
+    self.activityCount = 0;
+}
+
+- (IBAction)popActivity {
+    [SVProgressHUD popActivity];
+    
+    if (self.activityCount != 0) {
+        self.activityCount--;
+    }
 }
 
 - (IBAction)showInfoWithStatus {
     [SVProgressHUD showInfoWithStatus:@"Useful Information."];
+    self.activityCount++;
 }
 
 - (void)showSuccessWithStatus {
 	[SVProgressHUD showSuccessWithStatus:@"Great Success!"];
+    self.activityCount++;
 }
 
 - (void)showErrorWithStatus {
 	[SVProgressHUD showErrorWithStatus:@"Failed with Error"];
+    self.activityCount++;
 }
 
 
@@ -137,5 +173,14 @@ static float progress = 0.0f;
     }
 }
 
+
+#pragma mark - Helper
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if([keyPath isEqualToString:@"activityCount"]){
+        unsigned long activityCount = [[change objectForKey:NSKeyValueChangeNewKey] unsignedLongValue];
+        [self.popActivityButton setTitle:[NSString stringWithFormat:@"popActivity - %lu", activityCount] forState:UIControlStateNormal];
+    }
+}
 
 @end
