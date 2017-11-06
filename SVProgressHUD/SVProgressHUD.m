@@ -956,10 +956,20 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 [strongSelf cancelIndefiniteAnimatedViewAnimation];
                 
                 // Add ring to HUD
-                if(!strongSelf.ringView.superview)
+                if(!strongSelf.ringView.superview){
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+                    [strongSelf.hudVibrancyView.contentView addSubview:strongSelf.ringView];
+#else
                     [strongSelf.hudView addSubview:strongSelf.ringView];
-                if(!strongSelf.backgroundRingView.superview)
+#endif
+                }
+                if(!strongSelf.backgroundRingView.superview){
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+                    [strongSelf.hudVibrancyView.contentView addSubview:strongSelf.backgroundRingView];
+#else
                     [strongSelf.hudView addSubview:strongSelf.backgroundRingView];
+#endif
+                }
                 
                 // Set progress animated
                 [CATransaction begin];
