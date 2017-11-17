@@ -196,6 +196,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].hapticsEnabled = hapticsEnabled;
 }
 
++ (void)setMaximumFrameWidth:(CGFloat)newWidth {
+    [self sharedView].maximumFrameWidth = newWidth;
+}
+
++ (void)setMaximumFrameHeight:(CGFloat)newHeight {
+    [self sharedView].maximumFrameHeight = newHeight;
+}
+
 #pragma mark - Show Methods
 
 + (void)show {
@@ -410,6 +418,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _graceTimeInterval = 0.0f;
         _minimumDismissTimeInterval = 5.0;
         _maximumDismissTimeInterval = CGFLOAT_MAX;
+        
+        _maximumFrameWidth = 200.0;
+        _maximumFrameHeight = 300.0;
 
         _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
@@ -438,7 +449,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     CGFloat labelWidth = 0.0f;
     
     if(self.statusLabel.text) {
-        CGSize constraintSize = CGSizeMake(200.0f, 300.0f);
+        CGSize constraintSize = CGSizeMake(self.maximumFrameWidth, self.maximumFrameHeight);
         labelRect = [self.statusLabel.text boundingRectWithSize:constraintSize
                                                         options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin)
                                                      attributes:@{NSFontAttributeName: self.statusLabel.font}
