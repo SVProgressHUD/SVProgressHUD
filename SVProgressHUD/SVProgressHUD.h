@@ -149,3 +149,4 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 @end
 
+#import "SVProgressHUD+Abort.h"
