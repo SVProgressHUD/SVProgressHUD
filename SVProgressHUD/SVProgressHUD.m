@@ -149,7 +149,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 + (void)setImageViewSize:(CGSize)size {
-	[self sharedView].imageViewSize = size;
+    [self sharedView].imageViewSize = size;
+}
+
++ (void)setShouldTintImages:(BOOL)shouldTintImages {
+    [self sharedView].shouldTintImages = shouldTintImages;
 }
 
 + (void)setInfoImage:(UIImage*)image {
@@ -395,9 +399,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         UIImage* successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
         UIImage* errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
 
-        _infoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        _successImage = [successImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        _errorImage = [errorImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImageRenderingMode renderingMode = (self.shouldTintImages) ? UIImageRenderingModeAlwaysTemplate : UIImageRenderingModeAlwaysOriginal;
+
+        _infoImage = [infoImage imageWithRenderingMode:renderingMode];
+        _successImage = [successImage imageWithRenderingMode:renderingMode];
+        _errorImage = [errorImage imageWithRenderingMode:renderingMode];
 
         _ringThickness = 2.0f;
         _ringRadius = 18.0f;
@@ -860,8 +866,17 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             [strongSelf cancelIndefiniteAnimatedViewAnimation];
             
             // Update imageView
-            strongSelf.imageView.tintColor = strongSelf.foregroundColorForStyle;
-            strongSelf.imageView.image = image;
+            UIColor *tintColor = strongSelf.foregroundColorForStyle;
+            UIImage *tintedImage = image;
+
+            if (self.shouldTintImages) {
+                if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
+                    tintedImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                }
+                strongSelf.imageView.tintColor = tintColor;
+            }
+
+            strongSelf.imageView.image = tintedImage;
             strongSelf.imageView.hidden = NO;
             
             // Update text
@@ -1496,6 +1511,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)setBackgroundLayerColor:(UIColor*)color {
     if (!_isInitializing) _backgroundLayerColor = color;
+}
+
+- (void)setShouldTintImages:(BOOL)shouldTintImages {
+    if (!_isInitializing) _shouldTintImages = shouldTintImages;
 }
 
 - (void)setInfoImage:(UIImage*)image {
