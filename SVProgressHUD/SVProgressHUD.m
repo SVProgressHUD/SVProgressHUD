@@ -506,7 +506,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
     self.statusLabel.frame = labelRect;
     self.statusLabel.center = CGPointMake(CGRectGetMidX(self.hudView.bounds), centerY);
-    
+    self.statusLabel.hidden = self.statusLabel.text.length == 0;
+
     [CATransaction commit];
 }
 
