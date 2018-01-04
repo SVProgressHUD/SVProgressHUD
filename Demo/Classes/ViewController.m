@@ -105,6 +105,11 @@ static float progress = 0.0f;
     }
 }
 
+#pragma mark - Set Status Sample
+
+- (IBAction)setStatus:(id)sender {
+    [SVProgressHUD setStatus:@"New Status"];
+}
 
 #pragma mark - Dismiss Methods Sample
 
