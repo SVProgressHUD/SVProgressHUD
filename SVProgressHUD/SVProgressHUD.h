@@ -39,7 +39,8 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
     SVProgressHUDAnimationTypeFlat,     // default animation type, custom flat animation (indefinite animated ring)
-    SVProgressHUDAnimationTypeNative    // iOS native UIActivityIndicatorView
+    SVProgressHUDAnimationTypeNative,    // iOS native UIActivityIndicatorView
+    SVProgressHUDAnimationTypeCustom
 };
 
 typedef void (^SVProgressHUDShowCompletion)(void);
@@ -80,7 +81,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (assign, nonatomic) UIWindowLevel maxSupportedWindowLevel; // default is UIWindowLevelNormal
 
 @property (assign, nonatomic) BOOL hapticsEnabled;	// default is NO
-
+@property (strong, nonatomic) UIImageView *loadingImageView;   // would be used for SVProgressHUDAnimationTypeCustom
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;   // default is SVProgressHUDAnimationTypeFlat
@@ -109,6 +110,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
 + (void)setHapticsEnabled:(BOOL)hapticsEnabled;						// default is NO
++ (void)setLoadingImageView:(UIImageView*) loadingImageView;        // default is nil
 
 #pragma mark - Show Methods
 
