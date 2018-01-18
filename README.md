@@ -157,7 +157,8 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
-+ (void)setHapticsEnabled:(BOOL)hapticsEnabled;						// default is NO
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled;                     // default is NO
++ (void)setLoadingImageView:(UIImageView)image;                     // default is nil, only used for SVProgressHUDAnimationTypeCustom
 ```
 
 Additionally `SVProgressHUD` supports the `UIAppearance` protocol for most of the above methods.
