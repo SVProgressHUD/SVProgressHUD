@@ -565,6 +565,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)setStatus:(NSString*)status {
     self.statusLabel.text = status;
+    self.statusLabel.hidden = status.length == 0;
     [self updateHUDFrame];
 }
 
