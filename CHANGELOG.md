@@ -1,4 +1,8 @@
-## 2.2.2
+## Version 2.2.3 (WIP)
+* Off-screen keyboard returns a positive value in iOS 11.2 as its height #846
+* Fix bug where status label hiddenness is not updated when setStatus is called #854
+
+## Version 2.2.2
 * Rollback of popActivity #824
 
 ## Version 2.2
