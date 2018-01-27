@@ -1367,7 +1367,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 for (__strong UIView *possibleKeyboardSubview in possibleKeyboard.subviews) {
                     viewName = NSStringFromClass(possibleKeyboardSubview.class);
                     if([viewName hasPrefix:@"UI"] && [viewName hasSuffix:@"InputSetHostView"]) {
-                        return CGRectGetHeight(possibleKeyboardSubview.bounds);
+                        CGRect convertedRect = [possibleKeyboard convertRect:possibleKeyboardSubview.frame toView:self];
+                        CGRect intersectedRect = CGRectIntersection(convertedRect, self.bounds);
+                        if (!CGRectIsNull(intersectedRect)) {
+                            return CGRectGetHeight(intersectedRect);
+                        }
                     }
                 }
             }
