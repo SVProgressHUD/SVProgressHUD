@@ -58,7 +58,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, readonly) UIWindow *frontWindow;
 
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-@property (nonatomic, strong) UINotificationFeedbackGenerator *hapticGenerator;
+@property (nonatomic, strong) UINotificationFeedbackGenerator *hapticGenerator NS_AVAILABLE_IOS(10_0);
 #endif
 
 @end
@@ -150,10 +150,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)setImageViewSize:(CGSize)size {
     [self sharedView].imageViewSize = size;
-}
-
-+ (void)setShouldTintImages:(BOOL)shouldTintImages {
-    [self sharedView].shouldTintImages = shouldTintImages;
 }
 
 + (void)setInfoImage:(UIImage*)image {
@@ -254,7 +250,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
+        if (@available(iOS 10, *)) {
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
+        }
     });
 #endif
 }
@@ -268,10 +266,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)showSuccessWithStatus:(NSString*)status {
     [self showImage:[self sharedView].successImage status:status];
-
+    
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+        if (@available(iOS 10, *)) {
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+        }
     });
 #endif
 }
@@ -284,7 +284,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+        if (@available(iOS 10, *)) {
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+        }
     });
 #endif
 }
@@ -294,7 +296,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+        if (@available(iOS 10, *)) {
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+        }
     });
 #endif
 }
@@ -307,7 +311,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+        if (@available(iOS 10, *)) {
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+        }
     });
 #endif
 }
@@ -379,7 +385,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         self.indefiniteAnimatedView.alpha = 0.0f;
         self.ringView.alpha = self.backgroundRingView.alpha = 0.0f;
         
-
+        
         _backgroundColor = [UIColor whiteColor];
         _foregroundColor = [UIColor blackColor];
         _backgroundLayerColor = [UIColor colorWithWhite:0 alpha:0.4];
@@ -398,25 +404,23 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         UIImage* infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
         UIImage* successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
         UIImage* errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
-
-        UIImageRenderingMode renderingMode = (self.shouldTintImages) ? UIImageRenderingModeAlwaysTemplate : UIImageRenderingModeAlwaysOriginal;
-
-        _infoImage = [infoImage imageWithRenderingMode:renderingMode];
-        _successImage = [successImage imageWithRenderingMode:renderingMode];
-        _errorImage = [errorImage imageWithRenderingMode:renderingMode];
-
+        
+        _infoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _successImage = [successImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _errorImage = [errorImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        
         _ringThickness = 2.0f;
         _ringRadius = 18.0f;
         _ringNoTextRadius = 24.0f;
         
         _cornerRadius = 14.0f;
-		
+        
         _imageViewSize = CGSizeMake(28.0f, 28.0f);
         
         _graceTimeInterval = 0.0f;
         _minimumDismissTimeInterval = 5.0;
         _maximumDismissTimeInterval = CGFLOAT_MAX;
-
+        
         _fadeInAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         _fadeOutAnimationDuration = SVProgressHUDDefaultAnimationDuration;
         
@@ -497,7 +501,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         self.backgroundRingView.center = self.ringView.center = CGPointMake(CGRectGetMidX(self.hudView.bounds), centerY);
     }
     self.imageView.center = CGPointMake(CGRectGetMidX(self.hudView.bounds), centerY);
-
+    
     // Label
     if(imageUsed || progressUsed) {
         centerY = CGRectGetMaxY(imageUsed ? self.imageView.frame : self.indefiniteAnimatedView.frame) + SVProgressHUDLabelSpacing + labelHeight / 2.0f;
@@ -565,7 +569,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)setStatus:(NSString*)status {
     self.statusLabel.text = status;
-    self.statusLabel.hidden = status.length == 0;
     [self updateHUDFrame];
 }
 
@@ -632,7 +635,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (void)positionHUD:(NSNotification*)notification {
     CGFloat keyboardHeight = 0.0f;
     double animationDuration = 0.0;
-
+    
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
@@ -678,7 +681,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     // Get the currently active frame of the display (depends on orientation)
     CGRect orientationFrame = self.bounds;
-
+    
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     CGRect statusBarFrame = UIApplication.sharedApplication.statusBarFrame;
 #else
@@ -711,7 +714,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     CGFloat posX = CGRectGetMidX(orientationFrame);
     CGFloat posY = floorf(activeHeight*0.45f);
-
+    
     CGFloat rotateAngle = 0.0;
     CGPoint newCenter = CGPointMake(posX, posY);
     
@@ -843,7 +846,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             // Tell the Haptics Generator to prepare for feedback, which may come soon
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-            [strongSelf.hapticGenerator prepare];
+            if (@available(iOS 10, *)) {
+                [strongSelf.hapticGenerator prepare];
+            }
 #endif
         }
     }];
@@ -867,17 +872,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             [strongSelf cancelIndefiniteAnimatedViewAnimation];
             
             // Update imageView
-            UIColor *tintColor = strongSelf.foregroundColorForStyle;
-            UIImage *tintedImage = image;
-
-            if (self.shouldTintImages) {
-                if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
-                    tintedImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                }
-                strongSelf.imageView.tintColor = tintColor;
-            }
-
-            strongSelf.imageView.image = tintedImage;
+            strongSelf.imageView.tintColor = strongSelf.foregroundColorForStyle;
+            strongSelf.imageView.image = image;
             strongSelf.imageView.hidden = NO;
             
             // Update text
@@ -1261,7 +1257,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             _backgroundView.backgroundColor = [UIColor clearColor];
         }
     }
-
+    
     // Update frame
     if(_backgroundView){
         _backgroundView.frame = self.bounds;
@@ -1281,281 +1277,274 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
 - (UIVisualEffectView*)hudView {
 #else
-- (UIView*)hudView {
+    - (UIView*)hudView {
 #endif
-    if(!_hudView) {
+        if(!_hudView) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-        _hudView = [UIVisualEffectView new];
+            _hudView = [UIVisualEffectView new];
 #else
-        _hudView = [UIView new];
+            _hudView = [UIView new];
 #endif
-        _hudView.layer.masksToBounds = YES;
-        _hudView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-    }
-    if(!_hudView.superview) {
-        [self addSubview:_hudView];
+            _hudView.layer.masksToBounds = YES;
+            _hudView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        }
+        if(!_hudView.superview) {
+            [self addSubview:_hudView];
+        }
+        
+        // Update styling
+        _hudView.layer.cornerRadius = self.cornerRadius;
+        
+        return _hudView;
     }
     
-    // Update styling
-    _hudView.layer.cornerRadius = self.cornerRadius;
-    
-    return _hudView;
-}
-
-- (UILabel*)statusLabel {
-    if(!_statusLabel) {
-        _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _statusLabel.backgroundColor = [UIColor clearColor];
-        _statusLabel.adjustsFontSizeToFitWidth = YES;
-        _statusLabel.textAlignment = NSTextAlignmentCenter;
-        _statusLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-        _statusLabel.numberOfLines = 0;
-    }
-    if(!_statusLabel.superview) {
+    - (UILabel*)statusLabel {
+        if(!_statusLabel) {
+            _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+            _statusLabel.backgroundColor = [UIColor clearColor];
+            _statusLabel.adjustsFontSizeToFitWidth = YES;
+            _statusLabel.textAlignment = NSTextAlignmentCenter;
+            _statusLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+            _statusLabel.numberOfLines = 0;
+        }
+        if(!_statusLabel.superview) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-      [self.hudView.contentView addSubview:_statusLabel];
+            [self.hudView.contentView addSubview:_statusLabel];
 #else
-      [self.hudView addSubview:_statusLabel];
+            [self.hudView addSubview:_statusLabel];
 #endif
+        }
+        
+        // Update styling
+        _statusLabel.textColor = self.foregroundColorForStyle;
+        _statusLabel.font = self.font;
+        
+        return _statusLabel;
     }
     
-    // Update styling
-    _statusLabel.textColor = self.foregroundColorForStyle;
-    _statusLabel.font = self.font;
-
-    return _statusLabel;
-}
-
-- (UIImageView*)imageView {
-    if(_imageView && !CGSizeEqualToSize(_imageView.bounds.size, _imageViewSize)) {
-        [_imageView removeFromSuperview];
-        _imageView = nil;
-    }
-    
-    if(!_imageView) {
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _imageViewSize.width, _imageViewSize.height)];
-    }
-    if(!_imageView.superview) {
+    - (UIImageView*)imageView {
+        if(_imageView && !CGSizeEqualToSize(_imageView.bounds.size, _imageViewSize)) {
+            [_imageView removeFromSuperview];
+            _imageView = nil;
+        }
+        
+        if(!_imageView) {
+            _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _imageViewSize.width, _imageViewSize.height)];
+        }
+        if(!_imageView.superview) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-        [self.hudView.contentView addSubview:_imageView];
+            [self.hudView.contentView addSubview:_imageView];
 #else
-        [self.hudView addSubview:_imageView];
+            [self.hudView addSubview:_imageView];
 #endif
+        }
+        
+        return _imageView;
     }
     
-    return _imageView;
-}
-
-
+    
 #pragma mark - Helper
     
-- (CGFloat)visibleKeyboardHeight {
+    - (CGFloat)visibleKeyboardHeight {
 #if !defined(SV_APP_EXTENSIONS)
-    UIWindow *keyboardWindow = nil;
-    for (UIWindow *testWindow in UIApplication.sharedApplication.windows) {
-        if(![testWindow.class isEqual:UIWindow.class]) {
-            keyboardWindow = testWindow;
-            break;
+        UIWindow *keyboardWindow = nil;
+        for (UIWindow *testWindow in UIApplication.sharedApplication.windows) {
+            if(![testWindow.class isEqual:UIWindow.class]) {
+                keyboardWindow = testWindow;
+                break;
+            }
         }
-    }
-    
-    for (__strong UIView *possibleKeyboard in keyboardWindow.subviews) {
-        NSString *viewName = NSStringFromClass(possibleKeyboard.class);
-        if([viewName hasPrefix:@"UI"]){
-            if([viewName hasSuffix:@"PeripheralHostView"] || [viewName hasSuffix:@"Keyboard"]){
-                return CGRectGetHeight(possibleKeyboard.bounds);
-            } else if ([viewName hasSuffix:@"InputSetContainerView"]){
-                for (__strong UIView *possibleKeyboardSubview in possibleKeyboard.subviews) {
-                    viewName = NSStringFromClass(possibleKeyboardSubview.class);
-                    if([viewName hasPrefix:@"UI"] && [viewName hasSuffix:@"InputSetHostView"]) {
-                        CGRect convertedRect = [possibleKeyboard convertRect:possibleKeyboardSubview.frame toView:self];
-                        CGRect intersectedRect = CGRectIntersection(convertedRect, self.bounds);
-                        if (!CGRectIsNull(intersectedRect)) {
-                            return CGRectGetHeight(intersectedRect);
+        
+        for (__strong UIView *possibleKeyboard in keyboardWindow.subviews) {
+            NSString *viewName = NSStringFromClass(possibleKeyboard.class);
+            if([viewName hasPrefix:@"UI"]){
+                if([viewName hasSuffix:@"PeripheralHostView"] || [viewName hasSuffix:@"Keyboard"]){
+                    return CGRectGetHeight(possibleKeyboard.bounds);
+                } else if ([viewName hasSuffix:@"InputSetContainerView"]){
+                    for (__strong UIView *possibleKeyboardSubview in possibleKeyboard.subviews) {
+                        viewName = NSStringFromClass(possibleKeyboardSubview.class);
+                        if([viewName hasPrefix:@"UI"] && [viewName hasSuffix:@"InputSetHostView"]) {
+                            return CGRectGetHeight(possibleKeyboardSubview.bounds);
                         }
                     }
                 }
             }
         }
-    }
 #endif
-    return 0;
-}
+        return 0;
+    }
     
-- (UIWindow *)frontWindow {
+    - (UIWindow *)frontWindow {
 #if !defined(SV_APP_EXTENSIONS)
-    NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
-    for (UIWindow *window in frontToBackWindows) {
-        BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
-        BOOL windowIsVisible = !window.hidden && window.alpha > 0;
-        BOOL windowLevelSupported = (window.windowLevel >= UIWindowLevelNormal && window.windowLevel <= self.maxSupportedWindowLevel);
-        BOOL windowKeyWindow = window.isKeyWindow;
-			
-        if(windowOnMainScreen && windowIsVisible && windowLevelSupported && windowKeyWindow) {
-            return window;
+        NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
+        for (UIWindow *window in frontToBackWindows) {
+            BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
+            BOOL windowIsVisible = !window.hidden && window.alpha > 0;
+            BOOL windowLevelSupported = (window.windowLevel >= UIWindowLevelNormal && window.windowLevel <= self.maxSupportedWindowLevel);
+            BOOL windowKeyWindow = window.isKeyWindow;
+            
+            if(windowOnMainScreen && windowIsVisible && windowLevelSupported && windowKeyWindow) {
+                return window;
+            }
         }
-    }
 #endif
-    return nil;
-}
-    
-- (void)fadeInEffects {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if(self.defaultStyle != SVProgressHUDStyleCustom) {
-        // Add blur effect
-        UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
-        self.hudView.effect = blurEffect;
-        
-        // We omit UIVibrancy effect and use a suitable background color as an alternative.
-        // This will make everyting more readable. See the following for details:
-        // https://www.omnigroup.com/developer/how-to-make-text-in-a-uivisualeffectview-readable-on-any-background
-        
-        self.hudView.backgroundColor = [self.backgroundColorForStyle colorWithAlphaComponent:0.6f];
-    } else {
-        self.hudView.backgroundColor =  self.backgroundColorForStyle;
+        return nil;
     }
+    
+    - (void)fadeInEffects {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+        if(self.defaultStyle != SVProgressHUDStyleCustom) {
+            // Add blur effect
+            UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+            UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
+            self.hudView.effect = blurEffect;
+            
+            // We omit UIVibrancy effect and use a suitable background color as an alternative.
+            // This will make everyting more readable. See the following for details:
+            // https://www.omnigroup.com/developer/how-to-make-text-in-a-uivisualeffectview-readable-on-any-background
+            
+            self.hudView.backgroundColor = [self.backgroundColorForStyle colorWithAlphaComponent:0.6f];
+        } else {
+            self.hudView.backgroundColor =  self.backgroundColorForStyle;
+        }
 #else
-    self.hudView.backgroundColor =  self.backgroundColorForStyle;
+        self.hudView.backgroundColor =  self.backgroundColorForStyle;
 #endif
-
-    // Fade in views
-    self.backgroundView.alpha = 1.0f;
+        
+        // Fade in views
+        self.backgroundView.alpha = 1.0f;
+        
+        self.imageView.alpha = 1.0f;
+        self.statusLabel.alpha = 1.0f;
+        self.indefiniteAnimatedView.alpha = 1.0f;
+        self.ringView.alpha = self.backgroundRingView.alpha = 1.0f;
+    }
     
-    self.imageView.alpha = 1.0f;
-    self.statusLabel.alpha = 1.0f;
-    self.indefiniteAnimatedView.alpha = 1.0f;
-    self.ringView.alpha = self.backgroundRingView.alpha = 1.0f;
-}
-
-- (void)fadeOutEffects
-{
+    - (void)fadeOutEffects
+    {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if(self.defaultStyle != SVProgressHUDStyleCustom) {
-        // Remove blur effect
-        self.hudView.effect = nil;
+        if(self.defaultStyle != SVProgressHUDStyleCustom) {
+            // Remove blur effect
+            self.hudView.effect = nil;
+        }
+#endif
+        
+        // Remove background color
+        self.hudView.backgroundColor = [UIColor clearColor];
+        
+        // Fade out views
+        self.backgroundView.alpha = 0.0f;
+        
+        self.imageView.alpha = 0.0f;
+        self.statusLabel.alpha = 0.0f;
+        self.indefiniteAnimatedView.alpha = 0.0f;
+        self.ringView.alpha = self.backgroundRingView.alpha = 0.0f;
+    }
+    
+#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+    - (UINotificationFeedbackGenerator *)hapticGenerator {
+        // Only return if haptics are enabled
+        if(!self.hapticsEnabled) {
+            return nil;
+        }
+        
+        if(!_hapticGenerator) {
+            _hapticGenerator = [[UINotificationFeedbackGenerator alloc] init];
+        }
+        return _hapticGenerator;
     }
 #endif
     
-    // Remove background color
-    self.hudView.backgroundColor = [UIColor clearColor];
-    
-    // Fade out views
-    self.backgroundView.alpha = 0.0f;
-    
-    self.imageView.alpha = 0.0f;
-    self.statusLabel.alpha = 0.0f;
-    self.indefiniteAnimatedView.alpha = 0.0f;
-    self.ringView.alpha = self.backgroundRingView.alpha = 0.0f;
-}
-
-#if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-- (UINotificationFeedbackGenerator *)hapticGenerator {
-	// Only return if haptics are enabled
-	if(!self.hapticsEnabled) {
-		return nil;
-	}
-	
-	if(!_hapticGenerator) {
-		_hapticGenerator = [[UINotificationFeedbackGenerator alloc] init];
-	}
-	return _hapticGenerator;
-}
-#endif
-
     
 #pragma mark - UIAppearance Setters
+    
+    - (void)setDefaultStyle:(SVProgressHUDStyle)style {
+        if (!_isInitializing) _defaultStyle = style;
+    }
+    
+    - (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType {
+        if (!_isInitializing) _defaultMaskType = maskType;
+    }
+    
+    - (void)setDefaultAnimationType:(SVProgressHUDAnimationType)animationType {
+        if (!_isInitializing) _defaultAnimationType = animationType;
+    }
+    
+    - (void)setContainerView:(UIView *)containerView {
+        if (!_isInitializing) _containerView = containerView;
+    }
+    
+    - (void)setMinimumSize:(CGSize)minimumSize {
+        if (!_isInitializing) _minimumSize = minimumSize;
+    }
+    
+    - (void)setRingThickness:(CGFloat)ringThickness {
+        if (!_isInitializing) _ringThickness = ringThickness;
+    }
+    
+    - (void)setRingRadius:(CGFloat)ringRadius {
+        if (!_isInitializing) _ringRadius = ringRadius;
+    }
+    
+    - (void)setRingNoTextRadius:(CGFloat)ringNoTextRadius {
+        if (!_isInitializing) _ringNoTextRadius = ringNoTextRadius;
+    }
+    
+    - (void)setCornerRadius:(CGFloat)cornerRadius {
+        if (!_isInitializing) _cornerRadius = cornerRadius;
+    }
+    
+    - (void)setFont:(UIFont*)font {
+        if (!_isInitializing) _font = font;
+    }
+    
+    - (void)setForegroundColor:(UIColor*)color {
+        if (!_isInitializing) _foregroundColor = color;
+    }
+    
+    - (void)setBackgroundColor:(UIColor*)color {
+        if (!_isInitializing) _backgroundColor = color;
+    }
+    
+    - (void)setBackgroundLayerColor:(UIColor*)color {
+        if (!_isInitializing) _backgroundLayerColor = color;
+    }
+    
+    - (void)setInfoImage:(UIImage*)image {
+        if (!_isInitializing) _infoImage = image;
+    }
+    
+    - (void)setSuccessImage:(UIImage*)image {
+        if (!_isInitializing) _successImage = image;
+    }
+    
+    - (void)setErrorImage:(UIImage*)image {
+        if (!_isInitializing) _errorImage = image;
+    }
+    
+    - (void)setViewForExtension:(UIView*)view {
+        if (!_isInitializing) _viewForExtension = view;
+    }
+    
+    - (void)setOffsetFromCenter:(UIOffset)offset {
+        if (!_isInitializing) _offsetFromCenter = offset;
+    }
+    
+    - (void)setMinimumDismissTimeInterval:(NSTimeInterval)minimumDismissTimeInterval {
+        if (!_isInitializing) _minimumDismissTimeInterval = minimumDismissTimeInterval;
+    }
+    
+    - (void)setFadeInAnimationDuration:(NSTimeInterval)duration {
+        if (!_isInitializing) _fadeInAnimationDuration = duration;
+    }
+    
+    - (void)setFadeOutAnimationDuration:(NSTimeInterval)duration {
+        if (!_isInitializing) _fadeOutAnimationDuration = duration;
+    }
+    
+    - (void)setMaxSupportedWindowLevel:(UIWindowLevel)maxSupportedWindowLevel {
+        if (!_isInitializing) _maxSupportedWindowLevel = maxSupportedWindowLevel;
+    }
+    
+    @end
 
-- (void)setDefaultStyle:(SVProgressHUDStyle)style {
-    if (!_isInitializing) _defaultStyle = style;
-}
-
-- (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType {
-    if (!_isInitializing) _defaultMaskType = maskType;
-}
-
-- (void)setDefaultAnimationType:(SVProgressHUDAnimationType)animationType {
-    if (!_isInitializing) _defaultAnimationType = animationType;
-}
-
-- (void)setContainerView:(UIView *)containerView {
-    if (!_isInitializing) _containerView = containerView;
-}
-
-- (void)setMinimumSize:(CGSize)minimumSize {
-    if (!_isInitializing) _minimumSize = minimumSize;
-}
-
-- (void)setRingThickness:(CGFloat)ringThickness {
-    if (!_isInitializing) _ringThickness = ringThickness;
-}
-
-- (void)setRingRadius:(CGFloat)ringRadius {
-    if (!_isInitializing) _ringRadius = ringRadius;
-}
-
-- (void)setRingNoTextRadius:(CGFloat)ringNoTextRadius {
-    if (!_isInitializing) _ringNoTextRadius = ringNoTextRadius;
-}
-
-- (void)setCornerRadius:(CGFloat)cornerRadius {
-    if (!_isInitializing) _cornerRadius = cornerRadius;
-}
-
-- (void)setFont:(UIFont*)font {
-    if (!_isInitializing) _font = font;
-}
-
-- (void)setForegroundColor:(UIColor*)color {
-    if (!_isInitializing) _foregroundColor = color;
-}
-
-- (void)setBackgroundColor:(UIColor*)color {
-    if (!_isInitializing) _backgroundColor = color;
-}
-
-- (void)setBackgroundLayerColor:(UIColor*)color {
-    if (!_isInitializing) _backgroundLayerColor = color;
-}
-
-- (void)setShouldTintImages:(BOOL)shouldTintImages {
-    if (!_isInitializing) _shouldTintImages = shouldTintImages;
-}
-
-- (void)setInfoImage:(UIImage*)image {
-    if (!_isInitializing) _infoImage = image;
-}
-
-- (void)setSuccessImage:(UIImage*)image {
-    if (!_isInitializing) _successImage = image;
-}
-
-- (void)setErrorImage:(UIImage*)image {
-    if (!_isInitializing) _errorImage = image;
-}
-
-- (void)setViewForExtension:(UIView*)view {
-    if (!_isInitializing) _viewForExtension = view;
-}
-
-- (void)setOffsetFromCenter:(UIOffset)offset {
-    if (!_isInitializing) _offsetFromCenter = offset;
-}
-
-- (void)setMinimumDismissTimeInterval:(NSTimeInterval)minimumDismissTimeInterval {
-    if (!_isInitializing) _minimumDismissTimeInterval = minimumDismissTimeInterval;
-}
-
-- (void)setFadeInAnimationDuration:(NSTimeInterval)duration {
-    if (!_isInitializing) _fadeInAnimationDuration = duration;
-}
-
-- (void)setFadeOutAnimationDuration:(NSTimeInterval)duration {
-    if (!_isInitializing) _fadeOutAnimationDuration = duration;
-}
-
-- (void)setMaxSupportedWindowLevel:(UIWindowLevel)maxSupportedWindowLevel {
-    if (!_isInitializing) _maxSupportedWindowLevel = maxSupportedWindowLevel;
-}
-
-@end
