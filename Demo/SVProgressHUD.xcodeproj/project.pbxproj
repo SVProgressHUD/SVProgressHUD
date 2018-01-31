@@ -23,6 +23,7 @@
 		3CD078EA1A3B809500290D80 /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD078E91A3B809500290D80 /* SVRadialGradientLayer.m */; };
 		3FF0384716633A330070E901 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF0384616633A330070E901 /* QuartzCore.framework */; };
 		63ADC4BC1364C1360060E45B /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 63ADC4BA1364C1360060E45B /* SVProgressHUD.m */; };
+		6EF44707200F9A45000B6E4E /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6EF44706200F9A45000B6E4E /* Resource.bundle */; };
 		B07118291A3264C900C8A614 /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B07118281A3264C900C8A614 /* SVIndefiniteAnimatedView.m */; };
 		D36EDBD21BE7E9B000BD0EF1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D36EDBD11BE7E9B000BD0EF1 /* main.m */; };
 		D36EDBD51BE7E9B000BD0EF1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D36EDBD41BE7E9B000BD0EF1 /* AppDelegate.m */; };
@@ -58,6 +59,7 @@
 		3FF0384616633A330070E901 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		63ADC4B91364C1360060E45B /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		63ADC4BA1364C1360060E45B /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		6EF44706200F9A45000B6E4E /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resource.bundle; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* SVProgressHUD-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SVProgressHUD-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		B07118271A3264C900C8A614 /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
 		B07118281A3264C900C8A614 /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			children = (
 				63ADC4B81364C1360060E45B /* SVProgressHUD */,
 				28D7ACF60DDB3853001CB0EB /* ViewController.h */,
+				6EF44706200F9A45000B6E4E /* Resource.bundle */,
 				28D7ACF70DDB3853001CB0EB /* ViewController.m */,
 				3C0DE68E1F6096230062BA4A /* LaunchScreen.storyboard */,
 				3C0DE6901F6096230062BA4A /* Main.storyboard */,
@@ -268,6 +271,7 @@
 				3C0DE6921F6096230062BA4A /* LaunchScreen.storyboard in Resources */,
 				22D13AB71365FEAC0025FCC9 /* SVProgressHUD.bundle in Resources */,
 				2265DEEE14706A8900B3EBF7 /* README.md in Resources */,
+				6EF44707200F9A45000B6E4E /* Resource.bundle in Resources */,
 				3C0DE6931F6096230062BA4A /* Main.storyboard in Resources */,
 				22B9D43816B92E4D00E71652 /* SVProgressHUD.podspec in Resources */,
 			);
