@@ -1408,7 +1408,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         self.hudView.effect = blurEffect;
         
         // We omit UIVibrancy effect and use a suitable background color as an alternative.
-        // This will make everyting more readable. See the following for details:
+        // This will make everything more readable. See the following for details:
         // https://www.omnigroup.com/developer/how-to-make-text-in-a-uivisualeffectview-readable-on-any-background
         
         self.hudView.backgroundColor = [self.backgroundColorForStyle colorWithAlphaComponent:0.6f];
