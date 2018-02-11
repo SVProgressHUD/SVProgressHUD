@@ -58,7 +58,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, readonly) UIWindow *frontWindow;
 
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-@property (nonatomic, strong) UINotificationFeedbackGenerator *hapticGenerator;
+@property (nonatomic, strong) UINotificationFeedbackGenerator *hapticGenerator NS_AVAILABLE_IOS(10_0);
 #endif
 
 @end
@@ -253,9 +253,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showImage:[self sharedView].infoImage status:status];
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
-    });
+    if (@available(iOS 10.0, *)) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
+        });
+    }
 #endif
 }
 
@@ -270,9 +272,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showImage:[self sharedView].successImage status:status];
 
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
-    });
+    if (@available(iOS 10, *)) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+        });
+    }
 #endif
 }
 
@@ -283,9 +287,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:existingMaskType];
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
-    });
+    if (@available(iOS 10.0, *)) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+        });
+    }
 #endif
 }
 
@@ -293,9 +299,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showImage:[self sharedView].errorImage status:status];
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
-    });
+    if (@available(iOS 10.0, *)) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+        });
+    }
 #endif
 }
 
@@ -306,9 +314,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:existingMaskType];
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
-    });
+    if (@available(iOS 10.0, *)) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+        });
+    }
 #endif
 }
 
@@ -843,7 +853,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             // Tell the Haptics Generator to prepare for feedback, which may come soon
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-            [strongSelf.hapticGenerator prepare];
+            if (@available(iOS 10.0, *)) {
+                [strongSelf.hapticGenerator prepare];
+            }
 #endif
         }
     }];
@@ -1450,7 +1462,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-- (UINotificationFeedbackGenerator *)hapticGenerator {
+- (UINotificationFeedbackGenerator *)hapticGenerator NS_AVAILABLE_IOS(10_0) {
 	// Only return if haptics are enabled
 	if(!self.hapticsEnabled) {
 		return nil;
