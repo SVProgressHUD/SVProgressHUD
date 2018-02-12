@@ -8,12 +8,6 @@
 #import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 70000
-
-#define UI_APPEARANCE_SELECTOR
-
-#endif
-
 extern NSString * _Nonnull const SVProgressHUDDidReceiveTouchEventNotification;
 extern NSString * _Nonnull const SVProgressHUDDidTouchDownInsideNotification;
 extern NSString * _Nonnull const SVProgressHUDWillDisappearNotification;
