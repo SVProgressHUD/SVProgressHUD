@@ -2,7 +2,7 @@
 //  main.m
 //  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
-//  Copyright (c) 2011-2017 Sam Vermette. All rights reserved.
+//  Copyright (c) 2011-2018 Sam Vermette. All rights reserved.
 //
 
 #import "AppDelegate.h"
