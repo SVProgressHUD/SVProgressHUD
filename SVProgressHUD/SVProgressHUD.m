@@ -39,11 +39,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, strong) UIControl *controlView;
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) SVRadialGradientLayer *backgroundRadialGradientLayer;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
 @property (nonatomic, strong) UIVisualEffectView *hudView;
-#else
-@property (nonatomic, strong) UIView *hudView;
-#endif
 @property (nonatomic, strong) UILabel *statusLabel;
 @property (nonatomic, strong) UIImageView *imageView;
 
@@ -659,14 +655,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
 #endif
     
-    // No transforms applied to window in iOS 8, but only if compiled with iOS 8 SDK as base SDK, otherwise system supports old rotation logic.
-    BOOL ignoreOrientation = NO;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)]) {
-        ignoreOrientation = YES;
-    }
-#endif
-    
 #if TARGET_OS_IOS
     // Get keyboardHeight in regard to current state
     if(notification) {
@@ -677,7 +665,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         if(notification.name == UIKeyboardWillShowNotification || notification.name == UIKeyboardDidShowNotification) {
             keyboardHeight = CGRectGetWidth(keyboardFrame);
             
-            if(ignoreOrientation || UIInterfaceOrientationIsPortrait(orientation)) {
+            if(UIInterfaceOrientationIsPortrait(orientation)) {
                 keyboardHeight = CGRectGetHeight(keyboardFrame);
             }
         }
@@ -696,16 +684,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
     
 #if TARGET_OS_IOS
-    if(!ignoreOrientation && UIInterfaceOrientationIsLandscape(orientation)) {
-        float temp = CGRectGetWidth(orientationFrame);
-        orientationFrame.size.width = CGRectGetHeight(orientationFrame);
-        orientationFrame.size.height = temp;
-        
-        temp = CGRectGetWidth(statusBarFrame);
-        statusBarFrame.size.width = CGRectGetHeight(statusBarFrame);
-        statusBarFrame.size.height = temp;
-    }
-    
     // Update the motion effects in regard to orientation
     [self updateMotionEffectForOrientation:orientation];
 #else
@@ -801,18 +779,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 
                 // Add ring to HUD
                 if(!strongSelf.ringView.superview){
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
                     [strongSelf.hudView.contentView addSubview:strongSelf.ringView];
-#else
-                    [strongSelf.hudView addSubview:strongSelf.ringView];
-#endif
                 }
                 if(!strongSelf.backgroundRingView.superview){
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
                     [strongSelf.hudView.contentView addSubview:strongSelf.backgroundRingView];
-#else
-                    [strongSelf.hudView addSubview:strongSelf.backgroundRingView];
-#endif
                 }
                 
                 // Set progress animated
@@ -830,11 +800,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 [strongSelf cancelRingLayerAnimation];
                 
                 // Add indefiniteAnimatedView to HUD
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
                 [strongSelf.hudView.contentView addSubview:strongSelf.indefiniteAnimatedView];
-#else
-                [strongSelf.hudView addSubview:strongSelf.indefiniteAnimatedView];
-#endif
                 if([strongSelf.indefiniteAnimatedView respondsToSelector:@selector(startAnimating)]) {
                     [(id)strongSelf.indefiniteAnimatedView startAnimating];
                 }
@@ -1290,17 +1256,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     return _backgroundView;
 }
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
 - (UIVisualEffectView*)hudView {
-#else
-- (UIView*)hudView {
-#endif
     if(!_hudView) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
         _hudView = [UIVisualEffectView new];
-#else
-        _hudView = [UIView new];
-#endif
         _hudView.layer.masksToBounds = YES;
         _hudView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     }
@@ -1324,11 +1282,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _statusLabel.numberOfLines = 0;
     }
     if(!_statusLabel.superview) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
       [self.hudView.contentView addSubview:_statusLabel];
-#else
-      [self.hudView addSubview:_statusLabel];
-#endif
     }
     
     // Update styling
@@ -1348,11 +1302,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _imageViewSize.width, _imageViewSize.height)];
     }
     if(!_imageView.superview) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
         [self.hudView.contentView addSubview:_imageView];
-#else
-        [self.hudView addSubview:_imageView];
-#endif
     }
     
     return _imageView;
@@ -1412,7 +1362,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
     
 - (void)fadeInEffects {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
     if(self.defaultStyle != SVProgressHUDStyleCustom) {
         // Add blur effect
         UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
@@ -1427,9 +1376,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     } else {
         self.hudView.backgroundColor =  self.backgroundColorForStyle;
     }
-#else
-    self.hudView.backgroundColor =  self.backgroundColorForStyle;
-#endif
 
     // Fade in views
     self.backgroundView.alpha = 1.0f;
@@ -1442,13 +1388,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)fadeOutEffects
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
     if(self.defaultStyle != SVProgressHUDStyleCustom) {
         // Remove blur effect
         self.hudView.effect = nil;
     }
-#endif
-    
+
     // Remove background color
     self.hudView.backgroundColor = [UIColor clearColor];
     
