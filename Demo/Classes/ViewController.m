@@ -143,8 +143,10 @@ static float progress = 0.0f;
     UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    } else {
+    } else if (segmentedControl.selectedSegmentIndex == 1) {
         [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    } else {
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
     }
 }
 
@@ -152,8 +154,27 @@ static float progress = 0.0f;
     UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
     if(segmentedControl.selectedSegmentIndex == 0){
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeFlat];
-    } else {
+    } else if(segmentedControl.selectedSegmentIndex == 1){
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
+    } else {
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
+        NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
+        NSURL *url = [bundle URLForResource:@"Resource" withExtension:@"bundle"];
+        NSBundle *imageBundle = [NSBundle bundleWithURL:url];
+        NSMutableArray *imageArray = [NSMutableArray array];
+        for (int i = 1; i <= 18; i++) {
+            NSString *fileNumber = [NSString stringWithFormat:@"%d", i];
+            NSString *fileName = [NSString stringWithFormat:@"%@%@",@"loading",fileNumber];
+            NSString *path = [imageBundle pathForResource: fileName ofType:@"png"];
+            UIImage *image = [UIImage imageWithContentsOfFile:path];
+            [imageArray addObject: image];
+        }
+        imageView.animationImages = imageArray;
+        imageView.animationDuration = 1.5f;
+        imageView.animationRepeatCount = 0;
+        [imageView startAnimating];
+        [SVProgressHUD setLoadingImageView:imageView];
+        [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeCustom];
     }
 }
 
