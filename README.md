@@ -37,7 +37,7 @@ Second, install `SVProgressHUD` into your project:
 pod install
 ```
 
-### Carthage 
+### Carthage
 
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate `SVProgressHUD` into your Xcode project using Carthage, specify it in your `Cartfile`:
 
@@ -45,8 +45,7 @@ pod install
 github "SVProgressHUD/SVProgressHUD"
 ```
 
-Run `carthage update` to build the framework and drag the built `SVProgressHUD.framework` (in Carthage/Build/iOS folder) into your Xcode project (Linked Frameworks and Libraries in `Targets`).
-
+Run `carthage bootstrap` to build the framework in your repository's Carthage directory. You can then include it in your target's `carthage copy-frameworks` build phase. For more information on this, please see [Carthage's documentation](https://github.com/carthage/carthage#if-youre-building-for-ios-tvos-or-watchos).
 
 ### Manually
 
@@ -62,7 +61,7 @@ Even though `SVProgressHUD` is written in Objective-C, it can be used in Swift w
 use_frameworks!
 ```
 
-If you added `SVProgressHUD` manually, just add a [bridging header](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) file to your project with the `SVProgressHUD` header included. 
+If you added `SVProgressHUD` manually, just add a [bridging header](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) file to your project with the `SVProgressHUD` header included.
 
 ## Usage
 
@@ -210,7 +209,7 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas)
 
 ## License
 
-`SVProgressHUD` is distributed under the terms and conditions of the [MIT license](https://github.com/SVProgressHUD/SVProgressHUD/blob/master/LICENSE.txt). The success, error and info icons are made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). 
+`SVProgressHUD` is distributed under the terms and conditions of the [MIT license](https://github.com/SVProgressHUD/SVProgressHUD/blob/master/LICENSE.txt). The success, error and info icons are made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) and are licensed under [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/).
 
 ## Credits
 
