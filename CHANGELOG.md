@@ -1,3 +1,6 @@
+## Version 2.2.5
+* Use GitHub official license style
+
 ## Version 2.2.4
 * Can't see checkmark when using SVProgressHUDStyleDark #873
 * Updated README’s instructions for Carthage deployment #876
