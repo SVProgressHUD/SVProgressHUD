@@ -147,6 +147,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundLayerColor:(UIColor*)color;                    // default is [UIColor colorWithWhite:0 alpha:0.4], only used for SVProgressHUDMaskTypeCustom
 + (void)setImageViewSize:(CGSize)size;                              // default is 28x28 pt
++ (void)setShouldTintImages:(BOOL)shouldTintImages;                 // default is YES
 + (void)setInfoImage:(UIImage*)image;                               // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(UIImage*)image;                            // default is bundled success image from Freepik
 + (void)setErrorImage:(UIImage*)image;                              // default is bundled error image from Freepik
@@ -157,7 +158,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
-+ (void)setHapticsEnabled:(BOOL)hapticsEnabled;						// default is NO
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled;                     // default is NO
 ```
 
 Additionally `SVProgressHUD` supports the `UIAppearance` protocol for most of the above methods.

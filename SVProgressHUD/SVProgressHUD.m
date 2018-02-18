@@ -397,19 +397,16 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _minimumSize = CGSizeZero;
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         
+        _imageViewSize = CGSizeMake(28.0f, 28.0f);
+        _shouldTintImages = YES;
+        
         NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
         NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
         NSBundle *imageBundle = [NSBundle bundleWithURL:url];
         
-        UIImage* infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
-        UIImage* successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
-        UIImage* errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
-
-        UIImageRenderingMode renderingMode = (self.shouldTintImages) ? UIImageRenderingModeAlwaysTemplate : UIImageRenderingModeAlwaysOriginal;
-
-        _infoImage = [infoImage imageWithRenderingMode:renderingMode];
-        _successImage = [successImage imageWithRenderingMode:renderingMode];
-        _errorImage = [errorImage imageWithRenderingMode:renderingMode];
+        _infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
+        _successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
+        _errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
 
         _ringThickness = 2.0f;
         _ringRadius = 18.0f;
@@ -417,8 +414,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         _cornerRadius = 14.0f;
 		
-        _imageViewSize = CGSizeMake(28.0f, 28.0f);
-        
         _graceTimeInterval = 0.0f;
         _minimumDismissTimeInterval = 5.0;
         _maximumDismissTimeInterval = CGFLOAT_MAX;
@@ -845,17 +840,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             [strongSelf cancelIndefiniteAnimatedViewAnimation];
             
             // Update imageView
-            UIColor *tintColor = strongSelf.foregroundColorForStyle;
-            UIImage *tintedImage = image;
-
             if (self.shouldTintImages) {
                 if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
-                    tintedImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    strongSelf.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                 }
-                strongSelf.imageView.tintColor = tintColor;
+                strongSelf.imageView.tintColor = strongSelf.foregroundColorForStyle;;
+            } else {
+                strongSelf.imageView.image = image;
             }
-
-            strongSelf.imageView.image = tintedImage;
             strongSelf.imageView.hidden = NO;
             
             // Update text

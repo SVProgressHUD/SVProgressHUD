@@ -57,7 +57,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (strong, nonatomic, nonnull) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;     // default is [UIColor blackColor]
 @property (strong, nonatomic, nonnull) UIColor *backgroundLayerColor UI_APPEARANCE_SELECTOR;// default is [UIColor colorWithWhite:0 alpha:0.4]
 @property (assign, nonatomic) CGSize imageViewSize UI_APPEARANCE_SELECTOR;                  // default is 28x28 pt
-@property (assign, nonatomic) BOOL shouldTintImages UI_APPEARANCE_SELECTOR;                 // default is true
+@property (assign, nonatomic) BOOL shouldTintImages UI_APPEARANCE_SELECTOR;                 // default is YES
 @property (strong, nonatomic, nonnull) UIImage *infoImage UI_APPEARANCE_SELECTOR;           // default is the bundled info image provided by Freepik
 @property (strong, nonatomic, nonnull) UIImage *successImage UI_APPEARANCE_SELECTOR;        // default is the bundled success image provided by Freepik
 @property (strong, nonatomic, nonnull) UIImage *errorImage UI_APPEARANCE_SELECTOR;          // default is the bundled error image provided by Freepik
@@ -91,7 +91,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setBackgroundColor:(nonnull UIColor*)color;                 // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundLayerColor:(nonnull UIColor*)color;            // default is [UIColor colorWithWhite:0 alpha:0.5], only used for SVProgressHUDMaskTypeCustom
 + (void)setImageViewSize:(CGSize)size;                              // default is 28x28 pt
-+ (void)setShouldTintImages:(BOOL)shouldTintImages;                 // default is true
++ (void)setShouldTintImages:(BOOL)shouldTintImages;                 // default is YES
 + (void)setInfoImage:(nonnull UIImage*)image;                       // default is the bundled info image provided by Freepik
 + (void)setSuccessImage:(nonnull UIImage*)image;                    // default is the bundled success image provided by Freepik
 + (void)setErrorImage:(nonnull UIImage*)image;                      // default is the bundled error image provided by Freepik

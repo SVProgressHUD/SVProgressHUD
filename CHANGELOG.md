@@ -1,3 +1,7 @@
+## Version 2.2.4
+* Can't see checkmark when using SVProgressHUDStyleDark #873
+* Update Carthage description in Readme.md
+
 ## Version 2.2.3
 * Off-screen keyboard returns a positive value in iOS 11.2 as its height #835, #846, #852
 * Fix bug where status label hiddenness is not updated when setStatus is called #854
