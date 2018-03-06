@@ -429,6 +429,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         self.accessibilityIdentifier = @"SVProgressHUD";
         self.isAccessibilityElement = YES;
         
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        
         _isInitializing = NO;
     }
     return self;
