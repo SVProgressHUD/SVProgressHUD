@@ -118,7 +118,6 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)showProgress:(float)progress status:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showProgress:status: and setDefaultMaskType: instead.")));
 
 + (void)setStatus:(nullable NSString*)status; // change the HUD loading status while it's showing
-
 + (void)setFormat:(nullable NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
 
 // stops the activity indicator, shows a glyph + status, and dismisses the HUD a little bit later
