@@ -125,6 +125,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)showSuccessWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showSuccessWithStatus: and setDefaultMaskType: instead.")));
 + (void)showErrorWithStatus:(nullable NSString*)status;
 + (void)showErrorWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showErrorWithStatus: and setDefaultMaskType: instead.")));
++ (void)showTextWithStatus:(nullable NSString*)status;
 
 // shows a image + status, use white PNGs with the imageViewSize (default is 28x28 pt)
 + (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status;
