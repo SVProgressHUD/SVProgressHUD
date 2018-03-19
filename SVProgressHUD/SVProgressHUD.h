@@ -109,6 +109,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use show and setDefaultMaskType: instead.")));
 + (void)showWithStatus:(nullable NSString*)status;
++ (void)showWithFormat:(nullable NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
 + (void)showWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showWithStatus: and setDefaultMaskType: instead.")));
 
 + (void)showProgress:(float)progress;
@@ -118,12 +119,17 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 + (void)setStatus:(nullable NSString*)status; // change the HUD loading status while it's showing
 
++ (void)setFormat:(nullable NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
+
 // stops the activity indicator, shows a glyph + status, and dismisses the HUD a little bit later
 + (void)showInfoWithStatus:(nullable NSString*)status;
++ (void)showInfoWithFormat:(nullable NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
 + (void)showInfoWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showInfoWithStatus: and setDefaultMaskType: instead.")));
 + (void)showSuccessWithStatus:(nullable NSString*)status;
++ (void)showSuccessWithFormat:(nullable NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
 + (void)showSuccessWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showSuccessWithStatus: and setDefaultMaskType: instead.")));
 + (void)showErrorWithStatus:(nullable NSString*)status;
++ (void)showErrorWithFormat:(nullable NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
 + (void)showErrorWithStatus:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showErrorWithStatus: and setDefaultMaskType: instead.")));
 
 // shows a image + status, use white PNGs with the imageViewSize (default is 28x28 pt)
