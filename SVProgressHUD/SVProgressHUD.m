@@ -635,7 +635,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     double animationDuration = 0.0;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-    self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
+    self.frame = [[UIApplication sharedApplication] keyWindow].bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
 #elif !defined(SV_APP_EXTENSIONS) && !TARGET_OS_IOS
     self.frame= [UIApplication sharedApplication].keyWindow.bounds;
@@ -1192,7 +1192,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     // Update frames
 #if !defined(SV_APP_EXTENSIONS)
-    CGRect windowBounds = [[[UIApplication sharedApplication] delegate] window].bounds;
+    CGRect windowBounds = [[UIApplication sharedApplication] keyWindow].bounds;
     _controlView.frame = windowBounds;
 #else
     _controlView.frame = [UIScreen mainScreen].bounds;
