@@ -756,7 +756,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             strongSelf.graceTimer = nil;
             
             // Update / Check view hierarchy to ensure the HUD is visible
-            [strongSelf updateViewHierarchy];
+            // If UIView container is specified then load HUD in container otherwise use default window level
+            if (self.containerView != nil) {
+                [strongSelf updateViewHierarchyForContainerView]; // New method!
+            } else {
+                [strongSelf updateViewHierarchy]; // Default method
+            }
             
             // Reset imageView and fadeout timer if an image is currently displayed
             strongSelf.imageView.hidden = YES;
@@ -1506,4 +1511,15 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     if (!_isInitializing) _maxSupportedWindowLevel = maxSupportedWindowLevel;
 }
 
+- (void)updateViewHierarchyForContainerView {
+    [_containerView addSubview:self.overlayView];
+    
+    // Add self to the overlay view
+    if(!self.superview){
+        [self.overlayView addSubview:self];
+    }
+    if(!self.hudView.superview) {
+        [self addSubview:self.hudView];
+    }
+}
 @end
