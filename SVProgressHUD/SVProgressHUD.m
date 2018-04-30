@@ -1512,11 +1512,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 - (void)updateViewHierarchyForContainerView {
-    [_containerView addSubview:self.overlayView];
+    [_containerView addSubview:self.controlView.superview];
     
     // Add self to the overlay view
     if(!self.superview){
-        [self.overlayView addSubview:self];
+        [self.controlView.superview addSubview:self];
     }
     if(!self.hudView.superview) {
         [self addSubview:self.hudView];
