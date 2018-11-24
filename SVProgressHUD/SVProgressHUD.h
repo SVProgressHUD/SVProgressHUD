@@ -18,22 +18,22 @@ extern NSString * _Nonnull const SVProgressHUDDidAppearNotification;
 extern NSString * _Nonnull const SVProgressHUDStatusUserInfoKey;
 
 typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
-    SVProgressHUDStyleLight,        // default style, white HUD with black text, HUD background will be blurred
-    SVProgressHUDStyleDark,         // black HUD and white text, HUD background will be blurred
-    SVProgressHUDStyleCustom        // uses the fore- and background color properties
+    SVProgressHUDStyleLight NS_SWIFT_NAME(light),        // default style, white HUD with black text, HUD background will be blurred
+    SVProgressHUDStyleDark NS_SWIFT_NAME(dark),         // black HUD and white text, HUD background will be blurred
+    SVProgressHUDStyleCustom NS_SWIFT_NAME(custom)        // uses the fore- and background color properties
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
-    SVProgressHUDMaskTypeNone = 1,  // default mask type, allow user interactions while HUD is displayed
-    SVProgressHUDMaskTypeClear,     // don't allow user interactions with background objects
-    SVProgressHUDMaskTypeBlack,     // don't allow user interactions with background objects and dim the UI in the back of the HUD (as seen in iOS 7 and above)
-    SVProgressHUDMaskTypeGradient,  // don't allow user interactions with background objects and dim the UI with a a-la UIAlertView background gradient (as seen in iOS 6)
-    SVProgressHUDMaskTypeCustom     // don't allow user interactions with background objects and dim the UI in the back of the HUD with a custom color
+    SVProgressHUDMaskTypeNone NS_SWIFT_NAME(none) = 1,  // default mask type, allow user interactions while HUD is displayed
+    SVProgressHUDMaskTypeClear NS_SWIFT_NAME(clear),     // don't allow user interactions with background objects
+    SVProgressHUDMaskTypeBlack NS_SWIFT_NAME(black),     // don't allow user interactions with background objects and dim the UI in the back of the HUD (as seen in iOS 7 and above)
+    SVProgressHUDMaskTypeGradient NS_SWIFT_NAME(gradient),  // don't allow user interactions with background objects and dim the UI with a a-la UIAlertView background gradient (as seen in iOS 6)
+    SVProgressHUDMaskTypeCustom NS_SWIFT_NAME(custom)     // don't allow user interactions with background objects and dim the UI in the back of the HUD with a custom color
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
-    SVProgressHUDAnimationTypeFlat,     // default animation type, custom flat animation (indefinite animated ring)
-    SVProgressHUDAnimationTypeNative    // iOS native UIActivityIndicatorView
+    SVProgressHUDAnimationTypeFlat NS_SWIFT_NAME(flat),     // default animation type, custom flat animation (indefinite animated ring)
+    SVProgressHUDAnimationTypeNative NS_SWIFT_NAME(native)   // iOS native UIActivityIndicatorView
 };
 
 typedef void (^SVProgressHUDShowCompletion)(void);
