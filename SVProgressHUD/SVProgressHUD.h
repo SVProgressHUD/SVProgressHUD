@@ -65,6 +65,8 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (assign, nonatomic) NSTimeInterval graceTimeInterval;                             // default is 0 seconds
 @property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;                    // default is 5.0 seconds
 @property (assign, nonatomic) NSTimeInterval maximumDismissTimeInterval;                    // default is CGFLOAT_MAX
+@property (assign, nonatomic) CGFloat maximumFrameWidth;                                        // default is 200
+@property (assign, nonatomic) CGFloat maximumFrameHeight;                                       // default is 300
 
 @property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR; // default is 0, 0
 
@@ -103,6 +105,8 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
 + (void)setHapticsEnabled:(BOOL)hapticsEnabled;						// default is NO
++ (void)setMaximumFrameWidth:(CGFloat)newWidth;                     // default is 200
++ (void)setMaximumFrameHeight:(CGFloat)newHeight;                   // default is 300
 
 #pragma mark - Show Methods
 
