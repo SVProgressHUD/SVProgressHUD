@@ -1387,9 +1387,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         self.hudView.backgroundColor = [self.backgroundColorForStyle colorWithAlphaComponent:0.6f];
     } else {
-        if (self.hudViewCustomBlurEffect) {
-            self.hudView.effect = self.hudViewCustomBlurEffect;
-        }
+        self.hudView.effect = self.hudViewCustomBlurEffect;
         self.hudView.backgroundColor =  self.backgroundColorForStyle;
     }
 
