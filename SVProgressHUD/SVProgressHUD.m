@@ -40,6 +40,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) SVRadialGradientLayer *backgroundRadialGradientLayer;
 @property (nonatomic, strong) UIVisualEffectView *hudView;
+@property (nonatomic, strong) UIBlurEffect *hudViewCustomBlurEffect;
 @property (nonatomic, strong) UILabel *statusLabel;
 @property (nonatomic, strong) UIImageView *imageView;
 
@@ -142,6 +143,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)setBackgroundColor:(UIColor*)color {
     [self sharedView].backgroundColor = color;
+    [self setDefaultStyle:SVProgressHUDStyleCustom];
+}
+
++ (void)setHudViewCustomBlurEffect:(UIBlurEffect*)blurEffect {
+    [self sharedView].hudViewCustomBlurEffect = blurEffect;
     [self setDefaultStyle:SVProgressHUDStyleCustom];
 }
 
@@ -1381,6 +1387,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         self.hudView.backgroundColor = [self.backgroundColorForStyle colorWithAlphaComponent:0.6f];
     } else {
+        if (self.hudViewCustomBlurEffect) {
+            self.hudView.effect = self.hudViewCustomBlurEffect;
+        }
         self.hudView.backgroundColor =  self.backgroundColorForStyle;
     }
 
