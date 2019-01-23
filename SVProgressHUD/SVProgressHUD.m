@@ -135,6 +135,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultStyle:SVProgressHUDStyleCustom];
 }
 
++ (void)setForegroundImageColor:(UIColor *)color {
+    [self sharedView].foregroundImageColor = color;
+    [self setDefaultStyle:SVProgressHUDStyleCustom];
+}
+
 + (void)setBackgroundColor:(UIColor*)color {
     [self sharedView].backgroundColor = color;
     [self setDefaultStyle:SVProgressHUDStyleCustom];
@@ -844,7 +849,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                 if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
                     strongSelf.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                 }
-                strongSelf.imageView.tintColor = strongSelf.foregroundColorForStyle;
+                strongSelf.imageView.tintColor = strongSelf.foregroundImageColorForStyle;
             } else {
                 strongSelf.imageView.image = image;
             }
@@ -1073,7 +1078,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         // Update styling
         SVIndefiniteAnimatedView *indefiniteAnimatedView = (SVIndefiniteAnimatedView*)_indefiniteAnimatedView;
-        indefiniteAnimatedView.strokeColor = self.foregroundColorForStyle;
+        indefiniteAnimatedView.strokeColor = self.foregroundImageColorForStyle;
         indefiniteAnimatedView.strokeThickness = self.ringThickness;
         indefiniteAnimatedView.radius = self.statusLabel.text ? self.ringRadius : self.ringNoTextRadius;
     } else {
@@ -1089,7 +1094,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         // Update styling
         UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView*)_indefiniteAnimatedView;
-        activityIndicatorView.color = self.foregroundColorForStyle;
+        activityIndicatorView.color = self.foregroundImageColorForStyle;
     }
     [_indefiniteAnimatedView sizeToFit];
     
@@ -1102,7 +1107,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
     
     // Update styling
-    _ringView.strokeColor = self.foregroundColorForStyle;
+    _ringView.strokeColor = self.foregroundImageColorForStyle;
     _ringView.strokeThickness = self.ringThickness;
     _ringView.radius = self.statusLabel.text ? self.ringRadius : self.ringNoTextRadius;
     
@@ -1116,7 +1121,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
     
     // Update styling
-    _backgroundRingView.strokeColor = [self.foregroundColorForStyle colorWithAlphaComponent:0.1f];
+    _backgroundRingView.strokeColor = [self.foregroundImageColorForStyle colorWithAlphaComponent:0.1f];
     _backgroundRingView.strokeThickness = self.ringThickness;
     _backgroundRingView.radius = self.statusLabel.text ? self.ringRadius : self.ringNoTextRadius;
     
@@ -1170,6 +1175,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         return [UIColor whiteColor];
     } else {
         return self.foregroundColor;
+    }
+}
+
+- (UIColor*)foregroundImageColorForStyle {
+    if (self.foregroundImageColor) {
+        return self.foregroundImageColor;
+    } else {
+        return [self foregroundColorForStyle];
     }
 }
 
@@ -1458,6 +1471,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)setForegroundColor:(UIColor*)color {
     if (!_isInitializing) _foregroundColor = color;
+}
+
+- (void)setForegroundImageColor:(UIColor *)color {
+    if (!_isInitializing) _foregroundImageColor = color;
 }
 
 - (void)setBackgroundColor:(UIColor*)color {
