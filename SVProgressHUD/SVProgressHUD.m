@@ -973,6 +973,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         if(strongSelf){
             // Stop timer
             strongSelf.graceTimer = nil;
+		
+	    // fix issue#956
+            strongSelf.statusLabel.text = nil;
             
             // Post notification to inform user
             [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
