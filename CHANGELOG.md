@@ -1,3 +1,6 @@
+## Version 2.2.6
+* Added option for custom Blur effect style for background,  rewritten indefinite animation view for smooth animation, added option to set custom ring color without affecting background color #946
+
 ## Version 2.2.5
 * Use GitHub official license style
 
