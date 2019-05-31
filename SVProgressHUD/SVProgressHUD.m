@@ -196,6 +196,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].hapticsEnabled = hapticsEnabled;
 }
 
++ (void)setMotionEffectEnabled:(BOOL)motionEffectEnabled {
+    [self sharedView].motionEffectEnabled = motionEffectEnabled;
+}
+
 #pragma mark - Show Methods
 
 + (void)show {
@@ -424,6 +428,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _maxSupportedWindowLevel = UIWindowLevelNormal;
         
         _hapticsEnabled = NO;
+        _motionEffectEnabled = YES;
         
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
@@ -678,12 +683,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     CGRect statusBarFrame = CGRectZero;
 #endif
     
+    if (_motionEffectEnabled) {
 #if TARGET_OS_IOS
-    // Update the motion effects in regard to orientation
-    [self updateMotionEffectForOrientation:orientation];
+        // Update the motion effects in regard to orientation
+        [self updateMotionEffectForOrientation:orientation];
 #else
-    [self updateMotionEffectForXMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis yMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        [self updateMotionEffectForXMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis yMotionEffectType:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
 #endif
+    }
     
     // Calculate available height for display
     CGFloat activeHeight = CGRectGetHeight(orientationFrame);
