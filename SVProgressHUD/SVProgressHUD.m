@@ -991,8 +991,6 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         __strong SVProgressHUD *strongSelf = weakSelf;
         if(strongSelf){
-            // Stop timer
-            strongSelf.graceTimer = nil;
             
             // Post notification to inform user
             [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDWillDisappearNotification
@@ -1053,6 +1051,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             dispatch_time_t dipatchTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC));
             dispatch_after(dipatchTime, dispatch_get_main_queue(), ^{
+                
+                // Stop timer
+                strongSelf.graceTimer = nil;
+                
                 if (strongSelf.fadeOutAnimationDuration > 0) {
                     // Animate appearance
                     [UIView animateWithDuration:strongSelf.fadeOutAnimationDuration
