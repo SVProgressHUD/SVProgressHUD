@@ -144,7 +144,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setBorderWidth:(CGFloat)width;                              // default is 0
 + (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
-+ (void)setForegroundImageColor:(nullable UIColor*)color; 			// default is the same as foregroundColor
++ (void)setForegroundImageColor:(nullable UIColor*)color;           // default is the same as foregroundColor
 + (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
 + (void)setBackgroundLayerColor:(UIColor*)color;                    // default is [UIColor colorWithWhite:0 alpha:0.4], only used for SVProgressHUDMaskTypeCustom
 + (void)setImageViewSize:(CGSize)size;                              // default is 28x28 pt
