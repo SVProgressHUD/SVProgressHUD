@@ -22,6 +22,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight]; // override iOS 12+ default
     self.activityCount = 0;
 }
 
@@ -141,10 +142,16 @@ static float progress = 0.0f;
 
 - (IBAction)changeStyle:(id)sender {
     UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
-    if(segmentedControl.selectedSegmentIndex == 0){
-        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    } else {
-        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    switch(segmentedControl.selectedSegmentIndex){
+        case 0:
+            [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
+            break;
+        case 1:
+            [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+            break;
+        case 2:
+            [SVProgressHUD setDefaultStyle:SVProgressHUDStyleAutomatic];
+            break;
     }
 }
 
