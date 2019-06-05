@@ -426,7 +426,13 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         // Set default values
         _defaultMaskType = SVProgressHUDMaskTypeNone;
-        _defaultStyle = SVProgressHUDStyleLight;
+        
+        if (@available(iOS 12, tvOS 10, *)) {
+            _defaultStyle = SVProgressHUDStyleAutomatic;
+        } else {
+            _defaultStyle = SVProgressHUDStyleLight;
+        }
+        
         _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
         _minimumSize = CGSizeZero;
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
@@ -1208,9 +1214,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 - (UIColor*)foregroundColorForStyle {
-    if(self.defaultStyle == SVProgressHUDStyleLight) {
+    SVProgressHUDStyle style = [self defaultStyleResolvingAutomatic];
+    
+    if(style == SVProgressHUDStyleLight) {
         return [UIColor blackColor];
-    } else if(self.defaultStyle == SVProgressHUDStyleDark) {
+    } else if(style == SVProgressHUDStyleDark) {
         return [UIColor whiteColor];
     } else {
         return self.foregroundColor;
@@ -1226,9 +1234,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 - (UIColor*)backgroundColorForStyle {
-    if(self.defaultStyle == SVProgressHUDStyleLight) {
+    SVProgressHUDStyle style = [self defaultStyleResolvingAutomatic];
+
+    if(style == SVProgressHUDStyleLight) {
         return [UIColor whiteColor];
-    } else if(self.defaultStyle == SVProgressHUDStyleDark) {
+    } else if(style == SVProgressHUDStyleDark) {
         return [UIColor blackColor];
     } else {
         return self.backgroundColor;
@@ -1356,7 +1366,22 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 
 #pragma mark - Helper
+
+- (SVProgressHUDStyle) defaultStyleResolvingAutomatic {
+    if(self.defaultStyle == SVProgressHUDStyleAutomatic) {
+        if (@available(iOS 12, tvOS 10, *)) {
+            return self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ?
+            SVProgressHUDStyleDark : SVProgressHUDStyleLight;
+        }
+        
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:@"SVProgressHUDStyleAutomatic cannot be specified before iOS 12 / tvOS 10."
+                                     userInfo:nil];
+    }
     
+    return self.defaultStyle;
+}
+
 - (CGFloat)visibleKeyboardHeight {
 #if !defined(SV_APP_EXTENSIONS)
     UIWindow *keyboardWindow = nil;
@@ -1410,7 +1435,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (void)fadeInEffects {
     if(self.defaultStyle != SVProgressHUDStyleCustom) {
         // Add blur effect
-        UIBlurEffectStyle blurEffectStyle = self.defaultStyle == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+        UIBlurEffectStyle blurEffectStyle = [self defaultStyleResolvingAutomatic] == SVProgressHUDStyleDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
         self.hudView.effect = blurEffect;
         
