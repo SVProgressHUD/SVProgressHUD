@@ -2,7 +2,7 @@
 //  SVProgressAnimatedView.m
 //  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
-//  Copyright (c) 2017-2018 Tobias Tiemerding. All rights reserved.
+//  Copyright (c) 2017-2019 Tobias Tiemerding. All rights reserved.
 //
 
 #import "SVProgressAnimatedView.h"
@@ -45,7 +45,7 @@
         _ringAnimatedLayer.strokeColor = self.strokeColor.CGColor;
         _ringAnimatedLayer.lineWidth = self.strokeThickness;
         _ringAnimatedLayer.lineCap = kCALineCapRound;
-        _ringAnimatedLayer.lineJoin = kCALineJoinBevel;
+        _ringAnimatedLayer.lineJoin = kCALineJoinRound;
         _ringAnimatedLayer.path = smoothedPath.CGPath;
     }
     return _ringAnimatedLayer;

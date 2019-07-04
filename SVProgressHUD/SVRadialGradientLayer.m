@@ -2,7 +2,7 @@
 //  SVRadialGradientLayer.m
 //  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
-//  Copyright (c) 2014-2018 Tobias Tiemerding. All rights reserved.
+//  Copyright (c) 2014-2019 Tobias Tiemerding. All rights reserved.
 //
 
 #import "SVRadialGradientLayer.h"

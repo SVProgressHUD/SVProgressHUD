@@ -1,3 +1,11 @@
+## Version 2.2.6
+* Added option for custom Blur effect style for background,  rewritten indefinite animation view for smooth animation, added option to set custom ring color without affecting background color #946
+* Remove new line character before setting accessibility text to avoid repetition of voice over for same text #872
+* Added ability to set motion effects disabled #952
+* Add option to customize only ring color and allow for custom blur effect design #946
+* Rewrite indefinite animation view #946
+* After setting graceTimeInterval, dismiss(withDelay:) will not work correctly #828
+
 ## Version 2.2.5
 * Use GitHub official license style
 
