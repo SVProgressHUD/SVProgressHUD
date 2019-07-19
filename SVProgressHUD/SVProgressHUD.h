@@ -148,5 +148,25 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 + (NSTimeInterval)displayDurationForString:(nullable NSString*)string;
 
+- (nonnull instancetype)initWithView:(nonnull UIView*)view;
+
+- (NSTimeInterval)displayDurationForString:(nullable NSString*)string;
+
+- (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status;
+
+- (void)showErrorWithStatus:(nonnull NSString*)status;
+
+- (void)showProgress:(float)progress;
+- (void)showProgress:(float)progress status:(nullable NSString*)status;
+
+- (void)showWithStatus:(nonnull NSString*)status;
+
+- (void)show;
+
+- (void)showSuccessWithStatus:(nonnull NSString*)status;
+
+- (void)showInfoWithStatus:(nonnull NSString*)status;
+- (BOOL)isVisible;
+- (void)dismiss;
 @end
 
