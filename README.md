@@ -38,6 +38,8 @@ Second, install `SVProgressHUD` into your project:
 pod install
 ```
 
+If you prefer a version of the library that's safe for use in extensions, you should use `SVProgressHUD/ExtensionSafe`.
+
 ### Carthage
 
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate `SVProgressHUD` into your Xcode project using Carthage, specify it in your `Cartfile`:
@@ -200,6 +202,12 @@ Each notification passes a `userInfo` dictionary holding the HUD's status string
 ## App Extensions
 
 When using `SVProgressHUD` in an App Extension, `#define SV_APP_EXTENSIONS` to avoid using unavailable APIs. Additionally call `setViewForExtension:` from your extensions view controller with `self.view`.
+
+## Multiple HUDs
+
+To enable usage of multiple HUDs (for example, to support multiple window scenes), you should cannot use the class functions.
+If you enable the extension safe mode of SVProgressHUD you can use the `-initWithView:` initializer to attach to a parent view.
+It will automatically be added and removed from that view as it is shown and dismissed.
 
 ## Contributing to this project
 
