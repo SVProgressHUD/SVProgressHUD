@@ -171,6 +171,8 @@ As standard `SVProgressHUD` offers two preconfigured styles:
 * `SVProgressHUDStyleLight`: White background with black spinner and text
 * `SVProgressHUDStyleDark`: Black background with white spinner and text
 
+On iOS 12.0+/tvOS 10.0+, you can also use `SVProgressHUDStyleAutomatic` to choose between Light and Dark automatically. Use this setting for automatic support of Dark Mode on iOS. Manually assigning `SVProgressHUDStyleAutomatic` on older operating systems will cause an exception to be thrown.
+
 If you want to use custom colors use `setForegroundColor` and `setBackgroundColor:`. These implicitly set the HUD's style to `SVProgressHUDStyleCustom`.
 
 ## Haptic Feedback
