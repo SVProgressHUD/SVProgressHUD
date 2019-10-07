@@ -22,7 +22,6 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight]; // override iOS 12+ default
     self.activityCount = 0;
 }
 
