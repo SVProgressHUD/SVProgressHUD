@@ -1,0 +1,4 @@
+module SVProgressHUD {
+    header "SVProgressHUD.h"
+    export *
+}
