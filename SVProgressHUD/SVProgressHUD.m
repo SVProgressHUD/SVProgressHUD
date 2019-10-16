@@ -131,6 +131,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].font = font;
 }
 
++ (void)setLinesNumber:(NSInteger)number {
+    [self sharedView].linesNumber = number;
+}
+
 + (void)setForegroundColor:(UIColor*)color {
     [self sharedView].foregroundColor = color;
     [self setDefaultStyle:SVProgressHUDStyleCustom];
@@ -411,6 +415,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
         _minimumSize = CGSizeZero;
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _linesNumber = 0;
         
         _imageViewSize = CGSizeMake(28.0f, 28.0f);
         _shouldTintImages = YES;
@@ -461,7 +466,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     CGFloat labelWidth = 0.0f;
     
     if(self.statusLabel.text) {
-        CGSize constraintSize = CGSizeMake(200.0f, 300.0f);
+        //CGSize constraintSize = CGSizeMake(200.0f, 300.0f);
+        CGSize constraintSize = CGSizeMake(CGRectGetWidth(self.frame) - 20, 300.f);
         labelRect = [self.statusLabel.text boundingRectWithSize:constraintSize
                                                         options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin)
                                                      attributes:@{NSFontAttributeName: self.statusLabel.font}
@@ -1312,6 +1318,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     // Update styling
     _statusLabel.textColor = self.foregroundColorForStyle;
     _statusLabel.font = self.font;
+    _statusLabel.numberOfLines = self.linesNumber;
 
     return _statusLabel;
 }
@@ -1485,6 +1492,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)setFont:(UIFont*)font {
     if (!_isInitializing) _font = font;
+}
+
+- (void)setLinesNumber:(NSInteger)linesNumber {
+    if (!_isInitializing) _linesNumber = linesNumber;
 }
 
 - (void)setForegroundColor:(UIColor*)color {
