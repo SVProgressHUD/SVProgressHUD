@@ -4,20 +4,5 @@ import PackageDescription
 
 let package = Package(
     name: "SVProgressHUD",
-    products: [
-        .library(
-            name: "SVProgressHUD",
-            targets: ["SVProgressHUD"]
-        )
-    ],
-    targets: [
-        .target(
-            name: "SVProgressHUD",
-            path: "SVProgressHUD",
-            exclude: [
-                "SVProgressHUD-Framework",
-                "Demo"
-            ]
-        ),
-    ]
+    swiftLanguageVersions: [.v5]
 )
