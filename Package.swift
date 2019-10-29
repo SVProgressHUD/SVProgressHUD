@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "SVProgressHUD",
     platforms: [
-        .iOS(.v10)
+        .iOS(.v8),
+        .tvOS(.v9)
     ],
     products: [
         .library(
@@ -26,3 +27,5 @@ let package = Package(
     ],
     swiftLanguageVersions: [.v5]
 )
+
+let version = Version(2, 2, 6)
