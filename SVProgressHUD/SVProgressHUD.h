@@ -18,9 +18,11 @@ extern NSString * _Nonnull const SVProgressHUDDidAppearNotification;
 extern NSString * _Nonnull const SVProgressHUDStatusUserInfoKey;
 
 typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
-    SVProgressHUDStyleLight NS_SWIFT_NAME(light),   // default style, white HUD with black text, HUD background will be blurred
-    SVProgressHUDStyleDark NS_SWIFT_NAME(dark),     // black HUD and white text, HUD background will be blurred
-    SVProgressHUDStyleCustom NS_SWIFT_NAME(custom)  // uses the fore- and background color properties
+    SVProgressHUDStyleLight NS_SWIFT_NAME(light),        // default style, white HUD with black text, HUD background will be blurred
+    SVProgressHUDStyleDark NS_SWIFT_NAME(dark),          // black HUD and white text, HUD background will be blurred
+    SVProgressHUDStyleCustom NS_SWIFT_NAME(custom),      // uses the fore- and background color properties
+    SVProgressHUDStyleAutoLight NS_SWIFT_NAME(autoLight), // uses dark mode system setting falling back to light prior to iOS 13.
+    SVProgressHUDStyleAutoDark NS_SWIFT_NAME(autoDark) // uses dark mode system setting falling back to dark prior to iOS 13.
 };
 
 typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {

@@ -141,10 +141,19 @@ static float progress = 0.0f;
 
 - (IBAction)changeStyle:(id)sender {
     UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
-    if(segmentedControl.selectedSegmentIndex == 0){
-        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    } else {
-        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    switch(segmentedControl.selectedSegmentIndex){
+        case 0:
+            [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
+            break;
+        case 1:
+            [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+            break;
+        case 2:
+            [SVProgressHUD setDefaultStyle:SVProgressHUDStyleAutoLight];
+            break;
+        case 3:
+            [SVProgressHUD setDefaultStyle:SVProgressHUDStyleAutoDark];
+            break;
     }
 }
 
