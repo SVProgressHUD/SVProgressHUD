@@ -573,7 +573,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         // be changed during runtime).
         [self.controlView.superview bringSubviewToFront:self.controlView];
     }
-    
+
     // Add self to the overlay view
     if(!self.superview) {
         [self.controlView addSubview:self];
@@ -685,8 +685,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
 #endif
     
+    // for ios 13, the self.bounds wasn't returning the screen value, so I changed to the mainScreen bounds
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
     // Get the currently active frame of the display (depends on orientation)
-    CGRect orientationFrame = self.bounds;
+    CGRect orientationFrame = screenRect;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     CGRect statusBarFrame = UIApplication.sharedApplication.statusBarFrame;
