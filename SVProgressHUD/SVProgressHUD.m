@@ -106,6 +106,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 
 
 #pragma mark - Setters
++ (void)setAdjustKeyboardPosition:(BOOL)adjustKeyboardPosition {
+    [[self sharedView] setAdjustKeyboardPosition: adjustKeyboardPosition];
+}
 
 + (void)setStatus:(NSString*)status {
     [[self sharedView] setStatus:status];
@@ -640,6 +643,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 #pragma mark - Notifications and their handling
 
 - (void)registerNotifications {
+    if (!self.adjustKeyboardPosition) {
+        return;
+    }
 #if TARGET_OS_IOS
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(positionHUD:)

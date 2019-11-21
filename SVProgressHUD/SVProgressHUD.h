@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 @interface SVProgressHUD : UIView
 
 #pragma mark - Customization
-
+@property (nonatomic, assign) BOOL adjustKeyboardPosition; // default is NO
 @property (assign, nonatomic) SVProgressHUDStyle defaultStyle UI_APPEARANCE_SELECTOR;                   // default is SVProgressHUDStyleLight
 @property (assign, nonatomic) SVProgressHUDMaskType defaultMaskType UI_APPEARANCE_SELECTOR;             // default is SVProgressHUDMaskTypeNone
 @property (assign, nonatomic) SVProgressHUDAnimationType defaultAnimationType UI_APPEARANCE_SELECTOR;   // default is SVProgressHUDAnimationTypeFlat
@@ -69,7 +69,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 @property (assign, nonatomic) NSTimeInterval fadeInAnimationDuration;  // default is 0.15
 @property (assign, nonatomic) NSTimeInterval fadeOutAnimationDuration; // default is 0.15
 
-
++ (void)setAdjustKeyboardPosition:(BOOL)adjust; // default is NO
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;   // default is SVProgressHUDAnimationTypeFlat
