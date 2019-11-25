@@ -127,6 +127,22 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].hudView.layer.borderWidth = width;
 }
 
++ (void)setShadowColor:(nonnull UIColor*)color {
+    [self sharedView].layer.shadowColor = color.CGColor;
+}
+
++ (void)setShadowOffset:(CGSize)size {
+    [self sharedView].layer.shadowOffset = size;
+}
+
++ (void)setShadowOpacity:(CGFloat)opacity {
+    [self sharedView].layer.shadowOpacity = opacity;
+}
+
++ (void)setShadowRadius:(CGFloat)radius {
+    [self sharedView].layer.shadowRadius = radius;
+}
+
 + (void)setFont:(UIFont*)font {
     [self sharedView].font = font;
 }
