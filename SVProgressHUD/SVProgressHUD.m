@@ -69,7 +69,20 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     static SVProgressHUD *sharedView;
 #if !defined(SV_APP_EXTENSIONS)
-    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[[UIApplication sharedApplication] delegate] window].bounds]; });
+   if (@available(iOS 13.0, *)) {
+        UIWindow *window = nil;
+        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes)
+            {
+                if (windowScene.activationState == UISceneActivationStateForegroundActive)
+                {
+                    window = windowScene.windows.firstObject;
+                    break;
+                }
+            }
+        dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame: window.bounds]; });
+    }else {
+        dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[[UIApplication sharedApplication] delegate] window].bounds]; });
+    }
 #else
     dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
 #endif
