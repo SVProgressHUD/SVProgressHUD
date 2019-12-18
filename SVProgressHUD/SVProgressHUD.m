@@ -1033,7 +1033,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                     
                     // Tell the rootViewController to update the StatusBar appearance
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-                    UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
+                    UIViewController *rootController = [SVProgressHUD mainWindow].rootViewController;
                     [rootController setNeedsStatusBarAppearanceUpdate];
 #endif
                     
