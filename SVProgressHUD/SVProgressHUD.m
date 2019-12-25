@@ -1305,8 +1305,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _statusLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
         _statusLabel.numberOfLines = 0;
     }
-    if(!_statusLabel.superview) {
-      [self.hudView.contentView addSubview:_statusLabel];
+    if(![self.hudView.subviews containsObject:_statusLabel]) {
+        [self.hudView addSubview:_statusLabel];
     }
     
     // Update styling
