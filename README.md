@@ -142,6 +142,10 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 + (void)setCornerRadius:(CGFloat)cornerRadius;                      // default is 14 pt
 + (void)setBorderColor:(nonnull UIColor*)color;                     // default is nil
 + (void)setBorderWidth:(CGFloat)width;                              // default is 0
++ (void)setShadowColor:(nonnull UIColor*)color;                     // default is an opaque black color
++ (void)setShadowOffset:(CGSize)size;                               // default is (0.0, -3.0)
++ (void)setShadowOpacity:(CGFloat)opacity;                          // default is 0.0
++ (void)setShadowRadius:(CGFloat)radius;                            // default is 3.0
 + (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
 + (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
 + (void)setForegroundImageColor:(nullable UIColor*)color;           // default is the same as foregroundColor
