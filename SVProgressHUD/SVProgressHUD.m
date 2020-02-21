@@ -858,14 +858,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             [strongSelf cancelIndefiniteAnimatedViewAnimation];
             
             // Update imageView
+            UIImage *assignableImage = image;
             if (self.shouldTintImages) {
                 if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
-                    strongSelf.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    assignableImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                 }
-                strongSelf.imageView.tintColor = strongSelf.foregroundImageColorForStyle;
-            } else {
-                strongSelf.imageView.image = image;
+                strongSelf.imageView.tintColor = strongSelf.foregroundColorForStyle;;
             }
+            strongSelf.imageView.image = assignableImage;
             strongSelf.imageView.hidden = NO;
             
             // Update text
