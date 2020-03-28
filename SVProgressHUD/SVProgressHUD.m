@@ -928,6 +928,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     } else {
         self.controlView.userInteractionEnabled = NO;
         self.hudView.accessibilityLabel = accessibilityString ?: NSLocalizedString(@"Loading", nil);
+        self.isAccessibilityElement = NO;
         self.hudView.isAccessibilityElement = YES;
         self.controlView.accessibilityViewIsModal = NO;
     }
