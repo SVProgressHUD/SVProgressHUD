@@ -93,4 +93,13 @@
     return CGSizeMake((self.radius+self.strokeThickness/2+5)*2, (self.radius+self.strokeThickness/2+5)*2);
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    if (@available(iOS 13.0, *)) {
+        if([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]
+           && _adjustsStrokeForTraitCollection) {
+            _ringAnimatedLayer.strokeColor = self.strokeColor.CGColor;
+        }
+    }
+}
+
 @end

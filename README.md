@@ -170,6 +170,8 @@ As standard `SVProgressHUD` offers two preconfigured styles:
 
 * `SVProgressHUDStyleLight`: White background with black spinner and text
 * `SVProgressHUDStyleDark`: Black background with white spinner and text
+* `SVProgressHUDStyleAutoLight`: Adjusts foreground and background colors in accordance with the user's appearance setting on iOS 13, falling back to `SVProgressHUDStyleLight`  on prior versions of iOS.
+* `SVProgressHUDStyleAutoDark`: Adjusts foreground and background colors in accordance with the user's appearance setting on iOS 13, falling back to `SVProgressHUDStyleDark`  on prior versions of iOS.
 
 If you want to use custom colors use `setForegroundColor` and `setBackgroundColor:`. These implicitly set the HUD's style to `SVProgressHUDStyleCustom`.
 

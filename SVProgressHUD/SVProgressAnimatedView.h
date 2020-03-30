@@ -9,6 +9,7 @@
 
 @interface SVProgressAnimatedView : UIView
 
+@property (nonatomic, assign) BOOL adjustsStrokeForTraitCollection;
 @property (nonatomic, assign) CGFloat radius;
 @property (nonatomic, assign) CGFloat strokeThickness;
 @property (nonatomic, strong) UIColor *strokeColor;
