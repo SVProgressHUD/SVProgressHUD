@@ -54,6 +54,13 @@ Run `carthage bootstrap` to build the framework in your repository's Carthage di
 * Take care that `SVProgressHUD.bundle` is added to `Targets->Build Phases->Copy Bundle Resources`.
 * Add the **QuartzCore** framework to your project.
 
+### Swift Package Manager (SPM)
+The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler. To integrate using Apple's Swift package manager from xcode :
+
+File -> Swift Packages -> Add Package Dependency...
+
+enter package URL : https://github.com/SVProgressHUD/SVProgressHUD.git, choose the latest release
+
 ## Swift
 
 Even though `SVProgressHUD` is written in Objective-C, it can be used in Swift with no hassle. If you use [CocoaPods](http://cocoapods.org) add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
