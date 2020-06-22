@@ -2,5 +2,5 @@
 
 import PackageDescription
 
- let package = Package(name: "SVProgressHUD",
+let package = Package(name: "SVProgressHUD",
                       swiftLanguageVersions: [.v5])
