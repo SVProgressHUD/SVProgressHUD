@@ -296,6 +296,7 @@
 				INFOPLIST_FILE = "SVProgressHUD-Framework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.2.7;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.SVProgressHUD.$(PRODUCT_NAME:rfc1034identifier)";
@@ -337,6 +338,7 @@
 				INFOPLIST_FILE = "SVProgressHUD-Framework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.2.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.SVProgressHUD.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = SVProgressHUD;
