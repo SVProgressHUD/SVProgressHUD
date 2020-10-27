@@ -45,7 +45,7 @@
         _ringAnimatedLayer.strokeColor = self.strokeColor.CGColor;
         _ringAnimatedLayer.lineWidth = self.strokeThickness;
         _ringAnimatedLayer.lineCap = kCALineCapRound;
-        _ringAnimatedLayer.lineJoin = kCALineJoinRound;
+        _ringAnimatedLayer.lineJoin = kCALineJoinBevel;
         _ringAnimatedLayer.path = smoothedPath.CGPath;
     }
     return _ringAnimatedLayer;

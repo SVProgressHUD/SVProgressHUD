@@ -10,7 +10,7 @@
 
 ![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
 
-## Demo		
+## Demo
 
 Try `SVProgressHUD` on [Appetize.io](https://appetize.io/app/p8r2cvy8kq74x7q7tjqf5gyatr).
 
@@ -38,7 +38,7 @@ Second, install `SVProgressHUD` into your project:
 pod install
 ```
 
-If you prefer a version of the library that's safe for use in extensions, you should use `SVProgressHUD/ExtensionSafe`.
+If you prefer a version of the library that's safe for use in extensions, you should use `SVProgressHUD/AppExtension`.
 
 ### Carthage
 
