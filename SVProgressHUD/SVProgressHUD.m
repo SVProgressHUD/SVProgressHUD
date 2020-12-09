@@ -211,6 +211,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].motionEffectEnabled = motionEffectEnabled;
 }
 
++ (void)setAccessibilityAnnouncementEnabled:(BOOL)accessibilityAnnouncementEnabled {
+    [self sharedView].accessibilityAnnouncementEnabled = accessibilityAnnouncementEnabled;
+}
+
 #pragma mark - Show Methods
 
 + (void)show {
@@ -442,6 +446,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _motionEffectEnabled = YES;
         
         // Accessibility support
+        _accessibilityAnnouncementEnabled = YES;
         self.accessibilityIdentifier = @"SVProgressHUD";
         self.isAccessibilityElement = YES;
         
@@ -938,8 +943,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                                                                   userInfo:[self notificationUserInfo]];
                 
                 // Update accessibility
-                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-                UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, self.statusLabel.text);
+                if (_accessibilityAnnouncementEnabled) {
+                    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+                    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, self.statusLabel.text);
+                }
                 
                 // Dismiss automatically if a duration was passed as userInfo. We start a timer
                 // which then will call dismiss after the predefined duration
@@ -970,8 +977,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         [self setNeedsDisplay];
     } else {
         // Update accessibility
-        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, self.statusLabel.text);
+        if (_accessibilityAnnouncementEnabled) {
+            UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, self.statusLabel.text);
+        }
         
         // Dismiss automatically if a duration was passed as userInfo. We start a timer
         // which then will call dismiss after the predefined duration
