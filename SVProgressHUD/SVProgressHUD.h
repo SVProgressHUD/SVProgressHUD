@@ -108,7 +108,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;            // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;           // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;          // default is UIWindowLevelNormal
-+ (void)setHapticsEnabled:(BOOL)hapticsEnabled;                            // default is NO
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled;                         // default is NO
 + (void)setMotionEffectEnabled:(BOOL)motionEffectEnabled;               // default is YES
 
 + (void)setAccessibilityAnnouncementEnabled:(BOOL)accessibilityAnnouncementEnabled; // default is YES
