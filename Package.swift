@@ -4,7 +4,7 @@
   let package = Package(
    name: "SVProgressHUD",
    platforms: [
-     .iOS(.v9), .tvOS(.v9)
+     .iOS(.v12)
    ],
    products: [
      .library(name: "SVProgressHUD", targets: ["SVProgressHUD"])
@@ -14,7 +14,7 @@
        name: "SVProgressHUD",
        path: "SVProgressHUD",
        exclude: ["SVProgressHUD-Prefix.pch"],
-       resources: [.copy("SVProgressHUD.bundle")],
-       publicHeadersPath: ".")
+       resources: [.copy("./SVProgressHUD.bundle")],
+       publicHeadersPath: "./include")
    ]
  )
