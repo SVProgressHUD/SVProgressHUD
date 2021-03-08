@@ -77,6 +77,8 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (assign, nonatomic) BOOL hapticsEnabled;      // default is NO
 @property (assign, nonatomic) BOOL motionEffectEnabled; // default is YES
 
+@property (assign, nonatomic) BOOL accessibilityAnnouncementEnabled; // default is YES
+
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                      // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;             // default is SVProgressHUDMaskTypeNone
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;       // default is SVProgressHUDAnimationTypeFlat
@@ -106,8 +108,10 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;            // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;           // default is 0.15 seconds
 + (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;          // default is UIWindowLevelNormal
-+ (void)setHapticsEnabled:(BOOL)hapticsEnabled;						    // default is NO
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled;                         // default is NO
 + (void)setMotionEffectEnabled:(BOOL)motionEffectEnabled;               // default is YES
+
++ (void)setAccessibilityAnnouncementEnabled:(BOOL)accessibilityAnnouncementEnabled; // default is YES
 
 #pragma mark - Show Methods
 
