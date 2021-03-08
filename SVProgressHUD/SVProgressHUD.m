@@ -345,6 +345,26 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:existingMaskType];
 }
 
+#pragma mark - Duration Controlled Methods
+
++ (void)showInfoWithStatus:(NSString *)status duration:(NSTimeInterval)displayInterval {
+    [self sharedView];
+    [[self sharedView] showImage:SVProgressHUDInfoImage status:status duration:displayInterval];
+}
+
++ (void)showSuccessWithStatus:(NSString *)status duration:(NSTimeInterval)displayInterval {
+    [self sharedView];
+    [[self sharedView] showImage:SVProgressHUDSuccessImage status:status duration:displayInterval];
+}
+
++ (void)showErrorWithStatus:(NSString *)status duration:(NSTimeInterval)displayInterval {
+    [self sharedView];
+    [[self sharedView] showImage:SVProgressHUDErrorImage status:status duration:displayInterval];
+}
+
++ (void)showImage:(UIImage *)image status:(NSString *)status duration:(NSTimeInterval)displayInterval {
+    [[self sharedView] showImage:image status:status duration:displayInterval];
+}
 
 #pragma mark - Dismiss Methods
 

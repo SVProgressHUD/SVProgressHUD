@@ -135,6 +135,12 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status;
 + (void)showImage:(nonnull UIImage*)image status:(nullable NSString*)status maskType:(SVProgressHUDMaskType)maskType __attribute__((deprecated("Use showImage:status: and setDefaultMaskType: instead.")));
 
+// Custom duration methods
++ (void)showInfoWithStatus:(NSString *)status duration:(NSTimeInterval)displayInterval;
++ (void)showSuccessWithStatus:(NSString *)string duration:(NSTimeInterval)displayInterval;
++ (void)showErrorWithStatus:(NSString *)string duration:(NSTimeInterval)displayInterval;
++ (void)showImage:(UIImage *)image status:(NSString *)string duration:(NSTimeInterval)displayInterval;
+
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;
 
