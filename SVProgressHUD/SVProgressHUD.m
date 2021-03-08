@@ -83,6 +83,18 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [[self sharedView] setStatus:status];
 }
 
++ (void)setFormat:(NSString *)format, ...
+{
+    NSString *status;
+    if (format) {
+        va_list args;
+        va_start(args, format);
+        status = [[NSString alloc] initWithFormat:format arguments:args];
+        va_end(args);
+    }
+    [self setStatus:status];
+}
+
 + (void)setDefaultStyle:(SVProgressHUDStyle)style {
     [self sharedView].defaultStyle = style;
 }
@@ -228,6 +240,18 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showProgress:SVProgressHUDUndefinedProgress status:status];
 }
 
++ (void)showWithFormat:(NSString *)format, ...
+{
+    NSString *status;
+    if (format) {
+        va_list args;
+        va_start(args, format);
+        status = [[NSString alloc] initWithFormat:format arguments:args];
+        va_end(args);
+    }
+    [self showWithStatus:status];
+}
+
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
@@ -249,6 +273,19 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 + (void)showProgress:(float)progress status:(NSString*)status {
     [[self sharedView] showProgress:progress status:status];
 }
+
++ (void)showProgress:(float)progress format:(NSString *)format, ...
+{
+    NSString *status;
+    if (format) {
+        va_list args;
+        va_start(args, format);
+        status = [[NSString alloc] initWithFormat:format arguments:args];
+        va_end(args);
+    }
+    [[self sharedView] showProgress:progress status:status];
+}
+
 
 + (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
@@ -272,6 +309,18 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
 }
 
++ (void)showInfoWithFormat:(NSString *)format, ...
+{
+    NSString *status;
+    if (format) {
+        va_list args;
+        va_start(args, format);
+        status = [[NSString alloc] initWithFormat:format arguments:args];
+        va_end(args);
+    }
+    [self showInfoWithStatus:status];
+}
+
 + (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
     SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
     [self setDefaultMaskType:maskType];
@@ -289,6 +338,18 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         });
     }
 #endif
+}
+
++ (void)showSuccessWithFormat:(NSString *)format, ...
+{
+    NSString *status;
+    if (format) {
+        va_list args;
+        va_start(args, format);
+        status = [[NSString alloc] initWithFormat:format arguments:args];
+        va_end(args);
+    }
+    [self showSuccessWithStatus:status];
 }
 
 + (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
@@ -316,6 +377,18 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         });
     }
 #endif
+}
+
++ (void)showErrorWithFormat:(NSString *)format, ...
+{
+    NSString *status;
+    if (format) {
+        va_list args;
+        va_start(args, format);
+        status = [[NSString alloc] initWithFormat:format arguments:args];
+        va_end(args);
+    }
+    [self showErrorWithStatus:status];
 }
 
 + (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
