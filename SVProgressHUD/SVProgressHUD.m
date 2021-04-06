@@ -76,6 +76,15 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     return sharedView;
 }
 
++ (NSBundle *)imageBundle {
+#if defined(SWIFTPM_MODULE_BUNDLE)
+    NSBundle *bundle = SWIFTPM_MODULE_BUNDLE;
+#else
+    NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
+#endif
+    NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
+    return [NSBundle bundleWithURL:url];
+}
 
 #pragma mark - Setters
 
