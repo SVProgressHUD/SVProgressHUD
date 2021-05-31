@@ -877,6 +877,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             if (self.shouldTintImages) {
                 if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
                     strongSelf.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                } else {
+                    strongSelf.imageView.image = image;
                 }
                 strongSelf.imageView.tintColor = strongSelf.foregroundImageColorForStyle;
             } else {
@@ -930,8 +932,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                                                             object:self
                                                           userInfo:[self notificationUserInfo]];
         
-        // Shrink HUD to to make a nice appear / pop up animation
-        self.hudView.transform = self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1/1.5f, 1/1.5f);
+        // Zoom HUD a little to to make a nice appear / pop up animation
+        self.hudView.transform = self.hudView.transform = CGAffineTransformScale(self.hudView.transform, 1.3f, 1.3f);
         
         __block void (^animationsBlock)(void) = ^{
             // Zoom HUD a little to make a nice appear / pop up animation
