@@ -4,6 +4,7 @@
 ![Pod Platform](https://img.shields.io/cocoapods/p/SVProgressHUD.svg?style=flat)
 ![Pod License](https://img.shields.io/cocoapods/l/SVProgressHUD.svg?style=flat)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-green.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![CocoaPods compatible](https://img.shields.io/badge/CocoaPods-compatible-green.svg?style=flat)](https://cocoapods.org)
 
 `SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task on iOS and tvOS.
@@ -47,6 +48,25 @@ github "SVProgressHUD/SVProgressHUD"
 ```
 
 Run `carthage bootstrap` to build the framework in your repository's Carthage directory. You can then include it in your target's `carthage copy-frameworks` build phase. For more information on this, please see [Carthage's documentation](https://github.com/carthage/carthage#if-youre-building-for-ios-tvos-or-watchos).
+
+### Swift Package Manager (Xcode 11+)
+
+[Swift Package Manager](https://swift.org/package-manager/) (SwiftPM) is a tool for managing the distribution of Swift code as well as C-family dependency. From Xcode 11, SwiftPM got natively integrated with Xcode.
+
+SVProgressHUD support SwiftPM from version 5.4.0. To use SwiftPM, you should use Xcode 11 to open your project. Click `File` -> `Swift Packages` -> `Add Package Dependency`, enter [SVProgressHUD repo's URL](https://github.com/SVProgressHUD/SVProgressHUD). Or you can login Xcode with your GitHub account and just type `SVProgressHUD` to search.
+
+After select the package, you can choose the dependency type (tagged version, branch or commit). Then Xcode will setup all the stuff for you.
+
+If you're a framework author and use SVProgressHUD as a dependency, update your `Package.swift` file:
+
+```swift
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/SVProgressHUD/SVProgressHUD", from: "2.2.6")
+    ],
+    //...
+)
+```
 
 ### Manually
 
