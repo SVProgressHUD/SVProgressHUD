@@ -7,6 +7,9 @@
 
 #import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
+#import "SVRadialGradientLayer.h"
+#import "SVProgressAnimatedView.h"
+#import "SVIndefiniteAnimatedView.h"
 
 extern NSString * _Nonnull const SVProgressHUDDidReceiveTouchEventNotification;
 extern NSString * _Nonnull const SVProgressHUDDidTouchDownInsideNotification;
@@ -147,6 +150,8 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (BOOL)isVisible;
 
 + (NSTimeInterval)displayDurationForString:(nullable NSString*)string;
+
++ (NSBundle* _Nullable)imageBundle;
 
 @end
 

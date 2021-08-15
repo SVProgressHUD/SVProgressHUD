@@ -68,11 +68,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     static dispatch_once_t once;
     
     static SVProgressHUD *sharedView;
-#if !defined(SV_APP_EXTENSIONS)
-    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[[UIApplication sharedApplication] delegate] window].bounds]; });
-#else
     dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
-#endif
     return sharedView;
 }
 
@@ -414,10 +410,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         _imageViewSize = CGSizeMake(28.0f, 28.0f);
         _shouldTintImages = YES;
-        
-        NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
-        NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
-        NSBundle *imageBundle = [NSBundle bundleWithURL:url];
+
+        NSBundle *imageBundle = [SVProgressHUD imageBundle];
         
         _infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
         _successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
@@ -651,7 +645,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     double animationDuration = 0.0;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-    self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
+    self.frame= [UIApplication sharedApplication].keyWindow.bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
 #elif !defined(SV_APP_EXTENSIONS) && !TARGET_OS_IOS
     self.frame= [UIApplication sharedApplication].keyWindow.bounds;
@@ -1187,6 +1181,16 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     return MIN(minimum, [self sharedView].maximumDismissTimeInterval);
 }
 
++ (NSBundle*)imageBundle {
+    NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
+    NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
+#if SWIFT_PACKAGE
+    url = [bundle URLForResource:@"SVProgressHUD_SVProgressHUD.bundle/SVProgressHUD" withExtension:@"bundle"];
+#endif
+    NSBundle *imageBundle = [NSBundle bundleWithURL:url];
+    return imageBundle;
+}
+
 - (UIColor*)foregroundColorForStyle {
     if(self.defaultStyle == SVProgressHUDStyleLight) {
         return [UIColor blackColor];
@@ -1225,13 +1229,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
     
     // Update frames
-#if !defined(SV_APP_EXTENSIONS)
-    CGRect windowBounds = [[[UIApplication sharedApplication] delegate] window].bounds;
-    _controlView.frame = windowBounds;
-#else
     _controlView.frame = [UIScreen mainScreen].bounds;
-#endif
-    
     return _controlView;
 }
 
