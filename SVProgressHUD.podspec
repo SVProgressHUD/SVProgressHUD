@@ -12,6 +12,8 @@ Pod::Spec.new do |s|
   s.description = 'SVProgressHUD is a clean and easy-to-use HUD meant to display the progress of an ongoing task on iOS and tvOS. The success and error icons are from Freepik from Flaticon and are licensed under Creative Commons BY 3.0.'
 
   s.framework    = 'QuartzCore'
+  s.resources    = 'SVProgressHUD/SVProgressHUD.bundle'
+  s.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'SV_APP_EXTENSIONS=1' }
   s.requires_arc = true
 
   s.default_subspec = 'Core'
