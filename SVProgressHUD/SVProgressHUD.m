@@ -127,6 +127,22 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].hudView.layer.borderWidth = width;
 }
 
++ (void)setShadowColor:(nonnull UIColor*)color {
+    [self sharedView].layer.shadowColor = color.CGColor;
+}
+
++ (void)setShadowOffset:(CGSize)size {
+    [self sharedView].layer.shadowOffset = size;
+}
+
++ (void)setShadowOpacity:(CGFloat)opacity {
+    [self sharedView].layer.shadowOpacity = opacity;
+}
+
++ (void)setShadowRadius:(CGFloat)radius {
+    [self sharedView].layer.shadowRadius = radius;
+}
+
 + (void)setFont:(UIFont*)font {
     [self sharedView].font = font;
 }
@@ -613,7 +629,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if TARGET_OS_IOS
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(positionHUD:)
-                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
+                                                 name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -652,7 +668,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
-    UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
+    UIInterfaceOrientation orientation = self.window.windowScene.interfaceOrientation;
 #elif !defined(SV_APP_EXTENSIONS) && !TARGET_OS_IOS
     self.frame= [UIApplication sharedApplication].keyWindow.bounds;
 #else
@@ -689,7 +705,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     CGRect orientationFrame = self.bounds;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-    CGRect statusBarFrame = UIApplication.sharedApplication.statusBarFrame;
+    CGRect statusBarFrame = self.window.windowScene.statusBarManager.statusBarFrame;
 #else
     CGRect statusBarFrame = CGRectZero;
 #endif
@@ -1035,7 +1051,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                     
                     // Tell the rootViewController to update the StatusBar appearance
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-                    UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
+                    UIViewController *rootController = self.window.rootViewController;
                     [rootController setNeedsStatusBarAppearanceUpdate];
 #endif
                     
@@ -1108,7 +1124,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         }
         
         if(!_indefiniteAnimatedView){
-            _indefiniteAnimatedView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            _indefiniteAnimatedView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
         }
         
         // Update styling
