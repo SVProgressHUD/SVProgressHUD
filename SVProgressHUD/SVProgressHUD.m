@@ -859,12 +859,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             // Update imageView
             if (self.shouldTintImages) {
+                strongSelf.imageView.tintColor = strongSelf.foregroundImageColorForStyle;
                 if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
                     strongSelf.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                 } else {
                     strongSelf.imageView.image = image;
                 }
-                strongSelf.imageView.tintColor = strongSelf.foregroundImageColorForStyle;
             } else {
                 strongSelf.imageView.image = image;
             }
