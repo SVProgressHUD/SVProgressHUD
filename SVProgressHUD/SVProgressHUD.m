@@ -15,6 +15,7 @@
 #import "SVRadialGradientLayer.h"
 
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
+NSString * const SVProgressHUDDidReceiveTouchValueNotification = @"SVProgressHUDDidReceiveTouchValueNotification";
 NSString * const SVProgressHUDDidTouchDownInsideNotification = @"SVProgressHUDDidTouchDownInsideNotification";
 NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
 NSString * const SVProgressHUDDidDisappearNotification = @"SVProgressHUDDidDisappearNotification";
@@ -755,6 +756,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                                                             object:self
                                                           userInfo:[self notificationUserInfo]];
     }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveTouchValueNotification
+                                                        object:self
+                                                      userInfo:@{SVProgressHUDDidReceiveTouchValueNotification:[NSValue valueWithNonretainedObject:touch]}];
 }
 
 

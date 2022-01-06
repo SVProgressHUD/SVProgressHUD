@@ -9,6 +9,7 @@
 #import <AvailabilityMacros.h>
 
 extern NSString * _Nonnull const SVProgressHUDDidReceiveTouchEventNotification;
+extern NSString * _Nonnull const SVProgressHUDDidReceiveTouchValueNotification;
 extern NSString * _Nonnull const SVProgressHUDDidTouchDownInsideNotification;
 extern NSString * _Nonnull const SVProgressHUDWillDisappearNotification;
 extern NSString * _Nonnull const SVProgressHUDDidDisappearNotification;
