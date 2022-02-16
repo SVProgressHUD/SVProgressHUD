@@ -1182,7 +1182,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 + (NSBundle*)imageBundle {
-    NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
+    NSBundle *bundle = [NSBundle mainBundle];
     NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
 #if SWIFT_PACKAGE
     url = [bundle URLForResource:@"SVProgressHUD_SVProgressHUD.bundle/SVProgressHUD" withExtension:@"bundle"];
