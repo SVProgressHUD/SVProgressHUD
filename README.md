@@ -10,7 +10,7 @@
 
 ![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
 
-## Demo		
+## Demo
 
 Try `SVProgressHUD` on [Appetize.io](https://appetize.io/app/p8r2cvy8kq74x7q7tjqf5gyatr).
 
@@ -131,35 +131,36 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 `SVProgressHUD` can be customized via the following methods:
 
 ```objective-c
-+ (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
-+ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
-+ (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;   // default is SVProgressHUDAnimationTypeFlat
-+ (void)setContainerView:(UIView*)containerView;                    // default is window level
-+ (void)setMinimumSize:(CGSize)minimumSize;                         // default is CGSizeZero, can be used to avoid resizing
-+ (void)setRingThickness:(CGFloat)width;                            // default is 2 pt
-+ (void)setRingRadius:(CGFloat)radius;                              // default is 18 pt
-+ (void)setRingNoTextRadius:(CGFloat)radius;                        // default is 24 pt
-+ (void)setCornerRadius:(CGFloat)cornerRadius;                      // default is 14 pt
-+ (void)setBorderColor:(nonnull UIColor*)color;                     // default is nil
-+ (void)setBorderWidth:(CGFloat)width;                              // default is 0
-+ (void)setFont:(UIFont*)font;                                      // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-+ (void)setForegroundColor:(UIColor*)color;                         // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
-+ (void)setForegroundImageColor:(nullable UIColor*)color;           // default is the same as foregroundColor
-+ (void)setBackgroundColor:(UIColor*)color;                         // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
-+ (void)setBackgroundLayerColor:(UIColor*)color;                    // default is [UIColor colorWithWhite:0 alpha:0.4], only used for SVProgressHUDMaskTypeCustom
-+ (void)setImageViewSize:(CGSize)size;                              // default is 28x28 pt
-+ (void)setShouldTintImages:(BOOL)shouldTintImages;                 // default is YES
-+ (void)setInfoImage:(UIImage*)image;                               // default is the bundled info image provided by Freepik
-+ (void)setSuccessImage:(UIImage*)image;                            // default is bundled success image from Freepik
-+ (void)setErrorImage:(UIImage*)image;                              // default is bundled error image from Freepik
-+ (void)setViewForExtension:(UIView*)view;                          // default is nil, only used if #define SV_APP_EXTENSIONS is set
-+ (void)setGraceTimeInterval:(NSTimeInterval)interval;              // default is 0 seconds
-+ (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
-+ (void)setMaximumDismissTimeInterval:(NSTimeInterval)interval;     // default is CGFLOAT_MAX
-+ (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
-+ (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
-+ (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
-+ (void)setHapticsEnabled:(BOOL)hapticsEnabled;                     // default is NO
++ (void)setDefaultStyle:(SVProgressHUDStyle)style;                    // default is SVProgressHUDStyleLight
++ (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;           // default is SVProgressHUDMaskTypeNone
++ (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;     // default is SVProgressHUDAnimationTypeFlat
++ (void)setContainerView:(UIView*)containerView;                      // default is window level
++ (void)setLoadingImageView:(nullable UIImageView*) loadingImageView; // default is nil
++ (void)setMinimumSize:(CGSize)minimumSize;                           // default is CGSizeZero, can be used to avoid resizing
++ (void)setRingThickness:(CGFloat)width;                              // default is 2 pt
++ (void)setRingRadius:(CGFloat)radius;                                // default is 18 pt
++ (void)setRingNoTextRadius:(CGFloat)radius;                          // default is 24 pt
++ (void)setCornerRadius:(CGFloat)cornerRadius;                        // default is 14 pt
++ (void)setBorderColor:(nonnull UIColor*)color;                       // default is nil
++ (void)setBorderWidth:(CGFloat)width;                                // default is 0
++ (void)setFont:(UIFont*)font;                                        // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
++ (void)setForegroundColor:(UIColor*)color;                           // default is [UIColor blackColor], only used for SVProgressHUDStyleCustom
++ (void)setForegroundImageColor:(nullable UIColor*)color;             // default is the same as foregroundColor
++ (void)setBackgroundColor:(UIColor*)color;                           // default is [UIColor whiteColor], only used for SVProgressHUDStyleCustom
++ (void)setBackgroundLayerColor:(UIColor*)color;                      // default is [UIColor colorWithWhite:0 alpha:0.4], only used for SVProgressHUDMaskTypeCustom
++ (void)setImageViewSize:(CGSize)size;                                // default is 28x28 pt
++ (void)setShouldTintImages:(BOOL)shouldTintImages;                   // default is YES
++ (void)setInfoImage:(UIImage*)image;                                 // default is the bundled info image provided by Freepik
++ (void)setSuccessImage:(UIImage*)image;                              // default is bundled success image from Freepik
++ (void)setErrorImage:(UIImage*)image;                                // default is bundled error image from Freepik
++ (void)setViewForExtension:(UIView*)view;                            // default is nil, only used if #define SV_APP_EXTENSIONS is set
++ (void)setGraceTimeInterval:(NSTimeInterval)interval;                // default is 0 seconds
++ (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;       // default is 5.0 seconds
++ (void)setMaximumDismissTimeInterval:(NSTimeInterval)interval;       // default is CGFLOAT_MAX
++ (void)setFadeInAnimationDuration:(NSTimeInterval)duration;          // default is 0.15 seconds
++ (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;         // default is 0.15 seconds
++ (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;        // default is UIWindowLevelNormal
++ (void)setHapticsEnabled:(BOOL)hapticsEnabled;                       // default is NO
 ```
 
 Additionally `SVProgressHUD` supports the `UIAppearance` protocol for most of the above methods.
