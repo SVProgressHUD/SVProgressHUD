@@ -686,7 +686,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
     
     // Get the currently active frame of the display (depends on orientation)
-    CGRect orientationFrame = self.bounds;
+    CGRect orientationFrame = [[UIScreen mainScreen] bounds];
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     CGRect statusBarFrame = UIApplication.sharedApplication.statusBarFrame;
