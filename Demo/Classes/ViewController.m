@@ -23,6 +23,8 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     self.activityCount = 0;
+    
+    [SVProgressHUD setInfoImage:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
