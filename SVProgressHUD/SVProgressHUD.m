@@ -26,8 +26,8 @@ NSString * const SVProgressHUDStatusUserInfoKey = @"SVProgressHUDStatusUserInfoK
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10.0f;
 static const CGFloat SVProgressHUDUndefinedProgress = -1;
 static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15f;
-static const CGFloat SVProgressHUDVerticalSpacing = 12.0f;
-static const CGFloat SVProgressHUDHorizontalSpacing = 12.0f;
+static const CGFloat SVProgressHUDVerticalSpacing = 8.0f;
+static const CGFloat SVProgressHUDHorizontalSpacing = 16.0f;
 static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 
@@ -69,13 +69,23 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     static SVProgressHUD *sharedView;
 #if !defined(SV_APP_EXTENSIONS)
-    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[[UIApplication sharedApplication] delegate] window].bounds]; });
+    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[self delegateWindowFrame]]; });
 #else
     dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
 #endif
     return sharedView;
 }
 
++ (CGRect)delegateWindowFrame {
+    CGRect frame = [[[UIApplication sharedApplication] delegate] window].bounds;
+    if (@available(iOS 13.0, *)) {
+        id sceneDelegate = [[[UIApplication sharedApplication].connectedScenes allObjects].firstObject delegate];
+        if ([sceneDelegate respondsToSelector:@selector(window)]) {
+            frame = [sceneDelegate window].bounds;
+        }
+    }
+    return frame;
+}
 
 #pragma mark - Setters
 
@@ -101,6 +111,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 + (void)setMinimumSize:(CGSize)minimumSize {
     [self sharedView].minimumSize = minimumSize;
+}
+
++ (void)setStatusMaxSize:(CGSize)maxSize {
+    [self sharedView].statusMaxSize = maxSize;
 }
 
 + (void)setRingThickness:(CGFloat)ringThickness {
@@ -410,6 +424,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _defaultStyle = SVProgressHUDStyleLight;
         _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
         _minimumSize = CGSizeZero;
+        _statusMaxSize = CGSizeMake(200.0f, 300.0f);
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         
         _imageViewSize = CGSizeMake(28.0f, 28.0f);
@@ -461,7 +476,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     CGFloat labelWidth = 0.0f;
     
     if(self.statusLabel.text) {
-        CGSize constraintSize = CGSizeMake(200.0f, 300.0f);
+        CGSize constraintSize = self.statusMaxSize;
         labelRect = [self.statusLabel.text boundingRectWithSize:constraintSize
                                                         options:(NSStringDrawingOptions)(NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin)
                                                      attributes:@{NSFontAttributeName: self.statusLabel.font}
@@ -651,7 +666,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     double animationDuration = 0.0;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-    self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
+    self.frame = [self.class delegateWindowFrame];
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
 #elif !defined(SV_APP_EXTENSIONS) && !TARGET_OS_IOS
     self.frame= [UIApplication sharedApplication].keyWindow.bounds;
@@ -1226,7 +1241,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     // Update frames
 #if !defined(SV_APP_EXTENSIONS)
-    CGRect windowBounds = [[[UIApplication sharedApplication] delegate] window].bounds;
+    CGRect windowBounds = [self.class delegateWindowFrame];
     _controlView.frame = windowBounds;
 #else
     _controlView.frame = [UIScreen mainScreen].bounds;
