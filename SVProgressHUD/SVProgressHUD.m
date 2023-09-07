@@ -64,14 +64,24 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     BOOL _isInitializing;
 }
 
++ (UIWindow *)targetWindow {
+    if (@available(iOS 13.0, *)) {
+        id<UIWindowSceneDelegate> sceneDelegate = (id<UIWindowSceneDelegate>)[[UIApplication sharedApplication].connectedScenes anyObject].delegate;
+        if ([sceneDelegate respondsToSelector:@selector(window)]) {
+            return sceneDelegate.window;
+        }
+    }
+    return [UIApplication sharedApplication].delegate.window;
+}
+
 + (SVProgressHUD*)sharedView {
     static dispatch_once_t once;
     
     static SVProgressHUD *sharedView;
 #if !defined(SV_APP_EXTENSIONS)
-    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[[UIApplication sharedApplication] delegate] window].bounds]; });
+    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[self targetWindow].bounds]; });
 #else
-    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[UIScreen mainScreen].bounds]; });
 #endif
     return sharedView;
 }
@@ -658,7 +668,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     double animationDuration = 0.0;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-    self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
+    self.frame = [SVProgressHUD targetWindow].bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
 #elif !defined(SV_APP_EXTENSIONS) && !TARGET_OS_IOS
     self.frame= [UIApplication sharedApplication].keyWindow.bounds;
@@ -666,7 +676,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     if (self.viewForExtension) {
         self.frame = self.viewForExtension.frame;
     } else {
-        self.frame = UIScreen.mainScreen.bounds;
+        self.frame = [UIScreen mainScreen].bounds;
     }
 #if TARGET_OS_IOS
     UIInterfaceOrientation orientation = CGRectGetWidth(self.frame) > CGRectGetHeight(self.frame) ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
@@ -693,7 +703,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
     
     // Get the currently active frame of the display (depends on orientation)
-    CGRect orientationFrame = self.bounds;
+    CGRect orientationFrame = [UIScreen mainScreen].bounds;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
     CGRect statusBarFrame = UIApplication.sharedApplication.statusBarFrame;
@@ -1233,7 +1243,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
     // Update frames
 #if !defined(SV_APP_EXTENSIONS)
-    CGRect windowBounds = [[[UIApplication sharedApplication] delegate] window].bounds;
+    CGRect windowBounds = [SVProgressHUD targetWindow].bounds;
     _controlView.frame = windowBounds;
 #else
     _controlView.frame = [UIScreen mainScreen].bounds;
@@ -1381,7 +1391,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if !defined(SV_APP_EXTENSIONS)
     NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
     for (UIWindow *window in frontToBackWindows) {
-        BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
+        BOOL windowOnMainScreen = window.screen == [UIScreen mainScreen];
         BOOL windowIsVisible = !window.hidden && window.alpha > 0;
         BOOL windowLevelSupported = (window.windowLevel >= UIWindowLevelNormal && window.windowLevel <= self.maxSupportedWindowLevel);
         BOOL windowKeyWindow = window.isKeyWindow;
