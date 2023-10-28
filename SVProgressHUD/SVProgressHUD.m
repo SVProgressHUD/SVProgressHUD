@@ -283,11 +283,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showImage:[self sharedView].infoImage status:status];
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    if (@available(iOS 10.0, *)) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
+    });
 #endif
 }
 
@@ -302,11 +300,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showImage:[self sharedView].successImage status:status];
 
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    if (@available(iOS 10, *)) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+    });
 #endif
 }
 
@@ -317,11 +313,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:existingMaskType];
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    if (@available(iOS 10.0, *)) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+    });
 #endif
 }
 
@@ -329,11 +323,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showImage:[self sharedView].errorImage status:status];
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    if (@available(iOS 10.0, *)) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+    });
 #endif
 }
 
@@ -344,11 +336,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self setDefaultMaskType:existingMaskType];
     
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    if (@available(iOS 10.0, *)) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
+    });
 #endif
 }
 
@@ -426,13 +416,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         // Set default values
         _defaultMaskType = SVProgressHUDMaskTypeNone;
-        
-        if (@available(iOS 12, tvOS 10, *)) {
-            _defaultStyle = SVProgressHUDStyleAutomatic;
-        } else {
-            _defaultStyle = SVProgressHUDStyleLight;
-        }
-        
+        _defaultStyle = SVProgressHUDStyleAutomatic;
         _defaultAnimationType = SVProgressHUDAnimationTypeFlat;
         _minimumSize = CGSizeZero;
         _font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
@@ -858,9 +842,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             // Tell the Haptics Generator to prepare for feedback, which may come soon
 #if TARGET_OS_IOS && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-            if (@available(iOS 10.0, *)) {
-                [strongSelf.hapticGenerator prepare];
-            }
+            [strongSelf.hapticGenerator prepare];
 #endif
         }
     }];
@@ -1371,14 +1353,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (SVProgressHUDStyle) defaultStyleResolvingAutomatic {
     if(self.defaultStyle == SVProgressHUDStyleAutomatic) {
-        if (@available(iOS 12, tvOS 10, *)) {
-            return self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ?
-            SVProgressHUDStyleDark : SVProgressHUDStyleLight;
-        }
-        
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"SVProgressHUDStyleAutomatic cannot be specified before iOS 12 / tvOS 10."
-                                     userInfo:nil];
+        return self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ? SVProgressHUDStyleDark : SVProgressHUDStyleLight;
     }
     
     return self.defaultStyle;

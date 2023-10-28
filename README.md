@@ -162,12 +162,11 @@ Additionally `SVProgressHUD` supports the `UIAppearance` protocol for most of th
 
 ### Hint
 
-As standard `SVProgressHUD` offers two preconfigured styles:
+As standard `SVProgressHUD` offers three preconfigured styles:
 
+* `SVProgressHUDStyleAutomatic`: Automatically switch between the light and dark style
 * `SVProgressHUDStyleLight`: White background with black spinner and text
 * `SVProgressHUDStyleDark`: Black background with white spinner and text
-
-On iOS 12.0+/tvOS 10.0+, you can also use `SVProgressHUDStyleAutomatic` to choose between Light and Dark automatically. Use this setting for automatic support of Dark Mode on iOS. Manually assigning `SVProgressHUDStyleAutomatic` on older operating systems will cause an exception to be thrown.
 
 If you want to use custom colors use `setForegroundColor` and `setBackgroundColor:`. These implicitly set the HUD's style to `SVProgressHUDStyleCustom`.
 
@@ -186,6 +185,7 @@ Users with devices prior to iPhone 7 will have no change in functionality.
 ## Notifications
 
 `SVProgressHUD` posts four notifications via `NSNotificationCenter` in response to being shown/dismissed:
+
 * `SVProgressHUDWillAppearNotification` when the show animation starts
 * `SVProgressHUDDidAppearNotification` when the show animation completes
 * `SVProgressHUDWillDisappearNotification` when the dismiss animation starts
