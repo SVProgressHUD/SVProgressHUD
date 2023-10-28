@@ -2,7 +2,7 @@
 //  AppDelegate.h
 //  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
-//  Copyright (c) 2017-2019 David Olesch. All rights reserved.
+//  Copyright (c) 2017-2023 David Olesch and contributors. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

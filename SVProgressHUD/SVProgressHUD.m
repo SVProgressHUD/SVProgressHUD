@@ -2,7 +2,7 @@
 //  SVProgressHUD.h
 //  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
-//  Copyright (c) 2011-2019 Sam Vermette and contributors. All rights reserved.
+//  Copyright (c) 2011-2023 Sam Vermette and contributors. All rights reserved.
 //
 
 #if !__has_feature(objc_arc)

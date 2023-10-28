@@ -127,7 +127,7 @@ Or show a confirmation glyph before before getting dismissed a little bit later.
 `SVProgressHUD` can be customized via the following methods:
 
 ```objective-c
-+ (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
++ (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleAutomatic
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
 + (void)setDefaultAnimationType:(SVProgressHUDAnimationType)type;   // default is SVProgressHUDAnimationTypeFlat
 + (void)setContainerView:(UIView*)containerView;                    // default is window level

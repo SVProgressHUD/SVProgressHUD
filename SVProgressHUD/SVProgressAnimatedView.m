@@ -2,7 +2,7 @@
 //  SVProgressAnimatedView.m
 //  SVProgressHUD, https://github.com/SVProgressHUD/SVProgressHUD
 //
-//  Copyright (c) 2017-2019 Tobias Tiemerding. All rights reserved.
+//  Copyright (c) 2017-2023 Tobias Totzek and contributors. All rights reserved.
 //
 
 #import "SVProgressAnimatedView.h"
