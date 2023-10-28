@@ -8,7 +8,7 @@
 
 `SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task on iOS and tvOS.
 
-![SVProgressHUD](http://f.cl.ly/items/2G1F1Z0M0k0h2U3V1p39/SVProgressHUD.gif)
+![SVProgressHUD](https://raw.githubusercontent.com/SVProgressHUD/SVProgressHUD/Images/HUD.gif)
 
 ## Installation
 
