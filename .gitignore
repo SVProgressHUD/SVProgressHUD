@@ -1,28 +1,37 @@
-# Mac OS X
+# macOS
 ._*
 *.DS_Store
-*.psd
 
 # Xcode
-*.pbxuser
-*.mode1v3
-*.mode2v3
-*.perspectivev3
-*.xcuserstate
-project.xcworkspace/
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## User settings
 xcuserdata/
-DerivedData/
+*
 
-# Generated files
+## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
+*.xcscmblueprint
+*.xccheckout
+
+## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
 build/
-*.[oa]
-*.pyc
+DerivedData/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xcworkspace/
 
-# Backup files
-*~.nib
-/ graphics/
-Demo/.idea/.name
-Demo/.idea/Demo.iml
-Demo/.idea/modules.xml
-Demo/.idea/workspace.xml
-Demo/.idea/xcode.xml
+## Obj-C/Swift specific
+*.hmap
+
+## App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
