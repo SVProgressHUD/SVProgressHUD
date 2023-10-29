@@ -77,24 +77,33 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 }
 
 + (UIWindow *)mainWindow {
-    UIWindow *window = nil;
     if (@available(iOS 13.0, *)) {
         for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
             if (windowScene.activationState == UISceneActivationStateForegroundActive) {
-                window = windowScene.windows.firstObject;
-                break;
+                return windowScene.windows.firstObject;
             }
         }
+        // If a window has not been returned by now, the first scene's window is returned (regardless of activationState).
+        UIWindowScene *windowScene = (UIWindowScene *)[[UIApplication sharedApplication].connectedScenes allObjects].firstObject;
+        return windowScene.windows.firstObject;
     } else {
 #if TARGET_OS_IOS
-        window = [[[UIApplication sharedApplication] delegate] window];
+        return [[[UIApplication sharedApplication] delegate] window];
 #else
-        window = [UIApplication sharedApplication].keyWindow;
+        return [UIApplication sharedApplication].keyWindow;
 #endif
     }
-    return window;
 }
 
++ (NSBundle *)imageBundle {
+#if defined(SWIFTPM_MODULE_BUNDLE)
+     NSBundle *bundle = SWIFTPM_MODULE_BUNDLE;
+#else
+     NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
+#endif
+     NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
+     return [NSBundle bundleWithURL:url];
+ }
 
 #pragma mark - Setters
 
@@ -424,9 +433,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _imageViewSize = CGSizeMake(28.0f, 28.0f);
         _shouldTintImages = YES;
         
-        NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
-        NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
-        NSBundle *imageBundle = [NSBundle bundleWithURL:url];
+        NSBundle *imageBundle = [SVProgressHUD imageBundle];
         
         _infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
         _successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
@@ -1237,10 +1244,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         [_controlView addTarget:self action:@selector(controlViewDidReceiveTouchEvent:forEvent:) forControlEvents:UIControlEventTouchDown];
     }
     
-    // Update frames
+    // Update frame
 #if !defined(SV_APP_EXTENSIONS)
-    CGRect windowBounds = [[[UIApplication sharedApplication] delegate] window].bounds;
-    _controlView.frame = windowBounds;
+    _controlView.frame = [SVProgressHUD mainWindow].bounds;
 #else
     _controlView.frame = [UIScreen mainScreen].bounds;
 #endif

@@ -1,5 +1,14 @@
+## Version 2.3.0
+* Update SVProgressHUD for recent Xcode versions #1105, #1066, #1019, #1060, #1070
+* Add suport for Swift Package Manager #981, #1042, #1063, #1079, #1085
+* Added adjustFontForContentSizeCategory to statusLabel #1072
+* Update imageUsed judgment conditions when set imageViewSize to zero #1098
+* Fix memory leak while loading image from bundle #1080
+* Fix positioning of HUD on iOS 13 and above #1100
+* Add dark mode support #965
+
 ## Version 2.2.6
-* Added option for custom Blur effect style for background,  rewritten indefinite animation view for smooth animation, added option to set custom ring color without affecting background color #946
+* Added option for custom Blur effect style for background, rewritten indefinite animation view for smooth animation, added option to set custom ring color without affecting background color #946
 * Remove new line character before setting accessibility text to avoid repetition of voice over for same text #872
 * Added ability to set motion effects disabled #952
 * Add option to customize only ring color and allow for custom blur effect design #946
@@ -17,7 +26,7 @@
 ## Version 2.2.3
 * Off-screen keyboard returns a positive value in iOS 11.2 as its height #835, #846, #852
 * Fix bug where status label hiddenness is not updated when setStatus is called #854
-* Use @available to suppress warnings in Xcode 9 #821 #864 #870
+* Use @available to suppress warnings in Xcode 9 #821, #864, #870
 
 ## Version 2.2.2
 * Rollback of popActivity #824

@@ -3,14 +3,26 @@
 ![Pod Version](https://img.shields.io/cocoapods/v/SVProgressHUD.svg?style=flat)
 ![Pod Platform](https://img.shields.io/cocoapods/p/SVProgressHUD.svg?style=flat)
 ![Pod License](https://img.shields.io/cocoapods/l/SVProgressHUD.svg?style=flat)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-green.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![CocoaPods compatible](https://img.shields.io/badge/CocoaPods-compatible-green.svg?style=flat)](https://cocoapods.org)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-green.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 `SVProgressHUD` is a clean and easy-to-use HUD meant to display the progress of an ongoing task on iOS and tvOS.
 
 ![SVProgressHUD](https://raw.githubusercontent.com/SVProgressHUD/SVProgressHUD/Images/HUD.gif)
 
 ## Installation
+
+### Swift Package Manager
+
+[Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler. It simplifies the process of managing Swift package dependencies.
+
+`SVProgressHUD` support SwiftPM from version 5.3.0. To integrate `SVProgressHUD` into your project using Swift Package Manager:
+
+1. In Xcode, select **File > Add Package Dependency**.
+2. Enter the following package repository URL: https://github.com/SVProgressHUD/SVProgressHUD.git
+3. Choose the appropriate version (e.g., a specific version, branch, or commit).
+4. Add `SVProgressHUD` to your target dependencies.
 
 ### From CocoaPods
 
@@ -52,7 +64,9 @@ Run `carthage bootstrap` to build the framework in your repository's Carthage di
 
 ## Swift
 
-Even though `SVProgressHUD` is written in Objective-C, it can be used in Swift with no hassle. If you use [CocoaPods](http://cocoapods.org) add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
+Even though `SVProgressHUD` is written in Objective-C, it can be used in Swift with no hassle.
+
+If you use [CocoaPods](http://cocoapods.org) add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
 
 ```ruby
 use_frameworks!
@@ -68,7 +82,9 @@ If you added `SVProgressHUD` manually, just add a [bridging header](https://deve
 
 **Use `SVProgressHUD` wisely! Only use it if you absolutely need to perform a task before taking the user forward. Bad use case examples: pull to refresh, infinite scrolling, sending message.**
 
-Using `SVProgressHUD` in your app will usually look as simple as this (using Grand Central Dispatch):
+Using `SVProgressHUD` in your app will usually look as simple as this.
+
+Objective-C:
 
 ```objective-c
 [SVProgressHUD show];
@@ -78,6 +94,18 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [SVProgressHUD dismiss];
     });
 });
+```
+
+Swift:
+
+```swift
+SVProgressHUD.show()
+DispatchQueue.global(qos: .default).async {
+    // time-consuming task
+    DispatchQueue.main.async {
+        SVProgressHUD.dismiss()
+    }
+}
 ```
 
 ### Showing the HUD

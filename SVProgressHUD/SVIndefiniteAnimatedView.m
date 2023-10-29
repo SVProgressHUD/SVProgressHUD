@@ -60,9 +60,7 @@
         
         CALayer *maskLayer = [CALayer layer];
         
-        NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
-        NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
-        NSBundle *imageBundle = [NSBundle bundleWithURL:url];
+        NSBundle *imageBundle = [SVProgressHUD imageBundle];
         
         maskLayer.contents = (__bridge id)[[UIImage imageNamed:@"angle-mask.png" inBundle:imageBundle compatibleWithTraitCollection:nil] CGImage];
         maskLayer.frame = _indefiniteAnimatedLayer.bounds;
