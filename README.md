@@ -15,14 +15,16 @@
 
 ### Swift Package Manager
 
-[Swift Package Manager](https://swift.org/package-manager/) is a tool for managing the distribution of Swift code. It simplifies the process of managing Swift package dependencies.
+[Swift Package Manager](https://swift.org/package-manager/) (SwiftPM) is a tool for managing the distribution of Swift code. It simplifies the process of managing Swift package dependencies.
 
-`SVProgressHUD` support SwiftPM from version 5.3.0. To integrate `SVProgressHUD` into your project using Swift Package Manager:
+To integrate `SVProgressHUD` into your project using SwiftPM:
 
 1. In Xcode, select **File > Add Package Dependency**.
 2. Enter the following package repository URL: https://github.com/SVProgressHUD/SVProgressHUD.git
 3. Choose the appropriate version (e.g. a specific version, branch, or commit).
 4. Add `SVProgressHUD` to your target dependencies.
+
+`SVProgressHUD` requires at least Swift tools version 5.3.
 
 ### From CocoaPods
 

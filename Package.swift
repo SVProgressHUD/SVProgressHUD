@@ -5,26 +5,26 @@ import PackageDescription
 let package = Package(
     name: "SVProgressHUD",
     platforms: [
-		.iOS(.v12), 
-		.tvOS(.v12)
-	],
+        .iOS(.v12), 
+        .tvOS(.v12)
+    ],
     products: [
-		.library(
+        .library(
             name: "SVProgressHUD",
             targets: ["SVProgressHUD"]
-		)
-	],
+        )
+    ],
     targets: [
         .target(
             name: "SVProgressHUD",
-			dependencies: [],
+            dependencies: [],
             path: "SVProgressHUD",
-			exclude: ["SVProgressHUD-Prefix.pch", "PrivacyInfo.xcprivacy"],
+            exclude: ["SVProgressHUD-Prefix.pch", "PrivacyInfo.xcprivacy"],
             resources: [
                 .copy("SVProgressHUD.bundle"),
                 .copy("PrivacyInfo.xcprivacy")
             ],
-			publicHeadersPath: "include"
+            publicHeadersPath: "include"
         )
     ]
 )
