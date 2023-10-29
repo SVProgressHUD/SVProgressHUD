@@ -67,6 +67,8 @@
     
     if([notification.name isEqualToString:SVProgressHUDDidReceiveTouchEventNotification]){
         [self dismiss];
+    } else if([notification.name isEqualToString:SVProgressHUDDidDisappearNotification] && self.activityCount > 0){
+        self.activityCount = 0;
     }
 }
 
