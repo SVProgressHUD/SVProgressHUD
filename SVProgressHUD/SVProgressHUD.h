@@ -18,10 +18,10 @@ extern NSString * _Nonnull const SVProgressHUDDidAppearNotification;
 extern NSString * _Nonnull const SVProgressHUDStatusUserInfoKey;
 
 typedef NS_ENUM(NSInteger, SVProgressHUDStyle) {
-    SVProgressHUDStyleLight NS_SWIFT_NAME(light),   // default style, white HUD with black text, HUD background will be blurred
-    SVProgressHUDStyleDark NS_SWIFT_NAME(dark),     // black HUD and white text, HUD background will be blurred
-    SVProgressHUDStyleCustom NS_SWIFT_NAME(custom),  // uses the fore- and background color properties,
-    SVProgressHUDStyleAutomatic NS_SWIFT_NAME(automatic)  // uses light or dark mode appearance (iOS 12+ / tvOS 10+)
+    SVProgressHUDStyleLight NS_SWIFT_NAME(light),           // default style, white HUD with black text, HUD background will be blurred
+    SVProgressHUDStyleDark NS_SWIFT_NAME(dark),             // black HUD and white text, HUD background will be blurred
+    SVProgressHUDStyleCustom NS_SWIFT_NAME(custom),         // uses the fore- and background color properties,
+    SVProgressHUDStyleAutomatic NS_SWIFT_NAME(automatic)    // uses light or dark mode appearance (iOS 12+ / tvOS 10+)
 
 };
 
@@ -49,25 +49,25 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 @property (assign, nonatomic) SVProgressHUDMaskType defaultMaskType UI_APPEARANCE_SELECTOR;             // default is SVProgressHUDMaskTypeNone
 @property (assign, nonatomic) SVProgressHUDAnimationType defaultAnimationType UI_APPEARANCE_SELECTOR;   // default is SVProgressHUDAnimationTypeFlat
 @property (strong, nonatomic, nullable) UIView *containerView;                                          // if nil then use default window level
-@property (assign, nonatomic) CGSize minimumSize UI_APPEARANCE_SELECTOR;                        // default is CGSizeZero, can be used to avoid resizing for a larger message
-@property (assign, nonatomic) CGFloat ringThickness UI_APPEARANCE_SELECTOR;                     // default is 2 pt
-@property (assign, nonatomic) CGFloat ringRadius UI_APPEARANCE_SELECTOR;                        // default is 18 pt
-@property (assign, nonatomic) CGFloat ringNoTextRadius UI_APPEARANCE_SELECTOR;                  // default is 24 pt
-@property (assign, nonatomic) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;                      // default is 14 pt
-@property (strong, nonatomic, nonnull) UIFont *font UI_APPEARANCE_SELECTOR;                     // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
-@property (strong, nonatomic, nonnull) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;         // default is [UIColor whiteColor]
-@property (strong, nonatomic, nonnull) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;         // default is [UIColor blackColor]
-@property (strong, nonatomic, nullable) UIColor *foregroundImageColor UI_APPEARANCE_SELECTOR;   // default is the same as foregroundColor
-@property (strong, nonatomic, nonnull) UIColor *backgroundLayerColor UI_APPEARANCE_SELECTOR;    // default is [UIColor colorWithWhite:0 alpha:0.4]
-@property (assign, nonatomic) CGSize imageViewSize UI_APPEARANCE_SELECTOR;                      // default is 28x28 pt
-@property (assign, nonatomic) BOOL shouldTintImages UI_APPEARANCE_SELECTOR;                     // default is YES
-@property (strong, nonatomic, nonnull) UIImage *infoImage UI_APPEARANCE_SELECTOR;               // default is the bundled info image provided by Freepik
-@property (strong, nonatomic, nonnull) UIImage *successImage UI_APPEARANCE_SELECTOR;            // default is the bundled success image provided by Freepik
-@property (strong, nonatomic, nonnull) UIImage *errorImage UI_APPEARANCE_SELECTOR;              // default is the bundled error image provided by Freepik
-@property (strong, nonatomic, nonnull) UIView *viewForExtension UI_APPEARANCE_SELECTOR;         // default is nil, only used if #define SV_APP_EXTENSIONS is set
-@property (assign, nonatomic) NSTimeInterval graceTimeInterval;                                 // default is 0 seconds
-@property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;                        // default is 5.0 seconds
-@property (assign, nonatomic) NSTimeInterval maximumDismissTimeInterval;                        // default is CGFLOAT_MAX
+@property (assign, nonatomic) CGSize minimumSize UI_APPEARANCE_SELECTOR;                                // default is CGSizeZero, can be used to avoid resizing for a larger message
+@property (assign, nonatomic) CGFloat ringThickness UI_APPEARANCE_SELECTOR;                             // default is 2 pt
+@property (assign, nonatomic) CGFloat ringRadius UI_APPEARANCE_SELECTOR;                                // default is 18 pt
+@property (assign, nonatomic) CGFloat ringNoTextRadius UI_APPEARANCE_SELECTOR;                          // default is 24 pt
+@property (assign, nonatomic) CGFloat cornerRadius UI_APPEARANCE_SELECTOR;                              // default is 14 pt
+@property (strong, nonatomic, nonnull) UIFont *font UI_APPEARANCE_SELECTOR;                             // default is [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]
+@property (strong, nonatomic, nonnull) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;                 // default is [UIColor whiteColor]
+@property (strong, nonatomic, nonnull) UIColor *foregroundColor UI_APPEARANCE_SELECTOR;                 // default is [UIColor blackColor]
+@property (strong, nonatomic, nullable) UIColor *foregroundImageColor UI_APPEARANCE_SELECTOR;           // default is the same as foregroundColor
+@property (strong, nonatomic, nonnull) UIColor *backgroundLayerColor UI_APPEARANCE_SELECTOR;            // default is [UIColor colorWithWhite:0 alpha:0.4]
+@property (assign, nonatomic) CGSize imageViewSize UI_APPEARANCE_SELECTOR;                              // default is 28x28 pt
+@property (assign, nonatomic) BOOL shouldTintImages UI_APPEARANCE_SELECTOR;                             // default is YES
+@property (strong, nonatomic, nonnull) UIImage *infoImage UI_APPEARANCE_SELECTOR;                       // default is the bundled info image provided by Freepik
+@property (strong, nonatomic, nonnull) UIImage *successImage UI_APPEARANCE_SELECTOR;                    // default is the bundled success image provided by Freepik
+@property (strong, nonatomic, nonnull) UIImage *errorImage UI_APPEARANCE_SELECTOR;                      // default is the bundled error image provided by Freepik
+@property (strong, nonatomic, nonnull) UIView *viewForExtension UI_APPEARANCE_SELECTOR;                 // default is nil, only used if #define SV_APP_EXTENSIONS is set
+@property (assign, nonatomic) NSTimeInterval graceTimeInterval;                                         // default is 0 seconds
+@property (assign, nonatomic) NSTimeInterval minimumDismissTimeInterval;                                // default is 5.0 seconds
+@property (assign, nonatomic) NSTimeInterval maximumDismissTimeInterval;                                // default is CGFLOAT_MAX
 
 @property (assign, nonatomic) UIOffset offsetFromCenter UI_APPEARANCE_SELECTOR; // default is 0, 0
 

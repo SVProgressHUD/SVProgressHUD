@@ -61,7 +61,9 @@
 
 - (void)handleNotification:(NSNotification *)notification {
     NSLog(@"Notification received: %@", notification.name);
-    NSLog(@"Status user info key: %@", notification.userInfo[SVProgressHUDStatusUserInfoKey]);
+    if (notification.userInfo[SVProgressHUDStatusUserInfoKey] != nil) {
+        NSLog(@"Status user info key: %@", notification.userInfo[SVProgressHUDStatusUserInfoKey]);
+    }
     
     if([notification.name isEqualToString:SVProgressHUDDidReceiveTouchEventNotification]){
         [self dismiss];
@@ -96,12 +98,10 @@ static float progress = 0.0f;
 
     if(progress < 1.0f){
         [self performSelector:@selector(increaseProgress) withObject:nil afterDelay:0.1f];
+    } else if (self.activityCount > 1) {
+        [self performSelector:@selector(popActivity) withObject:nil afterDelay:0.4f];
     } else {
-        if (self.activityCount > 1) {
-            [self performSelector:@selector(popActivity) withObject:nil afterDelay:0.4f];
-        } else {
-            [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
-        }
+        [self performSelector:@selector(dismiss) withObject:nil afterDelay:0.4f];
     }
 }
 
