@@ -1419,11 +1419,16 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     if(self.defaultStyle != SVProgressHUDStyleCustom) {
         // Add blur effect
         UIBlurEffectStyle blurEffectStyle;
+#if TARGET_OS_IOS
         if (@available(iOS 13.0, *)) {
             blurEffectStyle = [self defaultStyleResolvingAutomatic] == SVProgressHUDStyleLight ? UIBlurEffectStyleSystemMaterial : UIBlurEffectStyleSystemMaterialDark;
         } else {
             blurEffectStyle = [self defaultStyleResolvingAutomatic] == SVProgressHUDStyleLight ? UIBlurEffectStyleLight : UIBlurEffectStyleDark;
         }
+#else
+        blurEffectStyle = [self defaultStyleResolvingAutomatic] == SVProgressHUDStyleLight ? UIBlurEffectStyleLight : UIBlurEffectStyleDark;
+#endif
+        
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:blurEffectStyle];
         self.hudView.effect = blurEffect;
         
