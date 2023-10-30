@@ -216,8 +216,7 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas)
 
 ## Privacy
 
-`SVProgressHUD` does not collect any data. A [privacy manifest file](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) is [provided](SVProgressHUD
-/PrivacyInfo.xcprivacy).
+`SVProgressHUD` does not collect any data. A [privacy manifest file](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) is [provided](SVProgressHUD/PrivacyInfo.xcprivacy).
 
 ## Credits
 
