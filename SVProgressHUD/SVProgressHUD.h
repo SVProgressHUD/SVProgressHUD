@@ -229,7 +229,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 /// Sets the font for the HUD's text.
 /// @param font Desired font for the text.
-+ (void)setFont:(nonnull UIFont*)font);
++ (void)setFont:(nonnull UIFont*)font;
 
 /// Sets the foreground color for the HUD.
 /// @param color Desired foreground color.
@@ -249,7 +249,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 /// Sets a custom blur effect for the HUD view.
 /// @param blurEffect Desired blur effect.
 /// @discussion These implicitly set the HUD's style to `SVProgressHUDStyleCustom`.
-+ (void)setHudViewCustomBlurEffect:(nullable UIBlurEffect*)blurEffect);
++ (void)setHudViewCustomBlurEffect:(nullable UIBlurEffect*)blurEffect;
 
 /// Sets the background layer color for the HUD.
 /// @param color Desired color for the background layer.
@@ -261,7 +261,7 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 
 /// Determines if images should be tinted in the HUD.
 /// @param shouldTintImages Whether images should be tinted.
-+ (void)setShouldTintImages:(BOOL)shouldTintImages);
++ (void)setShouldTintImages:(BOOL)shouldTintImages;
 
 /// Sets the info image for the HUD.
 /// @param image The desired info image.
