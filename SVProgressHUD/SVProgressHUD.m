@@ -367,10 +367,16 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         
         NSBundle *imageBundle = [SVProgressHUD imageBundle];
         
-        _infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
-        _successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
-        _errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
-
+        if (@available(iOS 13.0, *)) {
+            _infoImage = [UIImage systemImageNamed:@"info.circle"];
+            _successImage = [UIImage systemImageNamed:@"checkmark"];
+            _errorImage = [UIImage systemImageNamed:@"xmark"];
+        } else {
+            _infoImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"info" ofType:@"png"]];
+            _successImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"success" ofType:@"png"]];
+            _errorImage = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:@"error" ofType:@"png"]];
+        }
+        
         _ringThickness = 2.0f;
         _ringRadius = 18.0f;
         _ringNoTextRadius = 24.0f;
