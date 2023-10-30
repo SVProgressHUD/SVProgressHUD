@@ -141,7 +141,7 @@ If you'd like to stack HUDs, you can balance out every show call using:
 + (void)popActivity;
 ```
 
-The HUD will get dismissed once the popActivity calls will match the number of show calls.
+The HUD will get dismissed once the `popActivity` calls will match the number of show calls.
 
 Or show an image with status before getting dismissed a little bit later. The display time depends on `minimumDismissTimeInterval` and the length of the given string.
 
@@ -195,7 +195,7 @@ Users with devices prior to iPhone 7 will have no change in functionality.
 
 Each notification passes a `userInfo` dictionary holding the HUD's status string (if any), retrievable via `SVProgressHUDStatusUserInfoKey`.
 
-`SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the overall screen or `SVProgressHUDDidTouchDownInsideNotification` when a user touches on the HUD directly. For this notifications `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
+`SVProgressHUD` also posts `SVProgressHUDDidReceiveTouchEventNotification` when users touch on the overall screen or `SVProgressHUDDidTouchDownInsideNotification` when a user touches on the HUD directly. For these notifications `userInfo` is not passed but the object parameter contains the `UIEvent` that related to the touch.
 
 ## App Extensions
 
@@ -216,7 +216,8 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas)
 
 ## Privacy
 
-`SVProgressHUD` does not collect any data. A [privacy manifest file](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) is provided.
+`SVProgressHUD` does not collect any data. A [privacy manifest file](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) is [provided](SVProgressHUD
+/PrivacyInfo.xcprivacy).
 
 ## Credits
 
