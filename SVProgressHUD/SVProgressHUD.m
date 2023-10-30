@@ -245,44 +245,16 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self showWithStatus:nil];
 }
 
-+ (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self show];
-    [self setDefaultMaskType:existingMaskType];
-}
-
 + (void)showWithStatus:(NSString*)status {
     [self showProgress:SVProgressHUDUndefinedProgress status:status];
-}
-
-+ (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self showWithStatus:status];
-    [self setDefaultMaskType:existingMaskType];
 }
 
 + (void)showProgress:(float)progress {
     [self showProgress:progress status:nil];
 }
 
-+ (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self showProgress:progress];
-    [self setDefaultMaskType:existingMaskType];
-}
-
 + (void)showProgress:(float)progress status:(NSString*)status {
     [[self sharedView] showProgress:progress status:status];
-}
-
-+ (void)showProgress:(float)progress status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self showProgress:progress status:status];
-    [self setDefaultMaskType:existingMaskType];
 }
 
 
@@ -298,29 +270,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
 }
 
-+ (void)showInfoWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self showInfoWithStatus:status];
-    [self setDefaultMaskType:existingMaskType];
-}
-
 + (void)showSuccessWithStatus:(NSString*)status {
     [self showImage:[self sharedView].successImage status:status];
 
-#if TARGET_OS_IOS
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
-    });
-#endif
-}
-
-+ (void)showSuccessWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self showSuccessWithStatus:status];
-    [self setDefaultMaskType:existingMaskType];
-    
 #if TARGET_OS_IOS
     dispatch_async(dispatch_get_main_queue(), ^{
         [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
@@ -338,29 +290,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
 }
 
-+ (void)showErrorWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self showErrorWithStatus:status];
-    [self setDefaultMaskType:existingMaskType];
-    
-#if TARGET_OS_IOS
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[self sharedView].hapticGenerator notificationOccurred:UINotificationFeedbackTypeError];
-    });
-#endif
-}
-
 + (void)showImage:(UIImage*)image status:(NSString*)status {
     NSTimeInterval displayInterval = [self displayDurationForString:status];
     [[self sharedView] showImage:image status:status duration:displayInterval];
-}
-
-+ (void)showImage:(UIImage*)image status:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
-    SVProgressHUDMaskType existingMaskType = [self sharedView].defaultMaskType;
-    [self setDefaultMaskType:maskType];
-    [self showImage:image status:status];
-    [self setDefaultMaskType:existingMaskType];
 }
 
 
