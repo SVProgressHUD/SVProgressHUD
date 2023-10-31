@@ -86,7 +86,7 @@ If you added `SVProgressHUD` manually, just add a [bridging header](https://deve
 
 Using `SVProgressHUD` in your app will usually look as simple as this.
 
-Objective-C:
+**Objective-C:**
 
 ```objective-c
 [SVProgressHUD show];
@@ -98,7 +98,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 });
 ```
 
-Swift:
+**Swift:**
 
 ```swift
 SVProgressHUD.show()
@@ -174,15 +174,13 @@ If you want to use custom colors use `setForegroundColor:` and/or `setBackground
 
 ## Haptic Feedback
 
-For users with newer devices (starting with the iPhone 7), `SVProgressHUD` can automatically trigger haptic feedback depending on which HUD is being displayed. The feedback maps as follows:
+Available on iPhone 7 and newer, `SVProgressHUD` can automatically trigger haptic feedback depending on which HUD is being displayed. The feedback maps as follows:
 
 * `showSuccessWithStatus:` <-> `UINotificationFeedbackTypeSuccess`
 * `showInfoWithStatus:` <-> `UINotificationFeedbackTypeWarning`
 * `showErrorWithStatus:` <-> `UINotificationFeedbackTypeError`
 
 To enable this functionality, use `setHapticsEnabled:`.
-
-Users with devices prior to iPhone 7 will have no change in functionality.
 
 ## Notifications
 
