@@ -1,3 +1,6 @@
+## Version 2.3.1
+* Add missing symlinks for SPM #1112
+
 ## Version 2.3.0
 * Update SVProgressHUD for recent Xcode versions #1105, #1066, #1019, #1060, #1070
 * Add suport for Swift Package Manager #981, #1042, #1063, #1079, #1085
