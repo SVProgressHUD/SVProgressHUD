@@ -78,22 +78,47 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 #if !defined(SV_APP_EXTENSIONS)
 + (UIWindow *)mainWindow {
-    if (@available(iOS 13.0, *)) {
-        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
-            if (windowScene.activationState == UISceneActivationStateForegroundActive) {
-                return windowScene.windows.firstObject;
+    UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
+    __block UIWindow *mainWindow = nil;
+    if (@available(iOS 13.0, tvOS 13.0, *)) {
+        [sharedApplication.connectedScenes enumerateObjectsUsingBlock:^(UIScene *scene, BOOL *stop1) {
+            if (scene.activationState == UISceneActivationStateForegroundActive && [scene isKindOfClass:UIWindowScene.class]) {
+                UIWindowScene *windowScene = (UIWindowScene *)scene;
+                [windowScene.windows enumerateObjectsUsingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop2) {
+                    if (window.isKeyWindow && !window.isHidden) {
+                        mainWindow = window;
+                        *stop1 = YES;
+                        *stop2 = YES;
+                    }
+                }];
             }
-        }
-        // If a window has not been returned by now, the first scene's window is returned (regardless of activationState).
-        UIWindowScene *windowScene = (UIWindowScene *)[[UIApplication sharedApplication].connectedScenes allObjects].firstObject;
-        return windowScene.windows.firstObject;
-    } else {
-#if TARGET_OS_IOS
-        return [[[UIApplication sharedApplication] delegate] window];
-#else
-        return [UIApplication sharedApplication].keyWindow;
-#endif
+        }];
     }
+    if (!mainWindow) {
+        [sharedApplication.windows enumerateObjectsUsingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
+            if (window.isKeyWindow && !window.isHidden) {
+                mainWindow = window;
+                *stop = YES;
+            }
+        }];
+    }
+    // delegate window
+    if (!mainWindow) {
+        if (@available(iOS 13.0, tvOS 13.0, *)) {
+            [sharedApplication.connectedScenes enumerateObjectsUsingBlock:^(UIScene *scene, BOOL *stop) {
+                if ([scene isKindOfClass:UIWindowScene.class] && [scene.session.role isEqualToString:UIWindowSceneSessionRoleApplication]) {
+                    if ([scene.delegate respondsToSelector:@selector(window)]) {
+                        mainWindow = [scene.delegate performSelector:@selector(window)];
+                        *stop = YES;
+                    }
+                }
+            }];
+        }
+        if (!mainWindow && [sharedApplication.delegate respondsToSelector:@selector(window)]) {
+            mainWindow = [sharedApplication.delegate performSelector:@selector(window)];
+        }
+    }
+    return mainWindow;
 }
 #endif
 
