@@ -76,6 +76,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     return sharedView;
 }
 
+#if !defined(SV_APP_EXTENSIONS)
 + (UIWindow *)mainWindow {
     if (@available(iOS 13.0, *)) {
         for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
@@ -94,6 +95,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #endif
     }
 }
+#endif
 
 + (NSBundle *)imageBundle {
 #if defined(SWIFTPM_MODULE_BUNDLE)
