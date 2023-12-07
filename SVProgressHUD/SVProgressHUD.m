@@ -14,10 +14,6 @@
 #import "SVProgressAnimatedView.h"
 #import "SVRadialGradientLayer.h"
 
-#if __has_include(<CarPlay/CarPlay.h>)
-#import <CarPlay/CarPlay.h>
-#endif
-
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
 NSString * const SVProgressHUDDidTouchDownInsideNotification = @"SVProgressHUDDidTouchDownInsideNotification";
 NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
