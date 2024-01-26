@@ -413,6 +413,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _hapticsEnabled = NO;
         _motionEffectEnabled = YES;
         
+        self.layer.shadowColor = [[[UIColor blackColor] colorWithAlphaComponent:0.2] CGColor];
+        self.layer.shadowOffset = CGSizeMake(0, 0);
+        self.layer.shadowOpacity = 1;
+        self.layer.shadowRadius = 14;
+    
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
         self.isAccessibilityElement = YES;

@@ -232,15 +232,15 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 + (void)setShadowColor:(nonnull UIColor*)color;
 
 /// Shadow offset of the HUD view.
-/// @discussion Default: (0.0, -3.0)
+/// @discussion Default: (0 ,0)
 + (void)setShadowOffset:(CGSize)size;
 
 /// Shadow opacity of the HUD view.
-/// @discussion Default: 0.0
+/// @discussion Default: 1
 + (void)setShadowOpacity:(CGFloat)opacity;
 
 /// Shadow radius of the HUD view.
-/// @discussion Default: 3.2
+/// @discussion Default: 14
 + (void)setShadowRadius:(CGFloat)radius;
 
 /// Sets the font for the HUD's text.
