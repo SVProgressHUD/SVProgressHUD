@@ -227,6 +227,22 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 /// @param width Desired border width.
 + (void)setBorderWidth:(CGFloat)width;
 
+/// Shadow color of the HUD view.
+/// @discussion Default: opaque black color
++ (void)setShadowColor:(nonnull UIColor*)color;
+
+/// Shadow offset of the HUD view.
+/// @discussion Default: (0 ,0)
++ (void)setShadowOffset:(CGSize)size;
+
+/// Shadow opacity of the HUD view.
+/// @discussion Default: 1
++ (void)setShadowOpacity:(CGFloat)opacity;
+
+/// Shadow radius of the HUD view.
+/// @discussion Default: 14
++ (void)setShadowRadius:(CGFloat)radius;
+
 /// Sets the font for the HUD's text.
 /// @param font Desired font for the text.
 + (void)setFont:(nonnull UIFont*)font;

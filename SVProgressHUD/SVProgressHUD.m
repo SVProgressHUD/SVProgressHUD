@@ -157,6 +157,22 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     [self sharedView].hudView.layer.borderWidth = width;
 }
 
++ (void)setShadowColor:(nonnull UIColor*)color {
+    [self sharedView].layer.shadowColor = color.CGColor;
+}
+
++ (void)setShadowOffset:(CGSize)size {
+    [self sharedView].layer.shadowOffset = size;
+}
+
++ (void)setShadowOpacity:(CGFloat)opacity {
+    [self sharedView].layer.shadowOpacity = opacity;
+}
+
++ (void)setShadowRadius:(CGFloat)radius {
+    [self sharedView].layer.shadowRadius = radius;
+}
+
 + (void)setFont:(UIFont*)font {
     [self sharedView].font = font;
 }
@@ -397,6 +413,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         _hapticsEnabled = NO;
         _motionEffectEnabled = YES;
         
+        self.layer.shadowColor = [[[UIColor blackColor] colorWithAlphaComponent:0.2] CGColor];
+        self.layer.shadowOffset = CGSizeMake(0, 0);
+        self.layer.shadowOpacity = 1;
+        self.layer.shadowRadius = 14;
+    
         // Accessibility support
         self.accessibilityIdentifier = @"SVProgressHUD";
         self.isAccessibilityElement = YES;
