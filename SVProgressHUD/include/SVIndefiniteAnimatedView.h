@@ -1,1 +1,0 @@
-../SVIndefiniteAnimatedView.h
