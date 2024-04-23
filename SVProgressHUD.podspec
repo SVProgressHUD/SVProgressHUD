@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |core|
     core.source_files = 'SVProgressHUD/*.{h,m}'
     core.resources = ['SVProgressHUD/SVProgressHUD.bundle']
-    core.resource_bundles = {'SVProgressHUD' => ['SVProgressHUD/PrivacyInfo.xcprivacy']}
+    core.resource_bundles = {'SVProgressHUD_Privacy' => ['SVProgressHUD/PrivacyInfo.xcprivacy']}
   end
 
   s.subspec 'AppExtension' do |ext|
