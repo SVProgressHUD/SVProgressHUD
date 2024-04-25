@@ -39,7 +39,7 @@
         UIBezierPath* smoothedPath = [UIBezierPath bezierPathWithArcCenter:arcCenter radius:self.radius startAngle:(CGFloat)-M_PI_2 endAngle:(CGFloat) (M_PI + M_PI_2) clockwise:YES];
         
         _ringAnimatedLayer = [CAShapeLayer layer];
-        _ringAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
+       // _ringAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
         _ringAnimatedLayer.frame = CGRectMake(0.0f, 0.0f, arcCenter.x*2, arcCenter.y*2);
         _ringAnimatedLayer.fillColor = [UIColor clearColor].CGColor;
         _ringAnimatedLayer.strokeColor = self.strokeColor.CGColor;
