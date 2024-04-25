@@ -91,7 +91,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if TARGET_OS_IOS
         return [[[UIApplication sharedApplication] delegate] window];
 #else
-        return [UIApplication sharedApplication].keyWindow;
+        return [[[UIApplication sharedApplication] delegate] window];
 #endif
     }
 }
@@ -1064,7 +1064,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
         }
         
         if(!_indefiniteAnimatedView){
-            _indefiniteAnimatedView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+           // _indefiniteAnimatedView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         }
         
         // Update styling
@@ -1342,7 +1342,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if !defined(SV_APP_EXTENSIONS)
     NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
     for (UIWindow *window in frontToBackWindows) {
-        BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
+        BOOL windowOnMainScreen = TRUE;//window.screen == UIScreen.mainScreen;
         BOOL windowIsVisible = !window.hidden && window.alpha > 0;
         BOOL windowLevelSupported = (window.windowLevel >= UIWindowLevelNormal && window.windowLevel <= self.maxSupportedWindowLevel);
         BOOL windowKeyWindow = window.isKeyWindow;
