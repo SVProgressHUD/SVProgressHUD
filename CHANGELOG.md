@@ -1,3 +1,6 @@
+## Version 2.3.2
+* Fix warning Umbrella header for module
+
 ## Version 2.3.1
 * Add missing symlinks for SPM #1112
 
