@@ -690,7 +690,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle {
     self.hudView.transform = CGAffineTransformMakeRotation(angle);
     if (self.containerView) {
-        self.hudView.center = CGPointMake(self.containerView.center.x + self.offsetFromCenter.horizontal, self.containerView.center.y + self.offsetFromCenter.vertical);
+        self.hudView.center = CGPointMake(self.containerView.frame.size.width / 2, self.containerView.frame.size.height / 2);
     } else {
         self.hudView.center = CGPointMake(newCenter.x + self.offsetFromCenter.horizontal, newCenter.y + self.offsetFromCenter.vertical);
     }
@@ -731,7 +731,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             strongSelf.graceTimer = nil;
             
             // Update / Check view hierarchy to ensure the HUD is visible
-            [strongSelf updateViewHierarchy];
+            // If UIView container is specified then load HUD in container otherwise use default window level
+            if (self.containerView != nil) {
+                [strongSelf updateViewHierarchyForContainerView]; // New method!
+            } else {
+                [strongSelf updateViewHierarchy]; // Default method
+            }
             
             // Reset imageView and fadeout timer if an image is currently displayed
             strongSelf.imageView.hidden = YES;
@@ -1523,4 +1528,15 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     if (!_isInitializing) _maxSupportedWindowLevel = maxSupportedWindowLevel;
 }
 
+- (void)updateViewHierarchyForContainerView {
+    [_containerView addSubview:self.controlView];
+    
+    // Add self to the overlay view
+    if(!self.superview){
+        [self.controlView addSubview:self];
+    }
+    if(!self.hudView.superview) {
+        [self addSubview:self.hudView];
+    }
+}
 @end
