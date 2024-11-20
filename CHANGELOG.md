@@ -3,7 +3,7 @@
 
 ## Version 2.3.0
 * Update SVProgressHUD for recent Xcode versions #1105, #1066, #1019, #1060, #1070
-* Add suport for Swift Package Manager #981, #1042, #1063, #1079, #1085
+* Add support for Swift Package Manager #981, #1042, #1063, #1079, #1085
 * Added adjustFontForContentSizeCategory to statusLabel #1072
 * Update imageUsed judgment conditions when set imageViewSize to zero #1098
 * Fix memory leak while loading image from bundle #1080
@@ -81,7 +81,7 @@
 ## Version 2.0
 * Fixed: `:head` not available anymore in Cocoapods #552
 * Fixed: Redraw resource images as the look blurry on 2x/3x. #562
-* Fixed: Problem where displayDurationForString can return duration shoter than minimumDismissTimeInterval #574
+* Fixed: Problem where displayDurationForString can return duration shorter than minimumDismissTimeInterval #574
 * Fixed: iOS7+ alert black dimming view has an alpha of 0.4, not 0.5 #570
 * Fixed: Bugfix for hidden HUD if defaultMaskStyle is changed during runtime
 
