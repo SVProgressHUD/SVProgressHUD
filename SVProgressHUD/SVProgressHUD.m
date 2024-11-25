@@ -79,14 +79,18 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if !defined(SV_APP_EXTENSIONS)
 + (UIWindow *)mainWindow {
     if (@available(iOS 13.0, *)) {
-        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
-            if (windowScene.activationState == UISceneActivationStateForegroundActive) {
+    	NSSet<UIScene *> *connectedScenes = UIApplication.sharedApplication.connectedScenes;
+        for (UIWindowScene* windowScene in connectedScenes) {
+            if (windowScene.activationState == UISceneActivationStateForegroundActive && [windowScene.delegate conformsToProtocol:@protocol(UIWindowSceneDelegate)]) {
                 return windowScene.windows.firstObject;
             }
         }
         // If a window has not been returned by now, the first scene's window is returned (regardless of activationState).
-        UIWindowScene *windowScene = (UIWindowScene *)[[UIApplication sharedApplication].connectedScenes allObjects].firstObject;
-        return windowScene.windows.firstObject;
+	for (UIWindowScene* windowScene in connectedScenes) {
+            if ([windowScene.delegate conformsToProtocol:@protocol(UIWindowSceneDelegate)]) {
+                return windowScene.windows.firstObject;
+            }
+        }
     } else {
 #if TARGET_OS_IOS
         return [[[UIApplication sharedApplication] delegate] window];
