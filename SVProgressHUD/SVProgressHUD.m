@@ -1348,10 +1348,32 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (CGFloat)visibleKeyboardHeight {
 #if !defined(SV_APP_EXTENSIONS)
     UIWindow *keyboardWindow = nil;
-    for (UIWindow *testWindow in UIApplication.sharedApplication.windows) {
-        if(![testWindow.class isEqual:UIWindow.class]) {
-            keyboardWindow = testWindow;
-            break;
+ 
+    // First, try to find the keyboard window in all connected scenes
+    if (@available(iOS 13.0, *)) {
+        for (UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+            // only handle UIWindowScene
+            if ([scene isKindOfClass:[UIWindowScene class]]) {
+                for (UIWindow *testWindow in ((UIWindowScene *)scene).windows) {
+                    if(![testWindow.class isEqual:UIWindow.class]) {
+                        keyboardWindow = testWindow;
+                        break;
+                    }
+                }
+            }
+            if (keyboardWindow != nil) {
+                break;
+            }
+        }
+    }
+ 
+    // Fallback to the old method if not iOS 13+ or if no window is found in a multi-scene environment
+    if (keyboardWindow == nil) {
+        for (UIWindow *testWindow in UIApplication.sharedApplication.windows) {
+            if(![testWindow.class isEqual:UIWindow.class]) {
+                keyboardWindow = testWindow;
+                break;
+            }
         }
     }
     
@@ -1380,14 +1402,34 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
 - (UIWindow *)frontWindow {
 #if !defined(SV_APP_EXTENSIONS)
+    // For iOS 13 and later, we first find the active scene.
+    if (@available(iOS 13.0, *)) {
+        for (UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+            if (scene.activationState == UISceneActivationStateForegroundActive) {
+                if ([scene isKindOfClass:[UIWindowScene class]]) {
+                    UIWindowScene *windowScene = (UIWindowScene *)scene;
+                    for (UIWindow *window in windowScene.windows) {
+                        // The isKeyWindow property is often a reliable way to find the main window,
+                        // but we also check other properties for robustness.
+                        if (window.isKeyWindow && window.alpha > 0) {
+                            return window;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // For iOS versions before 13, or if no key window was found in a scene,
+    // we use the old approach with a fallback to keyWindow.
     NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
     for (UIWindow *window in frontToBackWindows) {
         BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
         BOOL windowIsVisible = !window.hidden && window.alpha > 0;
         BOOL windowLevelSupported = (window.windowLevel >= UIWindowLevelNormal && window.windowLevel <= self.maxSupportedWindowLevel);
         BOOL windowKeyWindow = window.isKeyWindow;
-			
-        if(windowOnMainScreen && windowIsVisible && windowLevelSupported && windowKeyWindow) {
+        
+        if (windowOnMainScreen && windowIsVisible && windowLevelSupported && windowKeyWindow) {
             return window;
         }
     }
