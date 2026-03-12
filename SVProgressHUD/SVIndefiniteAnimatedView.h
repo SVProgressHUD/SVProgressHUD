@@ -7,6 +7,10 @@
 
 #import <UIKit/UIKit.h>
 
+extern UIScreen * SVCurrentScreen(void) ;
+extern CGFloat SVCurrentScreenScale(void) ;
+
+
 @interface SVIndefiniteAnimatedView : UIView
 
 @property (nonatomic, assign) CGFloat strokeThickness;

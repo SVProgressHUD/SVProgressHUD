@@ -71,7 +71,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #if !defined(SV_APP_EXTENSIONS)
     dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[self delegateWindowFrame]]; });
 #else
-    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
+    dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[SVCurrentScreen() bounds]]; });
 #endif
     return sharedView;
 }
@@ -1244,7 +1244,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     CGRect windowBounds = [self.class delegateWindowFrame];
     _controlView.frame = windowBounds;
 #else
-    _controlView.frame = [UIScreen mainScreen].bounds;
+    _controlView.frame = SVCurrentScreen().bounds;
 #endif
     
     return _controlView;
