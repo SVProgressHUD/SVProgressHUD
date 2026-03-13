@@ -348,6 +348,11 @@ typedef void (^SVProgressHUDDismissCompletion)(void);
 /// @param status The error message to be displayed.
 + (void)showErrorWithStatus:(nullable NSString*)status;
 
+/// Shows text with the provided message.
+/// @param status The text message to be displayed.
++ (void)showTextWithStatus:(nullable NSString*)status;
+
+
 /// Shows a custom image with the provided status message.
 /// @param image The custom image to be displayed.
 /// @param status The message to accompany the custom image.

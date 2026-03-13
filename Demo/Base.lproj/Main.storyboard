@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,13 +21,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SVProgressHUD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sGh-mU-or6">
-                                <rect key="frame" x="16" y="50" width="343" height="33.5"/>
+                                <rect key="frame" x="16" y="5.5" width="343" height="33.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kdO-6H-glK">
-                                <rect key="frame" x="16" y="94.5" width="343" height="33"/>
+                                <rect key="frame" x="16" y="50" width="343" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="show"/>
                                 <connections>
@@ -35,7 +35,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajX-aT-XVa">
-                                <rect key="frame" x="16" y="139" width="343" height="33"/>
+                                <rect key="frame" x="16" y="94.5" width="343" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="showWithStatus:">
                                     <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -45,7 +45,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X7s-1O-DUR">
-                                <rect key="frame" x="16" y="272.5" width="343" height="33"/>
+                                <rect key="frame" x="16" y="228" width="343" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="showSuccessWithStatus:">
                                     <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -55,7 +55,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1bX-FJ-Xml">
-                                <rect key="frame" x="16" y="228" width="343" height="33"/>
+                                <rect key="frame" x="16" y="183.5" width="343" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="showInfoWithStatus:">
                                     <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -65,7 +65,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QWC-hg-lSh">
-                                <rect key="frame" x="16" y="317" width="343" height="33"/>
+                                <rect key="frame" x="16" y="272.5" width="343" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="showErrorWithStatus:">
                                     <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -75,13 +75,24 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XgO-m1-d5S">
-                                <rect key="frame" x="16" y="183.5" width="343" height="33"/>
+                                <rect key="frame" x="16" y="139" width="343" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="showWithProgress:">
                                     <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="showWithProgress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7gF-m8-yHV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftG-oK-iei">
+                                <rect key="frame" x="16" y="317" width="343" height="33"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <state key="normal" title="showTextWithStatus:">
+                                    <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="showErrorWithStatus" destination="BYZ-38-t0r" eventType="touchUpInside" id="fwG-Ed-Cl8"/>
+                                    <action selector="showTextWithStatus" destination="BYZ-38-t0r" eventType="touchUpInside" id="kts-a4-uDx"/>
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="hhM-GA-UeK">
@@ -162,15 +173,16 @@
                             <constraint firstItem="JME-9t-3qr" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="21/15" id="1ZU-Qp-f3s"/>
                             <constraint firstItem="hhM-GA-UeK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="1Zu-DW-11b"/>
                             <constraint firstItem="a46-EJ-vvy" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="28G-5d-jY0"/>
-                            <constraint firstItem="QWC-hg-lSh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="15/15" id="2L9-Fg-VRL"/>
+                            <constraint firstItem="QWC-hg-lSh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="13/15" id="2L9-Fg-VRL"/>
                             <constraint firstItem="Duh-O6-gih" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="4IA-m9-fws"/>
                             <constraint firstItem="1bX-FJ-Xml" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="53b-Fp-k8D"/>
-                            <constraint firstItem="XgO-m1-d5S" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="9/15" id="7Bm-rv-iZF"/>
-                            <constraint firstItem="ajX-aT-XVa" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="7/15" id="8AZ-lA-S8r"/>
-                            <constraint firstItem="1bX-FJ-Xml" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="11/15" id="8Ir-Pr-MnM"/>
+                            <constraint firstItem="XgO-m1-d5S" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="7/15" id="7Bm-rv-iZF"/>
+                            <constraint firstItem="ajX-aT-XVa" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="5/15" id="8AZ-lA-S8r"/>
+                            <constraint firstItem="1bX-FJ-Xml" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="9/15" id="8Ir-Pr-MnM"/>
+                            <constraint firstItem="ftG-oK-iei" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="AtU-Sx-qDC"/>
                             <constraint firstItem="kdO-6H-glK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="D0h-dQ-qgN"/>
                             <constraint firstItem="sGh-mU-or6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="EaC-8O-j3a"/>
-                            <constraint firstItem="kdO-6H-glK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="5/15" id="F8I-oY-lJg"/>
+                            <constraint firstItem="kdO-6H-glK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="3/15" id="F8I-oY-lJg"/>
                             <constraint firstItem="2U6-gA-atj" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="FdN-2m-UnI"/>
                             <constraint firstItem="iAW-K3-Ahn" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Q8b-mS-LWw"/>
                             <constraint firstItem="7ND-R8-KBh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="QYS-S8-xLU"/>
@@ -183,6 +195,7 @@
                             <constraint firstItem="X7s-1O-DUR" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="aHG-Ae-oWY"/>
                             <constraint firstItem="QWC-hg-lSh" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="bdx-ji-2yy"/>
                             <constraint firstAttribute="trailing" secondItem="7ND-R8-KBh" secondAttribute="trailing" id="d0q-5A-QdV"/>
+                            <constraint firstItem="ftG-oK-iei" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="glw-SC-g4h"/>
                             <constraint firstItem="ajX-aT-XVa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="hex-9h-WjG"/>
                             <constraint firstItem="XgO-m1-d5S" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="iAg-a2-xDH"/>
                             <constraint firstItem="7ND-R8-KBh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="19/15" id="ihP-XN-FIA"/>
@@ -191,14 +204,15 @@
                             <constraint firstItem="3Eo-qS-Rfh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="21/15" id="nvR-0E-Gi7"/>
                             <constraint firstItem="sGh-mU-or6" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="nyG-xK-bfg"/>
                             <constraint firstItem="XgO-m1-d5S" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="pZ6-jL-Bjc"/>
+                            <constraint firstItem="ftG-oK-iei" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="15/15" id="qC6-49-7ih"/>
                             <constraint firstItem="1bX-FJ-Xml" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="qkB-yb-nrT"/>
                             <constraint firstItem="2U6-gA-atj" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="17/15" id="qnC-NT-OP6"/>
                             <constraint firstItem="Duh-O6-gih" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="r4b-RR-n8m"/>
-                            <constraint firstItem="sGh-mU-or6" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="3/15" id="r6M-pq-dnJ"/>
+                            <constraint firstItem="sGh-mU-or6" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1/15" id="r6M-pq-dnJ"/>
                             <constraint firstItem="Duh-O6-gih" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="25/15" id="uMK-VD-lbc"/>
                             <constraint firstItem="kdO-6H-glK" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="wE4-s6-bav"/>
                             <constraint firstItem="iAW-K3-Ahn" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="23/15" id="x4G-gF-8I7"/>
-                            <constraint firstItem="X7s-1O-DUR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="13/15" id="y2m-6W-g8C"/>
+                            <constraint firstItem="X7s-1O-DUR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="11/15" id="y2m-6W-g8C"/>
                             <constraint firstItem="a46-EJ-vvy" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="zqM-IZ-LrD"/>
                         </constraints>
                     </view>

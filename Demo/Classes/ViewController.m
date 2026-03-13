@@ -138,6 +138,11 @@ static float progress = 0.0f;
     self.activityCount++;
 }
 
+- (IBAction)showTextWithStatus {
+    [SVProgressHUD showTextWithStatus:@"Text"];
+    self.activityCount++;
+}
+
 
 #pragma mark - Styling
 

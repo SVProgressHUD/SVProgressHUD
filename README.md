@@ -150,6 +150,7 @@ Or show an image with status before getting dismissed a little bit later. The di
 + (void)showSuccessWithStatus:(NSString*)string;
 + (void)showErrorWithStatus:(NSString*)string;
 + (void)showImage:(UIImage*)image status:(NSString*)string;
++ (void)showTextWithStatus:(nullable NSString*)status;
 ```
 
 ## Customization
