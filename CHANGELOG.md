@@ -1,3 +1,14 @@
+## Version 2.3.2
+* Fix iOS 13+ multi-scene window handling for proper HUD display #1113, #1114, #1152, #1153
+* Fix crashes in apps with CarPlay support #1118, #1150, #1154
+* Fix thread safety in popActivity and showProgress methods #927, #1087
+* Fix crash when rootViewController is nil during dismiss #1155, #1157
+* Fix crash when bundle URL is nil #1146
+* Fix HUD not displaying when containerView is deallocated #1121
+* Fix warning Umbrella header for module #1131
+* Add tvOS 13.0 availability checks for consistency
+* Improve memory management with consistent weak/strong pattern in blocks
+
 ## Version 2.3.1
 * Add missing symlinks for SPM #1112
 

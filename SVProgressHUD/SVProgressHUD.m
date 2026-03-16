@@ -78,7 +78,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 #if !defined(SV_APP_EXTENSIONS)
 + (UIWindow *)mainWindow {
-    if (@available(iOS 13.0, *)) {
+    if (@available(iOS 13.0, tvOS 13.0, *)) {
+        // First pass: find key window in active foreground app scenes
         for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
             if (![scene isKindOfClass:[UIWindowScene class]]) {
                 continue;
@@ -88,7 +89,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             if (windowScene.activationState == UISceneActivationStateForegroundActive &&
                 [windowScene.session.role isEqualToString:UIWindowSceneSessionRoleApplication]) {
                 for (UIWindow *window in windowScene.windows) {
-                    if (window.isKeyWindow) {
+                    if (window.isKeyWindow && !window.isHidden) {
                         return window;
                     }
                 }
@@ -98,7 +99,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             }
         }
 
-        // Fallback: return first available app scene regardless of activation state.
+        // Second pass: any app scene regardless of activation state
         for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
             if (![scene isKindOfClass:[UIWindowScene class]]) {
                 continue;
@@ -110,7 +111,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             }
 
             for (UIWindow *window in windowScene.windows) {
-                if (window.isKeyWindow) {
+                if (window.isKeyWindow && !window.isHidden) {
                     return window;
                 }
             }
@@ -119,18 +120,32 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             }
         }
 
+        // Third pass: check all application windows
         for (UIWindow *window in [UIApplication sharedApplication].windows) {
-            if (window.isKeyWindow) {
+            if (window.isKeyWindow && !window.isHidden) {
                 return window;
             }
         }
-        return [UIApplication sharedApplication].windows.firstObject;
-    } else {
-#if TARGET_OS_IOS
-        return [[[UIApplication sharedApplication] delegate] window];
-#else
-        return [UIApplication sharedApplication].keyWindow;
-#endif
+
+        // Fourth pass: delegate windows
+        for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
+            if ([scene isKindOfClass:[UIWindowScene class]] &&
+                [scene.session.role isEqualToString:UIWindowSceneSessionRoleApplication]) {
+                UIWindowScene *windowScene = (UIWindowScene *)scene;
+                if ([windowScene.delegate conformsToProtocol:@protocol(UIWindowSceneDelegate)]) {
+                    id<UIWindowSceneDelegate> sceneDelegate = (id<UIWindowSceneDelegate>)windowScene.delegate;
+                    if (sceneDelegate.window) {
+                        return sceneDelegate.window;
+                    }
+                }
+            }
+        }
+    }
+
+    // Pre-iOS 13 fallback / last resort
+    id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+    if ([appDelegate respondsToSelector:@selector(window)] && appDelegate.window) {
+        return appDelegate.window;
     }
 
     return nil;
@@ -144,6 +159,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
      NSBundle *bundle = [NSBundle bundleForClass:[SVProgressHUD class]];
 #endif
      NSURL *url = [bundle URLForResource:@"SVProgressHUD" withExtension:@"bundle"];
+     if (!url) {
+         return nil;
+     }
      return [NSBundle bundleWithURL:url];
  }
 
@@ -341,11 +359,19 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #pragma mark - Dismiss Methods
 
 + (void)popActivity {
-    if([self sharedView].activityCount > 0) {
-        [self sharedView].activityCount--;
-    }
-    if([self sharedView].activityCount == 0) {
-        [[self sharedView] dismiss];
+    void (^block)(void) = ^{
+        if([self sharedView].activityCount > 0) {
+            [self sharedView].activityCount--;
+        }
+        if([self sharedView].activityCount == 0) {
+            [[self sharedView] dismiss];
+        }
+    };
+
+    if ([NSThread isMainThread]) {
+        block();
+    } else {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:block];
     }
 }
 
@@ -552,11 +578,15 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (void)updateViewHierarchy {
     // Add the overlay to the application window if necessary
     if(!self.controlView.superview) {
-        if(self.containerView){
+        // Check if containerView is set and still in the view hierarchy
+        if(self.containerView && self.containerView.window){
             [self.containerView addSubview:self.controlView];
         } else {
 #if !defined(SV_APP_EXTENSIONS)
-            [self.frontWindow addSubview:self.controlView];
+            UIWindow *window = self.frontWindow;
+            if (window && window.rootViewController) {
+                [window addSubview:self.controlView];
+            }
 #else
             // If SVProgressHUD is used inside an app extension add it to the given view
             if(self.viewForExtension) {
@@ -729,7 +759,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)moveToPoint:(CGPoint)newCenter rotateAngle:(CGFloat)angle {
     self.hudView.transform = CGAffineTransformMakeRotation(angle);
-    if (self.containerView) {
+    if (self.containerView && self.containerView.window) {
         self.hudView.center = CGPointMake(self.containerView.center.x + self.offsetFromCenter.horizontal, self.containerView.center.y + self.offsetFromCenter.vertical);
     } else {
         self.hudView.center = CGPointMake(newCenter.x + self.offsetFromCenter.horizontal, newCenter.y + self.offsetFromCenter.vertical);
@@ -759,7 +789,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 - (void)showProgress:(float)progress status:(NSString*)status {
     __weak SVProgressHUD *weakSelf = self;
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    void (^block)(void) = ^{
         __strong SVProgressHUD *strongSelf = weakSelf;
         if(strongSelf){
             if(strongSelf.fadeOutTimer) {
@@ -820,8 +850,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             }
             
             // Fade in delayed if a grace time is set
-            if (self.graceTimeInterval > 0.0 && self.backgroundView.alpha == 0.0f) {
-                strongSelf.graceTimer = [NSTimer timerWithTimeInterval:self.graceTimeInterval target:strongSelf selector:@selector(fadeIn:) userInfo:nil repeats:NO];
+            if (strongSelf.graceTimeInterval > 0.0 && strongSelf.backgroundView.alpha == 0.0f) {
+                strongSelf.graceTimer = [NSTimer timerWithTimeInterval:strongSelf.graceTimeInterval target:strongSelf selector:@selector(fadeIn:) userInfo:nil repeats:NO];
                 [[NSRunLoop mainRunLoop] addTimer:strongSelf.graceTimer forMode:NSRunLoopCommonModes];
             } else {
                 [strongSelf fadeIn:nil];
@@ -832,7 +862,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             [strongSelf.hapticGenerator prepare];
 #endif
         }
-    }];
+    };
+    if ([NSThread isMainThread]) {
+        block();
+    } else {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:block];
+    }
 }
 
 - (void)showImage:(UIImage*)image status:(NSString*)status duration:(NSTimeInterval)duration {
@@ -853,7 +888,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             [strongSelf cancelIndefiniteAnimatedViewAnimation];
             
             // Update imageView
-            if (self.shouldTintImages) {
+            if (strongSelf.shouldTintImages) {
                 if (image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
                     strongSelf.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                 } else {
@@ -871,8 +906,8 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             
             // Fade in delayed if a grace time is set
             // An image will be dismissed automatically. Thus pass the duration as userInfo.
-            if (self.graceTimeInterval > 0.0 && self.backgroundView.alpha == 0.0f) {
-                strongSelf.graceTimer = [NSTimer timerWithTimeInterval:self.graceTimeInterval target:strongSelf selector:@selector(fadeIn:) userInfo:@(duration) repeats:NO];
+            if (strongSelf.graceTimeInterval > 0.0 && strongSelf.backgroundView.alpha == 0.0f) {
+                strongSelf.graceTimer = [NSTimer timerWithTimeInterval:strongSelf.graceTimeInterval target:strongSelf selector:@selector(fadeIn:) userInfo:@(duration) repeats:NO];
                 [[NSRunLoop mainRunLoop] addTimer:strongSelf.graceTimer forMode:NSRunLoopCommonModes];
             } else {
                 [strongSelf fadeIn:@(duration)];
@@ -1009,7 +1044,7 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
             __block void (^completionBlock)(void) = ^{
                 // Check if we really achieved to dismiss the HUD (<=> alpha values are applied)
                 // and the change of these values has not been cancelled in between e.g. due to a new show
-                if(self.backgroundView.alpha == 0.0f){
+                if(strongSelf.backgroundView.alpha == 0.0f){
                     // Clean up view hierarchy (overlays)
                     [strongSelf.controlView removeFromSuperview];
                     [strongSelf.backgroundView removeFromSuperview];
@@ -1032,7 +1067,9 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
                     // Tell the rootViewController to update the StatusBar appearance
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
                     UIViewController *rootController = [SVProgressHUD mainWindow].rootViewController;
-                    [rootController setNeedsStatusBarAppearanceUpdate];
+                    if (rootController) {
+                        [rootController setNeedsStatusBarAppearanceUpdate];
+                    }
 #endif
                     
                     // Run an (optional) completionHandler
@@ -1348,10 +1385,33 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 - (CGFloat)visibleKeyboardHeight {
 #if !defined(SV_APP_EXTENSIONS)
     UIWindow *keyboardWindow = nil;
-    for (UIWindow *testWindow in UIApplication.sharedApplication.windows) {
-        if(![testWindow.class isEqual:UIWindow.class]) {
-            keyboardWindow = testWindow;
-            break;
+ 
+    // First, try to find the keyboard window in all connected scenes
+    if (@available(iOS 13.0, tvOS 13.0, *)) {
+        for (UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+            // only handle UIWindowScene for application role
+            if ([scene isKindOfClass:[UIWindowScene class]] &&
+                [scene.session.role isEqualToString:UIWindowSceneSessionRoleApplication]) {
+                for (UIWindow *testWindow in ((UIWindowScene *)scene).windows) {
+                    if(![testWindow.class isEqual:UIWindow.class]) {
+                        keyboardWindow = testWindow;
+                        break;
+                    }
+                }
+            }
+            if (keyboardWindow != nil) {
+                break;
+            }
+        }
+    }
+ 
+    // Fallback to the old method if not iOS 13+ or if no window is found in a multi-scene environment
+    if (keyboardWindow == nil) {
+        for (UIWindow *testWindow in UIApplication.sharedApplication.windows) {
+            if(![testWindow.class isEqual:UIWindow.class]) {
+                keyboardWindow = testWindow;
+                break;
+            }
         }
     }
     
@@ -1380,14 +1440,32 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     
 - (UIWindow *)frontWindow {
 #if !defined(SV_APP_EXTENSIONS)
+    // For iOS 13 and later, we first find the active scene.
+    if (@available(iOS 13.0, tvOS 13.0, *)) {
+        for (UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+            if (scene.activationState == UISceneActivationStateForegroundActive &&
+                [scene isKindOfClass:[UIWindowScene class]] &&
+                [scene.session.role isEqualToString:UIWindowSceneSessionRoleApplication]) {
+                UIWindowScene *windowScene = (UIWindowScene *)scene;
+                for (UIWindow *window in windowScene.windows) {
+                    if (window.isKeyWindow && window.alpha > 0) {
+                        return window;
+                    }
+                }
+            }
+        }
+    }
+    
+    // For iOS versions before 13, or if no key window was found in a scene,
+    // we use the old approach with a fallback to keyWindow.
     NSEnumerator *frontToBackWindows = [UIApplication.sharedApplication.windows reverseObjectEnumerator];
     for (UIWindow *window in frontToBackWindows) {
         BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
         BOOL windowIsVisible = !window.hidden && window.alpha > 0;
         BOOL windowLevelSupported = (window.windowLevel >= UIWindowLevelNormal && window.windowLevel <= self.maxSupportedWindowLevel);
         BOOL windowKeyWindow = window.isKeyWindow;
-			
-        if(windowOnMainScreen && windowIsVisible && windowLevelSupported && windowKeyWindow) {
+        
+        if (windowOnMainScreen && windowIsVisible && windowLevelSupported && windowKeyWindow) {
             return window;
         }
     }
