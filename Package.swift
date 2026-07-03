@@ -19,13 +19,23 @@ let package = Package(
             name: "SVProgressHUD",
             dependencies: [],
             path: "SVProgressHUD",
-            exclude: ["SVProgressHUD-Prefix.pch"],
+            exclude: [
+                "SVProgressHUD-Prefix.pch",
+                "SVIndefiniteAnimatedView.h",
+                "SVProgressAnimatedView.h",
+                "SVRadialGradientLayer.h"
+            ],
             resources: [
                 .copy("SVProgressHUD.bundle"),
                 .copy("PrivacyInfo.xcprivacy")
             ],
-            publicHeadersPath: "include"
+            publicHeadersPath: "include",
+            cSettings: [
+                .headerSearchPath(".")
+            ],
+            linkerSettings: [
+                .linkedFramework("QuartzCore")
+            ]
         )
     ]
 )
-
