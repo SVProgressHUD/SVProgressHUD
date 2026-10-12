@@ -757,6 +757,14 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 
 #pragma mark - Master show/dismiss methods
 
+- (void)show {
+    [self showStatus:nil];
+}
+
+- (void)showStatus:(NSString *)status {
+    [self showProgress:SVProgressHUDUndefinedProgress status:status];
+}
+
 - (void)showProgress:(float)progress status:(NSString*)status {
     __weak SVProgressHUD *weakSelf = self;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
